@@ -6,29 +6,30 @@
         --* else
           --* save into sidebar table of blocks
       --* end for
-      -- create new div with column and column page class
-      --  - with three divs, one for each column (with middle col)
-      -- return new div
+      --* create new div with column and column page class
+      --*  - with three divs, one for each column (with middle col)
+      --* return new div
 
 quarto.log.output("===== Sidebar Log =====")
 
 function make_sidebar_layout(div)
-  sidebar = {}
-  
   if div.classes:includes("cr-sidebar") then
+    sidebar_content = {}
+    
     for k, block in pairs(div.content) do
-      --quarto.log.output("== next block ==")
-      --quarto.log.output("key: ", k)
-      --quarto.log.output(block)
-      --quarto.log.output(">>>>> ", has_cr_prefix(block))
       if has_cr_prefix(block) then
-        body = block
+        body_content = block
       else
-        table.insert(sidebar, block)
+        table.insert(sidebar_content, block)
       end
     end
-    table.insert(sidebar, 1, body)
-    quarto.log.output(sidebar)
+    
+    sidebar_col = pandoc.Div(sidebar_content, pandoc.Attr("", {"column"}, {width="30%"}))
+    margin_col = pandoc.Div("", pandoc.Attr("", {"column"}, {width="10%"}))
+    body_col = pandoc.Div(body_content, pandoc.Attr("", {"column"}, {width="55%", style="padding:20px; position:sticky;top:30vh;"}))
+    layout = pandoc.Div({sidebar_col, margin_col, body_col}, pandoc.Attr("", {"columns", "column-page", "cr-sidebar"}, {}))
+
+    return layout
   end
 end
 
