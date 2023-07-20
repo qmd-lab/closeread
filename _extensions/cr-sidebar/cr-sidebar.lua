@@ -38,7 +38,7 @@ function has_cr_prefix(block)
   answer = false
   if block.attributes ~= nil then
     for k,v in pairs(block.attributes) do
-      if string.sub(k, 1, 2) == "cr" then
+      if string.sub(k, 1, 3) == "cr-" then
         answer = true
         break
       end
