@@ -1,13 +1,13 @@
 ---
-format:
-  html:
-    theme:
-      - custom.scss
-    page-layout: full
+format: native
+  # html:
+  #   theme:
+  #     - custom.scss
+  #   page-layout: full
 execute: 
   echo: false
-# filters:
-#   - _extensions/cr-sidebar/cr-sidebar.lua
+filters:
+  - _extensions/cr-sidebar/cr-sidebar.lua
 ---
 
 :::{.cr-sidebar}
