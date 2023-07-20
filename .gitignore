@@ -4,3 +4,7 @@
 .Ruserdata
 *.Rproj
 .DS_Store
+
+*.html
+*.native
+*_files
