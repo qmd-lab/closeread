@@ -1,0 +1,31 @@
+---
+format:
+  html:
+    theme:
+      - custom.scss
+    page-layout: full
+execute: 
+  echo: false
+# filters:
+#   - _extensions/cr-sidebar/cr-sidebar.lua
+---
+
+:::{.cr-sidebar}
+
+# A Histogram
+
+By: Someone
+
+First paragraph.
+
+Second paragraph.
+
+```{r}
+#| echo: false
+
+hist(mtcars$mpg)
+```
+
+:::
+
+# The End
