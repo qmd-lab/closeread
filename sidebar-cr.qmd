@@ -22,6 +22,7 @@ Second paragraph.
 
 ```{r}
 #| echo: false
+#| cr-id: hist-of-mpg
 
 hist(mtcars$mpg)
 ```
