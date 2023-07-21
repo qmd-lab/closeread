@@ -24,7 +24,7 @@ function make_sidebar_layout(div)
       end
     end
     
-    sidebar_col = pandoc.Div(sidebar_content, pandoc.Attr("", {"column"}, {width="30%"}))
+    sidebar_col = pandoc.Div(sidebar_content, pandoc.Attr("", {"column", "sidebar_col"}, {width="30%"}))
     margin_col = pandoc.Div("", pandoc.Attr("", {"column"}, {width="10%"}))
     body_col = pandoc.Div(body_content, pandoc.Attr("", {"column"}, {width="55%", style="padding:20px; position:sticky;top:30vh;"}))
     layout = pandoc.Div({sidebar_col, margin_col, body_col}, pandoc.Attr("", {"columns", "column-page", "cr-sidebar"}, {}))
