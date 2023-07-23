@@ -27,13 +27,11 @@ function make_sidebar_layout(div)
     
     sidebar_col = pandoc.Div(sidebar_content,
       pandoc.Attr("", {"column", "sidebar_col"}, {width = "30%"}))
-    margin_col = pandoc.Div("",
-      pandoc.Attr("", {"column"}, {width = "10%"}))
     body_col_stack = pandoc.Div(body_content,
       pandoc.Attr("", {"body_col_stack"}))
     body_col = pandoc.Div(body_col_stack,
       pandoc.Attr("", {"column", "body_col"}, {width = "55%"}))
-    layout = pandoc.Div({sidebar_col, margin_col, body_col},
+    layout = pandoc.Div({sidebar_col, body_col},
       pandoc.Attr("", {"columns", "column-page", table.unpack(div.classes)},
       {}))
 
