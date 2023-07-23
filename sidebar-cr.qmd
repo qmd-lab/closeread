@@ -2,7 +2,7 @@
 format:
   html:
     theme:
-      - custom.scss
+      - _extensions/close-read/custom.scss
     page-layout: full
 execute: 
   echo: false
@@ -14,9 +14,9 @@ filters:
 
 # A Histogram
 
-First paragraph.
+First paragraph.{.step}
 
-Second paragraph.
+Second paragraph.{.step}
 
 Third paragraph.
 
@@ -25,6 +25,13 @@ Third paragraph.
 #| cr-id: hist-of-mpg
 
 hist(mtcars$mpg)
+```
+
+```{r}
+#| echo: false
+#| cr-id: scatter-of-mpg
+
+plot(mtcars$mpg, mtcars$dist)
 ```
 
 :::
@@ -39,9 +46,13 @@ Diam maecenas ultricies mi eget mauris pharetra et ultrices. Ullamcorper morbi t
 
 This is a scatterplot
 
+:::{}
 Second paragraph.
 
-Third paragraph
+These two paragraphs I want to keep together. But it looks like the nested div is breaking the lua script...
+:::
+
+But then I want to say something else!
 
 ```{r}
 #| echo: false
