@@ -63,4 +63,13 @@ plot(mtcars$mpg, mtcars$hp)
 
 :::
 
+Finally, let's see if the `scrollama` is available to OJS (in case somebody wants to hook in there for a custom scroller):
+
+```{ojs}
+//| echo: true
+scrollama
+```
+
+Nice!
+
 # The End
