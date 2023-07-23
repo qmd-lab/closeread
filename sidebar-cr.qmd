@@ -14,9 +14,11 @@ filters:
 
 # A Histogram
 
-First paragraph.{.step}
+:::{.step}
+First paragraph. (I've used the fenced div syntax here—the `.step` is on the paragraph itself.)
+:::
 
-Second paragraph.{.step}
+[Second paragraph.]{.step} (I've attached the `.step` class using the span syntax here, so there's a span within the paragraph that is watched.)
 
 Third paragraph.
 
