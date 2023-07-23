@@ -48,7 +48,25 @@ function has_cr_prefix(block)
   end
   return answer
 end
-          
+
+-- add scrollama.js, the intersection-observer polyfill and our scroller init
+quarto.doc.add_html_dependency({
+  name = "intersection-observer-polyfill",
+  version = "1.0.0",
+  scripts = {"intersection-observer.js"}
+})
+quarto.doc.add_html_dependency({
+  name = "scrollama",
+  version = "3.2.0",
+  scripts = {"scrollama.min.js"}
+})
+quarto.doc.add_html_dependency({
+  name = "cr-sidebar-scroller-init",
+  version = "0.0.1",
+  scripts = {"scroller-init.js"}
+})
+
+-- TODO - add a js scrollama setup step (can i do this with a js script + yaml?)
 
 return {
   Div = make_sidebar_layout
