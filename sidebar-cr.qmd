@@ -51,7 +51,7 @@ This is a scatterplot
 :::{}
 Second paragraph.
 
-These two paragraphs I want to keep together. But it looks like the nested div is breaking the lua script...
+These two paragraphs I want to keep together. They're not broken anymore afaict!
 :::
 
 But then I want to say something else!
