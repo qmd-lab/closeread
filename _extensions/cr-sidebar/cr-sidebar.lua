@@ -18,7 +18,7 @@ function make_sidebar_layout(div)
     sidebar_content = {}
     
     for k, block in pairs(div.content) do
-      if has_cr_prefix(block) then
+      if has_cr_prefix2(block) then
         table.insert(body_content, block)
       else
         table.insert(sidebar_content, block)
@@ -39,8 +39,8 @@ function make_sidebar_layout(div)
   end
 end
 
--- this function is fragile
--- should be extended to find cr prefix nested deeper into the block
+-- this function won't catch blocks with the cr attribute nested more
+-- deeply within the block
 function has_cr_prefix(block)
   answer = false
   if block.attributes ~= nil then
@@ -51,6 +51,29 @@ function has_cr_prefix(block)
       end
     end
   end
+  return answer
+end
+
+-- this function is a bit better; it also catches a sticky object if it is the
+-- first element nested one deep (which catches math and image inside para)
+function has_cr_prefix2(block)
+  answer = false
+  if block.attributes ~= nil then -- works for 
+    for k,v in pairs(block.attributes) do
+      if string.sub(k, 1, 3) == "cr-" then
+        answer = true
+        break
+      end
+    end
+  elseif block.content[1].attributes ~= nil then
+    for k,v in pairs(block.content[1].attributes) do
+      if string.sub(k, 1, 3) == "cr-" then
+        answer = true
+        break
+      end
+    end
+  end
+
   return answer
 end
 
@@ -72,7 +95,7 @@ quarto.doc.add_html_dependency({
 })
 
 -- TODO - add a js scrollama setup step (can i do this with a js script + yaml?)
-
+  
 return {
   Div = make_sidebar_layout
 }
