@@ -8,3 +8,9 @@
 *.html
 *.native
 *_files
+
+.luarc.json
+
+node_modules/
+package.json
+package-lock.json

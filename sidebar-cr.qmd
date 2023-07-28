@@ -2,7 +2,7 @@
 format:
   html:
     theme:
-      - custom.scss
+      - _extensions/close-read/custom.scss
     page-layout: full
 execute: 
   echo: false
@@ -14,9 +14,11 @@ filters:
 
 # A Histogram
 
-First paragraph.
+:::{.step}
+First paragraph. (I've used the fenced div syntax here—the `.step` is on the paragraph itself.)
+:::
 
-Second paragraph.
+[Second paragraph.]{.step} (I've attached the `.step` class using the span syntax here, so there's a span within the paragraph that is watched.)
 
 Third paragraph.
 
@@ -25,6 +27,13 @@ Third paragraph.
 #| cr-id: hist-of-mpg
 
 hist(mtcars$mpg)
+```
+
+```{r}
+#| echo: false
+#| cr-id: scatter-of-mpg
+
+plot(mtcars$mpg, mtcars$dist)
 ```
 
 :::
@@ -39,9 +48,13 @@ Diam maecenas ultricies mi eget mauris pharetra et ultrices. Ullamcorper morbi t
 
 This is a scatterplot
 
+:::{}
 Second paragraph.
 
-Third paragraph
+These two paragraphs I want to keep together. They're not broken anymore afaict!
+:::
+
+But then I want to say something else!
 
 ```{r}
 #| echo: false
@@ -51,5 +64,14 @@ plot(mtcars$mpg, mtcars$hp)
 ```
 
 :::
+
+Finally, let's see if the `scrollama` is available to OJS (in case somebody wants to hook in there for a custom scroller):
+
+```{ojs}
+//| echo: true
+scrollama
+```
+
+Nice!
 
 # The End

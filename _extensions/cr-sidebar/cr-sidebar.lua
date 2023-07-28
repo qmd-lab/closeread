@@ -25,10 +25,15 @@ function make_sidebar_layout(div)
       end
     end
     
-    sidebar_col = pandoc.Div(sidebar_content, pandoc.Attr("", {"column", "sidebar_col"}, {width="30%"}))
-    margin_col = pandoc.Div("", pandoc.Attr("", {"column"}, {width="10%"}))
-    body_col = pandoc.Div(body_content, pandoc.Attr("", {"column"}, {width="55%", style="padding:20px; position:sticky;top:30vh;"}))
-    layout = pandoc.Div({sidebar_col, margin_col, body_col}, pandoc.Attr("", {"columns", "column-page", "cr-sidebar"}, {}))
+    sidebar_col = pandoc.Div(sidebar_content,
+      pandoc.Attr("", {"column", "sidebar_col"}, {width = "30%"}))
+    body_col_stack = pandoc.Div(body_content,
+      pandoc.Attr("", {"body_col_stack"}))
+    body_col = pandoc.Div(body_col_stack,
+      pandoc.Attr("", {"column", "body_col"}, {width = "55%"}))
+    layout = pandoc.Div({sidebar_col, body_col},
+      pandoc.Attr("", {"columns", "column-page", table.unpack(div.classes)},
+      {}))
 
     return layout
   end
@@ -48,7 +53,25 @@ function has_cr_prefix(block)
   end
   return answer
 end
-          
+
+-- add scrollama.js, the intersection-observer polyfill and our scroller init
+quarto.doc.add_html_dependency({
+  name = "intersection-observer-polyfill",
+  version = "1.0.0",
+  scripts = {"intersection-observer.js"}
+})
+quarto.doc.add_html_dependency({
+  name = "scrollama",
+  version = "3.2.0",
+  scripts = {"scrollama.min.js"}
+})
+quarto.doc.add_html_dependency({
+  name = "cr-sidebar-scroller-init",
+  version = "0.0.1",
+  scripts = {"scroller-init.js"}
+})
+
+-- TODO - add a js scrollama setup step (can i do this with a js script + yaml?)
 
 return {
   Div = make_sidebar_layout
