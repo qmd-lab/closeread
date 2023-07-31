@@ -39,8 +39,8 @@
     .body_col_stack {
       display: grid;
       
-      [data-cr-id],
-      .cr-id {
+      [data-cr-sticky],
+      .cr-sticky {
         grid-area: 1 / 1;
         margin: auto;
         opacity: 0.5;     // lowering opacity for debug purposes
