@@ -74,7 +74,27 @@ This is a Para featuring a poem.
 One hen, two ducks ...
 :::
 
+This is a mermaid diagram
+
+```{mermaid}
+%%| cr: sticky
+flowchart LR
+  A[Hard edge] --> B(Round edge)
+  B --> C{Decision}
+  C --> D[Result one]
+  C --> E[Result two]
+```
+
 :::
 
+This is a graphviz diagram
+
+```{dot}
+graph G {
+  layout=neato
+  run -- intr;
+  intr -- runbl;
+}
+```
 
 # The End
