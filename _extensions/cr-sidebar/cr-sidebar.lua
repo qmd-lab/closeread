@@ -23,26 +23,21 @@ function make_sidebar_layout(div)
       -- this function will make one block_list for every level
       -- of nesting that exists in the div
       Blocks = function(block_list) 
-        --quarto.log.output(">>>>>", block_list)
         
         for _, block in pairs(block_list) do
           quarto.log.output(">>>>> key: ", _)
           quarto.log.output(">>>>> is sticky: ", is_sticky(block))
           quarto.log.output(">>>>> value: ", block)
           
-          --if has_cr_prefix2() then
-          --  table.insert(body_content, v)
-          --else
-          --  table.insert(sidebar_content, v)
-          --end
+          if is_sticky(block) then
+            table.insert(body_content, block)
+          else
+            table.insert(sidebar_content, block)
+          end
         end
         
       end
     })
-  
-   --TODO: get has_cr_prefix2 to run over the lists-of-blocks-that 
-   -- come through the walk_blocks fun. (maybe :walk) would work better?
-   
     
     sidebar_col = pandoc.Div(sidebar_content,
       pandoc.Attr("", {"column", "sidebar_col"}, {width = "30%"}))
@@ -54,6 +49,8 @@ function make_sidebar_layout(div)
       pandoc.Attr("", {"columns", "column-page", table.unpack(div.classes)},
       {}))
 
+    quarto.log.output("===== Layout =====")
+    quarto.log.output(layout)
     return layout
   end
 end
