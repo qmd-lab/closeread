@@ -1,47 +1,42 @@
---* for every Div
-    --* if its a cr-sidebar div
-      --* for all blocks
-        --* if it has a cr-id
-          --* save it as body
-        --* else
-          --* save into sidebar table of blocks
-      --* end for
-      --* create new div with column and column page class
-      --*  - with three divs, one for each column (with middle col)
-      --* return new div
 
 quarto.log.output("===== Sidebar Log =====")
 
 function make_sidebar_layout(div)
   
   if div.classes:includes("cr-sidebar") then
-    body_content = {}
-    sidebar_content = {}
     
-    pandoc.walk_block(div, {
-      
-      -- this function will make one block_list for every level
-      -- of nesting that exists in the div
-      Blocks = function(block_list) 
-        
-        for _, block in pairs(block_list) do
-          quarto.log.output(">>>>> key: ", _)
-          quarto.log.output(">>>>> is sticky: ", is_sticky(block))
-          quarto.log.output(">>>>> value: ", block)
-          
-          if is_sticky(block) then
-            table.insert(body_content, block)
-          else
-            table.insert(sidebar_content, block)
-          end
+    sticky_blocks = div.content:walk {
+      traverse = 'topdown',
+      Block = function(block)
+        quarto.log.output(">>>>> is sticky: ", is_sticky(block))
+        quarto.log.output(">>>>> block: ", block)
+        if is_sticky(block) then
+          return block, false -- if a sticky element is found, don't process child blocks
+        else
+          return {}
         end
-        
       end
-    })
+    }
     
-    sidebar_col = pandoc.Div(sidebar_content,
+    non_sticky_blocks = div.content:walk {
+      traverse = 'topdown',
+      Block = function(block)
+        if not is_sticky(block) then
+          return block
+        else
+          return {}
+        end
+      end
+    }
+
+    quarto.log.output("<><><> Sticky Blocks <><><>")
+    quarto.log.output(sticky_blocks)
+    quarto.log.output("<><><> Non Sticky Blocks <><><>")
+    quarto.log.output(non_sticky_blocks)
+
+    sidebar_col = pandoc.Div(non_sticky_blocks,
       pandoc.Attr("", {"column", "sidebar_col"}, {width = "30%"}))
-    body_col_stack = pandoc.Div(body_content,
+    body_col_stack = pandoc.Div(sticky_blocks,
       pandoc.Attr("", {"body_col_stack"}))
     body_col = pandoc.Div(body_col_stack,
       pandoc.Attr("", {"column", "body_col"}, {width = "55%"}))
@@ -49,70 +44,40 @@ function make_sidebar_layout(div)
       pandoc.Attr("", {"columns", "column-page", table.unpack(div.classes)},
       {}))
 
-    quarto.log.output("===== Layout =====")
-    quarto.log.output(layout)
     return layout
   end
 end
 
 function is_sticky(block)
-  sticky_block = false
-  sticky_inline = false
+
+  sticky_block_class = false
+  sticky_block_attribute = false
+  sticky_inline_class = false
   
   if block.attr ~= nil then
-    sticky_block = block.attr.classes:includes("sticky")
+    sticky_block_class = block.attr.classes:includes("cr-sticky")
+  end
+    
+  if block.attributes ~= nil then
+    for k,v in pairs(block.attributes) do
+      if k == "cr" and v == "sticky" then
+        sticky_block_attribute = true
+        break
+      end
+    end
   end
   
   if pandoc.utils.type(block.content) == "Inlines" then
     for _, inline in pairs(block.content) do
       if inline.attr ~= nil then
-        sticky_inline = inline.attr.classes:includes("sticky")
+        sticky_inline_class = inline.attr.classes:includes("cr-sticky")
       end
     end
   end
 
-  return sticky_block or sticky_inline
+  return sticky_block_class or sticky_block_attribute or sticky_inline_class
 end
 
--- this function won't catch blocks with the cr attribute nested more
--- deeply within the block
-function has_cr_prefix(block)
-  answer = false
-  if block.attributes ~= nil then
-    for k,v in pairs(block.attributes) do
-      if string.sub(k, 1, 3) == "cr-" then
-        answer = true
-        break
-      end
-    end
-  end
-  return answer
-end
-
--- this function is a bit better; it also catches a sticky object if it is the
--- first element nested one deep (which catches math and image inside para)
-function has_sticky(block)
-  answer = false
-  -- if the block itself is sticky
-  if block.attributes ~= nil then
-    for k,v in pairs(block.attributes) do
-      if string.sub(k, 1, 3) == "cr-" then
-        answer = true
-        break
-      end
-    end
-  -- or if it contains an inline that's sticky
-  elseif block.content[1].attributes ~= nil then
-    for k,v in pairs(block.content[1].attributes) do
-      if string.sub(k, 1, 3) == "cr-" then
-        answer = true
-        break
-      end
-    end
-  end
-
-  return answer
-end
 
 -- add scrollama.js, the intersection-observer polyfill and our scroller init
 quarto.doc.add_html_dependency({
