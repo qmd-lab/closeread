@@ -59,11 +59,22 @@ function make_sidebar_layout(div)
 end
 
 function is_sticky(block)
-  answer = false
+  sticky_block = false
+  sticky_inline = false
+  
   if block.attr ~= nil then
-    answer = block.attr.classes:includes("sticky")
+    sticky_block = block.attr.classes:includes("sticky")
   end
-  return answer
+  
+  if pandoc.utils.type(block.content) == "Inlines" then
+    for _, inline in pairs(block.content) do
+      if inline.attr ~= nil then
+        sticky_inline = inline.attr.classes:includes("sticky")
+      end
+    end
+  end
+
+  return sticky_block or sticky_inline
 end
 
 -- this function won't catch blocks with the cr attribute nested more
