@@ -13,17 +13,36 @@
 quarto.log.output("===== Sidebar Log =====")
 
 function make_sidebar_layout(div)
+  
   if div.classes:includes("cr-sidebar") then
     body_content = {}
     sidebar_content = {}
     
-    for k, block in pairs(div.content) do
-      if has_cr_prefix2(block) then
-        table.insert(body_content, block)
-      else
-        table.insert(sidebar_content, block)
+    pandoc.walk_block(div, {
+      
+      -- this function will make one block_list for every level
+      -- of nesting that exists in the div
+      Blocks = function(block_list) 
+        --quarto.log.output(">>>>>", block_list)
+        
+        for _, block in pairs(block_list) do
+          quarto.log.output(">>>>> key: ", _)
+          quarto.log.output(">>>>> is sticky: ", is_sticky(block))
+          quarto.log.output(">>>>> value: ", block)
+          
+          --if has_cr_prefix2() then
+          --  table.insert(body_content, v)
+          --else
+          --  table.insert(sidebar_content, v)
+          --end
+        end
+        
       end
-    end
+    })
+  
+   --TODO: get has_cr_prefix2 to run over the lists-of-blocks-that 
+   -- come through the walk_blocks fun. (maybe :walk) would work better?
+   
     
     sidebar_col = pandoc.Div(sidebar_content,
       pandoc.Attr("", {"column", "sidebar_col"}, {width = "30%"}))
@@ -37,6 +56,14 @@ function make_sidebar_layout(div)
 
     return layout
   end
+end
+
+function is_sticky(block)
+  answer = false
+  if block.attr ~= nil then
+    answer = block.attr.classes:includes("sticky")
+  end
+  return answer
 end
 
 -- this function won't catch blocks with the cr attribute nested more
@@ -56,15 +83,17 @@ end
 
 -- this function is a bit better; it also catches a sticky object if it is the
 -- first element nested one deep (which catches math and image inside para)
-function has_cr_prefix2(block)
+function has_sticky(block)
   answer = false
-  if block.attributes ~= nil then -- works for 
+  -- if the block itself is sticky
+  if block.attributes ~= nil then
     for k,v in pairs(block.attributes) do
       if string.sub(k, 1, 3) == "cr-" then
         answer = true
         break
       end
     end
+  -- or if it contains an inline that's sticky
   elseif block.content[1].attributes ~= nil then
     for k,v in pairs(block.content[1].attributes) do
       if string.sub(k, 1, 3) == "cr-" then
@@ -95,7 +124,7 @@ quarto.doc.add_html_dependency({
 })
 
 -- TODO - add a js scrollama setup step (can i do this with a js script + yaml?)
-  
+
 return {
   Div = make_sidebar_layout
 }
