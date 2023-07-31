@@ -22,19 +22,19 @@ This is a para nested in a div.
 
 This is an image with the sticky tag on the div.
 
-:::{cr-id="pink-desktop"}
+:::{.cr-sticky}
 ![](pink-desktop.png)
 :::
 
 This is an image with the sticky tag on Image itself
 
-![](blue-desktop.png){cr-id="blue-desktop"}
+![](blue-desktop.png){.cr-sticky}
 
 This is a scatterplot.
 
 ```{r}
 #| echo: false
-#| cr-id: scatter-of-mpg
+#| cr: sticky
 
 plot(mtcars$mpg, mtcars$dist)
 ```
@@ -43,21 +43,21 @@ This is a histogram.
 
 ```{r}
 #| echo: true
-#| cr-id: hist-mpg
+#| cr: sticky
 
 hist(mtcars$mpg)
 ```
 
 This is a list (a block element).
 
-:::{cr-id="fruit-list"}
+:::{.cr-sticky}
 1. Apple
 2. Banana
 :::
 
 This is display math.
 
-::: {cr-id="some-math"}
+::: {.cr-sticky}
 
 $$
 \begin{align}
@@ -70,7 +70,7 @@ $$
 
 This is a Para featuring a poem.
 
-::: {cr-id="poem"}
+::: {.cr-sticky}
 One hen, two ducks ...
 :::
 
