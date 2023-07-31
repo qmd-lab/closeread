@@ -39,7 +39,7 @@
     .body_col_stack {
       display: grid;
       
-      [data-cr-sticky],
+      [data-cr],
       .cr-sticky {
         grid-area: 1 / 1;
         margin: auto;
