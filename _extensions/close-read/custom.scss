@@ -38,9 +38,17 @@
     // transition through (based on reveal's .r-stack)
     .body_col_stack {
       display: grid;
-      
+
+      // stackable elements
+      // (note some inline elements come wrapped in empty <p>s)      
       [data-cr],
       .cr-sticky {
+        grid-area: 1 / 1;
+        margin: auto;
+        opacity: 0.5;     // lowering opacity for debug purposes
+      }
+
+      & > p:not(.cr-sticky):has(.cr-sticky) {
         grid-area: 1 / 1;
         margin: auto;
         opacity: 0.5;     // lowering opacity for debug purposes
