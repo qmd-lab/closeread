@@ -85,16 +85,17 @@ flowchart LR
   C --> E[Result two]
 ```
 
-:::
-
 This is a graphviz diagram
 
 ```{dot}
+//| cr: sticky
 graph G {
   layout=neato
   run -- intr;
   intr -- runbl;
 }
 ```
+
+:::
 
 # The End
