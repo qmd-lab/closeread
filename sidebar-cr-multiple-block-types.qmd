@@ -1,0 +1,101 @@
+---
+format:
+  html:
+    theme:
+      - _extensions/close-read/custom.scss
+    page-layout: full
+execute: 
+  echo: false
+filters:
+  - _extensions/cr-sidebar/cr-sidebar.lua
+---
+
+:::{.cr-sidebar}
+
+# Test other sticky block types
+
+First paragraph.
+
+::: {}
+This is a para nested in a div.
+:::
+
+This is an image with the sticky tag on the div.
+
+:::{.cr-sticky}
+![](pink-desktop.png)
+:::
+
+This is an image with the sticky tag on Image itself
+
+![](blue-desktop.png){.cr-sticky}
+
+This is a scatterplot.
+
+```{r}
+#| echo: false
+#| cr: sticky
+
+plot(mtcars$mpg, mtcars$dist)
+```
+
+This is a histogram.
+
+```{r}
+#| echo: true
+#| cr: sticky
+
+hist(mtcars$mpg)
+```
+
+This is a list (a block element).
+
+:::{.cr-sticky}
+1. Apple
+2. Banana
+:::
+
+This is display math.
+
+::: {.cr-sticky}
+
+$$
+\begin{align}
+\hat{y} &= \beta_0 + \beta_1 x + \epsilon \\
+&= 3.4 + 1.2 x
+\end{align}
+$$
+
+:::
+
+This is a Para featuring a poem.
+
+::: {.cr-sticky}
+One hen, two ducks ...
+:::
+
+This is a mermaid diagram
+
+```{mermaid}
+%%| cr: sticky
+flowchart LR
+  A[Hard edge] --> B(Round edge)
+  B --> C{Decision}
+  C --> D[Result one]
+  C --> E[Result two]
+```
+
+This is a graphviz diagram
+
+```{dot}
+//| cr: sticky
+graph G {
+  layout=neato
+  run -- intr;
+  intr -- runbl;
+}
+```
+
+:::
+
+# The End
