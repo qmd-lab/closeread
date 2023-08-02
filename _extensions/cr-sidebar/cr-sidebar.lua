@@ -28,13 +28,13 @@ function make_sidebar_layout(div)
       end
     }
 
-    sidebar_col = pandoc.Div(non_sticky_blocks,
+    narrative_col = pandoc.Div(non_sticky_blocks,
       pandoc.Attr("", {"column", "sidebar_col"}, {width = "30%"}))
-    body_col_stack = pandoc.Div(sticky_blocks,
+    sticky_col_stack = pandoc.Div(sticky_blocks,
       pandoc.Attr("", {"body_col_stack"}))
-    body_col = pandoc.Div(body_col_stack,
+    sticky_col = pandoc.Div(sticky_col_stack,
       pandoc.Attr("", {"column", "body_col"}, {width = "55%"}))
-    layout = pandoc.Div({sidebar_col, body_col},
+    layout = pandoc.Div({narrative_col, sticky_col},
       pandoc.Attr("", {"columns", "column-page", table.unpack(div.classes)},
       {}))
 
