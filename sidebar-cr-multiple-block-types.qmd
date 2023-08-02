@@ -7,7 +7,7 @@ format:
 execute: 
   echo: false
 filters:
-  - _extensions/cr-sidebar/cr-sidebar.lua
+  - _extensions/close-read/close-read.lua
 ---
 
 :::{.cr-sidebar}
