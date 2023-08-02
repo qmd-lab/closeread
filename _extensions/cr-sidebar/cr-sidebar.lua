@@ -8,9 +8,8 @@ function make_sidebar_layout(div)
     sticky_blocks = div.content:walk {
       traverse = 'topdown',
       Block = function(block)
-        quarto.log.output(">>>>> is sticky: ", is_sticky(block))
-        quarto.log.output(">>>>> block: ", block)
         if is_sticky(block) then
+          block = shift_class_to_block(block)
           return block, false -- if a sticky element is found, don't process child blocks
         else
           return {}
@@ -29,11 +28,6 @@ function make_sidebar_layout(div)
       end
     }
 
-    quarto.log.output("<><><> Sticky Blocks <><><>")
-    quarto.log.output(sticky_blocks)
-    quarto.log.output("<><><> Non Sticky Blocks <><><>")
-    quarto.log.output(non_sticky_blocks)
-
     sidebar_col = pandoc.Div(non_sticky_blocks,
       pandoc.Attr("", {"column", "sidebar_col"}, {width = "30%"}))
     body_col_stack = pandoc.Div(sticky_blocks,
@@ -48,6 +42,23 @@ function make_sidebar_layout(div)
   end
 end
 
+function shift_class_to_block(block)
+  
+  if pandoc.utils.type(block.content) == "Inlines" then
+    for _, inline in pairs(block.content) do
+      if inline.attr ~= nil then
+        if inline.classes:includes("cr-sticky") then
+          -- wraps block in Div with class cr-sticky (and converts Para to Plain)
+          block = pandoc.Div(block.content, pandoc.Attr("", {"cr-sticky"}, {}))
+        end
+      end
+    end
+  end
+  
+  return block
+end
+
+
 function is_sticky(block)
 
   sticky_block_class = false
@@ -55,7 +66,7 @@ function is_sticky(block)
   sticky_inline_class = false
   
   if block.attr ~= nil then
-    sticky_block_class = block.attr.classes:includes("cr-sticky")
+    sticky_block_class = block.classes:includes("cr-sticky")
   end
     
   if block.attributes ~= nil then
@@ -70,7 +81,7 @@ function is_sticky(block)
   if pandoc.utils.type(block.content) == "Inlines" then
     for _, inline in pairs(block.content) do
       if inline.attr ~= nil then
-        sticky_inline_class = inline.attr.classes:includes("cr-sticky")
+        sticky_inline_class = inline.classes:includes("cr-sticky")
       end
     end
   end
