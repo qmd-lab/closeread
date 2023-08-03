@@ -17,7 +17,7 @@ function make_sidebar_layout(div)
       end
     }
     
-    non_sticky_blocks = div.content:walk {
+    narrative_blocks = div.content:walk {
       traverse = 'topdown',
       Block = function(block)
         if not is_sticky(block) then
@@ -28,12 +28,12 @@ function make_sidebar_layout(div)
       end
     }
 
-    narrative_col = pandoc.Div(non_sticky_blocks,
+    narrative_col = pandoc.Div(narrative_blocks,
       pandoc.Attr("", {"column", "sidebar_col"}, {width = "30%"}))
     sticky_col_stack = pandoc.Div(sticky_blocks,
-      pandoc.Attr("", {"body_col_stack"}))
+      pandoc.Attr("", {"sticky_col_stack"}))
     sticky_col = pandoc.Div(sticky_col_stack,
-      pandoc.Attr("", {"column", "body_col"}, {width = "55%"}))
+      pandoc.Attr("", {"column", "sticky_col"}, {width = "55%"}))
     layout = pandoc.Div({narrative_col, sticky_col},
       pandoc.Attr("", {"columns", "column-page", table.unpack(div.classes)},
       {}))

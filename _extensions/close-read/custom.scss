@@ -28,7 +28,7 @@
   }
 
   // sticky positioning
-  .column.body_col {
+  .column.sticky_col {
     padding: 20px;
     align-self: flex-start;
     position: sticky;
@@ -36,7 +36,7 @@
 
     // using a grid to stack sticky elements on top of each other to then
     // transition through (based on reveal's .r-stack)
-    .body_col_stack {
+    .sticky_col_stack {
       display: grid;
       
       [data-cr],
