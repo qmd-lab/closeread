@@ -14,20 +14,22 @@ document.addEventListener("DOMContentLoaded", () => {
    scroller
      .setup({
        step: ".cr-step",
+       offset: 0.4
      })
      .onStepEnter((response) => {
        // { element, index, direction }
 
-      console.log("Element " + response.index +
-         " scrolled IN " + response.direction + ": " +
-         response.element.textContent)
-      // console.log(response.element)
+       // console.log(response.element)
+       
+       /* unfortunately i'm noticing that scrollama sometimes misses events when
+       scrolling fast. so all sticky elements need to be touched when we're
+       receiving an update */
+       
+       if (response.direction == "down") {
+         console.log("Element " + response.index +
+            " scrolled IN " + response.direction + ": " +
+            response.element.textContent)
 
-      /* unfortunately i'm noticing that scrollama sometimes misses events when
-         scrolling fast. so all sticky elements need to be touched when we're
-         receiving an update */
-      
-      if (response.direction == "down") {
          let allStickies = Array.from(
             document.querySelectorAll(".cr-sticky, [data-cr=\"sticky\"]"));
          let pastStickies = allStickies.slice(0, response.index + 1);
@@ -35,6 +37,8 @@ document.addEventListener("DOMContentLoaded", () => {
          
          console.log(pastStickies.length + " back from here; " +
             futureStickies.length + " ahead")
+
+         console.log("Latest element visible is:", pastStickies[pastStickies.length - 1])
    
          pastStickies.forEach(e => e.classList.add("cr-scrolledby"));
          futureStickies.forEach(e => e.classList.remove("cr-scrolledby"));
@@ -46,13 +50,13 @@ document.addEventListener("DOMContentLoaded", () => {
      })
      .onStepExit((response) => {
        // { element, index, direction }
-       console.log("Element " + response.index +
-         " scrolled OUT " + response.direction + ": " +
-         response.element.textContent)
-      //  console.log(response.element)
-
+       //  console.log(response.element)
+       
        if (response.direction == "up") {
-         // do the same as above, but response.index - 1
+         console.log("Element " + response.index +
+           " scrolled OUT " + response.direction + ": " +
+           response.element.textContent)
+          // do the same as above, but response.index - 1
          let allStickies = Array.from(
             document.querySelectorAll(".cr-sticky, [data-cr=\"sticky\"]"));
          let pastStickies = allStickies.slice(0, response.index);
@@ -60,6 +64,8 @@ document.addEventListener("DOMContentLoaded", () => {
          
          console.log(pastStickies.length + " back from here; " +
             futureStickies.length + " ahead")
+         
+         console.log("Latest element visible is:", pastStickies[pastStickies.length - 1])
    
          pastStickies.forEach(e => e.classList.add("cr-scrolledby"));
          futureStickies.forEach(e => e.classList.remove("cr-scrolledby"));
