@@ -9,6 +9,11 @@
 console.log("Initialising scrollers...")
 
 document.addEventListener("DOMContentLoaded", () => {
+   
+   // TODO - scroller events don't trigger if an elements starts
+   // visible on page load, so we need to initialise the .scrolledby
+   // classes on page load too
+   
    const scroller = scrollama();
    
    scroller
