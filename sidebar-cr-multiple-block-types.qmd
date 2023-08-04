@@ -10,27 +10,37 @@ filters:
   - _extensions/close-read/close-read.lua
 ---
 
-:::{.cr-sidebar}
+::::{.cr-sidebar}
 
 # Test other sticky block types
 
 First paragraph.
 
 ::: {}
-This is a para nested in a div.
+This is a para nested in a div. These two first bits don't trigger anything...
 :::
 
-This is an image with the sticky tag on the div.
+[This is an image with the sticky tag on the div.]{.cr-step}
 
 :::{.cr-sticky}
 ![](pink-desktop.png)
 :::
 
-This is an image with the sticky tag on Image itself
+:::{.cr-step}
+This is an image with the sticky tag on Image itself.
+:::
 
 ![](blue-desktop.png){.cr-sticky}
 
-This is a scatterplot.
+::::
+
+::::{style="background-color: #dddddd"}
+Here's a little non-scrolling interlude before our next scrolly section!
+::::
+
+::::{.cr-sidebar}
+
+[This is a scatterplot.]{.cr-step}
 
 ```{r}
 #| echo: false
@@ -39,7 +49,7 @@ This is a scatterplot.
 plot(mtcars$mpg, mtcars$dist)
 ```
 
-This is a histogram.
+[This is a histogram.]{.cr-step}
 
 ```{r}
 #| echo: true
@@ -48,14 +58,14 @@ This is a histogram.
 hist(mtcars$mpg)
 ```
 
-This is a list (a block element).
+[This is a list (a block element).]{.cr-step}
 
 :::{.cr-sticky}
 1. Apple
 2. Banana
 :::
 
-This is display math.
+[This is display math.]{.cr-step}
 
 ::: {.cr-sticky}
 
@@ -68,13 +78,13 @@ $$
 
 :::
 
-This is a Para featuring a poem.
+[This is a Para featuring a poem.]{.cr-step}
 
 ::: {.cr-sticky}
 One hen, two ducks ...
 :::
 
-This is a mermaid diagram
+[This is a mermaid diagram]{.cr-step}
 
 ```{mermaid}
 %%| cr: sticky
@@ -85,7 +95,7 @@ flowchart LR
   C --> E[Result two]
 ```
 
-This is a graphviz diagram
+[This is a graphviz diagram]{.cr-step}
 
 ```{dot}
 //| cr: sticky

@@ -38,13 +38,25 @@
     // transition through (based on reveal's .r-stack)
     .sticky_col_stack {
       display: grid;
-      
+
       [data-cr],
       .cr-sticky {
         grid-area: 1 / 1;
         margin: auto;
-        opacity: 0.5;     // lowering opacity for debug purposes
+        // opacity: 0.5;     // lowering opacity for debug purposes
+
+        // to be overruled when it is the active element
+        opacity: 0;
+        transition: opacity linear 0.5s;
+
+        
       }
+
+      // show the last .scrolledby
+      :nth-last-child(1 of .cr-scrolledby) {
+        opacity: 1;
+      }
+      
     }
   }
 }
