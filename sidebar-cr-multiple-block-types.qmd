@@ -34,7 +34,7 @@ This is an image with the sticky tag on Image itself.
 
 ::::
 
-::::{style="background-color: #dddddd"}
+::::{.column-screen-inset style="background-color: #dddddd; padding: 50px;"}
 Here's a little non-scrolling interlude before our next scrolly section!
 ::::
 
