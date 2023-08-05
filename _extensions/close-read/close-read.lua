@@ -45,9 +45,11 @@ end
 function shift_class_to_block(block)
   
   if pandoc.utils.type(block.content) == "Inlines" then
-    for _, inline in pairs(block.content) do
+    for i, inline in pairs(block.content) do
       if inline.attr ~= nil then
         if inline.classes:includes("cr-sticky") then
+          -- removes cr-sticky from inline element
+          block.content[i].classes:remove(find_in_arr(block.content[i].classes, "cr-sticky"))
           -- wraps block in Div with class cr-sticky (and converts Para to Plain)
           block = pandoc.Div(block.content, pandoc.Attr("", {"cr-sticky"}, {}))
         end
@@ -87,6 +89,15 @@ function is_sticky(block)
   end
 
   return sticky_block_class or sticky_block_attribute or sticky_inline_class
+end
+
+-- utility function
+function find_in_arr(arr, value)
+    for i, v in pairs(arr) do
+        if v == value then
+            return i
+        end
+    end
 end
 
 
