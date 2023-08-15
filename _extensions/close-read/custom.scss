@@ -39,8 +39,7 @@
     .sticky_col_stack {
       display: grid;
 
-      [data-cr],
-      .cr-sticky {
+      [cr-id] {
         grid-area: 1 / 1;
         margin: auto;
         // opacity: 0.5;     // lowering opacity for debug purposes
@@ -52,8 +51,8 @@
         
       }
 
-      // show the last .scrolledby
-      :nth-last-child(1 of .cr-scrolledby) {
+      // show active elements (this class is applied by scrollama
+      .cr-active {
         opacity: 1;
       }
       

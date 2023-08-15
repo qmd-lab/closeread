@@ -20,13 +20,13 @@ First paragraph.
 This is a para nested in a div. These two first bits don't trigger anything...
 :::
 
-[This is an image with the sticky tag on the div.]{.cr-step}
+[This is an image with the sticky tag on the div.]{.cr-crossfade}
 
 :::{.cr-sticky}
 ![](pink-desktop.png)
 :::
 
-:::{.cr-step}
+:::{.cr-crossfade}
 This is an image with the sticky tag on Image itself.
 :::
 
@@ -40,34 +40,34 @@ Here's a little non-scrolling interlude before our next scrolly section!
 
 ::::{.cr-sidebar}
 
-[This is a scatterplot.]{.cr-step}
+[This is a scatterplot.]{.cr-crossfade cr-to="scatter"}
 
 ```{r}
 #| echo: false
-#| cr: sticky
+#| cr-id: scatter
 
 plot(mtcars$mpg, mtcars$dist)
 ```
 
-[This is a histogram.]{.cr-step}
+[This is a histogram.]{.cr-crossfade cr-from="scatter" cr-to="hist"}
 
 ```{r}
 #| echo: true
-#| cr: sticky
+#| cr-id: hist
 
 hist(mtcars$mpg)
 ```
 
-[This is a list (a block element).]{.cr-step}
+[This is a list (a block element).]{.cr-crossfade cr-from="hist" cr-to="list"}
 
-:::{.cr-sticky}
+:::{cr-id="list"}
 1. Apple
 2. Banana
 :::
 
-[This is display math.]{.cr-step}
+[This is display math.]{.cr-crossfade cr-from="list" cr-to="displaymath"}
 
-::: {.cr-sticky}
+::: {cr-id="displaymath"}
 
 $$
 \begin{align}
@@ -78,16 +78,16 @@ $$
 
 :::
 
-[This is a Para featuring a poem.]{.cr-step}
+[This is a Para featuring a poem.]{.cr-crossfade cr-from="displaymath" cr-to="oneline"}
 
-::: {.cr-sticky}
+::: {cr-id="oneline"}
 One hen, two ducks ...
 :::
 
-[This is a mermaid diagram]{.cr-step}
+[This is a mermaid diagram]{.cr-crossfade cr-from="oneline" cr-to="mermaid"}
 
 ```{mermaid}
-%%| cr: sticky
+%%| cr-id: mermaid
 flowchart LR
   A[Hard edge] --> B(Round edge)
   B --> C{Decision}
@@ -95,10 +95,10 @@ flowchart LR
   C --> E[Result two]
 ```
 
-[This is a graphviz diagram]{.cr-step}
+[This is a graphviz diagram]{.cr-crossfade cr-from="mermaid" cr-to="graphviz"}
 
 ```{dot}
-//| cr: sticky
+//| cr-id: graphviz
 graph G {
   layout=neato
   run -- intr;

@@ -18,36 +18,47 @@ document.addEventListener("DOMContentLoaded", () => {
    
    scroller
      .setup({
-       step: ".cr-step",
-       offset: 0.4
+       step: ".cr-crossfade",
+       offset: 0.5
      })
      .onStepEnter((response) => {
        // { element, index, direction }
-
        // console.log(response.element)
+
+      // if we're going DOWN and something comes IN, we're activating that step
+      //   (DOWN and OUT we ignore)
+      // if we're going UP and something goes OUT, we're need to undo that step
+      //   (so )
+      // (UP and IN we ignore)
+
+       let allStickies = Array.from(document.querySelectorAll("[cr-id]"));
        
        /* unfortunately i'm noticing that scrollama sometimes misses events when
        scrolling fast. so all sticky elements need to be touched when we're
        receiving an update */
        
        if (response.direction == "down") {
-         console.log("Element " + response.index +
-            " scrolled IN " + response.direction + ": " +
-            response.element.textContent)
 
-         let allStickies = Array.from(
-            document.querySelectorAll(".cr-sticky, [data-cr=\"sticky\"]"));
-         let pastStickies = allStickies.slice(0, response.index + 1);
-         let futureStickies = allStickies.slice(response.index + 1);
+         // down and in: activate the step being scrolled in:
+         // 1. get this step 
+         let thisStep = element;
          
-         console.log(pastStickies.length + " back from here; " +
-            futureStickies.length + " ahead")
+         // 2. get the ids of the things to crossfade to and from
+         if (!thisStep.hasAttributes()) {
+            throw new Error("Close Read error: step " + index +
+               "requires either a `cr-from` attribute or a `cr-to` " +
+               "attribute (or both).")
+         }
+         let idFrom = thisStep.getAttribute("cr-from");
+         let idTo = thisStep.getAttribute("cr-to");
 
-         console.log("Latest element visible is:", pastStickies[pastStickies.length - 1])
-   
-         pastStickies.forEach(e => e.classList.add("cr-scrolledby"));
-         futureStickies.forEach(e => e.classList.remove("cr-scrolledby"));
+         transitionElement(idFrom, add = false);
+         transitionElement(idTo, add = true);
+
+         // TODO - focus effects
          
+      } else {
+         console.log("Up and in event ignored")
       }
 
       
@@ -58,23 +69,53 @@ document.addEventListener("DOMContentLoaded", () => {
        //  console.log(response.element)
        
        if (response.direction == "up") {
-         console.log("Element " + response.index +
-           " scrolled OUT " + response.direction + ": " +
-           response.element.textContent)
-          // do the same as above, but response.index - 1
-         let allStickies = Array.from(
-            document.querySelectorAll(".cr-sticky, [data-cr=\"sticky\"]"));
-         let pastStickies = allStickies.slice(0, response.index);
-         let futureStickies = allStickies.slice(response.index);
          
-         console.log(pastStickies.length + " back from here; " +
-            futureStickies.length + " ahead")
+         // down and in: activate the step being scrolled in:
+         // 1. get the previous step
+         let thisStep = element;
          
-         console.log("Latest element visible is:", pastStickies[pastStickies.length - 1])
-   
-         pastStickies.forEach(e => e.classList.add("cr-scrolledby"));
-         futureStickies.forEach(e => e.classList.remove("cr-scrolledby"));
+         // 2. get the ids of the things to crossfade to and from
+         if (!thisStep.hasAttributes()) {
+            throw new Error("Close Read error: step " + index +
+               "requires either a `cr-from` attribute or a `cr-to` " +
+               "attribute (or both).")
+         }
+         let idFrom = thisStep.getAttribute("cr-from");
+         let idTo = thisStep.getAttribute("cr-to");
+
+         // we "undo" the step by reversing the cr-from and cr-to transitions...
+         transitionElement(idFrom, add = false);
+         transitionElement(idTo, add = true);
+
+         // TODO - focus effects
+
+       } else {
+         console.log("Down and out event ignored")
        }
 
      });
  });
+
+
+// transitionElement: given an element id (`idTransition`), either add (if
+// `add` = true) or remove (if `add` = false) the `.cr-active` class. throw an
+// error if the specified target is not in the sticky list
+function transitionElement(idTransition, add = true) {
+   if (idTransition !== null) {
+      // 3. find the element
+      let nodesTransition = document.querySelectorAll(
+         "[cr-id=" + idTransition + "]")
+
+      // throw error if target not found
+      if (nodesTransition.length == 0 ) {
+         throw new Error("Close Read error: step " + index +
+            "specified element " + idTransition + " for `cr-from` or " +
+            "`cr-to`, but no target element has `cr-id= " + isTransition +
+            "`.")
+      } 
+      
+      // 1 (or more?) elements found: add or remove .cr-active to them
+      nodesTransition.forEach(node => node.classList.toggle("cr-active", add))
+      
+   }
+}
