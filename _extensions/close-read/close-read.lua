@@ -43,17 +43,19 @@ function make_sidebar_layout(div)
 end
 
 function shift_class_to_block(block)
-  
+
+  -- if block contains inlines...
   if pandoc.utils.type(block.content) == "Inlines" then
+    -- ... iterate over the inlines...
     for i, inline in pairs(block.content) do
       if inline.attr ~= nil then
-
+        -- ... to find a "data-cr-id" or "cr-id" attribute on the child inline
         for k,v in pairs(inline.attributes) do
-          if k == "cr-id" then
-            block.content[i].attributes:remove(
-              find_in_arr(block.content[i].attributes, "cr-id"))
+          if k == "data-cr-id" or k == "cr-id" then
+            -- remove attribute from the child inline
+            block.content[i].attributes[k] = nil
             -- wraps block in Div with attribute cr-id (and converts Para to Plain)
-            block = pandoc.Div(block.content, pandoc.Attr("", {}, {"cr-id", v}))
+            block = pandoc.Div(block.content, pandoc.Attr("", {}, {{k, v}}))
             break
           end
         end
@@ -73,7 +75,7 @@ function is_sticky(block)
   
   if block.attributes ~= nil then
     for k,v in pairs(block.attributes) do
-      if k == "cr-id" then
+      if k == "cr-id" or k == "data-cr-id" then
         sticky_block_attribute = true
         break
       end
@@ -84,8 +86,8 @@ function is_sticky(block)
     for _, inline in pairs(block.content) do
       if inline.attr ~= nil then
         for k,v in pairs(inline.attributes) do
-          if k == "cr-id" then
-            sticky_inline_attriburw = true
+          if k == "cr-id" or k == "data-cr-id" then
+            sticky_inline_attribute = true
             break
           end
         end
