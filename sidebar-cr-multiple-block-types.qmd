@@ -22,7 +22,7 @@ This is a para nested in a div. These two first bits don't trigger anything...
 
 [This is an image with the sticky tag on the div.]{.cr-crossfade}
 
-:::{cr-id="pink"}
+:::{data-cr-id="pink"}
 ![](pink-desktop.png)
 :::
 
@@ -30,7 +30,7 @@ This is a para nested in a div. These two first bits don't trigger anything...
 This is an image with the sticky tag on Image itself.
 :::
 
-![](blue-desktop.png){cr-id="blue"}
+![](blue-desktop.png){data-cr-id="blue"}
 
 ::::
 
