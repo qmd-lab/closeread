@@ -10,14 +10,23 @@ console.log("Initialising scrollers...")
 
 document.addEventListener("DOMContentLoaded", () => {
 
-   const scroller = scrollama();
-   scroller
-     .setup({
-       step: ".cr-crossfade",
-       offset: 0.5
-     })
-     .onStepEnter((response) => {
-       // { element, index, direction }
+  const scroller = scrollama();
+  scroller
+    .setup({
+      step: ".cr-crossfade",
+      offset: 0.5
+    })
+    .onStepEnter((response) => {
+      // { element, index, direction }
+
+      // first we'll update the ojs variable sa that those users can track it
+      // check for the ojs connector's presence first
+      const ojsModule = window._ojs?.ojsConnector?.mainModule
+      if (ojsModule === undefined) {
+        console.error("Quarto OJS module not found")
+      } else {
+        console.log("Quarto OJS module found!")
+      }
 
       console.log("Element " + response.index + "entering as we scroll " +
          response.direction);
@@ -28,22 +37,22 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
          // console.log("Up and in event ignored")
       }
-     })
-     .onStepExit((response) => {
-       // { element, index, direction }
+    })
+    .onStepExit((response) => {
+      // { element, index, direction }
 
-       console.log("Element " + response.index + "exiting as we scroll " +
-         response.direction);
+      console.log("Element " + response.index + "exiting as we scroll " +
+        response.direction);
        
-       if (response.direction == "up") {
-         // as above, but up to the _prevoius_ element
-         recalculateActiveSteps(response.index);
-         // TODO - focus effects
-       } else {
-         // console.log("Down and out event ignored")
-       }
+      if (response.direction == "up") {
+        // as above, but up to the _prevoius_ element
+        recalculateActiveSteps(response.index);
+        // TODO - focus effects
+      } else {
+        // console.log("Down and out event ignored")
+      }
 
-     });
+    });
  });
 
 /* recalculateActiveSteps: recalculates which sticky elements (between the first
@@ -54,75 +63,72 @@ document.addEventListener("DOMContentLoaded", () => {
    appears in the rendered html as `data-cr-id`.) */
 function recalculateActiveSteps(indexTo) {
 
-   let allStickies = Array.from(document.querySelectorAll("[data-cr-id]"));
-   let allSteps = Array.from(document.querySelectorAll(".cr-crossfade"));
+  let allStickies = Array.from(document.querySelectorAll("[data-cr-id]"));
+  let allSteps = Array.from(document.querySelectorAll(".cr-crossfade"));
 
-   // 1. reset all elements
-   allStickies.forEach(node => node.classList.remove("cr-active"));
+  // 1. reset all elements
+  allStickies.forEach(node => node.classList.remove("cr-active"));
 
-   // we need to turn back on elements that most recently featured in a
-   // "to" block rather than a "from" block (or nothing)
+  // we need to turn back on elements that most recently featured in a
+  // "to" block rather than a "from" block (or nothing)
 
-   // focus on steps up to `indexTo`
-   const priorSteps = allSteps.slice(0, indexTo);
+  // focus on steps up to `indexTo`
+  const priorSteps = allSteps.slice(0, indexTo);
 
-   // start with an empty set of ids to enable
-   stickiesToEnable = new Set();
+  // start with an empty set of ids to enable
+  stickiesToEnable = new Set();
 
-   // for each step, remove the ones that feature in the "from" and add
-   // NOTE - why is this only triggering once when priorSteps.length > 1?
-   priorSteps.forEach(node => {
+  // for each step, remove the ones that feature in the "from" and add
+  // NOTE - why is this only triggering once when priorSteps.length > 1?
+  priorSteps.forEach(node => {
 
-      const nodeFromIDs = node.getAttribute("data-cr-from");
-      if (nodeFromIDs !== null) {
-         const fromIDSet = new Set(nodeFromIDs.split(/,\s*/));
-         fromIDSet.forEach(id => stickiesToEnable.delete(id));
-      }
-      const nodeToIDs = node.getAttribute("data-cr-to");
-      if (nodeToIDs !== null) {
-         const toIDSet = new Set(nodeToIDs.split(/,\s*/));
-         toIDSet.forEach(id => stickiesToEnable.add(id));
-      }
+    const nodeFromIDs = node.getAttribute("data-cr-from");
+    if (nodeFromIDs !== null) {
+      const fromIDSet = new Set(nodeFromIDs.split(/,\s*/));
+      fromIDSet.forEach(id => stickiesToEnable.delete(id));
+    }
+    const nodeToIDs = node.getAttribute("data-cr-to");
+    if (nodeToIDs !== null) {
+      const toIDSet = new Set(nodeToIDs.split(/,\s*/));
+      toIDSet.forEach(id => stickiesToEnable.add(id));
+    }
+  });
 
-   });
+  // now we enable whichever ids are left on stickiesToEnable
+  stickiesToEnable.forEach(id => {
+    const el = document.getElementById(id)
+    const targets = document.querySelectorAll("[data-cr-id=" + id + "]")
+    if (targets.length == 1) {
+      targets.forEach(el => el.classList.add("cr-active"))
+    } else if (targets.length > 1) {
+      console.error("Multiple elements with cr-id=" + id +
+        ". Please ensure cr-id attributes are unique.")
+    } else {
+      console.error("Can't find cr-id=" + id)
+    }
+  });
 
-   // now we enable whichever ids are left on stickiesToEnable
-   stickiesToEnable.forEach(id => {
-      const el = document.getElementById(id)
-      const targets = document.querySelectorAll("[data-cr-id=" + id + "]")
-      if (targets.length == 1) {
-         targets.forEach(el => el.classList.add("cr-active"))
-      } else if (targets.length > 1) {
-         console.error("Multiple elements with cr-id=" + id +
-            ". Please ensure cr-id attributes are unique.")
-      } else {
-         console.error("Can't find cr-id=" + id)
-      }
-   });
-
-   console.log("Active list: " + Array.from(stickiesToEnable).join(", "))
-
+  console.log("Active list: " + Array.from(stickiesToEnable).join(", "))
 }
 
 /* transitionElement: given an element id (`idTransition`), either add (if
    `add` = true) or remove (if `add` = false) the `.cr-active` class. throw an
    error if the specified target is not in the sticky list */
 function transitionElement(idTransition, add = true) {
-   if (idTransition !== null) {
-      // 3. find the element
-      let nodesTransition = document.querySelectorAll(
-         "[data-cr-id=" + idTransition + "]")
+  if (idTransition !== null) {
+    // 3. find the element
+    let nodesTransition = document.querySelectorAll(
+      "[data-cr-id=" + idTransition + "]")
 
-      // throw error if target not found
-      if (nodesTransition.length == 0 ) {
-         throw new Error("Close Read error: step " + index +
-            "specified element " + idTransition + " for `cr-from` or " +
-            "`cr-to`, but no target element has `cr-id= " + isTransition +
-            "`.")
-      } 
+    // throw error if target not found
+    if (nodesTransition.length == 0 ) {
+      throw new Error("Close Read error: step " + index +
+        "specified element " + idTransition + " for `cr-from` or " +
+        "`cr-to`, but no target element has `cr-id= " + isTransition +
+        "`.")
+    } 
       
-      // 1 (or more?) elements found: add or remove .cr-active to them
-      nodesTransition.forEach(node => node.classList.toggle("cr-active", add))
-      
-   }
+    // 1 (or more?) elements found: add or remove .cr-active to them
+    nodesTransition.forEach(node => node.classList.toggle("cr-active", add))  
+  }
 }
