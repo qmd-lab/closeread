@@ -20,13 +20,13 @@ First paragraph.
 This is a para nested in a div. These two first bits don't trigger anything...
 :::
 
-[This is an image with the sticky tag on the div.]{.cr-crossfade}
+[This is an image with the sticky tag on the div.]{.cr-crossfade cr-to="pink"}
 
 :::{cr-id="pink"}
 ![](pink-desktop.png)
 :::
 
-:::{.cr-crossfade}
+:::{.cr-crossfade cr-from="pink" cr-to="blue"}
 This is an image with the sticky tag on Image itself.
 :::
 

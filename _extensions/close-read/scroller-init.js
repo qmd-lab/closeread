@@ -9,13 +9,8 @@
 console.log("Initialising scrollers...")
 
 document.addEventListener("DOMContentLoaded", () => {
-   
-   // TODO - scroller events don't trigger if an elements starts
-   // visible on page load, so we need to initialise the .scrolledby
-   // classes on page load too
-   
+
    const scroller = scrollama();
-   
    scroller
      .setup({
        step: ".cr-crossfade",
@@ -23,46 +18,27 @@ document.addEventListener("DOMContentLoaded", () => {
      })
      .onStepEnter((response) => {
        // { element, index, direction }
-       // console.log(response.element)
 
-      // if we're going DOWN and something comes IN, we're activating that step
-      //   (DOWN and OUT we ignore)
-      // if we're going UP and something goes OUT, we're need to undo that step
-      //   (so )
-      // (UP and IN we ignore)
-
-
-      /* unfortunately i'm noticing that scrollama sometimes misses events when
-      scrolling fast. so all sticky elements need to be touched when we're
-      receiving an update */
+      console.log("Element " + response.index + "entering as we scroll " +
+         response.direction);
       
       if (response.direction == "down") {
-
-         console.log("Down and in event on element " + response.index)
-
          recalculateActiveSteps(response.index + 1);
-
          // TODO - focus effects
-         
       } else {
          // console.log("Up and in event ignored")
       }
-
-      
-
      })
      .onStepExit((response) => {
        // { element, index, direction }
-       //  console.log(response.element)
+
+       console.log("Element " + response.index + "exiting as we scroll " +
+         response.direction);
        
        if (response.direction == "up") {
-         
-         console.log("Up and out event on element " + response.index)
-         // as above, but index - 1!
+         // as above, but up to the _prevoius_ element
          recalculateActiveSteps(response.index);
-
          // TODO - focus effects
-
        } else {
          // console.log("Down and out event ignored")
        }
@@ -70,6 +46,12 @@ document.addEventListener("DOMContentLoaded", () => {
      });
  });
 
+/* recalculateActiveSteps: recalculates which sticky elements (between the first
+   and the one before `indexTo`) need to be displayed, and gives them the class
+   `.cr-active`. All elements first have that class removed regardless of
+   position.
+   (note that sticky elements use the `cr-id` attribute on the user side, but it
+   appears in the rendered html as `data-cr-id`.) */
 function recalculateActiveSteps(indexTo) {
 
    let allStickies = Array.from(document.querySelectorAll("[data-cr-id]"));
@@ -91,7 +73,6 @@ function recalculateActiveSteps(indexTo) {
    // NOTE - why is this only triggering once when priorSteps.length > 1?
    priorSteps.forEach(node => {
 
-      // console.log("Reading a step")
       const nodeFromIDs = node.getAttribute("data-cr-from");
       if (nodeFromIDs !== null) {
          const fromIDSet = new Set(nodeFromIDs.split(/,\s*/));
@@ -102,7 +83,6 @@ function recalculateActiveSteps(indexTo) {
          const toIDSet = new Set(nodeToIDs.split(/,\s*/));
          toIDSet.forEach(id => stickiesToEnable.add(id));
       }
-      console.log("stickiesToEnable is now:", stickiesToEnable)
 
    });
 
@@ -111,7 +91,6 @@ function recalculateActiveSteps(indexTo) {
       const el = document.getElementById(id)
       const targets = document.querySelectorAll("[data-cr-id=" + id + "]")
       if (targets.length == 1) {
-         console.log("Activating cr-id=" + id)
          targets.forEach(el => el.classList.add("cr-active"))
       } else if (targets.length > 1) {
          console.error("Multiple elements with cr-id=" + id +
@@ -121,14 +100,13 @@ function recalculateActiveSteps(indexTo) {
       }
    });
 
-   console.log("Final active list: " + Array.from(stickiesToEnable).join(", "))
+   console.log("Active list: " + Array.from(stickiesToEnable).join(", "))
 
 }
 
-
-// transitionElement: given an element id (`idTransition`), either add (if
-// `add` = true) or remove (if `add` = false) the `.cr-active` class. throw an
-// error if the specified target is not in the sticky list
+/* transitionElement: given an element id (`idTransition`), either add (if
+   `add` = true) or remove (if `add` = false) the `.cr-active` class. throw an
+   error if the specified target is not in the sticky list */
 function transitionElement(idTransition, add = true) {
    if (idTransition !== null) {
       // 3. find the element
