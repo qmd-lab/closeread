@@ -31,34 +31,21 @@ document.addEventListener("DOMContentLoaded", () => {
       //   (so )
       // (UP and IN we ignore)
 
-       let allStickies = Array.from(document.querySelectorAll("[cr-id]"));
-       
-       /* unfortunately i'm noticing that scrollama sometimes misses events when
-       scrolling fast. so all sticky elements need to be touched when we're
-       receiving an update */
-       
-       if (response.direction == "down") {
 
-         // down and in: activate the step being scrolled in:
-         // 1. get this step 
-         let thisStep = element;
-         
-         // 2. get the ids of the things to crossfade to and from
-         if (!thisStep.hasAttributes()) {
-            throw new Error("Close Read error: step " + index +
-               "requires either a `cr-from` attribute or a `cr-to` " +
-               "attribute (or both).")
-         }
-         let idFrom = thisStep.getAttribute("cr-from");
-         let idTo = thisStep.getAttribute("cr-to");
+      /* unfortunately i'm noticing that scrollama sometimes misses events when
+      scrolling fast. so all sticky elements need to be touched when we're
+      receiving an update */
+      
+      if (response.direction == "down") {
 
-         transitionElement(idFrom, add = false);
-         transitionElement(idTo, add = true);
+         console.log("Down and in event on element " + response.index)
+
+         recalculateActiveSteps(response.index + 1);
 
          // TODO - focus effects
          
       } else {
-         console.log("Up and in event ignored")
+         // console.log("Up and in event ignored")
       }
 
       
@@ -70,31 +57,73 @@ document.addEventListener("DOMContentLoaded", () => {
        
        if (response.direction == "up") {
          
-         // down and in: activate the step being scrolled in:
-         // 1. get the previous step
-         let thisStep = element;
-         
-         // 2. get the ids of the things to crossfade to and from
-         if (!thisStep.hasAttributes()) {
-            throw new Error("Close Read error: step " + index +
-               "requires either a `cr-from` attribute or a `cr-to` " +
-               "attribute (or both).")
-         }
-         let idFrom = thisStep.getAttribute("cr-from");
-         let idTo = thisStep.getAttribute("cr-to");
-
-         // we "undo" the step by reversing the cr-from and cr-to transitions...
-         transitionElement(idFrom, add = false);
-         transitionElement(idTo, add = true);
+         console.log("Up and out event on element " + response.index)
+         // as above, but index - 1!
+         recalculateActiveSteps(response.index);
 
          // TODO - focus effects
 
        } else {
-         console.log("Down and out event ignored")
+         // console.log("Down and out event ignored")
        }
 
      });
  });
+
+function recalculateActiveSteps(indexTo) {
+
+   let allStickies = Array.from(document.querySelectorAll("[data-cr-id]"));
+   let allSteps = Array.from(document.querySelectorAll(".cr-crossfade"));
+
+   // 1. reset all elements
+   allStickies.forEach(node => node.classList.remove("cr-active"));
+
+   // we need to turn back on elements that most recently featured in a
+   // "to" block rather than a "from" block (or nothing)
+
+   // focus on steps up to `indexTo`
+   const priorSteps = allSteps.slice(0, indexTo);
+
+   // start with an empty set of ids to enable
+   stickiesToEnable = new Set();
+
+   // for each step, remove the ones that feature in the "from" and add
+   // NOTE - why is this only triggering once when priorSteps.length > 1?
+   priorSteps.forEach(node => {
+
+      // console.log("Reading a step")
+      const nodeFromIDs = node.getAttribute("data-cr-from");
+      if (nodeFromIDs !== null) {
+         const fromIDSet = new Set(nodeFromIDs.split(/,\s*/));
+         fromIDSet.forEach(id => stickiesToEnable.delete(id));
+      }
+      const nodeToIDs = node.getAttribute("data-cr-to");
+      if (nodeToIDs !== null) {
+         const toIDSet = new Set(nodeToIDs.split(/,\s*/));
+         toIDSet.forEach(id => stickiesToEnable.add(id));
+      }
+      console.log("stickiesToEnable is now:", stickiesToEnable)
+
+   });
+
+   // now we enable whichever ids are left on stickiesToEnable
+   stickiesToEnable.forEach(id => {
+      const el = document.getElementById(id)
+      const targets = document.querySelectorAll("[data-cr-id=" + id + "]")
+      if (targets.length == 1) {
+         console.log("Activating cr-id=" + id)
+         targets.forEach(el => el.classList.add("cr-active"))
+      } else if (targets.length > 1) {
+         console.error("Multiple elements with cr-id=" + id +
+            ". Please ensure cr-id attributes are unique.")
+      } else {
+         console.error("Can't find cr-id=" + id)
+      }
+   });
+
+   console.log("Final active list: " + Array.from(stickiesToEnable).join(", "))
+
+}
 
 
 // transitionElement: given an element id (`idTransition`), either add (if
@@ -104,7 +133,7 @@ function transitionElement(idTransition, add = true) {
    if (idTransition !== null) {
       // 3. find the element
       let nodesTransition = document.querySelectorAll(
-         "[cr-id=" + idTransition + "]")
+         "[data-cr-id=" + idTransition + "]")
 
       // throw error if target not found
       if (nodesTransition.length == 0 ) {

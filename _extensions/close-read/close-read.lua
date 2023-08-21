@@ -47,12 +47,17 @@ function shift_class_to_block(block)
   if pandoc.utils.type(block.content) == "Inlines" then
     for i, inline in pairs(block.content) do
       if inline.attr ~= nil then
-        if inline.classes:includes("cr-sticky") then
-          -- removes cr-sticky from inline element
-          block.content[i].classes:remove(find_in_arr(block.content[i].classes, "cr-sticky"))
-          -- wraps block in Div with class cr-sticky (and converts Para to Plain)
-          block = pandoc.Div(block.content, pandoc.Attr("", {"cr-sticky"}, {}))
+
+        for k,v in pairs(inline.attributes) do
+          if k == "cr-id" then
+            block.content[i].attributes:remove(
+              find_in_arr(block.content[i].attributes, "cr-id"))
+            -- wraps block in Div with attribute cr-id (and converts Para to Plain)
+            block = pandoc.Div(block.content, pandoc.Attr("", {}, {"cr-id", v}))
+            break
+          end
         end
+
       end
     end
   end
@@ -63,17 +68,12 @@ end
 
 function is_sticky(block)
 
-  sticky_block_class = false
   sticky_block_attribute = false
-  sticky_inline_class = false
+  sticky_inline_attribute = false
   
-  if block.attr ~= nil then
-    sticky_block_class = block.classes:includes("cr-sticky")
-  end
-    
   if block.attributes ~= nil then
     for k,v in pairs(block.attributes) do
-      if k == "cr" and v == "sticky" then
+      if k == "cr-id" then
         sticky_block_attribute = true
         break
       end
@@ -83,12 +83,17 @@ function is_sticky(block)
   if pandoc.utils.type(block.content) == "Inlines" then
     for _, inline in pairs(block.content) do
       if inline.attr ~= nil then
-        sticky_inline_class = inline.classes:includes("cr-sticky")
+        for k,v in pairs(inline.attributes) do
+          if k == "cr-id" then
+            sticky_inline_attriburw = true
+            break
+          end
+        end
       end
     end
   end
 
-  return sticky_block_class or sticky_block_attribute or sticky_inline_class
+  return sticky_block_attribute or sticky_inline_attribute
 end
 
 -- utility function

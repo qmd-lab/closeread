@@ -39,7 +39,7 @@
     .sticky_col_stack {
       display: grid;
 
-      [cr-id] {
+      [data-cr-id] {
         grid-area: 1 / 1;
         margin: auto;
         // opacity: 0.5;     // lowering opacity for debug purposes
