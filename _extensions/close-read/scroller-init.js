@@ -10,6 +10,14 @@ console.log("Initialising scrollers...")
 
 document.addEventListener("DOMContentLoaded", () => {
 
+  // define an ojs variable if the connector module is available
+  const ojsModule = window._ojs?.ojsConnector?.mainModule
+  const ojsScrollerIndex = ojsModule?.variable();
+  ojsScrollerIndex?.define("crScroller", null);
+  if (ojsModule === undefined) {
+    console.log("Warning: Quarto OJS module not found")
+  }
+
   const scroller = scrollama();
   scroller
     .setup({
@@ -19,20 +27,13 @@ document.addEventListener("DOMContentLoaded", () => {
     .onStepEnter((response) => {
       // { element, index, direction }
 
-      // first we'll update the ojs variable sa that those users can track it
-      // check for the ojs connector's presence first
-      const ojsModule = window._ojs?.ojsConnector?.mainModule
-      if (ojsModule === undefined) {
-        console.error("Quarto OJS module not found")
-      } else {
-        console.log("Quarto OJS module found!")
-      }
-
+      
       console.log("Element " + response.index + "entering as we scroll " +
-         response.direction);
+      response.direction);
       
       if (response.direction == "down") {
-         recalculateActiveSteps(response.index + 1);
+        ojsScrollerIndex?.define("crScroller", response.index);
+        recalculateActiveSteps(response.index + 1);
          // TODO - focus effects
       } else {
          // console.log("Up and in event ignored")
@@ -41,11 +42,13 @@ document.addEventListener("DOMContentLoaded", () => {
     .onStepExit((response) => {
       // { element, index, direction }
 
+      
       console.log("Element " + response.index + "exiting as we scroll " +
-        response.direction);
-       
+      response.direction);
+      
       if (response.direction == "up") {
         // as above, but up to the _prevoius_ element
+        ojsScrollerIndex?.define("crScroller", response.index - 1);
         recalculateActiveSteps(response.index);
         // TODO - focus effects
       } else {

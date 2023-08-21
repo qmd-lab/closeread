@@ -109,3 +109,10 @@ graph G {
 :::
 
 # The End
+
+
+:::{.counter style="position: fixed; top: 10px; right: 10px; background-color: skyblue; border-radius: 5px; padding: 18px 18px 0 18px;"}
+```{ojs}
+md`Active element is ${crScroller}`
+```
+:::
