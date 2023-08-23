@@ -23,7 +23,11 @@
   .column.sidebar_col {
     & > *,
     section > * {
-      margin-block: 40svh;
+      // margin-block: 10svh;
+      // border-block-width: 200px;
+      // border-block-color: yellow; 
+      padding-top: 40svh;
+      vertical-align: middle;
     }
   }
 

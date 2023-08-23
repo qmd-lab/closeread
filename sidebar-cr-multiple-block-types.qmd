@@ -26,8 +26,8 @@ This is a para nested in a div. These two first bits don't trigger anything...
 ![](pink-desktop.png)
 :::
 
-:::{.cr-crossfade cr-from="pink" cr-to="blue"}
-This is an image with the sticky tag on Image itself.
+:::{.cr-crossfade cr-from="pink" cr-to="blue" style="margin-block: 0; padding-block: 20svh; background-color: pink;"}
+This is an image with the sticky tag on Image itself. I've replaced its margin with some padding to demonstrate that you can give it a larger "surface" area on which to trigger scroll events.
 :::
 
 ![](blue-desktop.png){cr-id="blue"}
@@ -113,6 +113,7 @@ graph G {
 
 :::{.counter style="position: fixed; top: 10px; right: 10px; background-color: skyblue; border-radius: 5px; padding: 18px 18px 0 18px;"}
 ```{ojs}
-md`Active element is ${crScroller}`
+md`Active element: ${crScrollerSection}`
+md`Element progress: ${crScrollerProgress}`
 ```
 :::

@@ -12,8 +12,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // define an ojs variable if the connector module is available
   const ojsModule = window._ojs?.ojsConnector?.mainModule
-  const ojsScrollerIndex = ojsModule?.variable();
-  ojsScrollerIndex?.define("crScroller", null);
+  const ojsScrollerSection = ojsModule?.variable();
+  const ojsScrollerProgress = ojsModule?.variable();
+  ojsScrollerSection?.define("crScrollerSection", null);
+  ojsScrollerProgress?.define("crScrollerProgress", null);
   if (ojsModule === undefined) {
     console.log("Warning: Quarto OJS module not found")
   }
@@ -22,7 +24,9 @@ document.addEventListener("DOMContentLoaded", () => {
   scroller
     .setup({
       step: ".cr-crossfade",
-      offset: 0.5
+      offset: 0.5,
+      progress: true,
+      debug: true
     })
     .onStepEnter((response) => {
       // { element, index, direction }
@@ -32,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
       response.direction);
       
       if (response.direction == "down") {
-        ojsScrollerIndex?.define("crScroller", response.index);
+        ojsScrollerSection?.define("crScrollerSection", response.index);
         recalculateActiveSteps(response.index + 1);
          // TODO - focus effects
       } else {
@@ -48,12 +52,22 @@ document.addEventListener("DOMContentLoaded", () => {
       
       if (response.direction == "up") {
         // as above, but up to the _prevoius_ element
-        ojsScrollerIndex?.define("crScroller", response.index - 1);
+        ojsScrollerSection?.define("crScrollerSection", response.index - 1);
         recalculateActiveSteps(response.index);
         // TODO - focus effects
       } else {
         // console.log("Down and out event ignored")
       }
+
+    })
+    .onStepProgress((response) => {
+      // { element, index, progress }
+      console.log("Progress: ", response.progress + " " + response.direction)
+      ojsScrollerProgress?.define("crScrollerProgress",
+        response.progress.toLocaleString("en-US", {
+          style: "percent"
+        }) + " " +
+        (response.direction == "down" ? "↓" : "↑"));
 
     });
  });
