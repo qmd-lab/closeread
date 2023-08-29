@@ -1,5 +1,5 @@
 ---
-format: close-read-html
+format: closeread-html
 ---
 
 ::::{.cr-sidebar}
