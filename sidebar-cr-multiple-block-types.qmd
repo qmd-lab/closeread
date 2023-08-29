@@ -1,5 +1,7 @@
 ---
-format: closeread-html
+format:
+  closeread-html:
+    debug-mode: true
 ---
 
 ::::{.cr-sidebar}
