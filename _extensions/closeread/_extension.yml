@@ -8,6 +8,7 @@ contributes:
       filters:
         - closeread.lua
       theme: custom.scss
+      page-layout: full
       execute:
         echo: false
 
