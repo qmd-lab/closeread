@@ -1,13 +1,5 @@
 ---
-format:
-  html:
-    theme:
-      - _extensions/close-read/custom.scss
-    page-layout: full
-execute: 
-  echo: false
-filters:
-  - _extensions/close-read/close-read.lua
+format: close-read-html
 ---
 
 ::::{.cr-sidebar}
