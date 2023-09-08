@@ -36,8 +36,15 @@ function make_sidebar_layout(div)
     narrative_blocks = div.content:walk {
       traverse = 'topdown',
       Block = function(block)
+        -- return only the non-sticky blocks...
         if not is_sticky(block) then
-          return block
+          -- but also wrap the ones that are steps in a div
+          if block.classes ~= nil and
+            block.classes:includes("cr-crossfade") then
+            return wrap_step(block)
+          else
+            return block
+          end
         else
           return {}
         end
@@ -81,6 +88,33 @@ function shift_class_to_block(block)
   end
   
   return block
+end
+
+-- wrap_step: wraps blocks with a .cr-crossfade (or potentially another 'step'
+-- class in future) in a div that allows us to have steps visually 
+function wrap_step(block)
+  
+  -- first extract the cr-* attributes
+  local attributesToMove = {}
+  for k, v in pairs(block.attributes) do
+    if k:find("^data-cr-") or k:find("^cr-") then
+      if block.type == "Span" then
+        quarto.log.output("Close Read warning: do not use Spans as steps!")
+      end
+      table.insert(attributesToMove, {k, v})
+      block.attributes[k] = nil
+    end
+  end
+
+  -- now do .cr-* classes: add to parent block class list and remove from
+  -- current block list
+  local classesToMove = block.classes:filter(
+    function(c) return c:find("^cr-") ~= nil end)
+  block.classes = block.classes:filter(
+      function(c) return c:find("^cr-") == nil end)
+  
+  -- finally construct a pandoc.div with the new details and content to return
+  return pandoc.Div(block, pandoc.Attr("", classesToMove, attributesToMove))
 end
 
 
