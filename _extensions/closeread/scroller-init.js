@@ -15,7 +15,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const debugMode =
     document
       .querySelector("meta[cr-debug-mode]")?.getAttribute("cr-debug-mode")
-        === true;
+        === "true";
+
+  // if debugging, add .cr-debug to .cr-section divs
+  // so we can add some of our own css
+  if (debugMode) {
+    document.querySelectorAll(".cr-sidebar").forEach(
+      node => node.classList.add("cr-debug")
+    )
+  }
 
   // define an ojs variable if the connector module is available
   const ojsModule = window._ojs?.ojsConnector?.mainModule
