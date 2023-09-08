@@ -62,8 +62,39 @@
   }
 }
 
+/* mobile (overlay) view */
+
+@include media-breakpoint-down(lg) { 
+  .columns.cr-sidebar {
+    flex-direction: column-reverse;
+
+    .column.sidebar_col {
+      width: 100% !important;
+      padding-inline: 7.5%;
+      align-self: center;
+      z-index: 1;
+
+
+      /* wip - this is supposed to target our narrative blocks to make them readable over the sticky content, but since non-step narrative blocks (ie. bare content) also gets spaced, this breaks the spacing. we may need to wrap other blocks too, not just the steps. */
+      & > *:not(section, .cr-crossfade),
+      section > *:not(.cr-crossfade),
+      .cr-crossfade > * {
+        padding: 10px;
+        background-color: #fafafabb;
+        max-width: 90%;
+        margin-inline: auto;
+      }
+    }
+
+    .column.sticky_col {
+      width: 100% !important;
+      align-self: center;
+    }
+  }
+ }
+
 // debug
 .cr-debug .cr-crossfade {
-  background-color: yellow;
+  background-color: #ffff0099;
   border: 1px solid orange;
 }
