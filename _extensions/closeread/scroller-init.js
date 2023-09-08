@@ -10,6 +10,13 @@ console.log("Initialising scrollers...")
 
 document.addEventListener("DOMContentLoaded", () => {
 
+
+  // first, let's read our options in from the dom
+  const debugMode =
+    document
+      .querySelector("meta[cr-debug-mode]")?.getAttribute("cr-debug-mode")
+        === true;
+
   // define an ojs variable if the connector module is available
   const ojsModule = window._ojs?.ojsConnector?.mainModule
   const ojsScrollerSection = ojsModule?.variable();
@@ -26,12 +33,11 @@ document.addEventListener("DOMContentLoaded", () => {
       step: ".cr-crossfade",
       offset: 0.5,
       progress: true,
-      debug: true
+      debug: debugMode
     })
     .onStepEnter((response) => {
       // { element, index, direction }
 
-      
       console.log("Element " + response.index + "entering as we scroll " +
       response.direction);
       

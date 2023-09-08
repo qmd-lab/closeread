@@ -1,5 +1,21 @@
 
-quarto.log.output("===== Sidebar Log =====")
+quarto.log.output("===== Closeread Log =====")
+
+-- set defaults
+local debug_mode = false
+
+-- Read in YAML options
+function read_meta(m)
+
+  if m["debug-mode"] ~= nil then
+    debug_mode = m["debug-mode"]
+  end
+  
+  -- make accessible to scroller-init.js via <meta> tag
+  quarto.doc.include_text("in-header", "<meta cr-debug-mode='" .. tostring(debug_mode) .. "'>")
+  
+end
+
 
 function make_sidebar_layout(div)
   
@@ -99,6 +115,7 @@ function is_sticky(block)
 end
 
 -- utility function
+
 function find_in_arr(arr, value)
     for i, v in pairs(arr) do
         if v == value then
@@ -106,7 +123,6 @@ function find_in_arr(arr, value)
         end
     end
 end
-
 
 -- add scrollama.js, the intersection-observer polyfill and our scroller init
 quarto.doc.add_html_dependency({
@@ -128,5 +144,6 @@ quarto.doc.add_html_dependency({
 -- TODO - add a js scrollama setup step (can i do this with a js script + yaml?)
 
 return {
+  Meta = read_meta,
   Div = make_sidebar_layout
 }
