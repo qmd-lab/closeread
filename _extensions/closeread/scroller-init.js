@@ -13,9 +13,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // first, let's read our options in from the dom
   const debugMode =
-    document.querySelector("meta[cr-debug-mode]")?.getAttribute("cr-debug-mode") ?? false;
-
-  console.log("Debug mode is ", debugMode)
+    document
+      .querySelector("meta[cr-debug-mode]")?.getAttribute("cr-debug-mode")
+        === true;
 
   // define an ojs variable if the connector module is available
   const ojsModule = window._ojs?.ojsConnector?.mainModule
