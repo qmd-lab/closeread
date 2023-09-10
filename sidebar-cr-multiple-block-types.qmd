@@ -19,7 +19,7 @@ This is an image with the sticky tag on the div.
 :::
 
 :::{cr-id="pink"}
-![](pink-desktop.png)
+![This is a caption](pink-desktop.png)
 :::
 
 :::{.cr-crossfade cr-from="pink" cr-to="blue"}
