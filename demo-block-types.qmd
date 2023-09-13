@@ -28,7 +28,7 @@ This is an image with the sticky tag on Image itself.
 I've replaced its margin with some padding to demonstrate that you can give it a larger "surface" area on which to trigger scroll events.
 :::
 
-![This is a caption](blue-desktop.png){cr-id="blue"}
+![](blue-desktop.png){cr-id="blue"}
 
 ::::
 
