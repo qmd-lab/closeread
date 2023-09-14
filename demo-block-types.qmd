@@ -1,0 +1,133 @@
+---
+format:
+  closeread-html:
+    debug-mode: true
+---
+
+::::{.cr-sidebar}
+
+# Test other sticky block types
+
+First paragraph.
+
+::: {}
+This is a para nested in a div. These two first bits don't trigger anything...
+:::
+
+:::{.cr-crossfade cr-to="pink"}
+This is an image with the sticky tag on the div.
+:::
+
+:::{cr-id="pink"}
+![This is a caption](pink-desktop.png)
+:::
+
+:::{.cr-crossfade cr-from="pink" cr-to="blue"}
+This is an image with the sticky tag on Image itself.
+
+I've replaced its margin with some padding to demonstrate that you can give it a larger "surface" area on which to trigger scroll events.
+:::
+
+![](blue-desktop.png){cr-id="blue"}
+
+::::
+
+::::{.column-screen-inset style="background-color: #dddddd; padding: 50px;"}
+Here's a little non-scrolling interlude before our next scrolly section!
+::::
+
+::::{.cr-sidebar}
+
+:::{.cr-crossfade cr-to="scatter"}
+This is a scatterplot.
+:::
+
+```{r}
+#| echo: false
+#| cr-id: scatter
+
+plot(mtcars$mpg, mtcars$dist)
+```
+
+:::{.cr-crossfade cr-from="scatter" cr-to="hist"}
+This is a histogram.
+:::
+
+```{r}
+#| echo: true
+#| cr-id: hist
+#| fig-cap: "This is a caption."
+#| fig-height: 4
+
+hist(mtcars$mpg)
+```
+
+:::{.cr-crossfade cr-from="hist" cr-to="list"}
+This is a list (a block element).
+:::
+
+:::{cr-id="list"}
+1. Apple
+2. Banana
+:::
+
+:::{.cr-crossfade cr-from="list" cr-to="displaymath"}
+This is display math, but I'm making it a bit longer so that it covers a few lines.
+:::
+
+::: {cr-id="displaymath"}
+
+$$
+\begin{align}
+\hat{y} &= \beta_0 + \beta_1 x + \epsilon \\
+&= 3.4 + 1.2 x
+\end{align}
+$$
+
+:::
+
+:::{.cr-crossfade cr-from="displaymath" cr-to="oneline"}
+This is a Para featuring a poem.
+:::
+
+::: {cr-id="oneline"}
+One hen, two ducks ...
+:::
+
+:::{.cr-crossfade cr-from="oneline" cr-to="mermaid"}
+This is a mermaid diagram
+:::
+
+```{mermaid}
+%%| cr-id: mermaid
+flowchart LR
+  A[Hard edge] --> B(Round edge)
+  B --> C{Decision}
+  C --> D[Result one]
+  C --> E[Result two]
+```
+
+:::{.cr-crossfade cr-from="mermaid" cr-to="graphviz"}
+This is a graphviz diagram
+:::
+
+```{dot}
+//| cr-id: graphviz
+graph G {
+  layout=neato
+  run -- intr;
+  intr -- runbl;
+}
+```
+
+:::
+
+# The End
+
+
+:::{.counter style="position: fixed; top: 10px; right: 10px; background-color: skyblue; border-radius: 5px; padding: 18px 18px 0 18px;"}
+```{ojs}
+md`Active element: ${crScrollerSection}`
+md`Element progress: ${crScrollerProgress}`
+```
+:::
