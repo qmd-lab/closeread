@@ -1,0 +1,38 @@
+---
+format:
+  html:
+    theme:
+      - custom.scss
+    page-layout: full
+execute: 
+  echo: false
+---
+
+::::: {.columns .column-page}
+
+:::: {.column width=35%}
+
+# A Histogram
+
+By: Someone
+
+First paragraph.
+
+Second paragraph.
+
+::::
+
+:::: {.column width="10%"}
+::::
+
+:::: {.column width="55%" style="padding:20px; position:sticky;top:30vh;"}
+
+```{r}
+#| echo: false
+
+hist(mtcars$mpg)
+```
+:::::
+:::::
+
+# The End
