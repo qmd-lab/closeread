@@ -52,14 +52,14 @@ function make_sidebar_layout(div)
     }
 
     narrative_col = pandoc.Div(narrative_blocks,
-      pandoc.Attr("", {"column", "sidebar_col"}, {width = "30%"}))
+      pandoc.Attr("", {"sidebar_col"}, {}))
     sticky_col_stack = pandoc.Div(sticky_blocks,
       pandoc.Attr("", {"sticky_col_stack"}))
     sticky_col = pandoc.Div(sticky_col_stack,
-      pandoc.Attr("", {"column", "sticky_col"}, {width = "55%"}))
+      pandoc.Attr("", {"sticky_col"}, {}))
     layout = pandoc.Div({narrative_col, sticky_col},
-      pandoc.Attr("", {"columns", "column-screen", table.unpack(div.classes)},
-      {}))
+      pandoc.Attr("", {"cr-layout", "column-screen", table.unpack(div.classes)},
+      {["grid-template-columns"] = "1fr 3fr"}))
 
     return layout
   end
