@@ -1,0 +1,55 @@
+/*-- scss:defaults --*/
+
+/* TODO: Customize html appearance by setting SCSS variables */
+/* See https://quarto.org/docs/output-formats/html-themes.html#theme-options */
+
+/*-- scss:rules --*/
+
+/* TODO: Provide custom CSS rules */
+
+.cr-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  
+  .sidebar-col {
+    grid-column: 1;
+    
+    > p {
+      padding-block-start: 20svh;
+      padding-block-end: 20svh;
+      vertical-align: middle;
+    }
+  }
+  
+  .sticky-col {
+    grid-column: 2;
+    
+    // using a grid to stack sticky elements on top of each other to then
+    // transition through (based on reveal's .r-stack)
+    .sticky_col_stack {
+      display: grid;
+
+      [data-cr-id] {
+        grid-area: 1 / 1;
+        margin: auto;
+        // opacity: 0.5;     // lowering opacity for debug purposes
+
+        // to be overruled when it is the active element
+        opacity: 0;
+        transition: opacity linear 0.5s;
+      }
+
+      // show active elements (this class is applied by scrollama
+      .cr-active {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+
+// debug
+.cr-debug .cr-crossfade {
+  background-color: #ffff0099;
+  border: 1px solid orange;
+}
