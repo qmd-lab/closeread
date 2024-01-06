@@ -26,8 +26,10 @@
     
     // using a grid to stack sticky elements on top of each other to then
     // transition through (based on reveal's .r-stack)
-    .sticky_col_stack {
+    .sticky-col-stack {
       display: grid;
+      position: sticky;
+      top: 150px;
 
       [data-cr-id] {
         grid-area: 1 / 1;
