@@ -68,8 +68,11 @@
 }
 
 .cr-poem {
-  // just a basic system serif font stack
-  font-family: Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+
+  code {
+    // just a basic system serif font stack
+    font-family: Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+  }
 
   transform-origin: center center;
   // not sure whether we want transition: transform on load
