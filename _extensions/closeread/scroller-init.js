@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .onStepProgress((response) => {
       // { element, index, progress }
-      console.log("Progress: ", response.progress + " " + response.direction)
+      // console.log("Progress: ", response.progress + " " + response.direction)
       ojsScrollerProgress?.define("crScrollerProgress",
         response.progress.toLocaleString("en-US", {
           style: "percent"
@@ -155,20 +155,25 @@ function rescaleElement(el, paddingX = 50, paddingY = 50) {
   
   const elHeight = el.offsetHeight
   const elWidth = el.offsetWidth
-  const containerHeight = container.offsetHeight - paddingY
-  const containerWidth = container.offsetWidth - paddingX
+  const containerHeight = container.offsetHeight - (paddingY * 2)
+  const containerWidth = container.offsetWidth - (paddingX * 2)
 
   const scaleHeight = elHeight / containerHeight
   const scaleWidth = elWidth / containerWidth
 
   const maxScale = Math.max(scaleHeight, scaleWidth)
 
-  console.log("Changing size by x" + (1 / maxScale))
-
-  // apply transform
-  // el.style.transform = `translateY(5%) scale(${1 / maxScale});`
-  el.setAttribute("style", `transform: scale(${1 / maxScale});`)
-
+  // scale down from the top (adjusting for padding) or scale up from the centre
+  // NOTE - not sure why this bias exists; should test across browsers
+  // NOTE - also prefer to use style.transform and style["transform-origin"] to
+  // avoid wiping out other styles
+  if (elHeight > containerHeight) {
+    el.setAttribute("style",
+      `transform-origin: top center; transform: translateY(${paddingY}px) scale(${1 / maxScale});`)
+  } else {
+    el.setAttribute("style",
+      `transform-origin: center center; transform: scale(${1 / maxScale});`)
+  }
 }
 
 // make the given element active. if it's a poem, rescale it
