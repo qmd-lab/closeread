@@ -19,7 +19,7 @@ end
 
 function make_sidebar_layout(div)
   
-  if div.classes:includes("cr-sidebar") then
+  if div.classes:includes("cr-layout") then
     
     sticky_blocks = div.content:walk {
       traverse = 'topdown',

@@ -9,15 +9,32 @@
 
 .cr-layout {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 2fr;
   
   .sidebar-col {
     grid-column: 1;
     
-    > p {
+    /* extended wrapper around content to allow early scroll detection */
+    > * {
       padding-block-start: 20svh;
       padding-block-end: 20svh;
       vertical-align: middle;
+      // debug styling
+      background: rgba(255, 255, 0, 0.5);
+      border: 1px solid rgba(255, 166, 0, 0.5);
+
+      /* styling for actual content (*/
+      > * {
+        padding: 15px;
+        // debug
+        background: rgba(0, 208, 255, 0.5);
+        border: 1px solid rgba(0, 115, 255, 0.5);
+        border-radius: 5px;
+      }
+
+    p {
+      margin-bottom: 0;
+    }
     }
   }
   
