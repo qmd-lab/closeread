@@ -84,6 +84,10 @@ document.addEventListener("DOMContentLoaded", () => {
         (response.direction == "down" ? "↓" : "↑"));
 
     });
+
+    // TODO - also need a window resize watcher to rescale poems that are active
+    window.addEventListener("resize", rescaleActivePoem)
+
  });
 
 /* recalculateActiveSteps: recalculates which sticky elements (between the first
@@ -130,7 +134,7 @@ function recalculateActiveSteps(indexTo) {
     const el = document.getElementById(id)
     const targets = document.querySelectorAll("[data-cr-id=" + id + "]")
     if (targets.length == 1) {
-      targets.forEach(el => el.classList.add("cr-active"))
+      targets.forEach(el => updateVisibleElement(el))
     } else if (targets.length > 1) {
       console.error("Multiple elements with cr-id=" + id +
         ". Please ensure cr-id attributes are unique.")
@@ -142,24 +146,46 @@ function recalculateActiveSteps(indexTo) {
   console.log("Active list: " + Array.from(stickiesToEnable).join(", "))
 }
 
-/* transitionElement: given an element id (`idTransition`), either add (if
-   `add` = true) or remove (if `add` = false) the `.cr-active` class. throw an
-   error if the specified target is not in the sticky list */
-function transitionElement(idTransition, add = true) {
-  if (idTransition !== null) {
-    // 3. find the element
-    let nodesTransition = document.querySelectorAll(
-      "[data-cr-id=" + idTransition + "]")
+function rescaleElement(el, paddingX = 50, paddingY = 50) {
 
-    // throw error if target not found
-    if (nodesTransition.length == 0 ) {
-      throw new Error("Close Read error: step " + index +
-        "specified element " + idTransition + " for `cr-from` or " +
-        "`cr-to`, but no target element has `cr-id= " + isTransition +
-        "`.")
-    } 
-      
-    // 1 (or more?) elements found: add or remove .cr-active to them
-    nodesTransition.forEach(node => node.classList.toggle("cr-active", add))  
+  console.log("Rescaling element:", el)
+  
+  // get dimensions of element and its container
+  const container = el.closest(".sticky-col-stack")
+  
+  const elHeight = el.offsetHeight
+  const elWidth = el.offsetWidth
+  const containerHeight = container.offsetHeight - paddingY
+  const containerWidth = container.offsetWidth - paddingX
+
+  const scaleHeight = elHeight / containerHeight
+  const scaleWidth = elWidth / containerWidth
+
+  const maxScale = Math.max(scaleHeight, scaleWidth)
+
+  console.log("Changing size by x" + (1 / maxScale))
+
+  // apply transform
+  // el.style.transform = `translateY(5%) scale(${1 / maxScale});`
+  el.setAttribute("style", `transform: scale(${1 / maxScale});`)
+
+}
+
+// make the given element active. if it's a poem, rescale it
+function updateVisibleElement(el) {
+  el.classList.add("cr-active")
+  if (el.classList.contains("cr-poem")) {
+    rescaleElement(el)
   }
+}
+
+// on window resize, look up the .cr-active element. if it's a poem, rescale it
+function rescaleActivePoem() {
+  document.querySelectorAll(".cr-active").forEach(
+    el => {
+      if (el.classList.contains("cr-poem")) {
+        rescaleElement(el)
+      }
+    }
+  )
 }

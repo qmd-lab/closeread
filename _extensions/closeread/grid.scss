@@ -45,8 +45,9 @@
     // transition through (based on reveal's .r-stack)
     .sticky-col-stack {
       display: grid;
+      height: 100svh;
       position: sticky;
-      top: 150px;
+      top: 0;
 
       [data-cr-id] {
         grid-area: 1 / 1;
@@ -70,6 +71,10 @@
   // just a basic system serif font stack
   font-family: Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
 
+  transform-origin: center center;
+  // not sure whether we want transition: transform on load
+
+  // debug styling
   background-color: rgba(255, 255, 0, 0.5);
   border: 1px solid rgba(255, 160, 0, 0.5);
 }

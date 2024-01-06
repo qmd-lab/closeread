@@ -87,7 +87,7 @@ $$
 :::
 
 :::{.cr-crossfade cr-from="displaymath" cr-to="mypoem"}
-This is a poem. It's called ["Bellringer", by Rita Dove](https://www.newyorker.com/culture/2019-in-review/our-year-in-poems).
+This is a poem. It's called ["Bellringer", by Rita Dove](https://www.newyorker.com/culture/2019-in-review/our-year-in-poems). I've thrown some lorem ipsum on after to make it too long for most screens.
 :::
 
 ```{.cr-poem cr-id="mypoem"}
@@ -108,6 +108,31 @@ can be ignored, as I was when they spoke
 of my birth and Mr. Jefferson’s death
 in one breath, voices dusted with wonderment,
 faint sunlight quivering on a hidden breeze.
+
+Eu ipsum et cillum ex et ut duis officia et.
+Et incididunt mollit dolore mollit nisi veniam
+  id qui sit est proident eu enim duis.
+Anim aliquip consectetur ea veniam nulla do aute
+  officia proident eiusmod consequat proident.
+Et non ut tempor consectetur labore.
+
+Ipsum in adipisicing veniam et est adipisicing
+  eiusmod aute elit.
+Sit fugiat laborum enim.
+Qui elit velit voluptate commodo laboris eiusmod
+  fugiat quis aliquip elit in officia fugiat laborum.
+Commodo dolor fugiat eiusmod consectetur.
+Et eu ut proident voluptate tempor.
+
+Ea eu culpa id irure occaecat fugiat ullamco.
+Fugiat esse fugiat laboris nulla eiusmod
+  reprehenderit incididunt.
+Nisi consequat cillum eu ipsum anim ullamco ut.
+Fugiat veniam veniam duis aliqua ex occaecat.
+Laboris nostrud excepteur aliquip proident aliquip.
+Ex non dolor consequat laboris fugiat occaecat sint qui.
+Non commodo cillum minim aliqua non nisi anim id
+  officia est dolor.
 ```
 
 :::{.cr-crossfade cr-from="mypoem" cr-to="mermaid"}
