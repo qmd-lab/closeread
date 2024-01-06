@@ -66,6 +66,14 @@
   }
 }
 
+.cr-poem {
+  // just a basic system serif font stack
+  font-family: Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+
+  background-color: rgba(255, 255, 0, 0.5);
+  border: 1px solid rgba(255, 160, 0, 0.5);
+}
+
 
 // debug
 .cr-debug .cr-crossfade {

@@ -19,7 +19,7 @@ This is an image with the sticky tag on the div.
 :::
 
 :::{cr-id="pink"}
-![This is a caption](pink-desktop.png)
+x![This is a caption](pink-desktop.png)
 :::
 
 :::{.cr-crossfade cr-from="pink" cr-to="blue"}
@@ -86,15 +86,31 @@ $$
 
 :::
 
-:::{.cr-crossfade cr-from="displaymath" cr-to="oneline"}
-This is a Para featuring a poem.
+:::{.cr-crossfade cr-from="displaymath" cr-to="mypoem"}
+This is a poem. It's called ["Bellringer", by Rita Dove](https://www.newyorker.com/culture/2019-in-review/our-year-in-poems).
 :::
 
-::: {cr-id="oneline"}
-One hen, two ducks ...
-:::
+```{.cr-poem cr-id="mypoem"}
+I was given a name, it came out of a book—
+I don’t know which. I’ve been told the Great Man
+could recite every title in order on its shelf.
+Well, I was born, and that’s a good thing,
+although I arrived on the day of his passing,
 
-:::{.cr-crossfade cr-from="oneline" cr-to="mermaid"}
+a day on which our country fell into mourning.
+This I heard over and over, from professors
+to farmers, even duel-scarred students;
+sometimes, in grand company, remarked upon
+in third person—a pretty way of saying
+
+more than two men in a room means the third
+can be ignored, as I was when they spoke
+of my birth and Mr. Jefferson’s death
+in one breath, voices dusted with wonderment,
+faint sunlight quivering on a hidden breeze.
+```
+
+:::{.cr-crossfade cr-from="mypoem" cr-to="mermaid"}
 This is a mermaid diagram
 :::
 
