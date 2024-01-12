@@ -135,7 +135,15 @@ Non commodo cillum minim aliqua non nisi anim id
   officia est dolor.
 ```
 
-:::{.cr-crossfade cr-from="mypoem" cr-to="mermaid"}
+:::{.cr-crossfade cr-from="mypoem" cr-to="mylimerick"}
+And here is a short limerick.
+:::
+
+| {#something .myclass cr-id="mylimerick" myattr="true"}
+| The limerick packs [laughs anatomical]{#cr-laughs}
+|   In space that is quite economical.
+
+:::{.cr-crossfade cr-from="mylimerick" cr-to="mermaid"}
 This is a mermaid diagram
 :::
 
