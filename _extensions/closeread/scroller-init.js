@@ -7,9 +7,10 @@
    the right syntax we can get away with a single init block for everyone */
 
 console.log("Initialising scrollers...")
+const stepSelector = "[data-cr-from], [data-cr-to], [data-cr-in]"
+let currentIndex
 
 document.addEventListener("DOMContentLoaded", () => {
-
 
   // first, let's read our options in from the dom
   const debugMode =
@@ -35,40 +36,39 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("Warning: Quarto OJS module not found")
   }
 
+  // let currentIndex;
+
   const scroller = scrollama();
   scroller
     .setup({
-      step: ".cr-crossfade",
+      step: stepSelector,
       offset: 0.5,
       progress: true,
       debug: debugMode
     })
     .onStepEnter((response) => {
-      // { element, index, direction }
 
       console.log("Element " + response.index + "entering as we scroll " +
       response.direction);
       
       if (response.direction == "down") {
         ojsScrollerSection?.define("crScrollerSection", response.index);
-        recalculateActiveSteps(response.index + 1);
-         // TODO - focus effects
+        currentIndex = response.index + 1
+        recalculateActiveSteps();
       } else {
          // console.log("Up and in event ignored")
       }
     })
     .onStepExit((response) => {
-      // { element, index, direction }
 
-      
       console.log("Element " + response.index + "exiting as we scroll " +
       response.direction);
       
       if (response.direction == "up") {
-        // as above, but up to the _prevoius_ element
+        // as above, but up to the _previous_ element
         ojsScrollerSection?.define("crScrollerSection", response.index - 1);
-        recalculateActiveSteps(response.index);
-        // TODO - focus effects
+        currentIndex = response.index
+        recalculateActiveSteps();
       } else {
         // console.log("Down and out event ignored")
       }
@@ -76,7 +76,6 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .onStepProgress((response) => {
       // { element, index, progress }
-      // console.log("Progress: ", response.progress + " " + response.direction)
       ojsScrollerProgress?.define("crScrollerProgress",
         response.progress.toLocaleString("en-US", {
           style: "percent"
@@ -85,8 +84,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     });
 
-    // TODO - also need a window resize watcher to rescale poems that are active
-    window.addEventListener("resize", rescaleActivePoem)
+    // also recalc transitions and highlights on window resize
+    window.addEventListener("resize", d => recalculateActiveSteps())
 
  });
 
@@ -96,101 +95,169 @@ document.addEventListener("DOMContentLoaded", () => {
    position.
    (note that sticky elements use the `cr-id` attribute on the user side, but it
    appears in the rendered html as `data-cr-id`.) */
-function recalculateActiveSteps(indexTo) {
+function recalculateActiveSteps() {
 
-  let allStickies = Array.from(document.querySelectorAll("[data-cr-id]"));
-  let allSteps = Array.from(document.querySelectorAll(".cr-crossfade"));
+  const allStickies = Array.from(document.querySelectorAll("[data-cr-id]"));
+  const allSteps = Array.from(document.querySelectorAll(stepSelector));
+  // TODO - how to handle anchor links, where page load may not be at top?
+  const priorSteps = allSteps.slice(0, currentIndex || 0);
 
-  // 1. reset all elements
+  // reset all elements
   allStickies.forEach(node => node.classList.remove("cr-active"));
 
-  // we need to turn back on elements that most recently featured in a
-  // "to" block rather than a "from" block (or nothing)
-
-  // focus on steps up to `indexTo`
-  const priorSteps = allSteps.slice(0, indexTo);
-
-  // start with an empty set of ids to enable
+  
+  // replay the vertical transition progress: remove sticky targets if they've
+  // been transitioned `from` and add them back if they're transitioned `to`
+  // NOTE - why is this only triggering once when
+  /// priorSteps.length > 1?
   stickiesToEnable = new Set();
-
-  // for each step, remove the ones that feature in the "from" and add
-  // NOTE - why is this only triggering once when priorSteps.length > 1?
   priorSteps.forEach(node => {
 
+    // from/to comma-sep strings -> arrays -> sets -> remove/add stickies
     const nodeFromIDs = node.getAttribute("data-cr-from");
-    if (nodeFromIDs !== null) {
-      const fromIDSet = new Set(nodeFromIDs.split(/,\s*/));
-      fromIDSet.forEach(id => stickiesToEnable.delete(id));
-    }
-    const nodeToIDs = node.getAttribute("data-cr-to");
-    if (nodeToIDs !== null) {
-      const toIDSet = new Set(nodeToIDs.split(/,\s*/));
-      toIDSet.forEach(id => stickiesToEnable.add(id));
-    }
+    const nodeToIDs   = node.getAttribute("data-cr-to");
+    (new Set(nodeFromIDs?.split(/,\s*/)))
+      .forEach(id => stickiesToEnable.delete(id));
+    (new Set(nodeToIDs?.split(/,\s*/)))
+      .forEach(id => stickiesToEnable.add(id));
+
   });
 
-  // now we enable whichever ids are left on stickiesToEnable
-  stickiesToEnable.forEach(id => {
-    const el = document.getElementById(id)
-    const targets = document.querySelectorAll("[data-cr-id=" + id + "]")
-    if (targets.length == 1) {
-      targets.forEach(el => updateVisibleElement(el))
-    } else if (targets.length > 1) {
-      console.error("Multiple elements with cr-id=" + id +
-        ". Please ensure cr-id attributes are unique.")
-    } else {
-      console.error("Can't find cr-id=" + id)
+  // each sticky left post-replay needs to be enabled, if it is valid, and then
+  // focus effects need to be applied
+  stickiesToEnable.forEach(stickyId => {
+    const targets = document.querySelectorAll("[data-cr-id=" + stickyId + "]")
+
+    if (targets.length == 0) {
+      throw Error("Can't find cr-id=" + stickyId +
+        ". Please ensure the element you're transitioning to exists.")
     }
-  });
+    if (targets.length > 1) {
+      throw Error("Multiple elements with cr-id=" + stickyId +
+        ". Please ensure cr-id attributes are unique.")
+    }
+
+    // do the visibility update
+    targets[0].classList.add("cr-active")
+      if (targets[0].classList.contains("cr-poem")) {
+        updateActivePoem(targets[0], priorSteps)
+      }
+
+
+  })
 
   console.log("Active list: " + Array.from(stickiesToEnable).join(", "))
 }
 
-function rescaleElement(el, paddingX = 50, paddingY = 50) {
-
-  console.log("Rescaling element:", el)
-  
-  // get dimensions of element and its container
-  const container = el.closest(".sticky-col-stack")
-  
-  const elHeight = el.offsetHeight
-  const elWidth = el.offsetWidth
-  const containerHeight = container.offsetHeight - (paddingY * 2)
-  const containerWidth = container.offsetWidth - (paddingX * 2)
-
-  const scaleHeight = elHeight / containerHeight
-  const scaleWidth = elWidth / containerWidth
-
-  const maxScale = Math.max(scaleHeight, scaleWidth)
-
-  // scale down from the top (adjusting for padding) or scale up from the centre
-  // NOTE - not sure why this bias exists; should test across browsers
-  // NOTE - also prefer to use style.transform and style["transform-origin"] to
-  // avoid wiping out other styles
-  if (elHeight > containerHeight) {
-    el.setAttribute("style",
-      `transform-origin: top center; transform: translateY(${paddingY}px) scale(${1 / maxScale});`)
-  } else {
-    el.setAttribute("style",
-      `transform-origin: center center; transform: scale(${1 / maxScale});`)
-  }
-}
-
 // make the given element active. if it's a poem, rescale it
-function updateVisibleElement(el) {
-  el.classList.add("cr-active")
-  if (el.classList.contains("cr-poem")) {
+function updateActivePoem(el, priorSteps) {
+  console.log("Updating poem")
+
+  const elId = el.getAttribute("data-cr-id")
+
+  // move work looking for focus element here
+  // TODO - now we've found the sticky to make visible, we need to determine
+  // its highlight state
+  // * traverse from the target's index (???) to
+  //   the index that triggered this update (indexTo)
+
+  // active highlight is the most recent step with `cr-in` of this sticky
+  // console.log("Prior steps:", priorSteps)
+  // priorSteps.map(d => console.log("cr-id of d is ", d.getAttribute("data-cr-in")))
+
+  const activeHighlight = priorSteps
+    .filter(d => {
+      console.log("Filtering prior step d:", d)
+      return d.getAttribute("data-cr-in") == elId
+    })
+    .at(-1)
+    ?.getAttribute("data-cr-highlight")
+
+  console.log("Active highlight:", activeHighlight)
+
+  // no active highlight? 
+  if (activeHighlight == undefined) {
+    console.log("No active poem highlight; rescale to full view")
     rescaleElement(el)
+  } else {
+    console.log("Found a highlight; searching")
+    // highlights can currently be span ids. planning line num sets in future
+    const highlightedSpan = el.querySelector("#" + activeHighlight)
+    if (highlightedSpan != null) {
+      console.log("Valid span found; zooming in")
+      rescaleElement(el, highlightedSpan)
+    } else if (false) {
+      // TODO - could activeHighlight be a set of line numbers?
+    } else {
+      throw Error("Could not identify `cr-in` as either a span ID or " +
+        "a set of comma-separated line numbers. If you are specifying an ID, " +
+        "please ensure you omit the preceding #." )
+    }
   }
 }
 
-// on window resize, look up the .cr-active element. if it's a poem, rescale it
-function rescaleActivePoem() {
-  document.querySelectorAll(".cr-active").forEach(
-    el => {
-      if (el.classList.contains("cr-poem")) {
-        rescaleElement(el)
+/* Sets transform properties on an `el` to either:
+   (if focusEl is not given) make the entire `el` visible within its container
+   (if focusEl is given) make the entire `focusEl` visible within the cntnr */
+   function rescaleElement(el, focusEl, paddingX = 50, paddingY = 50) {
+
+    console.log("Rescaling element:", el)
+    
+    // get dimensions of element and its container
+    const container = el.closest(".sticky-col-stack")
+    
+    // TODO - use scrollWidth and scrollHeight here instead?
+    const elHeight = el.offsetHeight
+    const elWidth = el.offsetWidth
+    const containerHeight = container.offsetHeight - (paddingY * 2)
+    const containerWidth = container.offsetWidth - (paddingX * 2)
+
+    // find ALL spans within the `el` and remove `.cr-hl`
+    el.querySelectorAll("span[id]")
+      .forEach(d => d.classList.remove("cr-hl"))
+  
+    if (focusEl == undefined) {
+      el.classList.remove("cr-hl-within")
+
+      // if there's no focusEl, base the scale factor on el's container
+      const scaleHeight = elHeight / containerHeight
+      const scaleWidth = elWidth / containerWidth
+      let origin, translateY
+
+      // TODO - make the transform anchor the centre of el
+      // anchor = "tans"
+      const scale = 1 / Math.max(scaleHeight, scaleWidth)
+      if (elHeight > containerHeight) {
+        origin = "top center"
+        translateY = `translateY(${paddingY}px)`
+      } else {
+        origin = "center center"
+        translateY = `translateY(0)`
       }
-    }
-  )
-}
+  
+      el.setAttribute("style",
+        `transform-origin: ${origin}; transform: ${translateY} scale(${scale});;`)
+  
+    } else {
+      // if there IS a focusEl, scale is based on span
+      el.classList.add("cr-hl-within")
+      focusEl.classList.add("cr-hl")
+      
+      const focusHeight = focusEl.offsetHeight
+      const focusWidth = focusEl.offsetWidth
+      const scaleWidth = focusWidth / containerWidth
+      const scaleHeight = focusHeight / containerHeight
+      const scale = 1 / Math.max(scaleHeight, scaleWidth)
+      
+      // also need anchor point! i _think_ the transform-origin should be
+      // unscaled, but the translation to bring it to center should be scaled?
+      // TODO - this math ain't workin'
+      const anchorX = ((focusWidth / 2) - (elWidth / 2))
+      const anchorY = ((focusHeight / 2) - (elHeight / 2))
+
+      el.setAttribute("style",
+        `transform-origin: ${anchorX}px ${anchorY}px; transform: translate(${anchorX * scale}px, ${anchorY * scale}px) scale(${scale});`)
+  
+    }    
+  }
+  

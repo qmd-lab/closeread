@@ -69,17 +69,29 @@
 
 .cr-poem {
 
-  code {
-    // just a basic system serif font stack
-    font-family: Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
-  }
-
+  font-family: Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+  white-space: pre;
+  line-height: 1em;
   transform-origin: center center;
-  // not sure whether we want transition: transform on load
+  transition:
+    color 1s linear,
+    transform 1s ease-in-out,
+    transform-origin 1s ease-in-out;
 
   // debug styling
   background-color: rgba(255, 255, 0, 0.5);
   border: 1px solid rgba(255, 160, 0, 0.5);
+
+
+  // fade the rest of the poem out when there's a highlight active
+  &.cr-hl-within {
+    color: rgba(0, 0, 0, 0.5);
+  }
+
+  .cr-hl {
+    color: rgba(0, 0, 0, 1);
+    font-weight: bold;
+  }
 }
 
 
