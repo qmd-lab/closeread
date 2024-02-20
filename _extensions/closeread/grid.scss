@@ -13,24 +13,19 @@
   
   .sidebar-col {
     grid-column: 1;
+    background: black;
+    color: white;
+    padding: 7px;
+    
     
     /* extended wrapper around content to allow early scroll detection */
     > * {
-      padding-block-start: 20svh;
-      padding-block-end: 20svh;
+      padding-block-start: 40svh;
+      padding-block-end: 40svh;
       vertical-align: middle;
       // debug styling
-      background: rgba(255, 255, 0, 0.5);
-      border: 1px solid rgba(255, 166, 0, 0.5);
-
-      /* styling for actual content (*/
-      > * {
-        padding: 15px;
-        // debug
-        background: rgba(0, 208, 255, 0.5);
-        border: 1px solid rgba(0, 115, 255, 0.5);
-        border-radius: 5px;
-      }
+      //background: rgba(255, 255, 0, 0.5);
+      //border: 1px solid rgba(255, 166, 0, 0.5);
 
     p {
       margin-bottom: 0;
