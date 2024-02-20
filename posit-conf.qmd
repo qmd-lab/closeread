@@ -1,13 +1,16 @@
 ---
+title: Closeread
+subtitle: A Quarto Extension
 format: 
   closeread-html:
     debug-mode: false
+    theme:
+      - "_extensions/closeread/grid.scss"
+      - "posit-conf.scss"
 engine: none
 ---
 
 ::::: {.cr-layout}
-
-# Closeread
 
 Hello there.
 
@@ -25,7 +28,9 @@ Closeread is a Quarto extension that makes a wide range of scrollytelling techni
 Finally, Closeread allows authors with experience in Observable JS to write their own animated graphics that update smoothly as scrolling progresses.
 :::
 
+:::{.cr-crossfade cr-from="abstract"}
 But then I read the (actually not very) fine print.
+:::
 
 :::{.cr-crossfade cr-from="abstract" cr-to="application"}
 I saw this.
@@ -33,8 +38,9 @@ I saw this.
 
 ![](posit-video.png){cr-id="application"}
 
-
-Not a problem... 40 seconds left!
+:::{.cr-crossfade cr-from="application"}
+Not a problem... 40 seconds left...
+:::
 
 :::{.cr-crossfade cr-from="application" cr-to="video"}
 Let me say hello in person.
