@@ -48,6 +48,15 @@ Not a problem.
 Let me say hello in person.
 :::
 
+:::{cr-id="video"}
+<!-- <iframe width="480" height="270" src="https://www.youtube.com/embed/S68i7Oka8G4?si=gmZviGxNdyyCVQUF&amp" frameborder="0" allow="autoplay"></iframe> -->
+
+<iframe src="https://drive.google.com/file/d/1Mju7x6qRmyx-iC7PEyIGAUVph5RVjiYh/preview" width="480" height="270" allow="autoplay"></iframe>
+
+<!-- ![](closeread1.mov) -->
+
+:::
+
 \
 
 :::::
