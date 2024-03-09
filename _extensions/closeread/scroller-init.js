@@ -181,9 +181,16 @@ function rescaleElement(el, focusEl) {
 
 /* scalePoemFull:
   given an element `el`, rescales it to fill its containing .sticky-col-stack */
-function scalePoemFull(el, paddingX = 50, paddingY = 50) {
+function scalePoemFull(el, paddingX = 75, paddingY = 50) {
   console.log("Focusing on whole poem")
-  
+
+  /* we need to temporarily disable `max-height: 100vh` to get the poem's real
+    height, or it won't scale properly! thankfully it remains fully visible
+    regardless of its layout height */
+  console.log("Poem height before removing maxHeight:", el.offsetHeight)
+  el.style.setProperty("max-height", "none")
+  console.log("Poem height after removing maxHeight:", el.offsetHeight)
+
   el.classList.remove("cr-hl-within")
 
   // get dimensions of element and its container
@@ -194,8 +201,10 @@ function scalePoemFull(el, paddingX = 50, paddingY = 50) {
   const elWidth = el.offsetWidth
   const containerHeight = container.offsetHeight - (paddingY * 2)
   const containerWidth = container.offsetWidth - (paddingX * 2)
+
+  // restore max-height now that we have real height for calc
+  el.style.setProperty("max-height", "100vh")
   
-    
   const scaleHeight = elHeight / containerHeight
   const scaleWidth = elWidth / containerWidth
   const scale = 1 / Math.max(scaleHeight, scaleWidth)
@@ -210,8 +219,15 @@ function scalePoemFull(el, paddingX = 50, paddingY = 50) {
    given an element `el` and a span `focusEl` within it, rescales and translates
    `el` so that `focusEl` is vertically centred and its line fills the
    containing .sticky-col-stack */
-function scalePoemToSpan(el, focusEl, paddingX = 50, paddingY = 50) {
+function scalePoemToSpan(el, focusEl, paddingX = 75, paddingY = 50) {
   console.log("Focusing on span within poem")
+
+  /* we need to temporarily disable `max-height: 100vh` to get the poem's real
+    height, or it won't scale properly! thankfully it remains fully visible
+    regardless of its layout height */
+  console.log("Poem height before removing maxHeight:", el.offsetHeight)
+  el.style.setProperty("max-height", "none")
+  console.log("Poem height after removing maxHeight:", el.offsetHeight)
     
   el.classList.add("cr-hl-within")
   focusEl.classList.add("cr-hl")
@@ -224,6 +240,9 @@ function scalePoemToSpan(el, focusEl, paddingX = 50, paddingY = 50) {
   const elWidth = el.offsetWidth
   const containerHeight = container.offsetHeight - (paddingY * 2)
   const containerWidth = container.offsetWidth - (paddingX * 2)
+
+  // restore max-height now that we have real height for calc
+  el.style.setProperty("max-height", "100vh")
   
   const focusHeight = focusEl.offsetHeight
   const focusTop = focusEl.offsetTop

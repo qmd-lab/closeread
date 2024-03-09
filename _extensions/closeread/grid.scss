@@ -66,6 +66,12 @@
 .cr-poem {
 
   font-family: Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+  
+  /* need large font to stop safari text blurriness, but max-height to stop
+   other stickies from being pushed down by pre-scaled poem size */
+  max-height: 100vh; 
+  font-size: 300%;
+
   white-space: pre;
   line-height: 1em;
   
