@@ -6,7 +6,6 @@
    although users may have several scrollers in one quarto doc, i think with
    the right syntax we can get away with a single init block for everyone */
 
-console.log("Initialising scrollers...")
 const stepSelector = "[data-cr-from], [data-cr-to], [data-cr-in]"
 let currentIndex
 
@@ -27,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
   ojsScrollerSection?.define("crScrollerSection", null);
   ojsScrollerProgress?.define("crScrollerProgress", null);
   if (ojsModule === undefined) {
-    console.log("Warning: Quarto OJS module not found")
+    console.error("Warning: Quarto OJS module not found")
   }
 
   // let currentIndex;
@@ -41,30 +40,20 @@ document.addEventListener("DOMContentLoaded", () => {
       debug: debugMode
     })
     .onStepEnter((response) => {
-
-      console.log("Element " + response.index + "entering as we scroll " +
-      response.direction);
       
       if (response.direction == "down") {
         ojsScrollerSection?.define("crScrollerSection", response.index);
         currentIndex = response.index + 1
-        recalculateActiveSteps();
-      } else {
-         // console.log("Up and in event ignored")
+        recalculateActiveSteps()
       }
     })
     .onStepExit((response) => {
-
-      console.log("Element " + response.index + "exiting as we scroll " +
-      response.direction);
       
       if (response.direction == "up") {
         // as above, but up to the _previous_ element
         ojsScrollerSection?.define("crScrollerSection", response.index - 1);
         currentIndex = response.index
-        recalculateActiveSteps();
-      } else {
-        // console.log("Down and out event ignored")
+        recalculateActiveSteps()
       }
 
     })
@@ -140,45 +129,27 @@ function recalculateActiveSteps() {
 
   })
 
-  console.log("Active list: " + Array.from(stickiesToEnable).join(", "))
 }
 
 // make the given element active. if it's a poem, rescale it
 function updateActivePoem(el, priorSteps) {
-  console.log("Updating poem")
 
   const elId = el.getAttribute("data-cr-id")
 
-  // move work looking for focus element here
-  // TODO - now we've found the sticky to make visible, we need to determine
-  // its highlight state
-  // * traverse from the target's index (???) to
-  //   the index that triggered this update (indexTo)
-
   // active highlight is the most recent step with `cr-in` of this sticky
-  // console.log("Prior steps:", priorSteps)
-  // priorSteps.map(d => console.log("cr-id of d is ", d.getAttribute("data-cr-in")))
 
   const activeHighlight = priorSteps
-    .filter(d => {
-      console.log("Filtering prior step d:", d)
-      return d.getAttribute("data-cr-in") == elId
-    })
+    .filter(d => d.getAttribute("data-cr-in") == elId)
     .at(-1)
     ?.getAttribute("data-cr-highlight")
 
-  console.log("Active highlight:", activeHighlight)
-
   // no active highlight? 
   if (activeHighlight == undefined) {
-    console.log("No active poem highlight; rescale to full view")
     rescaleElement(el)
   } else {
-    console.log("Found a highlight; searching")
     // highlights can currently be span ids. planning line num sets in future
     const highlightedSpan = el.querySelector("#" + activeHighlight)
     if (highlightedSpan != null) {
-      console.log("Valid span found; zooming in")
       rescaleElement(el, highlightedSpan)
     } else if (false) {
       // TODO - could activeHighlight be a set of line numbers?
@@ -194,8 +165,6 @@ function updateActivePoem(el, priorSteps) {
    (if focusEl is not given) make the entire `el` visible within its container
    (if focusEl is given) make the entire `focusEl` visible within the cntnr */
 function rescaleElement(el, focusEl, paddingX = 50, paddingY = 50) {
-
-    console.log("Rescaling element:", el)
     
     // get dimensions of element and its container
     const container = el.closest(".sticky-col-stack")
@@ -213,20 +182,27 @@ function rescaleElement(el, focusEl, paddingX = 50, paddingY = 50) {
     /* if there's no focusEl, base the scale factor on el's container
     // if there IS a focusEl, scale is based poem width but not height, and
     // anchor is based on the span's location */
+
     
     if (focusEl == undefined) {
       el.classList.remove("cr-hl-within")
       
+      console.log("Focusing on whole poem")
+
       const scaleHeight = elHeight / containerHeight
       const scaleWidth = elWidth / containerWidth
 
       const scale = 1 / Math.max(scaleHeight, scaleWidth)
 
+
       // apply styles
       el.style.setProperty("transform-origin", "center center")
-      el.style.setProperty("transform", `scale(${scale})`)
+      el.style.setProperty("transform",
+        `matrix(${scale}, 0, 0, ${scale}, 0, 0)`)
   
     } else {
+
+      console.log("Focusing on span within poem")
       
       el.classList.add("cr-hl-within")
       focusEl.classList.add("cr-hl")
@@ -250,3 +226,4 @@ function rescaleElement(el, focusEl, paddingX = 50, paddingY = 50) {
     }    
   }
   
+
