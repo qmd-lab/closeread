@@ -108,31 +108,7 @@ This is a poem. It's called ["Bellringer", by Rita Dove](https://www.newyorker.c
 | of my birth]{#cr-birth} and Mr. Jefferson’s death
 | in one breath, voices [dusted with wonderment]{#cr-wonder},
 | faint sunlight quivering on a hidden breeze.
-| 
-| Ad qui reprehenderit aliquip fugiat nostrud
-| laborum amet et nostrud eu excepteur eu duis
-| dolore excepteur. Laborum amet culpa pariatur
-| veniam eu. Pariatur laboris sit culpa laboris
-| qui ipsum in enim sit eiusmod ullamco irure.
-| Aliqua qui et nulla eiusmod occaecat anim.
-| Esse laboris occaecat sit id consectetur in
-| magna reprehenderit ut quis sit. Aliquip
-| cupidatat cupidatat nostrud proident in.
-| 
-| Fugiat sint aliquip quis aute reprehenderit. Lorem
-| ullamco laboris minim eiusmod elit laborum sit amet
-| proident eiusmod sunt aliquip ex. Ea velit nisi eu
-| sunt duis irure ipsum officia non fugiat laborum.
-| Adipisicing non tempor consequat culpa sunt aliqua
-| fugiat veniam.
-| 
-| Minim tempor enim labore. Quis voluptate ad sint anim
-| velit culpa proident quis adipisicing irure eiusmod
-| minim excepteur. Officia occaecat cillum ex nulla
-| ipsum incididunt. Anim proident Lorem veniam
-| consectetur quis proident eu et sunt. Lorem culpa et
-| deserunt et elit ut elit cupidatat laboris elit veniam
-| enim est amet nisi. Aliquip velit commodo exercitation.
+
 
 :::{cr-in="mypoem" cr-highlight="cr-born"}
 The author refers to their birth twice: one here...
