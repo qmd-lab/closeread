@@ -139,9 +139,9 @@ function recalculateActiveSteps() {
 
     // do the visibility update
     targets[0].classList.add("cr-active")
-      if (targets[0].classList.contains("cr-poem")) {
-        updateActivePoem(targets[0], priorSteps)
-      }
+    if (targets[0].classList.contains("cr-poem")) {
+      updateActivePoem(targets[0], priorSteps)
+    }
 
 
   })
@@ -199,7 +199,7 @@ function updateActivePoem(el, priorSteps) {
 /* Sets transform properties on an `el` to either:
    (if focusEl is not given) make the entire `el` visible within its container
    (if focusEl is given) make the entire `focusEl` visible within the cntnr */
-   function rescaleElement(el, focusEl, paddingX = 50, paddingY = 50) {
+function rescaleElement(el, focusEl, paddingX = 50, paddingY = 50) {
 
     console.log("Rescaling element:", el)
     
@@ -216,47 +216,42 @@ function updateActivePoem(el, priorSteps) {
     el.querySelectorAll("span[id]")
       .forEach(d => d.classList.remove("cr-hl"))
   
+    /* if there's no focusEl, base the scale factor on el's container
+    // if there IS a focusEl, scale is based poem width but not height, and
+    // anchor is based on the span's location */
+    
     if (focusEl == undefined) {
       el.classList.remove("cr-hl-within")
-
-      // if there's no focusEl, base the scale factor on el's container
+      
       const scaleHeight = elHeight / containerHeight
       const scaleWidth = elWidth / containerWidth
-      let origin, translateY
 
-      // TODO - make the transform anchor the centre of el
-      // anchor = "tans"
       const scale = 1 / Math.max(scaleHeight, scaleWidth)
-      if (elHeight > containerHeight) {
-        origin = "top center"
-        translateY = `translateY(${paddingY}px)`
-      } else {
-        origin = "center center"
-        translateY = `translateY(0)`
-      }
-  
-      el.setAttribute("style",
-        `transform-origin: ${origin}; transform: ${translateY} scale(${scale});;`)
+
+      // apply styles
+      el.style.setProperty("transform-origin", "center center")
+      el.style.setProperty("transform", `scale(${scale})`)
   
     } else {
-      // if there IS a focusEl, scale is based on span
+      
       el.classList.add("cr-hl-within")
       focusEl.classList.add("cr-hl")
       
       const focusHeight = focusEl.offsetHeight
-      const focusWidth = focusEl.offsetWidth
-      const scaleWidth = focusWidth / containerWidth
+      const focusTop = focusEl.offsetTop
+      
+      const anchorY = (focusTop + (focusHeight / 2))
+      const centreDeltaY = (elHeight / 2) - anchorY
+
+      // note scaleWidth uses the whole line, not just the span width
+      const scaleWidth = elWidth / containerWidth
       const scaleHeight = focusHeight / containerHeight
       const scale = 1 / Math.max(scaleHeight, scaleWidth)
-      
-      // also need anchor point! i _think_ the transform-origin should be
-      // unscaled, but the translation to bring it to center should be scaled?
-      // TODO - this math ain't workin'
-      const anchorX = ((focusWidth / 2) - (elWidth / 2))
-      const anchorY = ((focusHeight / 2) - (elHeight / 2))
 
-      el.setAttribute("style",
-        `transform-origin: ${anchorX}px ${anchorY}px; transform: translate(${anchorX * scale}px, ${anchorY * scale}px) scale(${scale});`)
+      // apply styles
+      el.style.setProperty("transform-origin", `50% ${anchorY}px`)
+      el.style.setProperty("transform",
+        `translateY(${centreDeltaY}px) scale(${scale})`)
   
     }    
   }
