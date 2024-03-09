@@ -166,7 +166,7 @@ function updateActivePoem(el, priorSteps) {
    given a poem element `el` (and potentially a contained span `focusEl`),
    resets the focus status of a poem's highlight spans, then rescales (and
    potentially translates) the poem so that either the whole thing is visible
-   or the  line containing `focusEl` is visible and centred */
+   or the  line containing `focusEl` is visible and centerd */
 function rescaleElement(el, focusEl) {
   
   // find ALL spans within the `el` and remove `.cr-hl`
@@ -199,16 +199,16 @@ function scalePoemFull(el, paddingX = 75, paddingY = 50) {
   const scaleWidth = elWidth / containerWidth
   const scale = 1 / Math.max(scaleHeight, scaleWidth)
   
-  const centreDeltaY = (elHeight - el.offsetHeight) * scale / -2
+  const centerDeltaY = (elHeight - el.offsetHeight) * scale / -2
 
   // apply styles
   el.style.setProperty("transform",
-    `matrix(${scale}, 0, 0, ${scale}, 0, ${centreDeltaY})`)
+    `matrix(${scale}, 0, 0, ${scale}, 0, ${centerDeltaY})`)
 }
 
 /* scalePoemToSpan:
    given an element `el` and a span `focusEl` within it, rescales and translates
-   `el` so that `focusEl` is vertically centred and its line fills the
+   `el` so that `focusEl` is vertically centerd and its line fills the
    containing .sticky-col-stack */
 function scalePoemToSpan(el, focusEl, paddingX = 75, paddingY = 50) {
 
@@ -232,10 +232,10 @@ function scalePoemToSpan(el, focusEl, paddingX = 75, paddingY = 50) {
   const scaleHeight = focusHeight / containerHeight
   const scale = 1 / Math.max(scaleHeight, scaleWidth)
   
-  const centreDeltaY = (focusCentreY - (el.offsetHeight / 2)) * -1
+  const centerDeltaY = (focusCentreY - (el.offsetHeight / 2)) * -1
 
   // apply styles
   el.style.setProperty("transform",
-    `matrix(${scale}, 0, 0, ${scale}, 0, ${centreDeltaY})`)
+    `matrix(${scale}, 0, 0, ${scale}, 0, ${centerDeltaY})`)
 
 }
