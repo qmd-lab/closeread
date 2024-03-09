@@ -251,7 +251,7 @@ function rescaleElement(el, focusEl, paddingX = 50, paddingY = 50) {
       // apply styles
       el.style.setProperty("transform-origin", `50% ${anchorY}px`)
       el.style.setProperty("transform",
-        `translateY(${centreDeltaY}px) scale(${scale})`)
+        `matrix(${scale}, 0, 0, ${scale}, 0, ${centreDeltaY})`)
   
     }    
   }
