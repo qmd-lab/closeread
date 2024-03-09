@@ -12,9 +12,10 @@ let currentIndex
 document.addEventListener("DOMContentLoaded", () => {
 
   // if debugging, add .cr-debug to the body 
-  const debugMode = document
+  const debugOption = document
     .querySelector("meta[cr-debug-mode]")?.getAttribute("cr-debug-mode")
-  if (debugMode === "true") {
+  const debugMode = debugOption === "true"
+  if (debugMode) {
     console.info("Close Read: debug mode ON")
     document.body.classList.add("cr-debug")
   }
