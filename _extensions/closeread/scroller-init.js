@@ -166,64 +166,64 @@ function updateActivePoem(el, priorSteps) {
    (if focusEl is given) make the entire `focusEl` visible within the cntnr */
 function rescaleElement(el, focusEl, paddingX = 50, paddingY = 50) {
     
-    // get dimensions of element and its container
-    const container = el.closest(".sticky-col-stack")
+  // get dimensions of element and its container
+  const container = el.closest(".sticky-col-stack")
+  
+  // TODO - use scrollWidth and scrollHeight here instead?
+  const elHeight = el.offsetHeight
+  const elWidth = el.offsetWidth
+  const containerHeight = container.offsetHeight - (paddingY * 2)
+  const containerWidth = container.offsetWidth - (paddingX * 2)
+
+  // find ALL spans within the `el` and remove `.cr-hl`
+  el.querySelectorAll("span[id]")
+    .forEach(d => d.classList.remove("cr-hl"))
+
+  /* if there's no focusEl, base the scale factor on el's container
+  // if there IS a focusEl, scale is based poem width but not height, and
+  // anchor is based on the span's location */
+
+  
+  if (focusEl == undefined) {
+    el.classList.remove("cr-hl-within")
     
-    // TODO - use scrollWidth and scrollHeight here instead?
-    const elHeight = el.offsetHeight
-    const elWidth = el.offsetWidth
-    const containerHeight = container.offsetHeight - (paddingY * 2)
-    const containerWidth = container.offsetWidth - (paddingX * 2)
+    console.log("Focusing on whole poem")
 
-    // find ALL spans within the `el` and remove `.cr-hl`
-    el.querySelectorAll("span[id]")
-      .forEach(d => d.classList.remove("cr-hl"))
-  
-    /* if there's no focusEl, base the scale factor on el's container
-    // if there IS a focusEl, scale is based poem width but not height, and
-    // anchor is based on the span's location */
+    const scaleHeight = elHeight / containerHeight
+    const scaleWidth = elWidth / containerWidth
 
+    const scale = 1 / Math.max(scaleHeight, scaleWidth)
+
+
+    // apply styles
+    el.style.setProperty("transform-origin", "center center")
+    el.style.setProperty("transform",
+      `matrix(${scale}, 0, 0, ${scale}, 0, 0)`)
+
+  } else {
+
+    console.log("Focusing on span within poem")
     
-    if (focusEl == undefined) {
-      el.classList.remove("cr-hl-within")
-      
-      console.log("Focusing on whole poem")
+    el.classList.add("cr-hl-within")
+    focusEl.classList.add("cr-hl")
+    
+    const focusHeight = focusEl.offsetHeight
+    const focusTop = focusEl.offsetTop
+    
+    const anchorY = (focusTop + (focusHeight / 2))
+    const centreDeltaY = (elHeight / 2) - anchorY
 
-      const scaleHeight = elHeight / containerHeight
-      const scaleWidth = elWidth / containerWidth
+    // note scaleWidth uses the whole line, not just the span width
+    const scaleWidth = elWidth / containerWidth
+    const scaleHeight = focusHeight / containerHeight
+    const scale = 1 / Math.max(scaleHeight, scaleWidth)
 
-      const scale = 1 / Math.max(scaleHeight, scaleWidth)
+    // apply styles
+    el.style.setProperty("transform-origin", `50% ${anchorY}px`)
+    el.style.setProperty("transform",
+      `matrix(${scale}, 0, 0, ${scale}, 0, ${centreDeltaY})`)
 
+  }    
+}
 
-      // apply styles
-      el.style.setProperty("transform-origin", "center center")
-      el.style.setProperty("transform",
-        `matrix(${scale}, 0, 0, ${scale}, 0, 0)`)
-  
-    } else {
-
-      console.log("Focusing on span within poem")
-      
-      el.classList.add("cr-hl-within")
-      focusEl.classList.add("cr-hl")
-      
-      const focusHeight = focusEl.offsetHeight
-      const focusTop = focusEl.offsetTop
-      
-      const anchorY = (focusTop + (focusHeight / 2))
-      const centreDeltaY = (elHeight / 2) - anchorY
-
-      // note scaleWidth uses the whole line, not just the span width
-      const scaleWidth = elWidth / containerWidth
-      const scaleHeight = focusHeight / containerHeight
-      const scale = 1 / Math.max(scaleHeight, scaleWidth)
-
-      // apply styles
-      el.style.setProperty("transform-origin", `50% ${anchorY}px`)
-      el.style.setProperty("transform",
-        `matrix(${scale}, 0, 0, ${scale}, 0, ${centreDeltaY})`)
-  
-    }    
-  }
-  
 
