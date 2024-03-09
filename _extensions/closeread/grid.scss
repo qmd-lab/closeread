@@ -19,17 +19,10 @@
       padding-block-start: 20svh;
       padding-block-end: 20svh;
       vertical-align: middle;
-      // debug styling
-      background: rgba(255, 255, 0, 0.5);
-      border: 1px solid rgba(255, 166, 0, 0.5);
 
       /* styling for actual content (*/
       > * {
         padding: 15px;
-        // debug
-        background: rgba(0, 208, 255, 0.5);
-        border: 1px solid rgba(0, 115, 255, 0.5);
-        border-radius: 5px;
       }
 
     p {
@@ -52,7 +45,6 @@
       [data-cr-id] {
         grid-area: 1 / 1;
         margin: auto;
-        // opacity: 0.5;     // lowering opacity for debug purposes
 
         // to be overruled when it is the active element
         opacity: 0;
@@ -76,13 +68,9 @@
   font-family: Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
   white-space: pre;
   line-height: 1em;
-  transform-origin: center center;
+  
   // transform transition is applied along with all stickies
-
-  // debug styling
-  background-color: rgba(255, 255, 0, 0.5);
-  border: 1px solid rgba(255, 160, 0, 0.5);
-
+  transform-origin: center center;
 
   // fade the rest of the poem out when there's a highlight active
   &.cr-hl-within {
@@ -96,8 +84,31 @@
 }
 
 
-// debug
-.cr-debug .cr-crossfade {
-  background-color: #ffff0099;
-  border: 1px solid orange;
+/* debug styles */
+
+body.cr-debug {
+  
+  // give stickies borders
+  .cr-poem {
+    background-color: #ffff0099;
+    border: 1px solid orange;
+  }
+  
+  // make stickies slightly see-through
+  [data-cr-id] {
+    opacity: 0.8;
+  }
+
+  // sidebar content and scroll zone debug styles
+  .sidebar-col > * {
+    background: rgba(255, 255, 0, 0.5);
+    border: 1px solid rgba(255, 166, 0, 0.5);
+
+    > * {
+      background: rgba(0, 208, 255, 0.5);
+      border: 1px solid rgba(0, 115, 255, 0.5);
+      border-radius: 5px;
+    }    
+  }
+
 }

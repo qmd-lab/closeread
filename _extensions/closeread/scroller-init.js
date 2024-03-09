@@ -12,18 +12,12 @@ let currentIndex
 
 document.addEventListener("DOMContentLoaded", () => {
 
-  // first, let's read our options in from the dom
-  const debugMode =
-    document
-      .querySelector("meta[cr-debug-mode]")?.getAttribute("cr-debug-mode")
-        === "true";
-
-  // if debugging, add .cr-debug to .cr-section divs
-  // so we can add some of our own css
-  if (debugMode) {
-    document.querySelectorAll(".cr-sidebar").forEach(
-      node => node.classList.add("cr-debug")
-    )
+  // if debugging, add .cr-debug to the body 
+  const debugMode = document
+    .querySelector("meta[cr-debug-mode]")?.getAttribute("cr-debug-mode")
+  if (debugMode === "true") {
+    console.info("Close Read: debug mode ON")
+    document.body.classList.add("cr-debug")
   }
 
   // define an ojs variable if the connector module is available
