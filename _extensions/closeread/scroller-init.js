@@ -182,81 +182,59 @@ function rescaleElement(el, focusEl) {
 /* scalePoemFull:
   given an element `el`, rescales it to fill its containing .sticky-col-stack */
 function scalePoemFull(el, paddingX = 75, paddingY = 50) {
-  console.log("Focusing on whole poem")
 
-  /* we need to temporarily disable `max-height: 100vh` to get the poem's real
-    height, or it won't scale properly! thankfully it remains fully visible
-    regardless of its layout height */
-  console.log("Poem height before removing maxHeight:", el.offsetHeight)
-  el.style.setProperty("max-height", "none")
-  console.log("Poem height after removing maxHeight:", el.offsetHeight)
+  console.log("Focusing on whole poem")
 
   el.classList.remove("cr-hl-within")
 
   // get dimensions of element and its container
   const container = el.closest(".sticky-col-stack")
   
-  // TODO - use scrollWidth and scrollHeight here instead?
-  const elHeight = el.offsetHeight
-  const elWidth = el.offsetWidth
+  const elHeight = el.scrollHeight
+  const elWidth = el.scrollWidth
   const containerHeight = container.offsetHeight - (paddingY * 2)
   const containerWidth = container.offsetWidth - (paddingX * 2)
 
-  // restore max-height now that we have real height for calc
-  el.style.setProperty("max-height", "100vh")
-  
   const scaleHeight = elHeight / containerHeight
   const scaleWidth = elWidth / containerWidth
   const scale = 1 / Math.max(scaleHeight, scaleWidth)
+  
+  const centreDeltaY = (elHeight - el.offsetHeight) * scale / -2
 
   // apply styles
-  el.style.setProperty("transform-origin", "center center")
   el.style.setProperty("transform",
-    `matrix(${scale}, 0, 0, ${scale}, 0, 0)`)
+    `matrix(${scale}, 0, 0, ${scale}, 0, ${centreDeltaY})`)
 }
 
-/* scalePoemFull:
+/* scalePoemToSpan:
    given an element `el` and a span `focusEl` within it, rescales and translates
    `el` so that `focusEl` is vertically centred and its line fills the
    containing .sticky-col-stack */
 function scalePoemToSpan(el, focusEl, paddingX = 75, paddingY = 50) {
-  console.log("Focusing on span within poem")
 
-  /* we need to temporarily disable `max-height: 100vh` to get the poem's real
-    height, or it won't scale properly! thankfully it remains fully visible
-    regardless of its layout height */
-  console.log("Poem height before removing maxHeight:", el.offsetHeight)
-  el.style.setProperty("max-height", "none")
-  console.log("Poem height after removing maxHeight:", el.offsetHeight)
-    
   el.classList.add("cr-hl-within")
   focusEl.classList.add("cr-hl")
-
+  
   // get dimensions of element and its container
   const container = el.closest(".sticky-col-stack")
   
-  // TODO - use scrollWidth and scrollHeight here instead?
-  const elHeight = el.offsetHeight
-  const elWidth = el.offsetWidth
+  const elHeight = el.scrollHeight
+  const elWidth = el.scrollWidth
   const containerHeight = container.offsetHeight - (paddingY * 2)
   const containerWidth = container.offsetWidth - (paddingX * 2)
 
-  // restore max-height now that we have real height for calc
-  el.style.setProperty("max-height", "100vh")
-  
   const focusHeight = focusEl.offsetHeight
   const focusTop = focusEl.offsetTop
+  const focusCentreY = focusTop + (focusHeight / 2)
   
-  const anchorY = (focusTop + (focusHeight / 2))
-  const centreDeltaY = (elHeight / 2) - anchorY
-
   // note scaleWidth uses the whole line, not just the span width
   const scaleWidth = elWidth / containerWidth
   const scaleHeight = focusHeight / containerHeight
   const scale = 1 / Math.max(scaleHeight, scaleWidth)
+  
+  const centreDeltaY = (focusCentreY - (el.offsetHeight / 2)) * -1
 
   // apply styles
-  el.style.setProperty("transform-origin", `50% ${anchorY}px`)
   el.style.setProperty("transform",
     `matrix(${scale}, 0, 0, ${scale}, 0, ${centreDeltaY})`)
 
