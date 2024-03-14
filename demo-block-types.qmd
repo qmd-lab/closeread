@@ -87,61 +87,54 @@ $$
 :::
 
 :::{.cr-crossfade cr-from="displaymath" cr-to="mypoem"}
-This is a poem. It's called ["Bellringer", by Rita Dove](https://www.newyorker.com/culture/2019-in-review/our-year-in-poems). I've thrown some lorem ipsum on after to make it too long for most screens.
+This is a poem. It's called ["Bellringer", by Rita Dove](https://www.newyorker.com/culture/2019-in-review/our-year-in-poems).
 :::
 
-```{.cr-poem cr-id="mypoem"}
-I was given a name, it came out of a book—
-I don’t know which. I’ve been told the Great Man
-could recite every title in order on its shelf.
-Well, I was born, and that’s a good thing,
-although I arrived on the day of his passing,
+| {#longpoem .cr-poem cr-id="mypoem"}
+| I was given a name, it came out of a book—
+| I don’t know which. I’ve been told the Great Man
+| could recite every title in order on its shelf.
+| Well, [I was born]{#cr-born}, and that’s a good thing,
+| although I arrived on the day of his passing,
+| 
+| a day on which our country fell into mourning.
+| This I heard over and over, from professors
+| to farmers, even duel-scarred students;
+| sometimes, in grand company, remarked upon
+| in third person—a pretty way of saying
+| 
+| more than two men in a room means the third
+| can be ignored, as [I was when they spoke]{#cr-birth1}
+| [of my birth]{#cr-birth2} and Mr. Jefferson’s death
+| in one breath, voices [dusted with wonderment]{#cr-wonder},
+| faint sunlight quivering on a hidden breeze.
 
-a day on which our country fell into mourning.
-This I heard over and over, from professors
-to farmers, even duel-scarred students;
-sometimes, in grand company, remarked upon
-in third person—a pretty way of saying
 
-more than two men in a room means the third
-can be ignored, as I was when they spoke
-of my birth and Mr. Jefferson’s death
-in one breath, voices dusted with wonderment,
-faint sunlight quivering on a hidden breeze.
+:::{cr-in="mypoem" cr-highlight="cr-born"}
+The author refers to their birth twice: one here...
+:::
 
-Eu ipsum et cillum ex et ut duis officia et.
-Et incididunt mollit dolore mollit nisi veniam
-  id qui sit est proident eu enim duis.
-Anim aliquip consectetur ea veniam nulla do aute
-  officia proident eiusmod consequat proident.
-Et non ut tempor consectetur labore.
+:::{cr-in="mypoem" cr-highlight="cr-birth1,cr-birth2"}
+... and again, further down.
 
-Ipsum in adipisicing veniam et est adipisicing
-  eiusmod aute elit.
-Sit fugiat laborum enim.
-Qui elit velit voluptate commodo laboris eiusmod
-  fugiat quis aliquip elit in officia fugiat laborum.
-Commodo dolor fugiat eiusmod consectetur.
-Et eu ut proident voluptate tempor.
+Interestingly, Pandoc doesn't let you carry a span across two lines in a line block!
+:::
 
-Ea eu culpa id irure occaecat fugiat ullamco.
-Fugiat esse fugiat laboris nulla eiusmod
-  reprehenderit incididunt.
-Nisi consequat cillum eu ipsum anim ullamco ut.
-Fugiat veniam veniam duis aliqua ex occaecat.
-Laboris nostrud excepteur aliquip proident aliquip.
-Ex non dolor consequat laboris fugiat occaecat sint qui.
-Non commodo cillum minim aliqua non nisi anim id
-  officia est dolor.
-```
+:::{cr-in="mypoem" cr-highlight="cr-wonder"}
+But check out this phrase, right at the bottom.
+:::
 
 :::{.cr-crossfade cr-from="mypoem" cr-to="mylimerick"}
-And here is a short limerick.
+Let's look at a small limmerick.
 :::
 
-| {#something .myclass cr-id="mylimerick" myattr="true"}
+| {#something .cr-poem cr-id="mylimerick" myattr="true"}
 | The limerick packs [laughs anatomical]{#cr-laughs}
 |   In space that is quite economical.
+
+:::{cr-in="mylimerick" cr-highlight="cr-laughs"}
+The phrase 'laughs anatomical' is quite important here!
+:::
 
 :::{.cr-crossfade cr-from="mylimerick" cr-to="mermaid"}
 This is a mermaid diagram
