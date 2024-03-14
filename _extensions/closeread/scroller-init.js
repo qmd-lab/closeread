@@ -144,38 +144,37 @@ function updateActivePoem(el, priorSteps) {
     .at(-1)
     ?.getAttribute("data-cr-highlight")
 
-  // no active highlight? 
-  if (activeHighlight == undefined) {
-    rescaleElement(el)
+  // no active highlight?
+  if (activeHighlight === undefined) {
+    rescaleElement(el);
   } else {
-    // highlights can currently be span ids. planning line num sets in future
-    const highlightedSpan = el.querySelector("#" + activeHighlight)
-    if (highlightedSpan != null) {
-      rescaleElement(el, highlightedSpan)
-    } else if (false) {
-      // TODO - could activeHighlight be a set of line numbers?
+    // Split the `activeHighlight` value on commas to support multiple IDs
+    const highlightIds = activeHighlight.split(',');
+    
+    // Call rescaleElement with the first found id for focusing,
+    // or without a specific focus if no ids are found 
+    if (highlightIds) {
+      rescaleElement(el, highlightIds);
     } else {
-      throw Error("Could not identify `cr-in` as either a span ID or " +
-        "a set of comma-separated line numbers. If you are specifying an ID, " +
-        "please ensure you omit the preceding #." )
+      rescaleElement(el);
     }
   }
 }
 
 /* rescaleElement:
-   given a poem element `el` (and potentially a contained span `focusEl`),
+   given a poem element `el` (and potentially a contained ids `highlightIds`),
    resets the focus status of a poem's highlight spans, then rescales (and
    potentially translates) the poem so that either the whole thing is visible
-   or the  line containing `focusEl` is visible and centerd */
-function rescaleElement(el, focusEl) {
+   or the  line containing `highlightIds` is visible and centerd */
+function rescaleElement(el, highlightIds) {
   
   // find ALL spans within the `el` and remove `.cr-hl`
   el.querySelectorAll("span[id]").forEach(d => d.classList.remove("cr-hl"))
 
-  if (focusEl == undefined) {
+  if (highlightIds == undefined) {
     scalePoemFull(el)
   } else {
-    scalePoemToSpan(el, focusEl)
+    scalePoemToSpan(el, highlightIds)
   }    
 }
 
@@ -210,10 +209,24 @@ function scalePoemFull(el, paddingX = 75, paddingY = 50) {
    given an element `el` and a span `focusEl` within it, rescales and translates
    `el` so that `focusEl` is vertically centerd and its line fills the
    containing .sticky-col-stack */
-function scalePoemToSpan(el, focusEl, paddingX = 75, paddingY = 50) {
+function scalePoemToSpan(el, highlightIds, paddingX = 75, paddingY = 50) {
 
   el.classList.add("cr-hl-within")
-  focusEl.classList.add("cr-hl")
+  //focusEl.classList.add("cr-hl")
+  
+  highlightIds.forEach(highlightId => {
+    const trimmedId = highlightId.trim(); // Ensure no whitespace issues
+    const highlightSpan = el.querySelector(`#${trimmedId}`);
+    if (highlightSpan !== null) {
+      highlightSpan.classList.add("cr-hl");
+    } else {
+    // Handle the case where the ID does not correspond to a span
+      console.warn(`Could not find span with ID '${trimmedId}'. Please ensure the ID is correct.`);
+    }
+  });
+  
+  // for now just get first span
+  const focusEl = el.querySelector(`#${highlightIds[0].trim()}`);
   
   // get dimensions of element and its container
   const container = el.closest(".sticky-col-stack")
