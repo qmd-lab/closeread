@@ -104,8 +104,8 @@ This is a poem. It's called ["Bellringer", by Rita Dove](https://www.newyorker.c
 | in third person—a pretty way of saying
 | 
 | more than two men in a room means the third
-| can be ignored, as [I was when they spoke
-| of my birth]{#cr-birth} and Mr. Jefferson’s death
+| can be ignored, as [I was when they spoke]{#cr-birth1}
+| [of my birth]{#cr-birth2} and Mr. Jefferson’s death
 | in one breath, voices [dusted with wonderment]{#cr-wonder},
 | faint sunlight quivering on a hidden breeze.
 
@@ -114,7 +114,7 @@ This is a poem. It's called ["Bellringer", by Rita Dove](https://www.newyorker.c
 The author refers to their birth twice: one here...
 :::
 
-:::{cr-in="mypoem" cr-highlight="cr-birth"}
+:::{cr-in="mypoem" cr-highlight="cr-birth1,cr-birth2"}
 ... and again, further down.
 
 Interestingly, Pandoc doesn't let you carry a span across two lines in a line block!
