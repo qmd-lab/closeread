@@ -166,6 +166,16 @@ graph G {
 
 # The End
 
+Here's one last plot, so we can compare regular sizing:
+
+```{r}
+#| echo: true
+#| fig-cap: "This is a caption."
+#| fig-height: 4
+hist(c(5, 3, 2, 7, 9, 3, 2, 5, 7, 9, 4, 2, 4, 6, 8, 0, 9, 5,
+  3, 2))
+```
+
 
 :::{.counter style="position: fixed; top: 10px; right: 10px; background-color: skyblue; border-radius: 5px; padding: 18px 18px 0 18px;"}
 ```{ojs}

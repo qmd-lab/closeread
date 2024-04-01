@@ -21,9 +21,9 @@
       vertical-align: middle;
 
       /* styling for actual content (*/
-      > * {
-        padding: 15px;
-      }
+      // > * {
+      //   padding: 15px;
+      // }
 
     p {
       margin-bottom: 0;
@@ -61,6 +61,26 @@
       }
     }
   }
+}
+
+// mobile layout: put everything in one column with the narrative on top
+@include media-breakpoint-down(md) {
+  .cr-layout {
+    grid-template-columns: 1fr;
+    grid-template-columns: 1fr;
+    
+    .sidebar-col {
+      grid-column: 1 / 1;
+      grid-row: 1 / 1;
+      z-index: 1;
+    }
+  
+    .sticky-col {
+      grid-column: 1 / 1;
+      grid-row: 1 / 1;
+    }
+  }
+
 }
 
 .cr-poem {
