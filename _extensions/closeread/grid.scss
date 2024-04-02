@@ -59,6 +59,15 @@
       .cr-active {
         opacity: 1;
       }
+
+      // TODO - temporary workaround for quarto graph-viz svg sizing
+      .cell-output-display > div:not(.quarto-figure) > figure {
+        width: 100%;
+
+        svg {
+          max-width: 100% !important
+        }
+      }
     }
   }
 }
@@ -138,3 +147,4 @@ body.cr-debug {
   }
 
 }
+
