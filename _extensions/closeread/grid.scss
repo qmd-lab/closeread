@@ -98,11 +98,17 @@
   
   /* need large font to stop safari text blurriness, but max-height to stop
    other stickies from being pushed down by pre-scaled poem size */
-  max-height: 100vh; 
+  max-height: 100svh;
   font-size: 300%;
+
+  // ... and maybe also the same horizontally. but this will need
+  // to be adjusted for mobile/desktop!
+  max-width: 100svw;
 
   white-space: pre;
   line-height: 1em;
+
+  // and 
   
   // transform transition is applied along with all stickies
   transform-origin: center center;
