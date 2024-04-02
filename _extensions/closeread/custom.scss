@@ -5,64 +5,8 @@
 
 /*-- scss:rules --*/
 
-/* TODO: Provide custom CSS rules */
+/* debug styling */
 
-.columns.cr-sidebar {
-
-  display: flex;
-  flex-direction: row;
-  column-gap: 10%;
-  
-  // put the sticky content first if we added cr-reverse
-  &.cr-reverse {
-    flex-direction: row-reverse;
-  }
-
-  // vertical space around sidebar elements
-  // (markdown headings create sections of content that we need to account for)
-  .column.sidebar_col {
-    & > *:not(section),
-    section > * { 
-      padding-block-start: 20svh;
-      padding-block-end: 20svh;
-      vertical-align: middle;
-    }
-  }
-
-  // sticky positioning
-  .column.sticky_col {
-    padding: 20px;
-    align-self: flex-start;
-    position: sticky;
-    top: 30svh;
-
-    // using a grid to stack sticky elements on top of each other to then
-    // transition through (based on reveal's .r-stack)
-    .sticky_col_stack {
-      display: grid;
-
-      [data-cr-id] {
-        grid-area: 1 / 1;
-        margin: auto;
-        // opacity: 0.5;     // lowering opacity for debug purposes
-
-        // to be overruled when it is the active element
-        opacity: 0;
-        transition: opacity linear 0.5s;
-
-        
-      }
-
-      // show active elements (this class is applied by scrollama
-      .cr-active {
-        opacity: 1;
-      }
-      
-    }
-  }
-}
-
-// debug
 .cr-debug .cr-crossfade {
   background-color: #ffff0099;
   border: 1px solid orange;
