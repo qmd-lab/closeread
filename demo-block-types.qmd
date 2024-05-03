@@ -149,19 +149,6 @@ flowchart LR
   C --> E[Result two]
 ```
 
-:::{.cr-crossfade cr-from="mermaid" cr-to="graphviz"}
-This is a graphviz diagram
-:::
-
-```{dot}
-//| cr-id: graphviz
-graph G {
-  layout=neato
-  run -- intr;
-  intr -- runbl;
-}
-```
-
 :::
 
 # The End

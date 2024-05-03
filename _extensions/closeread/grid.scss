@@ -9,7 +9,7 @@
 
 .cr-layout {
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: minmax(150px, 1fr) minmax(350px, 2fr);
   
   .sidebar-col {
     grid-column: 1;
@@ -99,11 +99,11 @@
   /* need large font to stop safari text blurriness, but max-height to stop
    other stickies from being pushed down by pre-scaled poem size */
   max-height: 100svh;
-  font-size: 300%;
+  max-width: 100svh;
+  font-size: max(2.5vw, 2.5vh);
 
   // ... and maybe also the same horizontally. but this will need
   // to be adjusted for mobile/desktop!
-  max-width: 100svw;
 
   white-space: pre;
   line-height: 1em;
