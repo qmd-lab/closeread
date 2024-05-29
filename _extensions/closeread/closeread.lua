@@ -58,7 +58,7 @@ function make_sidebar_layout(div)
     sticky_col = pandoc.Div(sticky_col_stack,
       pandoc.Attr("", {"column", "sticky_col"}, {width = "55%"}))
     layout = pandoc.Div({narrative_col, sticky_col},
-      pandoc.Attr("", {"columns", "column-page", table.unpack(div.classes)},
+      pandoc.Attr("", {"columns", "column-screen", table.unpack(div.classes)},
       {}))
 
     return layout
