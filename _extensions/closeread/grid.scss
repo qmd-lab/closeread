@@ -1,0 +1,90 @@
+/*-- scss:defaults --*/
+
+/* TODO: Customize html appearance by setting SCSS variables */
+/* See https://quarto.org/docs/output-formats/html-themes.html#theme-options */
+
+/*-- scss:rules --*/
+
+/* TODO: Provide custom CSS rules */
+
+.cr-layout {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  
+  .sidebar-col {
+    grid-column: 1;
+    
+    /* extended wrapper around content to allow early scroll detection */
+    > * {
+      padding-block-start: 20svh;
+      padding-block-end: 20svh;
+      vertical-align: middle;
+      // debug styling
+      background: rgba(255, 255, 0, 0.5);
+      border: 1px solid rgba(255, 166, 0, 0.5);
+
+      /* styling for actual content (*/
+      > * {
+        padding: 15px;
+        // debug
+        background: rgba(0, 208, 255, 0.5);
+        border: 1px solid rgba(0, 115, 255, 0.5);
+        border-radius: 5px;
+      }
+
+    p {
+      margin-bottom: 0;
+    }
+    }
+  }
+  
+  .sticky-col {
+    grid-column: 2;
+    
+    // using a grid to stack sticky elements on top of each other to then
+    // transition through (based on reveal's .r-stack)
+    .sticky-col-stack {
+      display: grid;
+      height: 100svh;
+      position: sticky;
+      top: 0;
+
+      [data-cr-id] {
+        grid-area: 1 / 1;
+        margin: auto;
+        // opacity: 0.5;     // lowering opacity for debug purposes
+
+        // to be overruled when it is the active element
+        opacity: 0;
+        transition: opacity linear 0.5s;
+      }
+
+      // show active elements (this class is applied by scrollama
+      .cr-active {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+.cr-poem {
+
+  code {
+    // just a basic system serif font stack
+    font-family: Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+  }
+
+  transform-origin: center center;
+  // not sure whether we want transition: transform on load
+
+  // debug styling
+  background-color: rgba(255, 255, 0, 0.5);
+  border: 1px solid rgba(255, 160, 0, 0.5);
+}
+
+
+// debug
+.cr-debug .cr-crossfade {
+  background-color: #ffff0099;
+  border: 1px solid orange;
+}

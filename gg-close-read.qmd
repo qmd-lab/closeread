@@ -1,6 +1,7 @@
 ---
 format: 
-  closeread-html
+  closeread-html:
+    grid-template-columns: "1fr 1fr"
 execute: 
   echo: false
 ---

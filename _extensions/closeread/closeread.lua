@@ -4,6 +4,87 @@ quarto.log.output("===== Closeread Log =====")
 -- set defaults
 local debug_mode = false
 
+
+-- Append attributes to any cr line blocks
+function add_attributes(lineblock)
+  local first_line = lineblock.content[1]
+  
+  if first_line[1].t == "Str" and first_line[1].text:sub(1,1) == "{" then
+    local id = extractIds(first_line)[1]
+    local classes = extractClasses(first_line)
+    local attr_tab = extractAttr(first_line)
+    
+    table.remove(lineblock.content, 1)
+    lineblock = pandoc.Div(lineblock, pandoc.Attr(id, classes, attr_tab))
+  end
+  
+  return lineblock
+end
+
+function extractAttr(el)
+  local attr_tab = {}
+  local keys_tab = {}
+  local vals_tab = {}
+  local key_inds = {}
+  local ind = 0
+  
+  -- gather keys and their index
+  for _,v in ipairs(el) do
+    ind = ind + 1
+    if v.t == "Str" then
+      v.text = v.text:gsub("[{}]", "")
+      if v.text:sub(-1) == "=" then
+        table.insert(keys_tab, v.text:sub(1, -2))
+        table.insert(key_inds, ind)
+      end
+    end
+  end
+  
+  -- gather values from index + 1
+  for _,v in ipairs(key_inds) do
+    if el[v + 1].t == "Quoted" then
+      table.insert(vals_tab, el[v + 1].content[1].text)
+    else
+      table.insert(vals_tab, "")
+    end
+  end
+  
+  -- zip them together
+  for i = 1, #keys_tab do
+    attr_tab[keys_tab[i]] = vals_tab[i]
+  end
+  
+  return attr_tab
+end
+
+function extractIds(el)
+  local ids = {}
+  for _,v in ipairs(el) do
+    if v.t == "Str" then
+      v.text = v.text:gsub("[{}]", "")
+      if v.text:sub(1, 1) == "#" then
+        table.insert(ids, v.text:sub(2))
+      end
+    end
+  end
+  
+  return ids
+end
+
+function extractClasses(el)
+  local classes = {}
+  for _,v in ipairs(el) do
+    if v.t == "Str" then
+      if v.text:sub(1, 1) == "." then
+        table.insert(classes, v.text:sub(2))
+      end
+    end
+  end
+  return classes
+end
+
+
+
 -- Read in YAML options
 function read_meta(m)
 
@@ -16,10 +97,10 @@ function read_meta(m)
   
 end
 
-
+-- Construct sticky sidebar AST
 function make_sidebar_layout(div)
   
-  if div.classes:includes("cr-sidebar") then
+  if div.classes:includes("cr-layout") then
     
     sticky_blocks = div.content:walk {
       traverse = 'topdown',
@@ -52,14 +133,14 @@ function make_sidebar_layout(div)
     }
 
     narrative_col = pandoc.Div(narrative_blocks,
-      pandoc.Attr("", {"column", "sidebar_col"}, {width = "30%"}))
+      pandoc.Attr("", {"sidebar-col"}, {}))
     sticky_col_stack = pandoc.Div(sticky_blocks,
-      pandoc.Attr("", {"sticky_col_stack"}))
+      pandoc.Attr("", {"sticky-col-stack"}))
     sticky_col = pandoc.Div(sticky_col_stack,
-      pandoc.Attr("", {"column", "sticky_col"}, {width = "55%"}))
+      pandoc.Attr("", {"sticky-col"}, {}))
     layout = pandoc.Div({narrative_col, sticky_col},
-      pandoc.Attr("", {"columns", "column-screen", table.unpack(div.classes)},
-      {}))
+      pandoc.Attr("", {"cr-layout", "column-screen", table.unpack(div.classes)},
+      {style = "grid-template-columns: 1fr 3fr;"}))
 
     return layout
   end
@@ -178,6 +259,7 @@ quarto.doc.add_html_dependency({
 -- TODO - add a js scrollama setup step (can i do this with a js script + yaml?)
 
 return {
-  Meta = read_meta,
-  Div = make_sidebar_layout
+  {LineBlock = add_attributes},
+  {Meta = read_meta,
+  Div = make_sidebar_layout}
 }
