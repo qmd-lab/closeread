@@ -60,12 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .onStepProgress((response) => {
       // { element, index, progress }
-      ojsScrollerProgress?.define("crScrollerProgress",
-        response.progress.toLocaleString("en-US", {
-          style: "percent"
-        }) + " " +
-        (response.direction == "down" ? "↓" : "↑"));
-
+      ojsScrollerProgress?.define("crScrollerProgress", response.progress);
     });
 
     // also recalc transitions and highlights on window resize
