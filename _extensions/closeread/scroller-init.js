@@ -121,7 +121,8 @@ function recalculateActiveSteps() {
         ". Please ensure cr-id attributes are unique.")
     }
 
-    // do the visibility update
+    // apply effects
+    shrinkToFit(targets[0])
     targets[0].classList.add("cr-active")
     if (targets[0].classList.contains("cr-poem")) {
       updateActivePoem(targets[0], priorSteps)
@@ -131,6 +132,32 @@ function recalculateActiveSteps() {
   })
 
 }
+
+/* shrinkToFit:
+  given an element `el`, rescales it to fill its containing .sticky-col-stack */
+function shrinkToFit(el, paddingX = 75, paddingY = 50) {
+
+  console.log("Shrinking el to fit.")
+
+  // get dimensions of element and its container
+  const container = el.closest(".sticky-col-stack")
+  
+  const elHeight = el.scrollHeight
+  const elWidth = el.scrollWidth
+  const containerHeight = container.offsetHeight - (paddingY * 2)
+  const containerWidth = container.offsetWidth - (paddingX * 2)
+
+  const scaleHeight = elHeight / containerHeight
+  const scaleWidth = elWidth / containerWidth
+  const scale = 1 / Math.max(scaleHeight, scaleWidth)
+  
+  const centerDeltaY = (elHeight - el.offsetHeight) * scale / -2
+
+  // apply styles
+  el.style.setProperty("transform",
+    `matrix(${scale}, 0, 0, ${scale}, 0, ${centerDeltaY})`)
+}
+
 
 // make the given element active. if it's a poem, rescale it
 function updateActivePoem(el, priorSteps) {
