@@ -1,0 +1,42 @@
+---
+format: closeread-html
+---
+
+::::{.cr-layout}
+
+# Test Code Highlighting
+
+:::{.cr-crossfade cr-to="penguins-code"}
+What lovely code this is,
+:::
+
+I wonder: how does it work? Let's walk through it step by step.
+
+```{r}
+#| echo: true
+#| eval: false
+#| warning: false
+#| cr-id: "penguins-code"
+
+library(ggplot2)
+library(palmerpenguins)
+library(dplyr)
+ggplot(penguins, aes(x = bill_length_mm,
+                     y = flipper_length_mm,
+                     color = species)) +
+  geom_point() +
+  labs(x = "Bill Length",
+       y = "Flipper Length",
+       Species = "Species") +
+  theme_bw()
+```
+
+:::{cr-in="penguins-code" cr-highlight-lines="3"}
+The third line loads the `dplyr` R package using the `library()` function.
+:::
+
+This is an addition paragraph for spacing purposes.
+
+::::
+
+# The End
