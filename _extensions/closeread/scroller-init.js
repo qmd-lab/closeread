@@ -6,7 +6,7 @@
    although users may have several scrollers in one quarto doc, i think with
    the right syntax we can get away with a single init block for everyone */
 
-const stepSelector = "[data-cr-from], [data-cr-to], [data-cr-in]"
+const stepSelector = "[data-change-to], [data-focus-on]"
 let currentIndex
 
 document.addEventListener("DOMContentLoaded", () => {
