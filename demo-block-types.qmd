@@ -162,6 +162,18 @@ graph G {
 }
 ```
 
+:::{.cr-crossfade cr-from="graphviz" cr-to="pre-block"}
+Here is an verbatim, pre-formatted block.
+:::
+
+:::{cr-id="pre-block"}
+```
+this is the first   line
+this is the second line
+```
+:::
+
+
 :::
 
 # The End
