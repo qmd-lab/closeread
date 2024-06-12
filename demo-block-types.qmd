@@ -14,7 +14,7 @@ First paragraph.
 This is a para nested in a div. These two first bits don't trigger anything...
 :::
 
-:::{.cr-crossfade cr-to="pink"}
+:::{change-to="pink"}
 This is an image with the sticky tag on the div.
 :::
 
@@ -22,7 +22,7 @@ This is an image with the sticky tag on the div.
 x![This is a caption](pink-desktop.png)
 :::
 
-:::{.cr-crossfade cr-from="pink" cr-to="blue"}
+:::{change-to="blue"}
 This is an image with the sticky tag on Image itself.
 
 I've replaced its margin with some padding to demonstrate that you can give it a larger "surface" area on which to trigger scroll events.
@@ -38,7 +38,7 @@ Here's a little non-scrolling interlude before our next scrolly section!
 
 ::::{.cr-layout}
 
-:::{.cr-crossfade cr-to="scatter"}
+:::{change-to="scatter"}
 This is a scatterplot.
 :::
 
@@ -49,7 +49,7 @@ This is a scatterplot.
 plot(mtcars$mpg, mtcars$dist)
 ```
 
-:::{.cr-crossfade cr-from="scatter" cr-to="hist"}
+:::{change-to="hist"}
 This is a histogram.
 :::
 
@@ -62,7 +62,7 @@ This is a histogram.
 hist(mtcars$mpg)
 ```
 
-:::{.cr-crossfade cr-from="hist" cr-to="list"}
+:::{change-to="list"}
 This is a list (a block element).
 :::
 
@@ -71,7 +71,7 @@ This is a list (a block element).
 2. Banana
 :::
 
-:::{.cr-crossfade cr-from="list" cr-to="displaymath"}
+:::{change-to="displaymath"}
 This is display math, but I'm making it a bit longer so that it covers a few lines.
 :::
 
@@ -86,7 +86,7 @@ $$
 
 :::
 
-:::{.cr-crossfade cr-from="displaymath" cr-to="mypoem"}
+:::{change-to="mypoem"}
 This is a poem. It's called ["Bellringer", by Rita Dove](https://www.newyorker.com/culture/2019-in-review/our-year-in-poems).
 :::
 
@@ -110,33 +110,33 @@ This is a poem. It's called ["Bellringer", by Rita Dove](https://www.newyorker.c
 | faint sunlight quivering on a hidden breeze.
 
 
-:::{cr-in="mypoem" cr-highlight="cr-born"}
+:::{focus-on="mypoem" highlight-spans="cr-born"}
 The author refers to their birth twice: one here...
 :::
 
-:::{cr-in="mypoem" cr-highlight="cr-birth1,cr-birth2"}
+:::{focus-on="mypoem" highlight-spans="cr-birth1,cr-birth2"}
 ... and again, further down.
 
 Interestingly, Pandoc doesn't let you carry a span across two lines in a line block!
 :::
 
-:::{cr-in="mypoem" cr-highlight="cr-wonder"}
+:::{focus-on="mypoem" highlight-spans="cr-wonder"}
 But check out this phrase, right at the bottom.
 :::
 
-:::{.cr-crossfade cr-from="mypoem" cr-to="mylimerick"}
+:::{change-to="mylimerick"}
 Let's look at a small limmerick.
 :::
 
-| {#something .cr-poem cr-id="mylimerick" myattr="true"}
+| {#something .cr-poem cr-id="mylimerick"}
 | The limerick packs [laughs anatomical]{#cr-laughs}
 |   In space that is quite economical.
 
-:::{cr-in="mylimerick" cr-highlight="cr-laughs"}
+:::{focus-on="mylimerick" highlight-spans="cr-laughs"}
 The phrase 'laughs anatomical' is quite important here!
 :::
 
-:::{.cr-crossfade cr-from="mylimerick" cr-to="mermaid"}
+:::{change-to="mermaid"}
 This is a mermaid diagram
 :::
 
@@ -149,7 +149,7 @@ flowchart LR
   C --> E[Result two]
 ```
 
-:::{.cr-crossfade cr-from="mermaid" cr-to="graphviz"}
+:::{change-to="graphviz"}
 This is a graphviz diagram
 :::
 
