@@ -7,7 +7,6 @@
    the right syntax we can get away with a single init block for everyone */
 
 const stepSelector = "[data-change-to], [data-focus-on]"
-let currentIndex
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -21,17 +20,18 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // define an ojs variable if the connector module is available
+  let focusedSticky = "none";
   const ojsModule = window._ojs?.ojsConnector?.mainModule
   const ojsScrollerSection = ojsModule?.variable();
   const ojsScrollerProgress = ojsModule?.variable();
-  ojsScrollerSection?.define("crScrollerSection", null);
-  ojsScrollerProgress?.define("crScrollerProgress", null);
+  ojsScrollerSection?.define("crScrollerSection", focusedSticky);
+  ojsScrollerProgress?.define("crScrollerProgress", "none");
   if (ojsModule === undefined) {
     console.error("Warning: Quarto OJS module not found")
   }
-
-  // let currentIndex;
-
+  
+  const allStickies = Array.from(document.querySelectorAll("[data-cr-id]"));
+  console.log(allStickies);
   const scroller = scrollama();
   scroller
     .setup({
@@ -43,18 +43,25 @@ document.addEventListener("DOMContentLoaded", () => {
     .onStepEnter((response) => {
       
       if (response.direction == "down") {
-        ojsScrollerSection?.define("crScrollerSection", response.index);
-        currentIndex = response.index + 1
-        recalculateActiveSteps()
+        focusedSticky = getActiveSticky(response);
+        ojsScrollerSection?.define("crScrollerSection", focusedSticky);
+        
+        // applyFocusOn
+        allStickies.forEach(node => {node.classList.remove("cr-active")});
+        const ff = document.querySelectorAll("[data-cr-id=" + focusedSticky + "]")[0]
+        ff.classList.add("cr-active");
+        
+        // applyHighlightSpans
+        
       }
     })
     .onStepExit((response) => {
       
       if (response.direction == "up") {
-        // as above, but up to the _previous_ element
-        ojsScrollerSection?.define("crScrollerSection", response.index - 1);
-        currentIndex = response.index
-        recalculateActiveSteps()
+        activeSticky = getActiveSticky(response);
+        ojsScrollerSection?.define("crScrollerSection", activeSticky);
+        
+        //updateStickies(allStickies, activeSticky);
       }
 
     })
@@ -69,26 +76,41 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // also recalc transitions and highlights on window resize
-    window.addEventListener("resize", d => recalculateActiveSteps())
+    //window.addEventListener("resize", d => updateStickies(allStickies, allSteps));
 
  });
+ 
+function getActiveSticky(response) {
+  const changeTo = response.element.getAttribute("data-change-to");
+  const focusOn = response.element.getAttribute("data-focus-on");
 
-/* recalculateActiveSteps: recalculates which sticky elements (between the first
+  if (changeTo !== null) {
+    return changeTo;
+  } else if (focusOn !== null) {
+    return focusOn;
+  }
+}
+
+function applyFocusOn(activeSticky, allStickies, stepAttributes) {
+  allStickies.forEach(node => {
+    node.classList.remove("cr-active")
+    });
+}
+/* updateStickies: recalculates which sticky elements (between the first
    and the one before `indexTo`) need to be displayed, and gives them the class
    `.cr-active`. All elements first have that class removed regardless of
    position.
    (note that sticky elements use the `cr-id` attribute on the user side, but it
    appears in the rendered html as `data-cr-id`.) */
-function recalculateActiveSteps() {
+function updateStickies(allStickies, activeSticky) {
+  
+  // applyFocusOn(allStickies, activeSticky);
+  // applyHighlight(allStickies, activeSticky);
+  // applyZoom(allStickies, activeSticky);
 
-  const allStickies = Array.from(document.querySelectorAll("[data-cr-id]"));
-  const allSteps = Array.from(document.querySelectorAll(stepSelector));
-  // TODO - how to handle anchor links, where page load may not be at top?
-  const priorSteps = allSteps.slice(0, currentIndex || 0);
 
   // reset all elements
   allStickies.forEach(node => node.classList.remove("cr-active"));
-
   
   // replay the vertical transition progress: remove sticky targets if they've
   // been transitioned `from` and add them back if they're transitioned `to`
@@ -126,7 +148,6 @@ function recalculateActiveSteps() {
     if (targets[0].classList.contains("cr-poem")) {
       updateActivePoem(targets[0], priorSteps)
     }
-
 
   })
 
