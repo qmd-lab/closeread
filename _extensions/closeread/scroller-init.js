@@ -43,25 +43,31 @@ document.addEventListener("DOMContentLoaded", () => {
     .onStepEnter((response) => {
       
       if (response.direction == "down") {
-        focusedSticky = getActiveSticky(response);
-        ojsScrollerSection?.define("crScrollerSection", focusedSticky);
+        focusedStickyName = getActiveSticky(response);
+        ojsScrollerSection?.define("crScrollerSection", focusedStickyName);
         
         // applyFocusOn
         allStickies.forEach(node => {node.classList.remove("cr-active")});
-        const ff = document.querySelectorAll("[data-cr-id=" + focusedSticky + "]")[0]
-        ff.classList.add("cr-active");
+        const focusedSticky = document.querySelectorAll("[data-cr-id=" + focusedStickyName + "]")[0]
+        focusedSticky.classList.add("cr-active");
         
         // applyHighlightSpans
-        
+        highlightSpans(focusedSticky, response.element);
       }
     })
     .onStepExit((response) => {
       
       if (response.direction == "up") {
-        activeSticky = getActiveSticky(response);
-        ojsScrollerSection?.define("crScrollerSection", activeSticky);
+        focusedStickyName = getActiveSticky(response);
+        ojsScrollerSection?.define("crScrollerSection", focusedStickyName);
         
-        //updateStickies(allStickies, activeSticky);
+        // applyFocusOn
+        allStickies.forEach(node => {node.classList.remove("cr-active")});
+        const focusedSticky = document.querySelectorAll("[data-cr-id=" + focusedStickyName + "]")[0]
+        focusedSticky.classList.add("cr-active");
+        
+        // applyHighlightSpans
+        highlightSpans(focusedSticky, response.element);
       }
 
     })
@@ -91,11 +97,38 @@ function getActiveSticky(response) {
   }
 }
 
-function applyFocusOn(activeSticky, allStickies, stepAttributes) {
-  allStickies.forEach(node => {
-    node.classList.remove("cr-active")
-    });
+
+function highlightSpans(stickyEl, stepEl) {
+  // remove any previous highlighting
+  stickyEl.querySelectorAll("span[id]").forEach(d => d.classList.remove("cr-hl"));
+  stickyEl.classList.remove("cr-hl-within");
+  
+  let highlightIds = stepEl.getAttribute("data-highlight-spans");
+  
+  // exit function if there's no highlighting
+  if (highlightIds === null) {
+    return;
+  }
+  
+  // dim enclosing block
+  stickyEl.classList.add("cr-hl-within");
+  
+  // add highlight class to appropriate spans
+  highlightIds.split(',').forEach(highlightId => {
+    const trimmedId = highlightId.trim(); // Ensure no whitespace issues
+    const highlightSpan = stickyEl.querySelector(`#${trimmedId}`);
+    if (highlightSpan !== null) {
+      highlightSpan.classList.add("cr-hl");
+    } else {
+    // Handle the case where the ID does not correspond to a span
+      console.warn(`Could not find span with ID '${trimmedId}'. Please ensure the ID is correct.`);
+    }
+  });
+  
 }
+
+
+
 /* updateStickies: recalculates which sticky elements (between the first
    and the one before `indexTo`) need to be displayed, and gives them the class
    `.cr-active`. All elements first have that class removed regardless of
