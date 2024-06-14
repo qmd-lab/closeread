@@ -90,11 +90,11 @@ $$
 This is a poem. It's called ["Bellringer", by Rita Dove](https://www.newyorker.com/culture/2019-in-review/our-year-in-poems).
 :::
 
-| {#longpoem .cr-poem cr-id="mypoem"}
+| {#foo .cr-poem cr-id="mypoem"}
 | I was given a name, it came out of a book—
 | I don’t know which. I’ve been told the Great Man
 | could recite every title in order on its shelf.
-| Well, [I was born]{#cr-born}, and that’s a good thing,
+| Well, [I was born]{#born}, and that’s a good thing,
 | although I arrived on the day of his passing,
 | 
 | a day on which our country fell into mourning.
@@ -104,35 +104,35 @@ This is a poem. It's called ["Bellringer", by Rita Dove](https://www.newyorker.c
 | in third person—a pretty way of saying
 | 
 | more than two men in a room means the third
-| can be ignored, as [I was when they spoke]{#cr-birth1}
-| [of my birth]{#cr-birth2} and Mr. Jefferson’s death
-| in one breath, voices [dusted with wonderment]{#cr-wonder},
+| can be ignored, as [I was when they spoke]{#birth1}
+| [of my birth]{#birth2} and Mr. Jefferson’s death
+| in one breath, voices [dusted with wonderment]{#wonder},
 | faint sunlight quivering on a hidden breeze.
 
 
-:::{focus-on="mypoem" highlight-spans="cr-born"}
+:::{focus-on="mypoem" highlight-spans="born"}
 The author refers to their birth twice: one here...
 :::
 
-:::{focus-on="mypoem" highlight-spans="cr-birth1,cr-birth2"}
+:::{focus-on="mypoem" highlight-spans="birth1,birth2"}
 ... and again, further down.
 
 Interestingly, Pandoc doesn't let you carry a span across two lines in a line block!
 :::
 
-:::{focus-on="mypoem" highlight-spans="cr-wonder"}
+:::{focus-on="mypoem" highlight-spans="wonder"}
 But check out this phrase, right at the bottom.
 :::
 
 :::{change-to="mylimerick"}
-Let's look at a small limmerick.
+Let's look at a small limerick.
 :::
 
-| {#something .cr-poem cr-id="mylimerick"}
-| The limerick packs [laughs anatomical]{#cr-laughs}
+| {#foo .cr-poem cr-id="mylimerick"}
+| The limerick packs [laughs anatomical]{#laughs}
 |   In space that is quite economical.
 
-:::{focus-on="mylimerick" highlight-spans="cr-laughs"}
+:::{focus-on="mylimerick" highlight-spans="laughs"}
 The phrase 'laughs anatomical' is quite important here!
 :::
 
