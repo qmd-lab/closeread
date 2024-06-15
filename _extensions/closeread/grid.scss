@@ -54,6 +54,15 @@
           transform 1s ease-in-out,
           transform-origin 1s ease-in-out,
           font-size 1s ease-in-out;
+
+        // scaling for mermaid diagrams
+        &:has(svg.mermaid-js) {
+          width: calc(100% - 100px);
+        }
+
+        &:has(.math.display) {
+          font-size: 2.75cqmin;
+        }
       }
 
       // show active elements (this class is applied by scrollama)
@@ -102,7 +111,7 @@
   max-width: 100svh;
 
   // maybe this can be overridden with lua
-  font-size: min(2.75cqw, 2.75cqh);
+  font-size: 2.75cqmin;
 
   white-space: pre;
   line-height: 1em;
@@ -115,7 +124,7 @@
     color: rgba(0, 0, 0, 0.5);
 
     // when there's a highlight, we only want to scale based on width!
-    font-size: 2.75cqw;
+    font-size: 2.75cqi;
   }
 
   .cr-hl {
