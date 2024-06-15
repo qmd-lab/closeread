@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const ojsScrollerSection = ojsModule?.variable();
   const ojsScrollerProgress = ojsModule?.variable();
   ojsScrollerSection?.define("crScrollerSection", focusedSticky);
-  ojsScrollerProgress?.define("crScrollerProgress", "none");
+  ojsScrollerProgress?.define("crScrollerProgress", 0);
   if (ojsModule === undefined) {
     console.error("Warning: Quarto OJS module not found")
   }
@@ -74,11 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
     .onStepProgress((response) => {
       // { element, index, progress }
       ojsScrollerProgress?.define("crScrollerProgress",
-        response.progress.toLocaleString("en-US", {
-          style: "percent"
-        }) + " " +
-        (response.direction == "down" ? "↓" : "↑"));
-
+        response.progress);
     });
 
     // also recalc transitions and highlights on window resize
