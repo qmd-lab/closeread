@@ -60,9 +60,15 @@
           width: calc(100% - 100px);
         }
 
-        &:has(.math.display) {
+        .math.display {
           font-size: 2.75cqmin;
         }
+
+        // code blocks and output
+        pre.sourceCode, .cell-output pre {
+          font-size: 1.5cqmin;
+        }
+
       }
 
       // show active elements (this class is applied by scrollama)
