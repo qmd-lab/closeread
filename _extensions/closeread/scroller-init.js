@@ -22,10 +22,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // define an ojs variable if the connector module is available
   let focusedSticky = "none";
   const ojsModule = window._ojs?.ojsConnector?.mainModule
-  const ojsScrollerSection = ojsModule?.variable();
+  const ojsScrollerName = ojsModule?.variable();
   const ojsScrollerProgress = ojsModule?.variable();
   const ojsScrollerDirection = ojsModule?.variable();
-  ojsScrollerSection?.define("crScrollerSection", focusedSticky);
+  ojsScrollerName?.define("crScrollerName", focusedSticky);
   ojsScrollerProgress?.define("crScrollerProgress", 0);
   ojsScrollerDirection?.define("crScrollerDirection", null);
   if (ojsModule === undefined) {
@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
       
       if (response.direction == "down") {
         focusedStickyName = getActiveSticky(response);
-        ojsScrollerSection?.define("crScrollerSection", focusedStickyName);
+        ojsScrollerName?.define("crScrollerName", focusedStickyName);
         
         // applyFocusOn
         allStickies.forEach(node => {node.classList.remove("cr-active")});
@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
       
       if (response.direction == "up") {
         focusedStickyName = getActiveSticky(response);
-        ojsScrollerSection?.define("crScrollerSection", focusedStickyName);
+        ojsScrollerName?.define("crScrollerName", focusedStickyName);
         
         // applyFocusOn
         allStickies.forEach(node => {node.classList.remove("cr-active")});
