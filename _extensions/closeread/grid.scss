@@ -45,6 +45,8 @@
       [data-cr-id] {
         grid-area: 1 / 1;
         margin: auto;
+        max-height: 100svh;
+        max-width: 100svh;
 
         // to be overruled when it is the active element
         opacity: 0;
