@@ -90,7 +90,7 @@ $$
 This is a poem. It's called ["Bellringer", by Rita Dove](https://www.newyorker.com/culture/2019-in-review/our-year-in-poems).
 :::
 
-| {#longpoem .cr-poem cr-id="mypoem"}
+| {#longpoem .cr-poem cr-id="mypoem" cr-size="4"}
 | I was given a name, it came out of a book—
 | I don’t know which. I’ve been told the Great Man
 | could recite every title in order on its shelf.

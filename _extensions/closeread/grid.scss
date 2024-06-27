@@ -45,6 +45,8 @@
       [data-cr-id] {
         grid-area: 1 / 1;
         margin: auto;
+        max-height: 100svh;
+        max-width: 100svh;
 
         // to be overruled when it is the active element
         opacity: 0;
@@ -52,10 +54,26 @@
           opacity linear 0.5s,
           color 1s linear,
           transform 1s ease-in-out,
-          transform-origin 1s ease-in-out;
+          transform-origin 1s ease-in-out,
+          font-size 1s ease-in-out;
+
+        // scaling for mermaid diagrams
+        &:has(svg.mermaid-js) {
+          width: calc(100% - 100px);
+        }
+
+        .math.display {
+          font-size: 2.75cqmin;
+        }
+
+        // code blocks and output
+        pre.sourceCode, .cell-output pre {
+          font-size: 1.5cqmin;
+        }
+
       }
 
-      // show active elements (this class is applied by scrollama
+      // show active elements (this class is applied by scrollama)
       .cr-active {
         opacity: 1;
       }
@@ -65,7 +83,7 @@
         width: 100%;
 
         svg {
-          max-width: 100% !important
+          max-width: 100% !important;
         }
       }
     }
@@ -96,19 +114,15 @@
 
   font-family: Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
   
-  /* need large font to stop safari text blurriness, but max-height to stop
-   other stickies from being pushed down by pre-scaled poem size */
+  // size the poem to fit the screen
   max-height: 100svh;
   max-width: 100svh;
-  font-size: max(2.5vw, 2.5vh);
 
-  // ... and maybe also the same horizontally. but this will need
-  // to be adjusted for mobile/desktop!
+  // maybe this can be overridden with lua
+  font-size: 2.75cqmin;
 
   white-space: pre;
   line-height: 1em;
-
-  // and 
   
   // transform transition is applied along with all stickies
   transform-origin: center center;
@@ -116,6 +130,9 @@
   // fade the rest of the poem out when there's a highlight active
   &.cr-hl-within {
     color: rgba(0, 0, 0, 0.5);
+
+    // when there's a highlight, we only want to scale based on width!
+    font-size: 2.75cqi;
   }
 
   .cr-hl {
@@ -124,20 +141,19 @@
   }
 }
 
-
 /* debug styles */
 
 body.cr-debug {
   
-  // give stickies borders
-  .cr-poem {
+  // make stickies see-through
+  .cr-layout .sticky-col .sticky-col-stack [data-cr-id] {
+    opacity: 0.2;
     background-color: #ffff0099;
     border: 1px solid orange;
   }
   
-  // make stickies slightly see-through
-  [data-cr-id] {
-    opacity: 0.8;
+  .cr-layout .sticky-col .sticky-col-stack [data-cr-id].cr-active {
+    opacity: 1;
   }
 
   // sidebar content and scroll zone debug styles
