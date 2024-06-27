@@ -143,15 +143,15 @@
 
 body.cr-debug {
   
-  // give stickies borders
-  .cr-poem {
+  // make stickies see-through
+  .cr-layout .sticky-col .sticky-col-stack [data-cr-id] {
+    opacity: 0.2;
     background-color: #ffff0099;
     border: 1px solid orange;
   }
   
-  // make stickies slightly see-through
-  [data-cr-id] {
-    opacity: 0.8;
+  .cr-layout .sticky-col .sticky-col-stack [data-cr-id].cr-active {
+    opacity: 1;
   }
 
   // sidebar content and scroll zone debug styles
