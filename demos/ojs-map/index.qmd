@@ -1,0 +1,103 @@
+---
+title: "OJS map"
+format:
+  closeread-html:
+    code-fold: true
+---
+
+Close read makes scrolling progress available to users as [Observable JavasScript](https://quarto.org/docs/interactive/ojs) variables, so you can create Close Read sections with interactive graphics that change as you scroll.
+
+The three variables are:
+
+- `crScrollerName`: the name of the active element
+- `crScrollerProgress`: progress of the active element from 0 to 1
+- `crScrollerDirection`: either `"down"` or `"up"`, depending on the direction a user is scrolling
+
+Let's see what we can do with these variables.
+
+I have a list of cities around the world. I'd like to show them off to everyone on a globe, but I'll need to rotate the globe in order to show parts of it.
+
+If we make a globe using [Observable Plot's `geo` mark](https://observablehq.com/@observablehq/plot-projections?collection=@observablehq/plot), we can change its `rotation` option to turn it. That could be linked to the clock if we wanted it to animate on its own, but we can also link it to Close Read's variables to make it spin as we scroll.
+
+::::{.cr-layout}
+
+:::{.cr-crossfade cr-to="map"}
+First we'll download our land from a GeoJSON file.
+:::
+
+```{ojs}
+//| label: download-land
+world = FileAttachment("naturalearth-land-110m.geojson").json()
+```
+
+Then we'll set up some cities to display.
+
+```{ojs}
+//| label: cities
+cities = [
+  { name: "Brisbane",  lat: -27.467778, lon: 153.028056 },
+  { name: "New Delhi", lat: 28.613889,  lon: 77.208889 },
+  { name: "Singapore", lat: 1.283333,   lon: 103.833333 },
+  { name: "Istanbul",  lat: 41.013611,  lon: 28.955 },
+  { name: "Paris",     lat: 48.856667,  lon: 2.352222 },
+  { name: "Nairobi",   lat: -1.286389,  lon: 36.817222 },
+  { name: "São Paulo", lat: -23.55,     lon: -46.633333 },
+  { name: "Montreal",  lat: 45.508889,  lon: -73.554167 },
+  { name: "Houston",   lat: 29.762778,  lon: -95.383056 },
+  { name: "Vancouver", lat: 49.260833,  lon: -123.113889 },
+  { name: "Honolulu",  lat: 21.306944,  lom: -157.858333 }
+]
+```
+
+The angle of the globe needs to be between -180 and 180.
+
+```{ojs}
+//| label: calculate-angle
+angle = (now / 100) % 360 - 180
+```
+
+With all that done, we can see our map!
+
+:::{cr-id="map"}
+
+```{ojs}
+//| label: map
+Plot.plot({
+  marks: [
+    Plot.graticule(),
+    Plot.geo(world, {
+      fill: "#222222"
+    }),
+    Plot.sphere(),
+    Plot.dot(cities, {
+      x: "lon",
+      y: "lat",
+      fill: "#eb343d",
+      stroke: "white",
+      strokeWidth: 5,
+      paintOrder: "stroke",
+      size: 6
+    }),
+    Plot.text(cities, {
+      x: d => d.lon + 2,
+      y: d => d.lat + 2,
+      text: "name",
+      fill: "#eb343d",
+      stroke: "white",
+      strokeWidth: 5,
+      paintOrder: "stroke",
+      // fontWeight: "bold",
+      fontSize: 18,
+      textAnchor: "start"
+    }),
+  ],
+  projection: {
+    type: "orthographic",
+    rotate: [angle, -10]
+  }
+})
+```
+
+:::
+
+::::
