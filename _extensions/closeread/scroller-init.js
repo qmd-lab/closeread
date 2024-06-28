@@ -22,10 +22,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // define an ojs variable if the connector module is available
   const ojsModule = window._ojs?.ojsConnector?.mainModule
-  const ojsScrollerSection = ojsModule?.variable();
+  const ojsScrollerName = ojsModule?.variable();
   const ojsScrollerProgress = ojsModule?.variable();
-  ojsScrollerSection?.define("crScrollerSection", null);
-  ojsScrollerProgress?.define("crScrollerProgress", null);
+  const ojsScrollerDirection = ojsModule?.variable();
+  ojsScrollerName?.define("crScrollerName", focusedSticky);
+  ojsScrollerProgress?.define("crScrollerProgress", 0);
+  ojsScrollerDirection?.define("crScrollerDirection", null);
   if (ojsModule === undefined) {
     console.error("Warning: Quarto OJS module not found")
   }
@@ -43,29 +45,40 @@ document.addEventListener("DOMContentLoaded", () => {
     .onStepEnter((response) => {
       
       if (response.direction == "down") {
-        ojsScrollerSection?.define("crScrollerSection", response.index);
-        currentIndex = response.index + 1
-        recalculateActiveSteps()
+        focusedStickyName = getActiveSticky(response);
+        ojsScrollerName?.define("crScrollerName", focusedStickyName);
+        
+        // applyFocusOn
+        allStickies.forEach(node => {node.classList.remove("cr-active")});
+        const focusedSticky = document.querySelectorAll("[data-cr-id=" + focusedStickyName + "]")[0]
+        focusedSticky.classList.add("cr-active");
+        
+        // applyHighlightSpans
+        highlightSpans(focusedSticky, response.element);
       }
     })
     .onStepExit((response) => {
       
       if (response.direction == "up") {
-        // as above, but up to the _previous_ element
-        ojsScrollerSection?.define("crScrollerSection", response.index - 1);
-        currentIndex = response.index
-        recalculateActiveSteps()
+        focusedStickyName = getActiveSticky(response);
+        ojsScrollerName?.define("crScrollerName", focusedStickyName);
+        
+        // applyFocusOn
+        allStickies.forEach(node => {node.classList.remove("cr-active")});
+        const focusedSticky = document.querySelectorAll("[data-cr-id=" + focusedStickyName + "]")[0]
+        focusedSticky.classList.add("cr-active");
+        
+        // applyHighlightSpans
+        highlightSpans(focusedSticky, response.element);
       }
 
     })
     .onStepProgress((response) => {
       // { element, index, progress }
       ojsScrollerProgress?.define("crScrollerProgress",
-        response.progress.toLocaleString("en-US", {
-          style: "percent"
-        }) + " " +
-        (response.direction == "down" ? "↓" : "↑"));
-
+        response.progress);
+      ojsScrollerDirection?.define("crScrollerDirection",
+        response.direction);
     });
 
     // also recalc transitions and highlights on window resize
