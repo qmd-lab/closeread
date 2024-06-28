@@ -3,6 +3,8 @@ quarto.log.output("===== Closeread Log =====")
 
 -- set defaults
 local debug_mode = false
+local step_selectors = {["change-to"] = true, ["focus-on"] = true}
+local focus_attributes = {["highlight-spans"] = true, ["highlight-lines"] = true}
 
 
 -- Append attributes to any cr line blocks
@@ -119,10 +121,10 @@ function make_sidebar_layout(div)
       Block = function(block)
         -- return only the non-sticky blocks...
         if not is_sticky(block) then
-          -- but also wrap the ones that are steps in a div
-          if block.classes ~= nil and
-            block.classes:includes("cr-crossfade") then
-            return wrap_step(block)
+          -- but check for step blocks
+          if block.attributes ~= nil and is_step(block) then
+            -- and and wrap it in an enclosing div
+            return wrap_block(block)
           else
             return block
           end
@@ -171,31 +173,20 @@ function shift_class_to_block(block)
   return block
 end
 
--- wrap_step: wraps blocks with a .cr-crossfade (or potentially another 'step'
--- class in future) in a div that allows us to have steps visually 
-function wrap_step(block)
+-- wrap_block: wrap step blocks in a div that allows us to style steps visually
+function wrap_block(block)
   
-  -- first extract the cr-* attributes
+  -- extract attributes
   local attributesToMove = {}
-  for k, v in pairs(block.attributes) do
-    if k:find("^data-cr-") or k:find("^cr-") then
-      if block.type == "Span" then
-        quarto.log.output("Close Read warning: do not use Spans as steps!")
-      end
-      table.insert(attributesToMove, {k, v})
-      block.attributes[k] = nil
+  for attr, value in pairs(block.attributes) do
+    if step_selectors[attr] or focus_attributes[attr] then
+      attributesToMove[attr] = value
+      block.attributes[attr] = nil
     end
   end
-
-  -- now do .cr-* classes: add to parent block class list and remove from
-  -- current block list
-  local classesToMove = block.classes:filter(
-    function(c) return c:find("^cr-") ~= nil end)
-  block.classes = block.classes:filter(
-      function(c) return c:find("^cr-") == nil end)
   
   -- finally construct a pandoc.div with the new details and content to return
-  return pandoc.Div(block, pandoc.Attr("", classesToMove, attributesToMove))
+  return pandoc.Div(block, pandoc.Attr("", "", attributesToMove))
 end
 
 
@@ -229,7 +220,18 @@ function is_sticky(block)
   return sticky_block_attribute or sticky_inline_attribute
 end
 
--- utility function
+-- utility functions
+
+function is_step(block) 
+  local is_step = false
+  for selector, _ in pairs(step_selectors) do
+    if block.attributes[selector] then
+      is_step = true
+      break
+    end
+  end
+  return is_step
+end
 
 function find_in_arr(arr, value)
     for i, v in pairs(arr) do
