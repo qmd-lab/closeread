@@ -172,6 +172,8 @@ function rescaleElement(el, highlightIds) {
   el.querySelectorAll("span[id]").forEach(d => d.classList.remove("cr-hl"))
 
   if (highlightIds == undefined) {
+    // this can go if we're doing full poem scaling in css. we just need to
+    // reset any span highlight translations
     scalePoemFull(el)
   } else {
     scalePoemToSpan(el, highlightIds)
@@ -180,29 +182,17 @@ function rescaleElement(el, highlightIds) {
 
 /* scalePoemFull:
   given an element `el`, rescales it to fill its containing .sticky-col-stack */
-function scalePoemFull(el, paddingX = 75, paddingY = 50) {
+function scalePoemFull(el) {
 
   console.log("Focusing on whole poem")
 
   el.classList.remove("cr-hl-within")
-
-  // get dimensions of element and its container
-  const container = el.closest(".sticky-col-stack")
   
   const elHeight = el.scrollHeight
-  const elWidth = el.scrollWidth
-  const containerHeight = container.offsetHeight - (paddingY * 2)
-  const containerWidth = container.offsetWidth - (paddingX * 2)
-
-  const scaleHeight = elHeight / containerHeight
-  const scaleWidth = elWidth / containerWidth
-  const scale = 1 / Math.max(scaleHeight, scaleWidth)
-  
-  const centerDeltaY = (elHeight - el.offsetHeight) * scale / -2
+  const centerDeltaY = (elHeight - el.offsetHeight) / -2
 
   // apply styles
-  el.style.setProperty("transform",
-    `matrix(${scale}, 0, 0, ${scale}, 0, ${centerDeltaY})`)
+  el.style.setProperty("transform", `matrix(1, 0, 0, 1, 0, ${centerDeltaY})`)
 }
 
 /* scalePoemToSpan:
@@ -210,6 +200,8 @@ function scalePoemFull(el, paddingX = 75, paddingY = 50) {
    `el` so that `focusEl` is vertically centerd and its line fills the
    containing .sticky-col-stack */
 function scalePoemToSpan(el, highlightIds, paddingX = 75, paddingY = 50) {
+
+  console.log("Focusing on span")
 
   el.classList.add("cr-hl-within")
   //focusEl.classList.add("cr-hl")
@@ -227,28 +219,13 @@ function scalePoemToSpan(el, highlightIds, paddingX = 75, paddingY = 50) {
   
   // for now just get first span
   const focusEl = el.querySelector(`#${highlightIds[0].trim()}`);
-  
-  // get dimensions of element and its container
-  const container = el.closest(".sticky-col-stack")
-  
-  const elHeight = el.scrollHeight
-  const elWidth = el.scrollWidth
-  const containerHeight = container.offsetHeight - (paddingY * 2)
-  const containerWidth = container.offsetWidth - (paddingX * 2)
 
   const focusHeight = focusEl.offsetHeight
   const focusTop = focusEl.offsetTop
   const focusCentreY = focusTop + (focusHeight / 2)
   
-  // note scaleWidth uses the whole line, not just the span width
-  const scaleWidth = elWidth / containerWidth
-  const scaleHeight = focusHeight / containerHeight
-  const scale = 1 / Math.max(scaleHeight, scaleWidth)
-  
   const centerDeltaY = (focusCentreY - (el.offsetHeight / 2)) * -1
 
   // apply styles
-  el.style.setProperty("transform",
-    `matrix(${scale}, 0, 0, ${scale}, 0, ${centerDeltaY})`)
-
+  el.style.setProperty("transform", `matrix(1, 0, 0, 1, 0, ${centerDeltaY})`)
 }

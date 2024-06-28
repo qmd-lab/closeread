@@ -1,0 +1,95 @@
+---
+format: closeread-html
+---
+
+::::{.cr-layout}
+
+# Test blocks that overflow
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam tempus sem purus, vel bibendum diam placerat nec. Fusce lorem velit, mattis a ornare vel, pharetra non magna. Nunc tempus dolor est,
+
+vitae laoreet risus suscipit ac. Donec justo massa, congue vitae vulputate non, bibendum ac tellus.
+
+:::{.cr-crossfade cr-to="black-rectangle"}
+This is a .png file of a black rectangle with that is 2612 × 1752 pixels.
+:::
+
+:::{cr-id="black-rectangle"}
+![This is a caption](black-rectangle.jpeg)
+:::
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam tempus sem purus, vel bibendum diam placerat nec. Fusce lorem velit, mattis a ornare vel, pharetra non magna. Nunc tempus dolor est,
+
+:::{.cr-crossfade cr-from="black-rectangle" cr-to="small-code"}
+This is a small block of code with output that should not overflow the container.
+:::
+
+```{r}
+#| echo: true
+#| cr-id: small-code
+
+plot(mtcars$mpg, mtcars$dist)
+```
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam tempus sem purus, vel bibendum diam placerat nec. Fusce lorem velit, mattis a ornare vel, pharetra non magna. Nunc tempus dolor est,
+
+:::{.cr-crossfade cr-from="small-code" cr-to="big-code"}
+This is a bigger block of code with substantial text output that should overflow the container.
+:::
+
+```{r}
+#| echo: true
+#| cr-id: big-code
+
+a <- rnorm(100)
+b <- 1 + rexp(100)
+c <- a + b
+
+a <- rnorm(100)
+b <- 1 + rexp(100)
+c <- a + b
+
+a <- rnorm(100)
+b <- 1 + rexp(100)
+c <- a + b
+
+mtcars
+```
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam tempus sem purus, vel bibendum diam placerat nec. Fusce lorem velit, mattis a ornare vel, pharetra non magna. Nunc tempus dolor est,
+
+:::{.cr-crossfade cr-from="big-code" cr-to="mypoem"}
+This is a poem. It's called ["Bellringer", by Rita Dove](https://www.newyorker.com/culture/2019-in-review/our-year-in-poems).
+:::
+
+| {#longpoem .cr-poem cr-id="mypoem"}
+| I was given a name, it came out of a book—
+| I don’t know which. I’ve been told the Great Man
+| could recite every title in order on its shelf.
+| Well, [I was born]{#cr-born}, and that’s a good thing,
+| although I arrived on the day of his passing,
+| 
+| a day on which our country fell into mourning.
+| This I heard over and over, from professors
+| to farmers, even duel-scarred students;
+| sometimes, in grand company, remarked upon
+| in third person—a pretty way of saying
+| 
+| more than two men in a room means the third
+| can be ignored, as [I was when they spoke]{#cr-birth1}
+| [of my birth]{#cr-birth2} and Mr. Jefferson’s death
+| in one breath, voices [dusted with wonderment]{#cr-wonder},
+| faint sunlight quivering on a hidden breeze.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam tempus sem purus, vel bibendum diam placerat nec. Fusce lorem velit, mattis a ornare vel, pharetra non magna. Nunc tempus dolor est,
+
+::::
+
+# The End
+
+
+:::{.counter style="position: fixed; top: 10px; right: 10px; background-color: skyblue; border-radius: 5px; padding: 18px 18px 0 18px;"}
+```{ojs}
+md`Active element: ${crScrollerSection}`
+```
+:::

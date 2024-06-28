@@ -16,3 +16,5 @@ package.json
 package-lock.json
 
 /.luarc.json
+
+.quarto

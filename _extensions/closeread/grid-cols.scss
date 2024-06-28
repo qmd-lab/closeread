@@ -1,0 +1,53 @@
+/* this controls the column layout of cr layouts.
+   a document-wide default can be set, but individual layouts can override
+   it */
+
+/*-- scss:defaults --*/
+
+$breakpoints: sm, md, lg, xl, xxl;
+
+/*-- scss:rules --*/
+
+// all of the layouts use a 5-track system, but it's different in each case, so
+// we'll need to define default sizing separately in each one.
+
+.cr-layout {
+  display: grid;
+  
+}
+
+// | overlay-center |
+// | overlay-left   |
+// | sidebar-left   |
+// | sidebar-right  |
+
+@each $breakpoint in $breakpoints {
+  @include media-breakpoint-up($breakpoint) {
+
+    /* layout code for each style goes here */
+
+    // overlay-right
+    body.cr-overlay-right-${breakpoint} .cr-layout,
+    body.closeread .cr-layout.cr-overlay-right-${breakpoint} {
+
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr;
+      
+      .sidebar-col {
+        grid-column: 1 / 1;
+        grid-row: 1 / 1;
+        z-index: 1;
+        // TODO - margin here?
+      }
+
+      .sticky-col {
+        grid-column: 1 / 1;
+        grid-row: 1 / 1;
+      }
+
+    
+
+    }
+
+  }
+}
