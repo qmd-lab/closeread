@@ -16,3 +16,7 @@ package.json
 package-lock.json
 
 /.luarc.json
+
+# temporarily ignoring the _extensions folder within demos/ and tests/ until we organise them into a website
+demos/*/_extensions
+tests/*/_extensions
