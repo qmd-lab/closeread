@@ -1,0 +1,31 @@
+---
+title: "Orphaned code output test"
+---
+
+Test test test
+
+```{r}
+#| echo: true
+#| cr-id: big-code
+#| layout-ncol: 2
+
+a <- rnorm(100)
+b <- 1 + rexp(100)
+c <- a + b
+
+a <- rnorm(100)
+b <- 1 + rexp(100)
+c <- a + b
+
+a <- rnorm(100)
+b <- 1 + rexp(100)
+c <- a + b
+
+plot(mtcars$mpg, mtcars$dist)
+
+plot(mtcars$hp, mtcars$dist)
+
+plot(mtcars$hp, mtcars$mpg)
+
+mtcars
+```
