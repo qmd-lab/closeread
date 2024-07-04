@@ -8,6 +8,8 @@
 *.html
 *.native
 *_files
+.quarto/
+docs/_site
 
 .luarc.json
 
