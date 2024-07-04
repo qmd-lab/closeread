@@ -1,0 +1,53 @@
+# workflow to build docs site and publish to github pages
+
+on:
+  workflow_dispatch:
+  push:
+    branches: main
+
+name: closeread-publish
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build-docs:
+    runs-on: "ubuntu-latest"
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: 1.5.25
+      - name: Install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Create docs _extensions folder
+        run: mkdir docs/_extensions
+        shell: bash
+      - name: Copy Closeread extension into docs 
+        run: cp -rf _extensions/closeread docs/_extensions/closeread
+        shell: bash
+      - name: Render closeread docs
+        uses: quarto-dev/quarto-actions/render@v2
+        with:
+          path: docs
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload docs/ artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "./docs/_site"
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+          
