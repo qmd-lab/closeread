@@ -6,8 +6,7 @@
    although users may have several scrollers in one quarto doc, i think with
    the right syntax we can get away with a single init block for everyone */
 
-const stepSelector = "[data-cr-from], [data-cr-to], [data-cr-in]"
-let currentIndex
+const stepSelector = "[data-change-to], [data-focus-on]"
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -21,6 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // define an ojs variable if the connector module is available
+  let focusedSticky = "none";
   const ojsModule = window._ojs?.ojsConnector?.mainModule
   const ojsTriggerIndex = ojsModule?.variable()
   const ojsStickyName = ojsModule?.variable()
@@ -28,15 +28,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const ojsScrollDirection = ojsModule?.variable()
 
   ojsTriggerIndex?.define("crTriggerIndex", 0);
-  ojsStickyName?.define("crStickyName", null);
+  ojsStickyName?.define("crStickyName", focusedSticky);
   ojsScrollProgress?.define("crScrollProgress", 0);
   ojsScrollDirection?.define("crScrollDirection", null);
   if (ojsModule === undefined) {
     console.error("Warning: Quarto OJS module not found")
   }
-
-  // let currentIndex;
-
+  
+  const allStickies = Array.from(document.querySelectorAll("[data-cr-id]"));
+  console.log(allStickies);
   const scroller = scrollama();
   scroller
     .setup({
@@ -93,26 +93,68 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // also recalc transitions and highlights on window resize
-    window.addEventListener("resize", d => recalculateActiveSteps())
+    //window.addEventListener("resize", d => updateStickies(allStickies, allSteps));
 
  });
+ 
+function getActiveSticky(response) {
+  const changeTo = response.element.getAttribute("data-change-to");
+  const focusOn = response.element.getAttribute("data-focus-on");
 
-/* recalculateActiveSteps: recalculates which sticky elements (between the first
+  if (changeTo !== null) {
+    return changeTo;
+  } else if (focusOn !== null) {
+    return focusOn;
+  }
+}
+
+
+function highlightSpans(stickyEl, stepEl) {
+  // remove any previous highlighting
+  stickyEl.querySelectorAll("span[id]").forEach(d => d.classList.remove("cr-hl"));
+  stickyEl.classList.remove("cr-hl-within");
+  
+  let highlightIds = stepEl.getAttribute("data-highlight-spans");
+  
+  // exit function if there's no highlighting
+  if (highlightIds === null) {
+    return;
+  }
+  
+  // dim enclosing block
+  stickyEl.classList.add("cr-hl-within");
+  
+  // add highlight class to appropriate spans
+  highlightIds.split(',').forEach(highlightId => {
+    const trimmedId = highlightId.trim(); // Ensure no whitespace issues
+    const highlightSpan = stickyEl.querySelector(`#${trimmedId}`);
+    if (highlightSpan !== null) {
+      highlightSpan.classList.add("cr-hl");
+    } else {
+    // Handle the case where the ID does not correspond to a span
+      console.warn(`Could not find span with ID '${trimmedId}'. Please ensure the ID is correct.`);
+    }
+  });
+  
+}
+
+
+
+/* updateStickies: recalculates which sticky elements (between the first
    and the one before `indexTo`) need to be displayed, and gives them the class
    `.cr-active`. All elements first have that class removed regardless of
    position.
    (note that sticky elements use the `cr-id` attribute on the user side, but it
    appears in the rendered html as `data-cr-id`.) */
-function recalculateActiveSteps() {
+function updateStickies(allStickies, activeSticky) {
+  
+  // applyFocusOn(allStickies, activeSticky);
+  // applyHighlight(allStickies, activeSticky);
+  // applyZoom(allStickies, activeSticky);
 
-  const allStickies = Array.from(document.querySelectorAll("[data-cr-id]"));
-  const allSteps = Array.from(document.querySelectorAll(stepSelector));
-  // TODO - how to handle anchor links, where page load may not be at top?
-  const priorSteps = allSteps.slice(0, currentIndex || 0);
 
   // reset all elements
   allStickies.forEach(node => node.classList.remove("cr-active"));
-
   
   // replay the vertical transition progress: remove sticky targets if they've
   // been transitioned `from` and add them back if they're transitioned `to`
@@ -150,7 +192,6 @@ function recalculateActiveSteps() {
     if (targets[0].classList.contains("cr-poem")) {
       updateActivePoem(targets[0], priorSteps)
     }
-
 
   })
 
