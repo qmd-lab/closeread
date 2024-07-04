@@ -1,0 +1,7 @@
+- option: "debug-mode"
+  option-type: document yaml
+  value-type: "scalar"
+  possible-values:
+    - "true"
+    - "false"
+  description: Toggle debug mode.
