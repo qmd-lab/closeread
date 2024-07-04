@@ -13,6 +13,10 @@ website:
         text: Demos
       - href: reference/index.qmd
         text: Reference
+    tools:
+      - icon: github
+        href: https://github.com/qmd-lab/closeread
+        text: Closeread GitHub
 
 format:
   html:
