@@ -19,21 +19,12 @@ I have a list of cities around the world. I'd like to show them off to everyone 
 
 If we make a globe using [Observable Plot's `geo` mark](https://observablehq.com/@observablehq/plot-projections?collection=@observablehq/plot), we can change its `rotation` option to turn it. That could be linked to the clock if we wanted it to animate on its own, but we can also link it to Close Read's variables to make it spin as we scroll.
 
-::::{.cr-layout}
-
-:::{.cr-crossfade cr-to="map"}
-First we'll download our land from a GeoJSON file.
-:::
-
-```{ojs}
-//| label: download-land
-world = FileAttachment("naturalearth-land-110m.geojson").json()
-```
-
-Then we'll set up some cities to display.
+Before we start, let's define some cities. Here I've done it in OJS, but you could easily make an R or Python data frame available using `ojs_define()` (or even load a CSV from elsewhere):
 
 ```{ojs}
 //| label: cities
+//| echo: true
+//| code-fold: false
 cities = [
   { name: "Brisbane",  lat: -27.467778, lon: 153.028056 },
   { name: "New Delhi", lat: 28.613889,  lon: 77.208889 },
@@ -49,14 +40,51 @@ cities = [
 ]
 ```
 
-The angle of the globe needs to be between -180 and 180.
+Now let's load in some land, so we can distinguish it from ocean:
 
 ```{ojs}
-//| label: calculate-angle
-angle = (now / 100) % 360 - 180
+//| label: download-land
+world = FileAttachment("naturalearth-land-110m.geojson").json()
 ```
 
+::::{.cr-layout}
+
+:::{change-to="map"}
+We want our globe to rotate with the scroll progress — between -180 and 180.  
+:::
+
+:::{focus-on="map"}
+Instead of trying to do the maths to scale it ourselves, we can make a scale with d3.
+:::
+
+:::{focus-on="map"}
+There are six narrative blocks that we want to scale over, but I'd like the scrolling to start a little late and end a little early — by the time the last block has just started.
+:::
+
+:::{focus-on="map"}
+So between 0.5 (because the scroll starts with the first narrative block of the document) and 5.1. If the numbers go outside this range, we'll _clamp_ them so that the scrolling doesn't continue.
+:::
+
+:::{focus-on="map"}
+Here's how we create that scale and then use it with Closeread's variables, `crTriggerIndex` and `crScrollProgress`:
+  
+```{ojs}
+//| label: angle-scale
+//| echo: true
+//| code-fold: false
+angleScale = d3.scaleLinear()
+  .domain([0.5, 5.1])
+  .range([-180, 180])
+  .clamp(true)
+
+angle = angleScale(
+  crTriggerIndex + crScrollProgress)
+```
+:::
+
+:::{focus-on="map"}
 With all that done, we can see our map!
+:::
 
 :::{cr-id="map"}
 
@@ -86,7 +114,6 @@ Plot.plot({
       stroke: "white",
       strokeWidth: 5,
       paintOrder: "stroke",
-      // fontWeight: "bold",
       fontSize: 18,
       textAnchor: "start"
     }),
@@ -101,3 +128,23 @@ Plot.plot({
 :::
 
 ::::
+
+:::{.counter style="position: fixed; top: 10px; right: 10px; background-color: skyblue; border-radius: 5px; padding: 18px 18px 0 18px;"}
+```{ojs}
+md`Active trigger: ${crTriggerIndex}`
+md`Active element: ${crStickyName}`
+md`Element progress: ${(crScrollProgress * 100).toFixed(1)}%`
+md`Scroll direction: ${crScrollDirection}`
+md`Angle: ${angle.toFixed(1)}°`
+```
+:::
+
+And that's all! Let's put some lorem ipsum in so that it can scroll all the way to the end.
+
+:::{style="color: slategrey; font-style: italic;"}
+Eu in culpa officia cupidatat nostrud laborum do consequat officia Lorem tempor consectetur pariatur sunt. Veniam culpa dolore laborum nostrud ipsum pariatur ipsum dolore consectetur commodo ex. Non culpa deserunt voluptate. Amet excepteur incididunt deserunt pariatur velit labore do sunt occaecat eiusmod. Tempor proident sint exercitation culpa incididunt sunt proident sunt reprehenderit. Sint ipsum qui id nisi quis officia in. Anim velit minim fugiat qui dolor enim occaecat amet excepteur do aliqua ex adipisicing laboris labore.
+
+Culpa aute sint aliquip in aute enim cillum in exercitation cupidatat ex cupidatat mollit dolore ut. Et culpa minim laborum in ipsum laborum velit laboris fugiat ad culpa cillum. Sit nulla eu minim in nulla. Nulla esse sint occaecat eiusmod in irure in dolor veniam pariatur laboris consectetur sunt laboris excepteur. Dolor dolore ad incididunt consequat. Ad elit ullamco veniam cillum reprehenderit pariatur pariatur nisi ea. Pariatur quis ut deserunt eiusmod ipsum magna ullamco.
+
+Amet velit ea ex. Pariatur anim laboris fugiat labore velit ullamco aute aliquip incididunt. Ut labore voluptate exercitation esse aliquip dolor ex magna occaecat ullamco nisi sit non quis nulla. Elit qui do sunt consectetur officia sint veniam incididunt laboris aute eu nisi qui. Et voluptate consequat sunt commodo dolor dolor veniam minim incididunt culpa anim nulla duis est. Excepteur occaecat tempor veniam magna sit sunt enim sint exercitation dolore fugiat nulla consequat proident. Reprehenderit consequat reprehenderit amet dolore cillum elit dolore officia enim dolor.
+:::
