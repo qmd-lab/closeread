@@ -2,6 +2,4 @@
 title: "Closeread"
 ---
 
-This is a Quarto website.
-
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+Closeread is a custom format for [Quarto](https://quarto.org/) that enables scrollytelling features for html documents.
