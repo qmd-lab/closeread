@@ -22,12 +22,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // define an ojs variable if the connector module is available
   const ojsModule = window._ojs?.ojsConnector?.mainModule
-  const ojsScrollerName = ojsModule?.variable();
-  const ojsScrollerProgress = ojsModule?.variable();
-  const ojsScrollerDirection = ojsModule?.variable();
-  ojsScrollerName?.define("crScrollerName", focusedSticky);
-  ojsScrollerProgress?.define("crScrollerProgress", 0);
-  ojsScrollerDirection?.define("crScrollerDirection", null);
+  const ojsTriggerIndex = ojsModule?.variable()
+  const ojsStickyName = ojsModule?.variable()
+  const ojsScrollProgress = ojsModule?.variable()
+  const ojsScrollDirection = ojsModule?.variable()
+
+  ojsTriggerIndex?.define("crTriggerIndex", 0);
+  ojsStickyName?.define("crStickyName", null);
+  ojsScrollProgress?.define("crScrollProgress", 0);
+  ojsScrollDirection?.define("crScrollDirection", null);
   if (ojsModule === undefined) {
     console.error("Warning: Quarto OJS module not found")
   }
@@ -45,8 +48,12 @@ document.addEventListener("DOMContentLoaded", () => {
     .onStepEnter((response) => {
       
       if (response.direction == "down") {
+        // update ojs variables
+        ojsTriggerIndex?.define(
+          "crTriggerIndex",
+          response.index);
         focusedStickyName = getActiveSticky(response);
-        ojsScrollerName?.define("crScrollerName", focusedStickyName);
+        ojsStickyName?.define("crStickyName", focusedStickyName);
         
         // applyFocusOn
         allStickies.forEach(node => {node.classList.remove("cr-active")});
@@ -60,8 +67,12 @@ document.addEventListener("DOMContentLoaded", () => {
     .onStepExit((response) => {
       
       if (response.direction == "up") {
+        // update ojs variables
+        ojsTriggerIndex?.define(
+          "crTriggerIndex",
+          response.index - 1 == -1 ? null : response.index - 1);
         focusedStickyName = getActiveSticky(response);
-        ojsScrollerName?.define("crScrollerName", focusedStickyName);
+        ojsStickyName?.define("crStickyName", focusedStickyName);
         
         // applyFocusOn
         allStickies.forEach(node => {node.classList.remove("cr-active")});
@@ -75,9 +86,9 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .onStepProgress((response) => {
       // { element, index, progress }
-      ojsScrollerProgress?.define("crScrollerProgress",
+      ojsScrollProgress?.define("crScrollProgress",
         response.progress);
-      ojsScrollerDirection?.define("crScrollerDirection",
+      ojsScrollDirection?.define("crScrollDirection",
         response.direction);
     });
 
