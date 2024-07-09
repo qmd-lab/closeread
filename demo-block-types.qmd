@@ -18,7 +18,7 @@ This is a para nested in a div. These two first bits don't trigger anything...
 This is an image with the sticky tag on the div.
 :::
 
-:::{cr-id="pink"}
+:::{#cr-pink}
 x![This is a caption](pink-desktop.png)
 :::
 
@@ -28,7 +28,7 @@ This is an image with the sticky tag on Image itself.
 I've replaced its margin with some padding to demonstrate that you can give it a larger "surface" area on which to trigger scroll events.
 :::
 
-![](blue-desktop.png){cr-id="blue"}
+![](blue-desktop.png){#cr-blue}
 
 ::::
 
@@ -44,7 +44,7 @@ This is a scatterplot.
 
 ```{r}
 #| echo: false
-#| cr-id: scatter
+#| id: cr-scatter
 
 plot(mtcars$mpg, mtcars$dist)
 ```
@@ -55,7 +55,7 @@ This is a histogram.
 
 ```{r}
 #| echo: true
-#| cr-id: hist
+#| id: cr-hist
 #| fig-cap: "This is a caption."
 #| fig-height: 4
 
@@ -66,7 +66,7 @@ hist(mtcars$mpg)
 This is a list (a block element).
 :::
 
-:::{cr-id="list"}
+:::{#cr-list}
 1. Apple
 2. Banana
 :::
@@ -75,7 +75,7 @@ This is a list (a block element).
 This is display math, but I'm making it a bit longer so that it covers a few lines.
 :::
 
-::: {cr-id="displaymath"}
+::: {#cr-displaymath}
 
 $$
 \begin{align}
@@ -90,7 +90,7 @@ $$
 This is a poem. It's called ["Bellringer", by Rita Dove](https://www.newyorker.com/culture/2019-in-review/our-year-in-poems).
 :::
 
-| {#foo .cr-poem cr-id="mypoem"}
+| {#cr-mypoem .cr-poem}
 | I was given a name, it came out of a book—
 | I don’t know which. I’ve been told the Great Man
 | could recite every title in order on its shelf.
@@ -128,7 +128,7 @@ But check out this phrase, right at the bottom.
 Let's look at a small limerick.
 :::
 
-| {#foo .cr-poem cr-id="mylimerick"}
+| {#cr-mylimerick}
 | The limerick packs [laughs anatomical]{#laughs}
 |   In space that is quite economical.
 
@@ -141,7 +141,7 @@ This is a mermaid diagram
 :::
 
 ```{mermaid}
-%%| cr-id: mermaid
+%%| id: cr-mermaid
 flowchart LR
   A[Hard edge] --> B(Round edge)
   B --> C{Decision}
@@ -154,7 +154,7 @@ This is a graphviz diagram
 :::
 
 ```{dot}
-//| cr-id: graphviz
+//| id: cr-graphviz
 graph G {
   layout=neato
   run -- intr;

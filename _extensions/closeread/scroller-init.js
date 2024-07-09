@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
     console.error("Warning: Quarto OJS module not found")
   }
   
-  const allStickies = Array.from(document.querySelectorAll("[data-cr-id]"));
+  const allStickies = Array.from(document.querySelectorAll("[id^='cr-']"));
   const scroller = scrollama();
   scroller
     .setup({
@@ -44,12 +44,12 @@ document.addEventListener("DOMContentLoaded", () => {
     .onStepEnter((response) => {
       
       if (response.direction == "down") {
-        focusedStickyName = getActiveSticky(response);
+        focusedStickyName = "cr-" + response.element.getAttribute("data-focus-on");
         ojsScrollerName?.define("crScrollerName", focusedStickyName);
         
         // applyFocusOn
         allStickies.forEach(node => {node.classList.remove("cr-active")});
-        const focusedSticky = document.querySelectorAll("[data-cr-id=" + focusedStickyName + "]")[0]
+        const focusedSticky = document.querySelectorAll("[id=" + focusedStickyName)[0]
         focusedSticky.classList.add("cr-active");
         
         // applyHighlightSpans
@@ -59,12 +59,12 @@ document.addEventListener("DOMContentLoaded", () => {
     .onStepExit((response) => {
       
       if (response.direction == "up") {
-        focusedStickyName = getActiveSticky(response);
+        focusedStickyName = "cr-" + response.element.getAttribute("data-focus-on");
         ojsScrollerName?.define("crScrollerName", focusedStickyName);
         
         // applyFocusOn
         allStickies.forEach(node => {node.classList.remove("cr-active")});
-        const focusedSticky = document.querySelectorAll("[data-cr-id=" + focusedStickyName + "]")[0]
+        const focusedSticky = document.querySelectorAll("[id=" + focusedStickyName)[0]
         focusedSticky.classList.add("cr-active");
         
         // applyHighlightSpans
@@ -84,17 +84,6 @@ document.addEventListener("DOMContentLoaded", () => {
     //window.addEventListener("resize", d => updateStickies(allStickies, allSteps));
 
  });
- 
-function getActiveSticky(response) {
-  const changeTo = response.element.getAttribute("data-change-to");
-  const focusOn = response.element.getAttribute("data-focus-on");
-
-  if (changeTo !== null) {
-    return changeTo;
-  } else if (focusOn !== null) {
-    return focusOn;
-  }
-}
 
 
 function highlightSpans(stickyEl, stepEl) {

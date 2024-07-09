@@ -42,7 +42,7 @@
       position: sticky;
       top: 0;
 
-      [data-cr-id] {
+      [id^="cr-"] {
         grid-area: 1 / 1;
         margin: auto;
 
@@ -101,7 +101,7 @@ body.cr-debug {
   }
   
   // make stickies slightly see-through
-  [data-cr-id] {
+  [id^="cr-"] {
     opacity: 0.8;
   }
 
