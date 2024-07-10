@@ -1,0 +1,8 @@
+README.md
+NEWS.md
+LICENSE
+.luarc.json
+docs/
+.quarto/
+.github/
+!.gitignore

@@ -1,0 +1,55 @@
+---
+title: Reference
+listing:
+  - id: yaml-options
+    template: reference.ejs
+    contents: yaml-options.yml
+  - id: sticky-options
+    template: reference.ejs
+    contents: sticky-options.yml
+  - id: step-options
+    template: reference.ejs
+    contents: step-options.yml
+---
+
+### Document Metadata
+
+Document-wide options under the custom format key in YAML format.
+
+```yaml
+format:
+  closeread-html
+```
+
+:::{#yaml-options}
+:::
+
+### Layout Block Options
+
+Todo.
+
+### Sticky Block Options
+
+A sticky block is an element tagged with an identifier prefixed with `cr-`. e.g.
+
+```qmd
+:::{#cr-mypara}
+Here is a paragraph that will be a sticky block.
+:::
+```
+
+:::{#sticky-options}
+:::
+
+### Step Block Options
+
+A step block is an element that uses the `focus-on` attribute to trigger effects on a particular sticky block.
+
+```qmd
+:::{focus-on="cr-mypara"}
+Here is a paragraph that will trigger focus on `cr-mypara`.
+:::
+```
+
+:::{#step-options}
+:::
