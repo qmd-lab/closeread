@@ -1,0 +1,13 @@
+---
+title: Gallery
+listing:
+  - id: demo-listings
+    contents: demos
+    sort: "date desc"
+    type: grid
+---
+
+This is a landing page for a bunch of demos of functionality.
+
+:::{#demo-listings}
+:::
