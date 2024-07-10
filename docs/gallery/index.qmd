@@ -1,0 +1,15 @@
+---
+title: Gallery
+listing:
+  - id: demo-listings
+    contents: demos
+    sort: "date desc"
+    type: grid
+---
+
+### Demos
+
+Demonstrations of Closeread functionality.
+
+:::{#demo-listings}
+:::
