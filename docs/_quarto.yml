@@ -9,8 +9,8 @@ website:
         text: Home
       - href: guide/index.qmd
         text: Guide
-      - href: demos/index.qmd
-        text: Demos
+      - href: gallery/index.qmd
+        text: Gallery
       - href: reference/index.qmd
         text: Reference
     tools:
@@ -20,9 +20,8 @@ website:
 
 format:
   html:
-    theme: cosmo
-    css: styles.css
-    toc: true
+    theme:
+      - cosmo
 
 
 
