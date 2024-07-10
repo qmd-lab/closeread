@@ -1,0 +1,5 @@
+---
+title: "Closeread"
+---
+
+Closeread is a custom format for [Quarto](https://quarto.org/) that enables scrollytelling features for html documents.

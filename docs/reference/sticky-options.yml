@@ -1,0 +1,6 @@
+- option: "#cr-*"
+  option-type: "block id"
+  value-type: "scalar"
+  possible-values:
+    - "#cr-*"
+  description: Identify an element as a sticky element.
