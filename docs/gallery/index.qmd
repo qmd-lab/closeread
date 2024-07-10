@@ -1,10 +1,6 @@
 ---
 title: Gallery
 listing:
-  - id: example-listings
-    contents: examples
-    sort: "date desc"
-    type: grid
   - id: demo-listings
     contents: demos
     sort: "date desc"
