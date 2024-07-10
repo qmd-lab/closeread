@@ -1,13 +1,19 @@
 ---
 title: Gallery
 listing:
+  - id: example-listings
+    contents: examples
+    sort: "date desc"
+    type: grid
   - id: demo-listings
     contents: demos
     sort: "date desc"
     type: grid
 ---
 
-This is a landing page for a bunch of demos of functionality.
+### Demos
+
+Demonstrations of Closeread functionality.
 
 :::{#demo-listings}
 :::
