@@ -187,12 +187,12 @@ end
 
 function is_sticky(block)
 
-  sticky_block_attribute = false
-  sticky_inline_attribute = false
+  sticky_block_id = false
+  sticky_inline_id = false
   
   if block.identifier ~= nil then
     if string.match(block.identifier, "^cr-") then
-      sticky_block_attribute = true
+      sticky_block_id = true
     end
   end
   
@@ -200,13 +200,13 @@ function is_sticky(block)
     for _, inline in pairs(block.content) do
       if inline.identifier ~= nil then
         if string.match(inline.identifier, "^cr-") then
-          sticky_inline_attribute = true
+          sticky_inline_id = true
         end
       end
     end
   end
 
-  return sticky_block_attribute or sticky_inline_attribute
+  return sticky_block_id or sticky_inline_id
 end
 
 -- utility functions
