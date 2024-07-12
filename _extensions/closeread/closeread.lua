@@ -3,7 +3,7 @@ quarto.log.output("===== Closeread Log =====")
 
 -- set defaults
 local debug_mode = false
-
+local step_selectors = {["focus-on"] = true}
 
 -- Append attributes to any cr line blocks
 function add_attributes(lineblock)
@@ -106,7 +106,7 @@ function make_sidebar_layout(div)
       traverse = 'topdown',
       Block = function(block)
         if is_sticky(block) then
-          block = shift_class_to_block(block)
+          block = shift_id_to_block(block)
           return block, false -- if a sticky element is found, don't process child blocks
         else
           return {}
@@ -119,10 +119,10 @@ function make_sidebar_layout(div)
       Block = function(block)
         -- return only the non-sticky blocks...
         if not is_sticky(block) then
-          -- but also wrap the ones that are steps in a div
-          if block.classes ~= nil and
-            block.classes:includes("cr-crossfade") then
-            return wrap_step(block)
+          -- but check for step blocks
+          if block.attributes ~= nil and is_step(block) then
+            -- and and wrap it in an enclosing div
+            return wrap_block(block)
           else
             return block
           end
@@ -146,90 +146,81 @@ function make_sidebar_layout(div)
   end
 end
 
-function shift_class_to_block(block)
+function shift_id_to_block(block)
 
   -- if block contains inlines...
   if pandoc.utils.type(block.content) == "Inlines" then
     -- ... iterate over the inlines...
     for i, inline in pairs(block.content) do
-      if inline.attr ~= nil then
-        -- ... to find a "data-cr-id" or "cr-id" attribute on the child inline
-        for k,v in pairs(inline.attributes) do
-          if k == "data-cr-id" or k == "cr-id" then
-            -- remove attribute from the child inline
-            block.content[i].attributes[k] = nil
-            -- wraps block in Div with attribute cr-id (and converts Para to Plain)
-            block = pandoc.Div(block.content, pandoc.Attr("", {}, {{k, v}}))
-            break
-          end
+      if inline.identifier ~= nil then
+        -- ... to find a "cr-" identifier on the child inline
+        if string.match(inline.identifier, "^cr-") then
+          -- remove id from the child inline
+          local id_to_move = inline.identifier
+          block.content[i].attr.identifier = ""
+          -- and wrap block in Div with #cr- (and converts Para to Plain)
+          block = pandoc.Div(block.content, pandoc.Attr(id_to_move, {}, {}))
         end
-
       end
     end
   end
-  
+            
   return block
 end
 
--- wrap_step: wraps blocks with a .cr-crossfade (or potentially another 'step'
--- class in future) in a div that allows us to have steps visually 
-function wrap_step(block)
+-- wrap_block: wrap step blocks in a div that allows us to style steps visually
+function wrap_block(block)
   
-  -- first extract the cr-* attributes
+  -- extract attributes
   local attributesToMove = {}
-  for k, v in pairs(block.attributes) do
-    if k:find("^data-cr-") or k:find("^cr-") then
-      if block.type == "Span" then
-        quarto.log.output("Close Read warning: do not use Spans as steps!")
-      end
-      table.insert(attributesToMove, {k, v})
-      block.attributes[k] = nil
+  for attr, value in pairs(block.attributes) do
+    if step_selectors[attr] then
+      attributesToMove[attr] = value
+      block.attributes[attr] = nil
     end
   end
-
-  -- now do .cr-* classes: add to parent block class list and remove from
-  -- current block list
-  local classesToMove = block.classes:filter(
-    function(c) return c:find("^cr-") ~= nil end)
-  block.classes = block.classes:filter(
-      function(c) return c:find("^cr-") == nil end)
   
   -- finally construct a pandoc.div with the new details and content to return
-  return pandoc.Div(block, pandoc.Attr("", classesToMove, attributesToMove))
+  return pandoc.Div(block, pandoc.Attr("", "", attributesToMove))
 end
 
 
 function is_sticky(block)
 
-  sticky_block_attribute = false
-  sticky_inline_attribute = false
+  sticky_block_id = false
+  sticky_inline_id = false
   
-  if block.attributes ~= nil then
-    for k,v in pairs(block.attributes) do
-      if k == "cr-id" or k == "data-cr-id" then
-        sticky_block_attribute = true
-        break
-      end
+  if block.identifier ~= nil then
+    if string.match(block.identifier, "^cr-") then
+      sticky_block_id = true
     end
   end
   
   if pandoc.utils.type(block.content) == "Inlines" then
     for _, inline in pairs(block.content) do
-      if inline.attr ~= nil then
-        for k,v in pairs(inline.attributes) do
-          if k == "cr-id" or k == "data-cr-id" then
-            sticky_inline_attribute = true
-            break
-          end
+      if inline.identifier ~= nil then
+        if string.match(inline.identifier, "^cr-") then
+          sticky_inline_id = true
         end
       end
     end
   end
 
-  return sticky_block_attribute or sticky_inline_attribute
+  return sticky_block_id or sticky_inline_id
 end
 
--- utility function
+-- utility functions
+
+function is_step(block) 
+  local is_step = false
+  for selector, _ in pairs(step_selectors) do
+    if block.attributes[selector] then
+      is_step = true
+      break
+    end
+  end
+  return is_step
+end
 
 function find_in_arr(arr, value)
     for i, v in pairs(arr) do

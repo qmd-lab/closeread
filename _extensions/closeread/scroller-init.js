@@ -6,8 +6,7 @@
    although users may have several scrollers in one quarto doc, i think with
    the right syntax we can get away with a single init block for everyone */
 
-const stepSelector = "[data-cr-from], [data-cr-to], [data-cr-in]"
-let currentIndex
+const stepSelector = "[data-focus-on]"
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -21,17 +20,19 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // define an ojs variable if the connector module is available
+  let focusedSticky = "none";
   const ojsModule = window._ojs?.ojsConnector?.mainModule
-  const ojsScrollerSection = ojsModule?.variable();
+  const ojsScrollerName = ojsModule?.variable();
   const ojsScrollerProgress = ojsModule?.variable();
-  ojsScrollerSection?.define("crScrollerSection", null);
-  ojsScrollerProgress?.define("crScrollerProgress", null);
+  const ojsScrollerDirection = ojsModule?.variable();
+  ojsScrollerName?.define("crScrollerName", focusedSticky);
+  ojsScrollerProgress?.define("crScrollerProgress", 0);
+  ojsScrollerDirection?.define("crScrollerDirection", null);
   if (ojsModule === undefined) {
     console.error("Warning: Quarto OJS module not found")
   }
-
-  // let currentIndex;
-
+  
+  const allStickies = Array.from(document.querySelectorAll("[id^='cr-']"));
   const scroller = scrollama();
   scroller
     .setup({
@@ -43,52 +44,94 @@ document.addEventListener("DOMContentLoaded", () => {
     .onStepEnter((response) => {
       
       if (response.direction == "down") {
-        ojsScrollerSection?.define("crScrollerSection", response.index);
-        currentIndex = response.index + 1
-        recalculateActiveSteps()
+        focusedStickyName = "cr-" + response.element.getAttribute("data-focus-on");
+        ojsScrollerName?.define("crScrollerName", focusedStickyName);
+        
+        // applyFocusOn
+        allStickies.forEach(node => {node.classList.remove("cr-active")});
+        const focusedSticky = document.querySelectorAll("[id=" + focusedStickyName)[0]
+        focusedSticky.classList.add("cr-active");
+        
+        // applyHighlightSpans
+        highlightSpans(focusedSticky, response.element);
       }
     })
     .onStepExit((response) => {
       
       if (response.direction == "up") {
-        // as above, but up to the _previous_ element
-        ojsScrollerSection?.define("crScrollerSection", response.index - 1);
-        currentIndex = response.index
-        recalculateActiveSteps()
+        focusedStickyName = "cr-" + response.element.getAttribute("data-focus-on");
+        ojsScrollerName?.define("crScrollerName", focusedStickyName);
+        
+        // applyFocusOn
+        allStickies.forEach(node => {node.classList.remove("cr-active")});
+        const focusedSticky = document.querySelectorAll("[id=" + focusedStickyName)[0]
+        focusedSticky.classList.add("cr-active");
+        
+        // applyHighlightSpans
+        highlightSpans(focusedSticky, response.element);
       }
 
     })
     .onStepProgress((response) => {
       // { element, index, progress }
       ojsScrollerProgress?.define("crScrollerProgress",
-        response.progress.toLocaleString("en-US", {
-          style: "percent"
-        }) + " " +
-        (response.direction == "down" ? "↓" : "↑"));
-
+        response.progress);
+      ojsScrollerDirection?.define("crScrollerDirection",
+        response.direction);
     });
 
     // also recalc transitions and highlights on window resize
-    window.addEventListener("resize", d => recalculateActiveSteps())
+    //window.addEventListener("resize", d => updateStickies(allStickies, allSteps));
 
  });
 
-/* recalculateActiveSteps: recalculates which sticky elements (between the first
+
+function highlightSpans(stickyEl, stepEl) {
+  // remove any previous highlighting
+  stickyEl.querySelectorAll("span[id]").forEach(d => d.classList.remove("cr-hl"));
+  stickyEl.classList.remove("cr-hl-within");
+  
+  let highlightIds = stepEl.getAttribute("data-highlight-spans");
+  
+  // exit function if there's no highlighting
+  if (highlightIds === null) {
+    return;
+  }
+  
+  // dim enclosing block
+  stickyEl.classList.add("cr-hl-within");
+  
+  // add highlight class to appropriate spans
+  highlightIds.split(',').forEach(highlightId => {
+    const trimmedId = highlightId.trim(); // Ensure no whitespace issues
+    const highlightSpan = stickyEl.querySelector(`#${trimmedId}`);
+    if (highlightSpan !== null) {
+      highlightSpan.classList.add("cr-hl");
+    } else {
+    // Handle the case where the ID does not correspond to a span
+      console.warn(`Could not find span with ID '${trimmedId}'. Please ensure the ID is correct.`);
+    }
+  });
+  
+}
+
+
+
+/* updateStickies: recalculates which sticky elements (between the first
    and the one before `indexTo`) need to be displayed, and gives them the class
    `.cr-active`. All elements first have that class removed regardless of
    position.
    (note that sticky elements use the `cr-id` attribute on the user side, but it
    appears in the rendered html as `data-cr-id`.) */
-function recalculateActiveSteps() {
+function updateStickies(allStickies, activeSticky) {
+  
+  // applyFocusOn(allStickies, activeSticky);
+  // applyHighlight(allStickies, activeSticky);
+  // applyZoom(allStickies, activeSticky);
 
-  const allStickies = Array.from(document.querySelectorAll("[data-cr-id]"));
-  const allSteps = Array.from(document.querySelectorAll(stepSelector));
-  // TODO - how to handle anchor links, where page load may not be at top?
-  const priorSteps = allSteps.slice(0, currentIndex || 0);
 
   // reset all elements
   allStickies.forEach(node => node.classList.remove("cr-active"));
-
   
   // replay the vertical transition progress: remove sticky targets if they've
   // been transitioned `from` and add them back if they're transitioned `to`
@@ -126,7 +169,6 @@ function recalculateActiveSteps() {
     if (targets[0].classList.contains("cr-poem")) {
       updateActivePoem(targets[0], priorSteps)
     }
-
 
   })
 
