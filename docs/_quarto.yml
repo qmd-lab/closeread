@@ -1,0 +1,27 @@
+project:
+  type: website
+
+website:
+  title: "Closeread"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: guide/index.qmd
+        text: Guide
+      - href: gallery/index.qmd
+        text: Gallery
+      - href: reference/index.qmd
+        text: Reference
+    tools:
+      - icon: github
+        href: https://github.com/qmd-lab/closeread
+        text: Closeread GitHub
+
+format:
+  html:
+    theme:
+      - cosmo
+
+
+

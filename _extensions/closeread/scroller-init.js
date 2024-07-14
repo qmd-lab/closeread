@@ -6,7 +6,7 @@
    although users may have several scrollers in one quarto doc, i think with
    the right syntax we can get away with a single init block for everyone */
 
-const stepSelector = "[data-change-to], [data-focus-on]"
+const stepSelector = "[data-focus-on]"
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -35,8 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
     console.error("Warning: Quarto OJS module not found")
   }
   
-  const allStickies = Array.from(document.querySelectorAll("[data-cr-id]"));
-  console.log(allStickies);
+  const allStickies = Array.from(document.querySelectorAll("[id^='cr-']"));
   const scroller = scrollama();
   scroller
     .setup({
@@ -51,12 +50,12 @@ document.addEventListener("DOMContentLoaded", () => {
         // update ojs variables
         ojsTriggerIndex?.define("crTriggerIndex", response.index);
         ojsScrollProgress?.define("crScrollProgress", 0);
-        focusedStickyName = getActiveSticky(response);
+        focusedStickyName = "cr-" + response.element.getAttribute("data-focus-on");
         ojsStickyName?.define("crStickyName", focusedStickyName);
         
         // applyFocusOn
         allStickies.forEach(node => {node.classList.remove("cr-active")});
-        const focusedSticky = document.querySelectorAll("[data-cr-id=" + focusedStickyName + "]")[0]
+        const focusedSticky = document.querySelectorAll("[id=" + focusedStickyName)[0]
         focusedSticky.classList.add("cr-active");
         
         // applyHighlightSpans
@@ -71,12 +70,12 @@ document.addEventListener("DOMContentLoaded", () => {
           "crTriggerIndex",
           response.index - 1 == -1 ? null : response.index - 1);
         ojsScrollProgress?.define("crScrollProgress", 1);
-        focusedStickyName = getActiveSticky(response);
+        focusedStickyName = "cr-" + response.element.getAttribute("data-focus-on");
         ojsStickyName?.define("crStickyName", focusedStickyName);
         
         // applyFocusOn
         allStickies.forEach(node => {node.classList.remove("cr-active")});
-        const focusedSticky = document.querySelectorAll("[data-cr-id=" + focusedStickyName + "]")[0]
+        const focusedSticky = document.querySelectorAll("[id=" + focusedStickyName)[0]
         focusedSticky.classList.add("cr-active");
         
         // applyHighlightSpans
@@ -96,17 +95,6 @@ document.addEventListener("DOMContentLoaded", () => {
     //window.addEventListener("resize", d => updateStickies(allStickies, allSteps));
 
  });
- 
-function getActiveSticky(response) {
-  const changeTo = response.element.getAttribute("data-change-to");
-  const focusOn = response.element.getAttribute("data-focus-on");
-
-  if (changeTo !== null) {
-    return changeTo;
-  } else if (focusOn !== null) {
-    return focusOn;
-  }
-}
 
 
 function highlightSpans(stickyEl, stepEl) {
