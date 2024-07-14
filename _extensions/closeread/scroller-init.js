@@ -49,9 +49,8 @@ document.addEventListener("DOMContentLoaded", () => {
       
       if (response.direction == "down") {
         // update ojs variables
-        ojsTriggerIndex?.define(
-          "crTriggerIndex",
-          response.index);
+        ojsTriggerIndex?.define("crTriggerIndex", response.index);
+        ojsScrollProgress?.define("crScrollProgress", 0);
         focusedStickyName = getActiveSticky(response);
         ojsStickyName?.define("crStickyName", focusedStickyName);
         
@@ -71,6 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ojsTriggerIndex?.define(
           "crTriggerIndex",
           response.index - 1 == -1 ? null : response.index - 1);
+        ojsScrollProgress?.define("crScrollProgress", 1);
         focusedStickyName = getActiveSticky(response);
         ojsStickyName?.define("crStickyName", focusedStickyName);
         

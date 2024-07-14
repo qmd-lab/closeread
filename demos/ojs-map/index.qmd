@@ -78,7 +78,8 @@ angleScale = d3.scaleLinear()
   .clamp(true)
 
 angle = angleScale(
-  crTriggerIndex + crScrollProgress)
+  (crTriggerIndex != null ? crTriggerIndex : -1)
+    + crScrollProgress)
 ```
 :::
 
