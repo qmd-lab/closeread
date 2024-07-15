@@ -10,14 +10,14 @@
 
 /* TODO: Provide custom CSS rules */
 
-body {
+#quarto-document-content {
   font-family: Georgia, "Times New Roman", Times, serif;
-}
-
-h1 {
-  font-family: "Cormorant Garamond", "Times New Roman", Times, serif;
-  font-weight: normal;
-  font-size: 2.3em;
+  
+  h1 {
+    font-family: "Cormorant Garamond", "Times New Roman", Times, serif;
+    font-weight: normal;
+    font-size: 2.3em;
+  }
 }
 
 .cr-layout {
