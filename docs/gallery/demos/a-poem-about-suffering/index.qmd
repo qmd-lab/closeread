@@ -1,6 +1,7 @@
 ---
 format:
-  closeread-html
+  closeread-html:
+    theme: [nytimes.scss]
 ---
 
 :::{.cr-layout}
