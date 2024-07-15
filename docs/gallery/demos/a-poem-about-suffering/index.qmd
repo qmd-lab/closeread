@@ -1,7 +1,7 @@
 ---
 format:
   closeread-html:
-    theme: [nytimes.scss]
+    theme: [cosmo, nytimes.scss]
 ---
 
 :::{.cr-layout}
