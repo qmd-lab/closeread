@@ -12,23 +12,25 @@
 
 #quarto-document-content {
   font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: 15pt;
   
   h1 {
     font-family: "Cormorant Garamond", "Times New Roman", Times, serif;
-    font-weight: normal;
-    font-size: 2.3em;
+    font-weight: 500;
+    font-size: 2.8em;
+    line-height: 1;
   }
 }
 
 .cr-layout {
   display: grid;
-  grid-template-columns: 320px 1fr;
+  grid-template-columns: 400px 1fr;
   
   .sidebar-col {
     grid-column: 1;
-    background-color: black;
+    background-color: rgba(17, 17, 17, 1);
     color: white;
-    min-width: 320px;
+    min-width: 400px;
     
     /* extended wrapper around content to allow early scroll detection */
     > * {
