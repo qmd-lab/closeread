@@ -1,6 +1,4 @@
 
-quarto.log.output("===== Closeread Log =====")
-
 -- set defaults
 local debug_mode = false
 local step_selectors = {["focus-on"] = true}
