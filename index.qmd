@@ -1,0 +1,37 @@
+---
+title: "Minard's Map"
+format:
+  closeread-html:
+    debug-mode: true
+---
+
+
+:::{.cr-layout}
+
+There once was a French engineer names Charles Minard who put his mind to creating a map that illustrated Napoleon's retreat from Moscow.
+
+:::{focus-on="map"}
+Here is Minard's Map.
+:::
+
+:::{focus-on="map"}
+Here is an extra step to help troubleshoot.
+:::
+
+:::{#cr-map}
+![](minard-map.png)
+:::
+
+:::{focus-on="map" pan-to="-30%,0%" scale-by="2.6,2.6"}
+Here is the city of Smolensk.
+:::
+
+:::{focus-on="map" pan-to="40%,110%" scale-by="2.6,2.6"}
+Here is the signature of the creator: Monsieur Minard.
+:::
+
+And now we're nice and zoomed in.
+
+:::
+
+Le Fin
