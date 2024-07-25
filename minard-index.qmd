@@ -26,8 +26,10 @@ Here is the city of Smolensk.
 Here is the signature of the creator: Monsieur Minard.
 :::
 
-And now we're nice and zoomed in.
+:::{focus-on="map" style="padding-block-end: 85svh"}
+It is a masterpiece of data visualization.
+:::
 
 :::
 
-Le Fin
+## Le Fin
