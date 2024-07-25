@@ -58,8 +58,6 @@ document.addEventListener("DOMContentLoaded", () => {
         //applytransformImage
         transformImage(focusedSticky, response.element);
       }
-    })
-    .onStepExit((response) => {
       
       if (response.direction == "up") {
         focusedStickyName = "cr-" + response.element.getAttribute("data-focus-on");
@@ -76,7 +74,6 @@ document.addEventListener("DOMContentLoaded", () => {
         //applytransformImage
         transformImage(focusedSticky, response.element);
       }
-
     })
     .onStepProgress((response) => {
       // { element, index, progress }
