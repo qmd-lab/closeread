@@ -2,8 +2,8 @@
 
 on:
   workflow_dispatch:
-#  push:
-#    branches: main
+  push:
+    branches: main
 
 name: closeread-publish
 
@@ -27,16 +27,6 @@ jobs:
         uses: quarto-dev/quarto-actions/setup@v2
         with:
           version: 1.5.25
-      - name: Install Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - name: Create docs _extensions folder
-        run: mkdir docs/_extensions
-        shell: bash
-      - name: Copy Closeread extension into docs 
-        run: cp -rf _extensions/closeread docs/_extensions/closeread
-        shell: bash
       - name: Render closeread docs
         uses: quarto-dev/quarto-actions/render@v2
         with:
