@@ -4,6 +4,11 @@ format:
     debug-mode: false
 ---
 
+```{r}
+install.packages("rmarkdown")
+```
+
+
 ::::{.cr-layout}
 
 # Test other sticky block types
