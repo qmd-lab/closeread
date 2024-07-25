@@ -25,13 +25,25 @@ jobs:
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout closeread repo
+        uses: actions/checkout@v4
+
+      - name: Create docs _extensions folder
+        run: mkdir docs/_extensions
+        shell: bash
+
+      - name: Copy closeread extension into docs 
+        run: cp -rf _extensions/closeread docs/_extensions
+        shell: bash
+      
       - name: Render website
         run: |
             cd docs
             quarto render
+            
       - name: Setup Pages
         uses: actions/configure-pages@v5
+        
       - name: Upload docs/ artifact
         uses: actions/upload-pages-artifact@v3
         with:
