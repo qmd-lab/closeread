@@ -4,6 +4,7 @@ quarto.log.output("===== Closeread Log =====")
 -- set defaults
 local debug_mode = false
 local step_selectors = {["focus-on"] = true}
+local cr_attributes = {["pan-to"] = true, ["scale-by"] = true}
 
 -- Append attributes to any cr line blocks
 function add_attributes(lineblock)
@@ -174,7 +175,7 @@ function wrap_block(block)
   -- extract attributes
   local attributesToMove = {}
   for attr, value in pairs(block.attributes) do
-    if step_selectors[attr] then
+    if step_selectors[attr] or cr_attributes[attr] then
       attributesToMove[attr] = value
       block.attributes[attr] = nil
     end
