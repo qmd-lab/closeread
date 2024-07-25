@@ -1,5 +1,8 @@
 project:
   type: website
+  pre-render:
+    - "mkdir -p _extensions/"
+    - "cp -Rf ../_extensions/closeread _extensions/"
 
 website:
   title: "Closeread"
