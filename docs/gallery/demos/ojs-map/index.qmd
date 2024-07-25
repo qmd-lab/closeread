@@ -52,7 +52,7 @@ world = FileAttachment("naturalearth-land-110m.geojson").json()
 
 ::::{.cr-layout}
 
-:::{change-to="map"}
+:::{focus-on="map"}
 We want our globe to rotate with the scroll progress — between -180 and 180.  
 :::
 
