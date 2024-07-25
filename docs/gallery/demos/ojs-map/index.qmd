@@ -3,12 +3,14 @@ title: "OJS map"
 format:
   closeread-html:
     code-fold: true
+    theme: cosmo
 ---
 
 Close read makes scrolling progress available to users as [Observable JavasScript](https://quarto.org/docs/interactive/ojs) variables, so you can create Close Read sections with interactive graphics that change as you scroll.
 
 The three variables are:
 
+- `crTriggerIndex`: the index of the active element
 - `crScrollerName`: the name of the active element
 - `crScrollerProgress`: progress of the active element from 0 to 1
 - `crScrollerDirection`: either `"down"` or `"up"`, depending on the direction a user is scrolling
@@ -44,6 +46,7 @@ Now let's load in some land, so we can distinguish it from ocean:
 
 ```{ojs}
 //| label: download-land
+//| echo: true
 world = FileAttachment("naturalearth-land-110m.geojson").json()
 ```
 
@@ -87,7 +90,7 @@ angle = angleScale(
 With all that done, we can see our map!
 :::
 
-:::{cr-id="map"}
+:::{#cr-map}
 
 ```{ojs}
 //| label: map
