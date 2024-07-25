@@ -2,7 +2,6 @@
 quarto.log.output("===== Closeread Log =====")
 
 -- set defaults
-local debug_mode = false
 local step_selectors = {["focus-on"] = true}
 
 -- Append attributes to any cr line blocks
@@ -86,14 +85,30 @@ end
 
 
 -- Read in YAML options
+
+-- set defaults
+local debug_mode = false
+local narrative_col_bg = "light"
+
 function read_meta(m)
 
+  ----------------
+  -- debug mode --
+  ----------------
   if m["debug-mode"] ~= nil then
     debug_mode = m["debug-mode"]
   end
   
   -- make accessible to scroller-init.js via <meta> tag
   quarto.doc.include_text("in-header", "<meta cr-debug-mode='" .. tostring(debug_mode) .. "'>")
+  
+  
+  -----------------
+  -- tweak theme --
+  -----------------
+  if m["narrative-col-bg"] ~= nil then
+    narrative_col_bg = m["narrative-col-bg"][1].text
+  end
   
 end
 
@@ -133,7 +148,7 @@ function make_sidebar_layout(div)
     }
 
     narrative_col = pandoc.Div(narrative_blocks,
-      pandoc.Attr("", {"sidebar-col"}, {}))
+      pandoc.Attr("", {"sidebar-col", "bg-" .. narrative_col_bg}, {}))
     sticky_col_stack = pandoc.Div(sticky_blocks,
       pandoc.Attr("", {"sticky-col-stack"}))
     sticky_col = pandoc.Div(sticky_col_stack,
@@ -251,6 +266,6 @@ quarto.doc.add_html_dependency({
 
 return {
   {LineBlock = add_attributes},
-  {Meta = read_meta,
-  Div = make_sidebar_layout}
+  {Meta = read_meta},
+  {Div = make_sidebar_layout}
 }
