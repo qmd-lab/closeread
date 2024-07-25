@@ -26,10 +26,10 @@ jobs:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v4
-      - name: Render closeread docs
-        uses: quarto-dev/quarto-actions/render@v2
-        with:
-          path: docs
+      - name: Render website
+        run: |
+            cd docs
+            quarto render
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload docs/ artifact
