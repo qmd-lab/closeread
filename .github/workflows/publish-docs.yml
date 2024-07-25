@@ -21,14 +21,11 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ucbscf/berkeley-stat-course:latest
+      options: --user root
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v4
-      - name: Install Quarto
-        uses: quarto-dev/quarto-actions/setup@v2
-        with:
-          version: 1.5.25
       - name: Render closeread docs
         uses: quarto-dev/quarto-actions/render@v2
         with:
