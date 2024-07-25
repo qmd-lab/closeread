@@ -18,7 +18,9 @@ concurrency:
 
 jobs:
   build-docs:
-    runs-on: "ubuntu-latest"
+    runs-on: ubuntu-latest
+    container:
+      image: ucbscf/berkeley-stat-course:latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
