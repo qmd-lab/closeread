@@ -1,1 +1,15 @@
+# quarto backend folder
 /.quarto/
+
+# system files
+.DS_Store
+
+# lua
+/.luarc.json
+
+# rendered documentation site
+/docs/_site/
+/docs/.quarto/
+
+# closeread extension in docs site (we get it from project root on render)
+/docs/_extensions/closeread
