@@ -1,5 +1,4 @@
 
-
 /* each "scroller" requires an initiation that tells it:
    (a) which elements to watch (eg. .step)
    (b) what to do when these elements enter and exit.
