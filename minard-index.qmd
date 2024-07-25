@@ -14,10 +14,6 @@ There once was a French engineer names Charles Minard who put his mind to creati
 Here is Minard's Map.
 :::
 
-:::{focus-on="map"}
-Here is an extra step to help troubleshoot.
-:::
-
 :::{#cr-map}
 ![](minard-map.png)
 :::
