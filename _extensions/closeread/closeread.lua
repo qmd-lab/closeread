@@ -108,6 +108,7 @@ function make_sidebar_layout(div)
       Block = function(block)
         if is_sticky(block) then
           block = shift_id_to_block(block)
+          block.classes:insert("sticky") 
           return block, false -- if a sticky element is found, don't process child blocks
         else
           return {}
@@ -182,7 +183,7 @@ function wrap_block(block)
   end
   
   -- finally construct a pandoc.div with the new details and content to return
-  return pandoc.Div(block, pandoc.Attr("", "", attributesToMove))
+  return pandoc.Div(block, pandoc.Attr("", {"step"}, attributesToMove))
 end
 
 
