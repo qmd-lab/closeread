@@ -1,5 +1,7 @@
 project:
   type: website
+  pre-render:
+    - './copy_extension.sh'
 
 website:
   title: "Closeread"
