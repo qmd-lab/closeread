@@ -40,7 +40,7 @@
       overflow: hidden;
       top: 0;
 
-      [id^="cr-"] {
+      .sticky {
         grid-area: 1 / 1;
         margin: auto;
 
