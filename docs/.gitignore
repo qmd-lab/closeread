@@ -13,5 +13,3 @@
 
 # closeread extension in docs site (we get it from project root on render)
 /docs/_extensions/closeread
-
-#
