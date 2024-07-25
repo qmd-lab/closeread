@@ -73,7 +73,7 @@ function updateStickies(allStickies, response) {
         
   // apply additional effects
   highlightSpans(focusedSticky, response.element);
-  transformImage(focusedSticky, response.element);
+  transformSticky(focusedSticky, response.element);
 }
 
 
@@ -229,26 +229,24 @@ function scalePoemToSpan(el, highlightIds, paddingX = 75, paddingY = 50) {
 
 
 //=================//
-// Transform Image //
+// Transform Sticky //
 //=================//
 
-function transformImage(sticky, step) {
+function transformSticky(sticky, step) {
   
-  // initialize as empty strings
+  // initialize empty strings
   let translateStr = "";
   let scaleStr = "";
   let transformStr = "";
   
   if (step.hasAttribute("data-pan-to")) {
-    // get transform attributes from step
-    const panArray = step.getAttribute("data-pan-to").split(",")
-    translateStr = "translate(" + panArray[0] + ", " + panArray[1] + ")";
+    // get translate attributes from step
+    translateStr = "translate(" + step.getAttribute("data-pan-to") + ")";
   }
   
   if (step.hasAttribute("data-scale-by")) {
     // get scale attributes from step
-    const scaleArray = step.getAttribute("data-scale-by").split(",");
-    scaleStr = "scale(" + scaleArray[0] + ", " + scaleArray[1] + ")";
+    scaleStr = "scale(" + step.getAttribute("data-scale-by") + ")";
   }
   
   // form transform string
@@ -260,7 +258,7 @@ function transformImage(sticky, step) {
     transformStr = scaleStr;
   }
   
-  // and use them to scale the sticky
+  // and use it to scale the sticky
   sticky.style.transform = transformStr;
   
 }
