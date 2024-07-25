@@ -54,6 +54,9 @@ document.addEventListener("DOMContentLoaded", () => {
         
         // applyHighlightSpans
         highlightSpans(focusedSticky, response.element);
+        
+        //applytransformImage
+        transformImage(focusedSticky, response.element);
       }
     })
     .onStepExit((response) => {
@@ -69,6 +72,9 @@ document.addEventListener("DOMContentLoaded", () => {
         
         // applyHighlightSpans
         highlightSpans(focusedSticky, response.element);
+        
+        //applytransformImage
+        transformImage(focusedSticky, response.element);
       }
 
     })
@@ -292,5 +298,40 @@ function scalePoemToSpan(el, highlightIds, paddingX = 75, paddingY = 50) {
   // apply styles
   el.style.setProperty("transform",
     `matrix(${scale}, 0, 0, ${scale}, 0, ${centerDeltaY})`)
+}
 
+
+//=================//
+// Transform Image //
+//=================//
+
+function transformImage(sticky, step) {
+  
+  console.log("sticky:", sticky);
+  console.log("step:", step);
+  
+  // initialize as empty strings
+  let translateStr = "";
+  let scaleStr = "";
+  
+  if (step.hasAttribute("data-pan-to") || step.hasAttribute("data-scale_by")) {
+    // get pan attributes from step
+    const panArray = step.getAttribute("data-pan-to").split(",")
+    translateStr = "translate(" + panArray[0] + ", " + panArray[1] + ")";
+    
+    // get scale attributes from step
+    const scaleArray = step.getAttribute("data-scale-by").split(",");
+    scaleStr = "scale(" + scaleArray[0] + ", " + scaleArray[1] + ")";
+    
+    // and use them to scale the sticky
+    sticky.style.transform = translateStr + " " + scaleStr;
+  } else {
+    //remove any existing transform styles
+    sticky.style.transform.replace(/scale\([^)]*\)/g, '').trim();
+    sticky.style.transform.replace(/transform\([^)]*\)/g, '').trim();
+  }
+  
+
+  
+  
 }
