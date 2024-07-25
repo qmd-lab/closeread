@@ -255,9 +255,9 @@ function transformImage(sticky, step) {
   if (translateStr && scaleStr) {
     transformStr = translateStr + " " + scaleStr;
   } else if (translateStr) {
-      transformStr = translateStr;
+    transformStr = translateStr;
   } else if (scaleStr) {
-      transformStr = scaleStr;
+    transformStr = scaleStr;
   }
   
   // and use them to scale the sticky
