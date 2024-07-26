@@ -2,7 +2,6 @@
 format:
   closeread-html:
     debug-mode: false
-    theme: [cosmo]
 ---
 
 ::::{.cr-layout}
