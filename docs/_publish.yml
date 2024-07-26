@@ -1,0 +1,4 @@
+- source: project
+  netlify:
+    - id: 2a052dac-9a3d-43c1-9f3d-e37e3cb55af2
+      url: 'https://friendly-horse-215d6e.netlify.app'
