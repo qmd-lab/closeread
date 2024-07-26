@@ -10,14 +10,17 @@ const stepSelector = "[data-focus-on]"
 
 document.addEventListener("DOMContentLoaded", () => {
 
-  // if debugging, add .cr-debug to the body 
-  const debugOption = document
-    .querySelector("meta[cr-debug-mode]")?.getAttribute("cr-debug-mode")
-  const debugMode = debugOption === "true"
+  // attach config classes to <body>
+  const debugMode         = getBooleanConfig("debug-mode")
+  const removeHeaderSpace = getBooleanConfig("remove-header-space")
   if (debugMode) {
-    console.info("Close Read: debug mode ON")
     document.body.classList.add("cr-debug")
-  }
+  } 
+  if (removeHeaderSpace) {
+    document.body.classList.add("cr-removeheaderspace")
+  } 
+  console.log("Remove header space mode option was " + removeHeaderSpace)
+  
 
   /*
   // define an ojs variable if the connector module is available
@@ -261,4 +264,12 @@ function transformSticky(sticky, step) {
   // and use it to scale the sticky
   sticky.style.transform = transformStr;
   
+}
+
+/* getBooleanConfig: checks for a <meta> with named attribute `cr-[metaFlag]`
+   and returns true if its value is "true" or false otherwise */
+function getBooleanConfig(metaFlag) {
+  const option = document
+    .querySelector("meta[cr-" + metaFlag + "]")?.getAttribute("cr-" + metaFlag)
+  return option === "true"
 }

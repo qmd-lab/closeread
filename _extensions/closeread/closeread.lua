@@ -1,4 +1,3 @@
-
 -- set defaults
 local debug_mode = false
 local step_selectors = {["focus-on"] = true}
@@ -6,6 +5,7 @@ local cr_attributes = {["pan-to"] = true, ["scale-by"] = true}
 local layout_type = "sidebar"
 local layout_side = "left"
 local layout_sides = { "left", "right", "center" }
+local remove_header_space = false
 
 -- Append attributes to any cr line blocks
 function add_attributes(lineblock)
@@ -88,8 +88,14 @@ end
 -- Read in YAML options
 function read_meta(m)
 
+  -- debug mode
   if m["debug-mode"] ~= nil then
     debug_mode = m["debug-mode"]
+  end
+
+  -- remove-header-space
+  if m["remove-header-space"] ~= nil then
+    remove_header_space = m["remove-header-space"]
   end
 
   -- layout options
@@ -120,12 +126,26 @@ function read_meta(m)
   end
   
   -- inject layout options into html <meta>
-  quarto.doc.include_text("in-header", "<meta cr-layout-type='" .. tostring(layout_type) .. "'>")
-  quarto.doc.include_text("in-header", "<meta cr-layout-side='" .. tostring(layout_side) .. "'>")
+  quarto.doc.include_text("in-header", "<meta cr-layout-type='" ..
+    tostring(layout_type) .. "'>")
+  quarto.doc.include_text("in-header", "<meta cr-layout-side='" ..
+    tostring(layout_side) .. "'>")
   
-  -- minject debug mode option in html <meta>
-  quarto.doc.include_text("in-header", "<meta cr-debug-mode='" .. tostring(debug_mode) .. "'>")
+  -- inject debug mode option in html <meta>
+  quarto.doc.include_text("in-header", "<meta cr-debug-mode='" ..
+    tostring(debug_mode) .. "'>")
+
+  -- inject remove_header_space options into html <meta>
+  quarto.doc.include_text("in-header", "<meta cr-remove-header-space='" ..
+    tostring(remove_header_space) .. "'>")
   
+end
+
+function add_classes_to_body(p)
+  quarto.log.output(">>> Printing pandoc p.blocks")
+  quarto.log.output(p.blocks)
+  -- TODO - i was hoping <body> would be in here, but it starts with
+  -- the .cr-layout... not sure how to attach a class to <body>
 end
 
 -- Construct sticky sidebar AST
@@ -282,7 +302,12 @@ quarto.doc.add_html_dependency({
 -- TODO - add a js scrollama setup step (can i do this with a js script + yaml?)
 
 return {
-  {LineBlock = add_attributes},
-  {Meta = read_meta,
-  Div = make_sidebar_layout}
+  {
+    LineBlock = add_attributes
+  },
+  {
+    Meta = read_meta,
+    Div = make_sidebar_layout,
+    Pandoc = add_classes_to_body
+  }
 }
