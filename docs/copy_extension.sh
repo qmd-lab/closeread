@@ -4,4 +4,5 @@
 if [ "$QUARTO_PROJECT_RENDER_ALL" = 1 ]; then
     mkdir -p _extensions/
     cp -Rf ../_extensions/closeread _extensions/
+    echo "Closeread extension retrieved"
 fi
