@@ -118,3 +118,19 @@ body.cr-debug {
   }
 
 }
+
+/* remove header option */
+
+body.cr-removeheaderspace {
+  #quarto-content {
+    main#quarto-document-content {
+      padding-top: 0;
+      margin-top: 0;
+  
+      .quarto-title-block {
+        display: none;
+      }
+    }
+  }
+
+}
