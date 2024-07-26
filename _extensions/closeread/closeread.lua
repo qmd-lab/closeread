@@ -1,9 +1,11 @@
 
 quarto.log.output("===== Closeread Log =====")
+quarto.log.output("HELLO")
 
 -- set defaults
 local debug_mode = false
 local step_selectors = {["focus-on"] = true}
+local remove_header_space = false
 
 -- Append attributes to any cr line blocks
 function add_attributes(lineblock)
@@ -83,18 +85,32 @@ function extractClasses(el)
   return classes
 end
 
-
-
 -- Read in YAML options
 function read_meta(m)
 
   if m["debug-mode"] ~= nil then
     debug_mode = m["debug-mode"]
   end
+
+  if m["remove-header-space"] ~= nil then
+    remove_header_space = m["remove-header-space"]
+  end
   
   -- make accessible to scroller-init.js via <meta> tag
   quarto.doc.include_text("in-header", "<meta cr-debug-mode='" .. tostring(debug_mode) .. "'>")
+
+  -- same for remove_header_space
+  -- TODO - would love to find a way to do this without js by attaching the
+  -- class to <body> directly
+  quarto.doc.include_text("in-header", "<meta cr-remove-header-space='" .. tostring(remove_header_space) .. "'>")
   
+end
+
+function add_classes_to_body(p)
+  quarto.log.output(">>> Printing pandoc p.blocks")
+  quarto.log.output(p.blocks)
+  -- TODO - i was hoping <body> would be in here, but it starts with
+  -- the .cr-layout... not sure how to attach a class to <body>
 end
 
 -- Construct sticky sidebar AST
@@ -250,7 +266,12 @@ quarto.doc.add_html_dependency({
 -- TODO - add a js scrollama setup step (can i do this with a js script + yaml?)
 
 return {
-  {LineBlock = add_attributes},
-  {Meta = read_meta,
-  Div = make_sidebar_layout}
+  {
+    LineBlock = add_attributes
+  },
+  {
+    Meta = read_meta,
+    Div = make_sidebar_layout,
+    Pandoc = add_classes_to_body
+  }
 }

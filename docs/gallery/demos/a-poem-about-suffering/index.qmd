@@ -4,6 +4,8 @@ format:
     theme: nytimes.scss
     code-tools:
       source: true
+    # note that you can't see code-tools when this option is true
+    remove-header-space: true
 ---
 
 :::{.cr-layout}
