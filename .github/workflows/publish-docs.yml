@@ -28,10 +28,8 @@ jobs:
       - name: Checkout closeread repo
         uses: actions/checkout@v4
 
-      - name: Install Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
+      - name: Check Quarto version
+        run: quarto check
 
       - name: Render docs site
         run: |
