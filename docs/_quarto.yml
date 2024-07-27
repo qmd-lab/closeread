@@ -24,6 +24,7 @@ format:
   html:
     theme:
       - cosmo
+      - "../_extensions/closeread/grid.scss"
 
 
 
