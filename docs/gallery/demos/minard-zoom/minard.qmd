@@ -18,11 +18,11 @@ Here is Minard's Map.
 ![](minard-map.png)
 :::
 
-:::{focus-on="map" pan-to="-30%,0%" scale-by="2.6,2.6"}
+:::{focus-on="map" pan-to="-30%,0%" scale-by="2.6"}
 Here is the city of Smolensk.
 :::
 
-:::{focus-on="map" pan-to="40%,110%" scale-by="2.6,2.6"}
+:::{focus-on="map" pan-to="40%,110%" scale-by="2.6"}
 Here is the signature of the creator: Monsieur Minard.
 :::
 
