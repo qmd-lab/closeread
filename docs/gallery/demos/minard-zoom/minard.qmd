@@ -1,8 +1,7 @@
 ---
 title: "Minard's Map"
 format:
-  closeread-html:
-    debug-mode: true
+  closeread-html
 ---
 
 
