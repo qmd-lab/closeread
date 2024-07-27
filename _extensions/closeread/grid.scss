@@ -16,14 +16,11 @@
     
     /* extended wrapper around content to allow early scroll detection */
     > * {
-      padding-block-start: 20svh;
-      padding-block-end: 20svh;
+      padding-block-start: 45svh;
+      padding-block-end: 45svh;
       vertical-align: middle;
-
-      /* styling for actual content (*/
-      > * {
-        padding: 15px;
-      }
+      padding-left: 30px;
+      padding-right: 30px;
 
     p {
       margin-bottom: 0;
@@ -40,9 +37,10 @@
       display: grid;
       height: 100svh;
       position: sticky;
+      overflow: hidden;
       top: 0;
 
-      [id^="cr-"] {
+      .sticky {
         grid-area: 1 / 1;
         margin: auto;
 
