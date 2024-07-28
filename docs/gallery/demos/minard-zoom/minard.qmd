@@ -1,7 +1,8 @@
 ---
 title: "Minard's Map"
 format:
-  closeread-html
+  closeread-html:
+    css: "../../../_extensions/closeread/grid.css"
 ---
 
 

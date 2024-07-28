@@ -2,6 +2,7 @@
 format:
   closeread-html:
     debug-mode: false
+    css: "../../../_extensions/closeread/grid.css"
 ---
 
 ::::{.cr-layout}
