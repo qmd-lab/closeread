@@ -1,8 +1,5 @@
 ---
-format:
-  closeread-html:
-    debug-mode: false
-    css: "grid.css"
+format: closeread-html
 ---
 
 ::::{.cr-layout}
