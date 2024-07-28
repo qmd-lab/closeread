@@ -23,7 +23,7 @@ website:
 format:
   html:
     theme: [cosmo]
-    css: "_extensions/closeread/grid.css"
+    css: "../_extensions/closeread/grid.css"
 
 
 
