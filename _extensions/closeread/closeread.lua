@@ -100,17 +100,8 @@ function read_meta(m)
   quarto.doc.include_text("in-header", "<meta cr-debug-mode='" .. tostring(debug_mode) .. "'>")
 
   -- same for remove_header_space
-  -- TODO - would love to find a way to do this without js by attaching the
-  -- class to <body> directly
   quarto.doc.include_text("in-header", "<meta cr-remove-header-space='" .. tostring(remove_header_space) .. "'>")
   
-end
-
-function add_classes_to_body(p)
-  quarto.log.output(">>> Printing pandoc p.blocks")
-  quarto.log.output(p.blocks)
-  -- TODO - i was hoping <body> would be in here, but it starts with
-  -- the .cr-layout... not sure how to attach a class to <body>
 end
 
 -- Construct sticky sidebar AST
