@@ -13,14 +13,16 @@ document.addEventListener("DOMContentLoaded", () => {
   // attach config classes to <body>
   const debugMode         = getBooleanConfig("debug-mode")
   const removeHeaderSpace = getBooleanConfig("remove-header-space")
+  const layoutType        = getStringConfig("layout-type") || "sidebar"
+  const layoutSide        = getStringConfig("layout-side") || "center"
   if (debugMode) {
     document.body.classList.add("cr-debug")
   } 
   if (removeHeaderSpace) {
     document.body.classList.add("cr-removeheaderspace")
-  } 
-  console.log("Remove header space mode option was " + removeHeaderSpace)
-  
+  }
+  document.body.classList.add("cr-default-" + layoutType + "-" + layoutSide)
+
 
   /*
   // define an ojs variable if the connector module is available
@@ -273,3 +275,11 @@ function getBooleanConfig(metaFlag) {
     .querySelector("meta[cr-" + metaFlag + "]")?.getAttribute("cr-" + metaFlag)
   return option === "true"
 }
+
+/* getStringConfig: checks for a <meta> with named attribute `cr-[metaFlag]`
+   and returns its value or null otherwise */
+   function getStringConfig(metaFlag) {
+    const option = document
+      .querySelector("meta[cr-" + metaFlag + "]")?.getAttribute("cr-" + metaFlag)
+    return option
+  }
