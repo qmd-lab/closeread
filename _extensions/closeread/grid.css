@@ -35,15 +35,15 @@
 
 /* mobile sizing (bootstrap: xs) is always overlay-center */
 @media (max-width: 575.98px) {
-  .cr-layout {
+  body.closeread.cr-default-overlay-right .cr-layout {
     grid-template-columns: 1fr;
   }
-  .cr-layout .sidebar-col {
+  body.closeread.cr-default-overlay-right .cr-layout .sidebar-col {
     grid-column: 1;
     z-index: 1;
     margin-inline: 0.5em;
   }
-  .cr-layout .sticky-col {
+  body.closeread.cr-default-overlay-right .cr-layout .sticky-col {
     grid-column: 1;
   }
 }

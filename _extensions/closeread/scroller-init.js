@@ -11,6 +11,7 @@ const stepSelector = "[data-focus-on]"
 document.addEventListener("DOMContentLoaded", () => {
 
   // attach config classes to <body>
+  document.body.classList.add("closeread")
   const debugMode         = getBooleanConfig("debug-mode")
   const removeHeaderSpace = getBooleanConfig("remove-header-space")
   const layoutType        = getStringConfig("layout-type") || "sidebar"
