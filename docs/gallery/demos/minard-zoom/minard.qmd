@@ -1,6 +1,8 @@
 ---
 title: "Minard's Map"
-format: closeread-html
+format:
+  closeread-html:
+    sidebar-side: right
 ---
 
 
