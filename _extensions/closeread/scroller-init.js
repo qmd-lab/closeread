@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const debugMode         = getBooleanConfig("debug-mode")
   const removeHeaderSpace = getBooleanConfig("remove-header-space")
   const layoutType        = getStringConfig("layout-type") || "sidebar"
-  const layoutSide        = getStringConfig("layout-side") || "center"
+  const layoutSide        = getStringConfig("layout-side") || "left"
   if (debugMode) {
     document.body.classList.add("cr-debug")
   } 
