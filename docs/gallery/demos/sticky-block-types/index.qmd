@@ -1,5 +1,7 @@
 ---
-format: closeread-html
+format:
+  closeread-html:
+    overlay-side: right
 ---
 
 ::::{.cr-layout}
@@ -34,7 +36,7 @@ I've replaced its margin with some padding to demonstrate that you can give it a
 Here's a little non-scrolling interlude before our next scrolly section!
 ::::
 
-::::{.cr-layout}
+::::{.cr-layout .cr-sidebar-left}
 
 :::{focus-on="scatter"}
 This is a scatterplot.

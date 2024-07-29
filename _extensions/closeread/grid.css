@@ -101,6 +101,7 @@ body .cr-layout.cr-sidebar-left {
 .cr-default-sidebar-left .cr-layout .sidebar-col,
 body .cr-layout.cr-sidebar-left .sidebar-col {
   grid-column: 1;
+  margin-inline: 0;
 }
 .cr-default-sidebar-left .cr-layout .sticky-col,
 body .cr-layout.cr-sidebar-left .sticky-col {
@@ -114,6 +115,7 @@ body .cr-layout.cr-sidebar-right {
 .cr-default-sidebar-right .cr-layout .sidebar-col,
 body .cr-layout.cr-sidebar-right .sidebar-col {
   grid-column: 2;
+  margin-inline: 0;
 }
 .cr-default-sidebar-right .cr-layout .sticky-col,
 body .cr-layout.cr-sidebar-right .sticky-col {

@@ -124,6 +124,7 @@ body .cr-layout.cr-sidebar-left
 
   .sidebar-col {
     grid-column: 1;
+    margin-inline: 0;
   }
 
   .sticky-col {
@@ -137,6 +138,7 @@ body .cr-layout.cr-sidebar-right
 
   .sidebar-col {
     grid-column: 2;
+    margin-inline: 0;
   }
 
   .sticky-col {
