@@ -141,13 +141,6 @@ function read_meta(m)
   
 end
 
-function add_classes_to_body(p)
-  quarto.log.output(">>> Printing pandoc p.blocks")
-  quarto.log.output(p.blocks)
-  -- TODO - i was hoping <body> would be in here, but it starts with
-  -- the .cr-layout... not sure how to attach a class to <body>
-end
-
 -- Construct sticky sidebar AST
 function make_sidebar_layout(div)
   
