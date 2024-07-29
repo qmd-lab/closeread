@@ -3,6 +3,9 @@
 local debug_mode = false
 local step_selectors = {["focus-on"] = true}
 local cr_attributes = {["pan-to"] = true, ["scale-by"] = true}
+local layout_type = "sidebar"
+local layout_side = "left"
+local layout_sides = { "left", "right", "center" }
 
 -- Append attributes to any cr line blocks
 function add_attributes(lineblock)
@@ -82,16 +85,45 @@ function extractClasses(el)
   return classes
 end
 
-
-
 -- Read in YAML options
 function read_meta(m)
 
   if m["debug-mode"] ~= nil then
     debug_mode = m["debug-mode"]
   end
+
+  -- layout options
+
+  -- check for disallowed values or use of both layouts simultaneously
+  if m["sidebar-side"] ~= nil and m["overlay-side"] ~= nil then
+    quarto.log.error(
+      "Closeread error: use either the `sidebar-side` option or the " ..
+      "`overlay-side` option, not both.")
+  end
+  if m["sidebar-side"] ~= nil and !layout_sides:contains(m["sidebar-side"]) then
+    quarto.log.error("Closeread error: `sidebar-side` should be one of " ..
+      "`left`, `center` or `right`, not " .. tostring(m["sidebar-side"] .. "."))
+  end
+  if m["overlay-side"] ~= nil and !layout_sides:contains(m["overlay-side"]) then
+    quarto.log.error("Closeread error: `overlay-side` should be one of " ..
+      "`left`, `center` or `right`, not " .. tostring(m["sidebar-side"] .. "."))
+  end
   
-  -- make accessible to scroller-init.js via <meta> tag
+  -- set layout type and side if specified
+  if m["sidebar-side"] ~= nil then
+    layout_type = "sidebar"
+    layout_side = m["sidebar-side"]
+  end
+  if m["overlay-side"] ~= nil then
+    layout_type = "overlay"
+    layout_side = m["overlay-side"]
+  end
+  
+  -- inject layout options into html <meta>
+  quarto.doc.include_text("in-header", "<meta cr-layout-type='" .. tostring(layout_type) .. "'>")
+  quarto.doc.include_text("in-header", "<meta cr-layout-side='" .. tostring(layout_side) .. "'>")
+  
+  -- minject debug mode option in html <meta>
   quarto.doc.include_text("in-header", "<meta cr-debug-mode='" .. tostring(debug_mode) .. "'>")
   
 end
@@ -140,7 +172,7 @@ function make_sidebar_layout(div)
       pandoc.Attr("", {"sticky-col"}, {}))
     layout = pandoc.Div({narrative_col, sticky_col},
       pandoc.Attr("", {"cr-layout", "column-screen", table.unpack(div.classes)},
-      {style = "grid-template-columns: 1fr 3fr;"}))
+      {}))
 
     return layout
   end
