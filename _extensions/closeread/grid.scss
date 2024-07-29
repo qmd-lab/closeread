@@ -1,34 +1,31 @@
-
+/* global layout styles */
 
 .cr-layout {
   display: grid;
-  grid-template-columns: 1fr 2fr;
-  
-  .sidebar-col {
-    grid-column: 1;
-    
-    /* extended wrapper around content to allow early scroll detection */
-    > * {
-      padding-block-start: 45svh;
-      padding-block-end: 45svh;
-      vertical-align: middle;
-      padding-left: 30px;
-      padding-right: 30px;
+  grid-template-rows: 1fr;
 
-    p {
-      margin-bottom: 0;
-    }
+  .sidebar-col {
+    grid-row: 1;
+
+    > * {
+      // vertical-align: middle;  // this probably needs to be layout-dependent
+      padding-block: 45svh;
+      padding-inline: 1em;
+
+      p {
+        margin-bottom: 0;
+      }
     }
   }
-  
+
   .sticky-col {
-    grid-column: 2;
-    
+    grid-row: 1;
+
     // using a grid to stack sticky elements on top of each other to then
     // transition through (based on reveal's .r-stack)
     .sticky-col-stack {
       display: grid;
-      height: 100svh;
+      height: 100dvh;
       position: sticky;
       overflow: hidden;
       top: 0;
@@ -39,6 +36,7 @@
 
         // to be overruled when it is the active element
         opacity: 0;
+
         transition:
           opacity linear 0.5s,
           color 1s linear,
@@ -54,13 +52,107 @@
   }
 }
 
+/* mobile sizing (bootstrap: xs) is always overlay-center */
+@media (max-width: 575.98px) {
+  .cr-layout {
+    grid-template-columns: 1fr;
+    
+    .sidebar-col {
+      grid-column: 1;
+      z-index: 1;
+      margin-inline: 0.5em;
+    }
+
+    .sticky-col {
+      grid-column: 1;
+    }
+  }
+}
+
+/* layouts (for wider than mobile sizing)
+   note that .cr-[layout]-[side] class on .cr-layout should override the
+    /cr-default-[layout]-[side] class on <body>
+*/
+
+// overlay layouts use one column...
+.cr-default-overlay-left .cr-layout,
+body .cr-layout.cr-overlay-left,
+.cr-default-overlay-right .cr-layout,
+body .cr-layout.cr-overlay-right,
+.cr-default-overlay-center .cr-layout,
+body .cr-layout.cr-overlay-center
+{
+  grid-template-columns: 1fr;
+
+  .sidebar-col {
+    grid-column: 1;
+    z-index: 1;
+  }
+
+  .sticky-col {
+    grid-column: 1;
+  }
+}
+
+// ... with inline margins set for narrative content depending on side
+.cr-default-overlay-left .cr-layout,
+body .cr-layout.cr-overlay-left {
+  .sidebar-col {
+    margin-inline-start: 5%;
+    margin-inline-end: 65%;
+  }
+}
+.cr-default-overlay-right .cr-layout,
+body .cr-layout.cr-overlay-right {
+  .sidebar-col {
+    margin-inline-start: 65%;
+    margin-inline-end: 5%;
+  }
+}
+.cr-default-overlay-center .cr-layout,
+body .cr-layout.cr-overlay-center {
+  .sidebar-col {
+    margin-inline: auto;
+  }
+}
+
+// sidebar layouts use two columns
+.cr-default-sidebar-left .cr-layout,
+body .cr-layout.cr-sidebar-left
+{
+  grid-template-columns: 1fr 2fr;
+
+  .sidebar-col {
+    grid-column: 1;
+  }
+
+  .sticky-col {
+    grid-column: 2;
+  }
+}
+.cr-default-sidebar-right .cr-layout,
+body .cr-layout.cr-sidebar-right
+{
+  grid-template-columns: 2fr 1fr;
+
+  .sidebar-col {
+    grid-column: 2;
+  }
+
+  .sticky-col {
+    grid-column: 1;
+  }
+}
+
+/* poem styles */
+
 .cr-poem {
 
   font-family: Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
   
   /* need large font to stop safari text blurriness, but max-height to stop
    other stickies from being pushed down by pre-scaled poem size */
-  max-height: 100vh; 
+  max-height: 100dvh; 
   font-size: 300%;
 
   white-space: pre;

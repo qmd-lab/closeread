@@ -106,24 +106,26 @@ function read_meta(m)
       "Closeread error: use either the `sidebar-side` option or the " ..
       "`overlay-side` option, not both.")
   end
-  if m["sidebar-side"] ~= nil and !layout_sides:contains(m["sidebar-side"]) then
+  if m["sidebar-side"] ~= nil and m["sidebar-side"][1].text ~= "left" and m["sidebar-side"][1].text ~= "right" then
     quarto.log.error("Closeread error: `sidebar-side` should be one of " ..
-      "`left`, `center` or `right`, not " .. tostring(m["sidebar-side"] .. "."))
+      "`left`, or `right`, not `" .. m["sidebar-side"][1].text .. "`")
+    
   end
-  if m["overlay-side"] ~= nil and !layout_sides:contains(m["overlay-side"]) then
+  if m["overlay-side"] ~= nil and m["overlay-side"][1].text ~= "left" and m["overlay-side"][1].text ~= "center" and m["overlay-side"][1].text ~= "right" then
     quarto.log.error("Closeread error: `overlay-side` should be one of " ..
-      "`left`, `center` or `right`, not " .. tostring(m["sidebar-side"] .. "."))
+      "`left`, `center` or `right`, not `" .. m["sidebar-side"][1].text .. "`")
   end
   
   -- set layout type and side if specified
   if m["sidebar-side"] ~= nil then
     layout_type = "sidebar"
-    layout_side = m["sidebar-side"]
+    layout_side = m["sidebar-side"][1].text
   end
   if m["overlay-side"] ~= nil then
     layout_type = "overlay"
-    layout_side = m["overlay-side"]
+    layout_side = m["overlay-side"][1].text
   end
+  -- quarto.log.output("Default layout: " .. layout_type .. " " .. layout_side)
   
   -- inject layout options into html <meta>
   quarto.doc.include_text("in-header", "<meta cr-layout-type='" ..
