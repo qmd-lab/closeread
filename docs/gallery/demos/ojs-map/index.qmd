@@ -1,5 +1,7 @@
 ---
-title: "OJS map"
+title: "Spinning Globe"
+image: "globe.png"
+description: "Smoothly transition interactive OJS graphics."
 format: closeread-html
 ---
 
