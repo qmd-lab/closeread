@@ -101,47 +101,34 @@ function make_section_layout(div)
       end
     }
     
-    quarto.log.output(">>>>>>>>>>>>>>", div.content)
-    
-    for _,block in pairs(div.content) do
-      
-    end
-    
     -- make contents of narrative-col
-    narrative_blocks = div.content:walk {
-      traverse = 'topdown',
-      Block = function(block)
-        -- return only the narrative (non-sticky) blocks...
-        if not is_sticky(block) then
-          -- if they're trigger divs
-          if is_trigger(block) then
-            -- and wrap it in an enclosing div
-            --return wrap_block(block)
-            -- add appropriate classes
-            block.classes:insert({"narrative", "trigger"})
-            return block
-          else
-            -- wrap block in a narrative div
-            return pandoc.Div(block, pandoc.Attr("", {"narrative"}, {})), false
-          end
+    narrative_blocks = {}
+    for _,block in ipairs(div.content) do
+      quarto.log.output(">>> narrative_blocks:", narrative_blocks)
+      if not is_sticky(block) then
+        if is_trigger(block) then
+          table.insert(block.attr.classes, "narrative")
+          table.insert(block.attr.classes, "trigger")
+          table.insert(narrative_blocks, block)
         else
-          -- remove sticky blocks
-          return {}
+          local wrapped_block = pandoc.Div(block, pandoc.Attr("", {"narrative"}, {}))
+          table.insert(narrative_blocks, wrapped_block)
         end
       end
-    }
+    end
 
-    narrative_col = pandoc.Div(narrative_blocks,
+    -- piece together the cr-section
+    narrative_col = pandoc.Div(pandoc.Blocks(narrative_blocks),
       pandoc.Attr("", {"narrative-col"}, {}))
     sticky_col_stack = pandoc.Div(sticky_blocks,
       pandoc.Attr("", {"sticky-col-stack"}))
     sticky_col = pandoc.Div(sticky_col_stack,
       pandoc.Attr("", {"sticky-col"}, {}))
-    layout = pandoc.Div({narrative_col, sticky_col},
+    cr_section = pandoc.Div({narrative_col, sticky_col},
       pandoc.Attr("", {"column-screen", table.unpack(div.classes)},
       {}))
 
-    return layout
+    return cr_section
   end
 end
 
