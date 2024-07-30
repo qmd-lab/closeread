@@ -87,6 +87,7 @@ function make_section_layout(div)
   
   if div.classes:includes("cr-section") then
     
+    -- make contents of stick-col
     sticky_blocks = div.content:walk {
       traverse = 'topdown',
       Block = function(block)
@@ -100,11 +101,16 @@ function make_section_layout(div)
       end
     }
     
+    quarto.log.output(">>>>>>>>>>>>>>", div.content)
+    
+    for _,block in pairs(div.content) do
+      
+    end
+    
+    -- make contents of narrative-col
     narrative_blocks = div.content:walk {
       traverse = 'topdown',
       Block = function(block)
-        quarto.log.output(">>>", block)
-        quarto.log.output("> is trigger?", is_trigger(block))
         -- return only the narrative (non-sticky) blocks...
         if not is_sticky(block) then
           -- if they're trigger divs
@@ -116,7 +122,7 @@ function make_section_layout(div)
             return block
           else
             -- wrap block in a narrative div
-            return pandoc.Div(block, pandoc.Attr("", {"narrative"}, {}))
+            return pandoc.Div(block, pandoc.Attr("", {"narrative"}, {})), false
           end
         else
           -- remove sticky blocks
