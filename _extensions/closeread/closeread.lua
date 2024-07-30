@@ -289,9 +289,9 @@ quarto.doc.add_html_dependency({
   scripts = {"scrollama.min.js"}
 })
 quarto.doc.add_html_dependency({
-  name = "cr-sidebar-scroller-init",
+  name = "closereadjs",
   version = "0.0.1",
-  scripts = {"scroller-init.js"}
+  scripts = {"closeread.js"}
 })
 
 -- TODO - add a js scrollama setup step (can i do this with a js script + yaml?)
