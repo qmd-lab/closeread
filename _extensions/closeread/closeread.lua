@@ -1,3 +1,11 @@
+--===============--
+-- Closeread.lua --
+--===============--
+-- This script creates the functions/filters that are used to process 
+-- a closeread document into the initial HTML file that is loaded by
+-- the browser. The filters are actually run at the very bottom of the
+-- script, so to understand the script it might be easiest to start there.
+
 -- set defaults
 local debug_mode = false
 local trigger_selectors = {["focus-on"] = true}
@@ -7,85 +15,11 @@ local layout_side = "left"
 local layout_sides = { "left", "right", "center" }
 local remove_header_space = false
 
--- Append attributes to any cr line blocks
-function add_attributes(lineblock)
-  local first_line = lineblock.content[1]
-  
-  if first_line[1].t == "Str" and first_line[1].text:sub(1,1) == "{" then
-    local id = extractIds(first_line)[1]
-    local classes = extractClasses(first_line)
-    local attr_tab = extractAttr(first_line)
-    
-    table.remove(lineblock.content, 1)
-    lineblock = pandoc.Div(lineblock, pandoc.Attr(id, classes, attr_tab))
-  end
-  
-  return lineblock
-end
 
-function extractAttr(el)
-  local attr_tab = {}
-  local keys_tab = {}
-  local vals_tab = {}
-  local key_inds = {}
-  local ind = 0
-  
-  -- gather keys and their index
-  for _,v in ipairs(el) do
-    ind = ind + 1
-    if v.t == "Str" then
-      v.text = v.text:gsub("[{}]", "")
-      if v.text:sub(-1) == "=" then
-        table.insert(keys_tab, v.text:sub(1, -2))
-        table.insert(key_inds, ind)
-      end
-    end
-  end
-  
-  -- gather values from index + 1
-  for _,v in ipairs(key_inds) do
-    if el[v + 1].t == "Quoted" then
-      table.insert(vals_tab, el[v + 1].content[1].text)
-    else
-      table.insert(vals_tab, "")
-    end
-  end
-  
-  -- zip them together
-  for i = 1, #keys_tab do
-    attr_tab[keys_tab[i]] = vals_tab[i]
-  end
-  
-  return attr_tab
-end
+--======================--
+-- Process YAML options --
+--======================--
 
-function extractIds(el)
-  local ids = {}
-  for _,v in ipairs(el) do
-    if v.t == "Str" then
-      v.text = v.text:gsub("[{}]", "")
-      if v.text:sub(1, 1) == "#" then
-        table.insert(ids, v.text:sub(2))
-      end
-    end
-  end
-  
-  return ids
-end
-
-function extractClasses(el)
-  local classes = {}
-  for _,v in ipairs(el) do
-    if v.t == "Str" then
-      if v.text:sub(1, 1) == "." then
-        table.insert(classes, v.text:sub(2))
-      end
-    end
-  end
-  return classes
-end
-
--- Read in YAML options
 function read_meta(m)
 
   -- debug mode
@@ -143,6 +77,11 @@ function read_meta(m)
   
 end
 
+
+--=====================--
+-- Form CR-Section AST --
+--=====================--
+
 -- Construct cr section AST
 function make_section_layout(div)
   
@@ -193,6 +132,7 @@ function make_section_layout(div)
   end
 end
 
+
 function shift_id_to_block(block)
 
   -- if block contains inlines...
@@ -214,6 +154,7 @@ function shift_id_to_block(block)
             
   return block
 end
+
 
 -- wrap_block: wrap trigger blocks in a div that allows us to style triggers visually
 function wrap_block(block)
@@ -256,7 +197,6 @@ function is_sticky(block)
   return sticky_block_id or sticky_inline_id
 end
 
--- utility functions
 
 function is_trigger(block) 
   local is_trigger = false
@@ -269,6 +209,7 @@ function is_trigger(block)
   return is_trigger
 end
 
+
 function find_in_arr(arr, value)
     for i, v in pairs(arr) do
         if v == value then
@@ -277,7 +218,97 @@ function find_in_arr(arr, value)
     end
 end
 
--- add scrollama.js, the intersection-observer polyfill and our scroller init
+
+--======================--
+-- Lineblock Attributes --
+--======================--
+
+-- Append attributes to any cr line blocks
+function add_attributes(lineblock)
+  local first_line = lineblock.content[1]
+  
+  if first_line[1].t == "Str" and first_line[1].text:sub(1,1) == "{" then
+    local id = extractIds(first_line)[1]
+    local classes = extractClasses(first_line)
+    local attr_tab = extractAttr(first_line)
+    
+    table.remove(lineblock.content, 1)
+    lineblock = pandoc.Div(lineblock, pandoc.Attr(id, classes, attr_tab))
+  end
+  
+  return lineblock
+end
+
+
+function extractAttr(el)
+  local attr_tab = {}
+  local keys_tab = {}
+  local vals_tab = {}
+  local key_inds = {}
+  local ind = 0
+  
+  -- gather keys and their index
+  for _,v in ipairs(el) do
+    ind = ind + 1
+    if v.t == "Str" then
+      v.text = v.text:gsub("[{}]", "")
+      if v.text:sub(-1) == "=" then
+        table.insert(keys_tab, v.text:sub(1, -2))
+        table.insert(key_inds, ind)
+      end
+    end
+  end
+  
+  -- gather values from index + 1
+  for _,v in ipairs(key_inds) do
+    if el[v + 1].t == "Quoted" then
+      table.insert(vals_tab, el[v + 1].content[1].text)
+    else
+      table.insert(vals_tab, "")
+    end
+  end
+  
+  -- zip them together
+  for i = 1, #keys_tab do
+    attr_tab[keys_tab[i]] = vals_tab[i]
+  end
+  
+  return attr_tab
+end
+
+
+function extractIds(el)
+  local ids = {}
+  for _,v in ipairs(el) do
+    if v.t == "Str" then
+      v.text = v.text:gsub("[{}]", "")
+      if v.text:sub(1, 1) == "#" then
+        table.insert(ids, v.text:sub(2))
+      end
+    end
+  end
+  
+  return ids
+end
+
+
+function extractClasses(el)
+  local classes = {}
+  for _,v in ipairs(el) do
+    if v.t == "Str" then
+      if v.text:sub(1, 1) == "." then
+        table.insert(classes, v.text:sub(2))
+      end
+    end
+  end
+  return classes
+end
+
+
+--================--
+-- HTML Injection --
+--================--
+
 quarto.doc.add_html_dependency({
   name = "intersection-observer-polyfill",
   version = "1.0.0",
@@ -294,7 +325,10 @@ quarto.doc.add_html_dependency({
   scripts = {"closeread.js"}
 })
 
--- TODO - add a js scrollama setup step (can i do this with a js script + yaml?)
+
+--=============--
+-- Run Filters --
+--=============--
 
 return {
   {
