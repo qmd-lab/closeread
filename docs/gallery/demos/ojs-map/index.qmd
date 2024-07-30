@@ -1,9 +1,6 @@
 ---
 title: "OJS map"
-format:
-  closeread-html:
-    code-fold: true
-    theme: cosmo
+format: closeread-html
 ---
 
 Close read makes scrolling progress available to users as [Observable JavasScript](https://quarto.org/docs/interactive/ojs) variables, so you can create Close Read sections with interactive graphics that change as you scroll.
