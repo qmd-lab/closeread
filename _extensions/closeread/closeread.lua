@@ -85,7 +85,7 @@ end
 -- Construct cr section AST
 function make_section_layout(div)
   
-  if div.classes:includes("cr-layout") then
+  if div.classes:includes("cr-section") then
     
     sticky_blocks = div.content:walk {
       traverse = 'topdown',
@@ -103,16 +103,23 @@ function make_section_layout(div)
     narrative_blocks = div.content:walk {
       traverse = 'topdown',
       Block = function(block)
-        -- return only the non-sticky blocks...
+        quarto.log.output(">>>", block)
+        quarto.log.output("> is trigger?", is_trigger(block))
+        -- return only the narrative (non-sticky) blocks...
         if not is_sticky(block) then
-          -- but check for trigger blocks
-          if block.attributes ~= nil and is_trigger(block) then
-            -- and and wrap it in an enclosing div
-            return wrap_block(block)
-          else
+          -- if they're trigger divs
+          if is_trigger(block) then
+            -- and wrap it in an enclosing div
+            --return wrap_block(block)
+            -- add appropriate classes
+            block.classes:insert({"narrative", "trigger"})
             return block
+          else
+            -- wrap block in a narrative div
+            return pandoc.Div(block, pandoc.Attr("", {"narrative"}, {}))
           end
         else
+          -- remove sticky blocks
           return {}
         end
       end
@@ -198,7 +205,13 @@ function is_sticky(block)
 end
 
 
-function is_trigger(block) 
+function is_trigger(block)
+  -- it can't be a trigger without attributes
+  if block.attributes == nil then
+    return false
+  end
+  
+  -- if it has attributes, they must match a selector
   local is_trigger = false
   for selector, _ in pairs(trigger_selectors) do
     if block.attributes[selector] then
@@ -206,6 +219,7 @@ function is_trigger(block)
       break
     end
   end
+  
   return is_trigger
 end
 
