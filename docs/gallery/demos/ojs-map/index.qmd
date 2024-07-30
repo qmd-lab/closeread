@@ -8,12 +8,12 @@ format:
 
 Close read makes scrolling progress available to users as [Observable JavasScript](https://quarto.org/docs/interactive/ojs) variables, so you can create Close Read sections with interactive graphics that change as you scroll.
 
-The three variables are:
+The four variables are:
 
+- `crStickyName`: the name of the active element
 - `crTriggerIndex`: the index of the active element
-- `crScrollerName`: the name of the active element
-- `crScrollerProgress`: progress of the active element from 0 to 1
-- `crScrollerDirection`: either `"down"` or `"up"`, depending on the direction a user is scrolling
+- `crTriggerProgress`: progress of the active element from 0 to 1
+- `crDirection`: either `"down"` or `"up"`, depending on the direction a user is scrolling
 
 Let's see what we can do with these variables.
 
@@ -82,7 +82,7 @@ angleScale = d3.scaleLinear()
 
 angle = angleScale(
   (crTriggerIndex != null ? crTriggerIndex : -1)
-    + crScrollProgress)
+    + crTriggerProgress)
 ```
 :::
 
@@ -135,10 +135,10 @@ Plot.plot({
 
 :::{.counter style="position: fixed; top: 10px; right: 10px; background-color: skyblue; border-radius: 5px; padding: 18px 18px 0 18px;"}
 ```{ojs}
+md`Active sticky: ${crStickyName}`
 md`Active trigger: ${crTriggerIndex}`
-md`Active element: ${crStickyName}`
-md`Element progress: ${(crScrollProgress * 100).toFixed(1)}%`
-md`Scroll direction: ${crScrollDirection}`
+md`Trigger progress: ${(crTriggerProgress * 100).toFixed(1)}%`
+md`Scroll direction: ${crDirection}`
 md`Angle: ${angle.toFixed(1)}°`
 ```
 :::

@@ -22,15 +22,15 @@ document.addEventListener("DOMContentLoaded", () => {
   // define an ojs variable if the connector module is available
   let focusedSticky = "none";
   const ojsModule = window._ojs?.ojsConnector?.mainModule
-  const ojsTriggerIndex = ojsModule?.variable()
   const ojsStickyName = ojsModule?.variable()
-  const ojsScrollProgress = ojsModule?.variable()
-  const ojsScrollDirection = ojsModule?.variable()
+  const ojsTriggerIndex = ojsModule?.variable()
+  const ojsTriggerProgress = ojsModule?.variable()
+  const ojsDirection = ojsModule?.variable()
 
   ojsTriggerIndex?.define("crTriggerIndex", 0);
   ojsStickyName?.define("crStickyName", focusedSticky);
-  ojsScrollProgress?.define("crScrollProgress", 0);
-  ojsScrollDirection?.define("crScrollDirection", null);
+  ojsTriggerProgress?.define("crTriggerProgress", 0);
+  ojsDirection?.define("crDirection", null);
   if (ojsModule === undefined) {
     console.error("Warning: Quarto OJS module not found")
   }
@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (response.direction == "down") {
         // update ojs variables
         ojsTriggerIndex?.define("crTriggerIndex", response.index);
-        ojsScrollProgress?.define("crScrollProgress", 0);
+        ojsTriggerProgress?.define("crTriggerProgress", 0);
         focusedStickyName = "cr-" + response.element.getAttribute("data-focus-on");
         ojsStickyName?.define("crStickyName", focusedStickyName);
         
@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ojsTriggerIndex?.define(
           "crTriggerIndex",
           response.index - 1 == -1 ? null : response.index - 1);
-        ojsScrollProgress?.define("crScrollProgress", 1);
+        ojsTriggerProgress?.define("crTriggerProgress", 1);
         focusedStickyName = "cr-" + response.element.getAttribute("data-focus-on");
         ojsStickyName?.define("crStickyName", focusedStickyName);
         
@@ -85,9 +85,9 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .onStepProgress((response) => {
       // { element, index, progress }
-      ojsScrollProgress?.define("crScrollProgress",
+      ojsTriggerProgress?.define("crTriggerProgress",
         response.progress);
-      ojsScrollDirection?.define("crScrollDirection",
+      ojsDirection?.define("crDirection",
         response.direction);
     });
 
