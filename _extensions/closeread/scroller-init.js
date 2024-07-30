@@ -19,16 +19,16 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.classList.add("cr-debug")
   }
 
-  // define an ojs variable if the connector module is available
-  let focusedSticky = "none";
+  // define ojs variables if the connector module is available
   const ojsModule = window._ojs?.ojsConnector?.mainModule
   const ojsStickyName = ojsModule?.variable()
   const ojsTriggerIndex = ojsModule?.variable()
   const ojsTriggerProgress = ojsModule?.variable()
   const ojsDirection = ojsModule?.variable()
 
-  ojsTriggerIndex?.define("crTriggerIndex", 0);
+  let focusedSticky = "none";
   ojsStickyName?.define("crStickyName", focusedSticky);
+  ojsTriggerIndex?.define("crTriggerIndex", 0);
   ojsTriggerProgress?.define("crTriggerProgress", 0);
   ojsDirection?.define("crDirection", null);
   if (ojsModule === undefined) {
