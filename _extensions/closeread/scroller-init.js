@@ -35,8 +35,8 @@ document.addEventListener("DOMContentLoaded", () => {
   if (ojsModule === undefined) {
     console.error("Warning: Quarto OJS module not found")
   }
-  */
   
+  // define how scrolling triggers effects
   const allStickies = Array.from(document.querySelectorAll("[id^='cr-']"));
   const scroller = scrollama();
   scroller
@@ -47,22 +47,20 @@ document.addEventListener("DOMContentLoaded", () => {
       debug: debugMode
     })
     .onStepEnter((response) => {
-
+      
       focusedStickyName = "cr-" + response.element.getAttribute("data-focus-on");
       
       // update ojs variables
       ojsTriggerIndex?.define("crTriggerIndex", response.index);
-      ojsTriggerProgress?.define("crTriggerProgress", 0);
-      focusedStickyName = "cr-" + response.element.getAttribute("data-focus-on");
       ojsStickyName?.define("crStickyName", focusedStickyName);
         
-      updateStickies(allStickies, focusedStickyName response);
+      updateStickies(allStickies, focusedStickyName, response);
       
     })
     .onStepProgress((response) => {
       
       // update ojs variables
-      ojsScrollerProgress?.define("crScrollerProgress", response.progress);
+      ojsTriggerProgress?.define("crTriggerProgress", response.progress);
       ojsDirection?.define("crDirection", response.direction);
       
     });
