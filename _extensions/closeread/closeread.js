@@ -25,21 +25,24 @@ document.addEventListener("DOMContentLoaded", () => {
   document.body.classList.add("cr-default-" + layoutType + "-" + layoutSide)
 
 
-  /*
-  // define an ojs variable if the connector module is available
-  let focusedStickyName = "none";
+  // define ojs variables if the connector module is available
   const ojsModule = window._ojs?.ojsConnector?.mainModule
-  const ojsScrollerName = ojsModule?.variable();
-  const ojsScrollerProgress = ojsModule?.variable();
-  const ojsScrollerDirection = ojsModule?.variable();
-  ojsScrollerName?.define("crScrollerName", focusedStickyName);
-  ojsScrollerProgress?.define("crScrollerProgress", 0);
-  ojsScrollerDirection?.define("crScrollerDirection", null);
+  const ojsStickyName = ojsModule?.variable()
+  const ojsTriggerIndex = ojsModule?.variable()
+  const ojsTriggerProgress = ojsModule?.variable()
+  const ojsDirection = ojsModule?.variable()
+
+  let focusedSticky = "none";
+  ojsStickyName?.define("crStickyName", focusedSticky);
+  ojsTriggerIndex?.define("crTriggerIndex", 0);
+  ojsTriggerProgress?.define("crTriggerProgress", 0);
+  ojsDirection?.define("crDirection", null);
+
   if (ojsModule === undefined) {
     console.error("Warning: Quarto OJS module not found")
   }
-  */
   
+  // define how scrolling triggers effects
   const allStickies = Array.from(document.querySelectorAll("[id^='cr-']"));
   const scroller = scrollama();
   scroller
@@ -50,27 +53,28 @@ document.addEventListener("DOMContentLoaded", () => {
       debug: debugMode
     })
     .onStepEnter((response) => {
-      updateStickies(allStickies, response);
+      
+      focusedStickyName = "cr-" + response.element.getAttribute("data-focus-on");
+      
+      // update ojs variables
+      ojsTriggerIndex?.define("crTriggerIndex", response.index);
+      ojsStickyName?.define("crStickyName", focusedStickyName);
+        
+      updateStickies(allStickies, focusedStickyName, response);
+      
     })
     .onStepProgress((response) => {
-      // { element, index, progress }
-      /*
-      ojsScrollerProgress?.define("crScrollerProgress",
-        response.progress);
-      ojsScrollerDirection?.define("crScrollerDirection",
-        response.direction);
-        */
+      
+      // update ojs variables
+      ojsTriggerProgress?.define("crTriggerProgress", response.progress);
+      ojsDirection?.define("crDirection", response.direction);
+      
     });
-
-    // also recalc transitions and highlights on window resize
-    //window.addEventListener("resize", d => updateStickies(allStickies, allSteps));
 
  });
  
  /* updateStickies: fill in with description */
-function updateStickies(allStickies, response) {
-  focusedStickyName = "cr-" + response.element.getAttribute("data-focus-on");
-  //ojsScrollerName?.define("crScrollerName", focusedStickyName);
+function updateStickies(allStickies, focusedStickyName, response) {
   const focusedSticky = document.querySelectorAll("[id=" + focusedStickyName)[0];
   
   // update which sticky is active

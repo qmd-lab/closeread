@@ -1,0 +1,153 @@
+---
+title: "Spinning Globe"
+image: "globe.png"
+description: "Smoothly transition interactive OJS graphics."
+format: closeread-html
+---
+
+Close read makes scrolling progress available to users as [Observable JavasScript](https://quarto.org/docs/interactive/ojs) variables, so you can create Close Read sections with interactive graphics that change as you scroll.
+
+The four variables are:
+
+- `crStickyName`: the name of the active element
+- `crTriggerIndex`: the index of the active element
+- `crTriggerProgress`: progress of the active element from 0 to 1
+- `crDirection`: either `"down"` or `"up"`, depending on the direction a user is scrolling
+
+Let's see what we can do with these variables.
+
+I have a list of cities around the world. I'd like to show them off to everyone on a globe, but I'll need to rotate the globe in order to show parts of it.
+
+If we make a globe using [Observable Plot's `geo` mark](https://observablehq.com/@observablehq/plot-projections?collection=@observablehq/plot), we can change its `rotation` option to turn it. That could be linked to the clock if we wanted it to animate on its own, but we can also link it to Close Read's variables to make it spin as we scroll.
+
+Before we start, let's define some cities. Here I've done it in OJS, but you could easily make an R or Python data frame available using `ojs_define()` (or even load a CSV from elsewhere):
+
+```{ojs}
+//| label: cities
+//| echo: true
+//| code-fold: false
+cities = [
+  { name: "Brisbane",  lat: -27.467778, lon: 153.028056 },
+  { name: "New Delhi", lat: 28.613889,  lon: 77.208889 },
+  { name: "Singapore", lat: 1.283333,   lon: 103.833333 },
+  { name: "Istanbul",  lat: 41.013611,  lon: 28.955 },
+  { name: "Paris",     lat: 48.856667,  lon: 2.352222 },
+  { name: "Nairobi",   lat: -1.286389,  lon: 36.817222 },
+  { name: "São Paulo", lat: -23.55,     lon: -46.633333 },
+  { name: "Montreal",  lat: 45.508889,  lon: -73.554167 },
+  { name: "Houston",   lat: 29.762778,  lon: -95.383056 },
+  { name: "Vancouver", lat: 49.260833,  lon: -123.113889 },
+  { name: "Honolulu",  lat: 21.306944,  lom: -157.858333 }
+]
+```
+
+Now let's load in some land, so we can distinguish it from ocean:
+
+```{ojs}
+//| label: download-land
+//| echo: true
+world = FileAttachment("naturalearth-land-110m.geojson").json()
+```
+
+::::{.cr-layout}
+
+:::{focus-on="map"}
+We want our globe to rotate with the scroll progress — between -180 and 180.  
+:::
+
+:::{focus-on="map"}
+Instead of trying to do the maths to scale it ourselves, we can make a scale with d3.
+:::
+
+:::{focus-on="map"}
+There are six narrative blocks that we want to scale over, but I'd like the scrolling to start a little late and end a little early — by the time the last block has just started.
+:::
+
+:::{focus-on="map"}
+So between 0.5 (because the scroll starts with the first narrative block of the document) and 5.1. If the numbers go outside this range, we'll _clamp_ them so that the scrolling doesn't continue.
+:::
+
+:::{focus-on="map"}
+Here's how we create that scale and then use it with Closeread's variables, `crTriggerIndex` and `crScrollProgress`:
+  
+```{ojs}
+//| label: angle-scale
+//| echo: true
+//| code-fold: false
+angleScale = d3.scaleLinear()
+  .domain([0.5, 5.1])
+  .range([-180, 180])
+  .clamp(true)
+
+angle = angleScale(
+  (crTriggerIndex != null ? crTriggerIndex : -1)
+    + crTriggerProgress)
+```
+:::
+
+:::{focus-on="map"}
+With all that done, we can see our map!
+:::
+
+:::{#cr-map}
+
+```{ojs}
+//| label: map
+Plot.plot({
+  marks: [
+    Plot.graticule(),
+    Plot.geo(world, {
+      fill: "#222222"
+    }),
+    Plot.sphere(),
+    Plot.dot(cities, {
+      x: "lon",
+      y: "lat",
+      fill: "#eb343d",
+      stroke: "white",
+      strokeWidth: 5,
+      paintOrder: "stroke",
+      size: 6
+    }),
+    Plot.text(cities, {
+      x: d => d.lon + 2,
+      y: d => d.lat + 2,
+      text: "name",
+      fill: "#eb343d",
+      stroke: "white",
+      strokeWidth: 5,
+      paintOrder: "stroke",
+      fontSize: 18,
+      textAnchor: "start"
+    }),
+  ],
+  projection: {
+    type: "orthographic",
+    rotate: [angle, -10]
+  }
+})
+```
+
+:::
+
+::::
+
+:::{.counter style="position: fixed; top: 10px; right: 10px; background-color: skyblue; border-radius: 5px; padding: 18px 18px 0 18px;"}
+```{ojs}
+md`Active sticky: ${crStickyName}`
+md`Active trigger: ${crTriggerIndex}`
+md`Trigger progress: ${(crTriggerProgress * 100).toFixed(1)}%`
+md`Scroll direction: ${crDirection}`
+md`Angle: ${angle.toFixed(1)}°`
+```
+:::
+
+And that's all! Let's put some lorem ipsum in so that it can scroll all the way to the end.
+
+:::{style="color: slategrey; font-style: italic;"}
+Eu in culpa officia cupidatat nostrud laborum do consequat officia Lorem tempor consectetur pariatur sunt. Veniam culpa dolore laborum nostrud ipsum pariatur ipsum dolore consectetur commodo ex. Non culpa deserunt voluptate. Amet excepteur incididunt deserunt pariatur velit labore do sunt occaecat eiusmod. Tempor proident sint exercitation culpa incididunt sunt proident sunt reprehenderit. Sint ipsum qui id nisi quis officia in. Anim velit minim fugiat qui dolor enim occaecat amet excepteur do aliqua ex adipisicing laboris labore.
+
+Culpa aute sint aliquip in aute enim cillum in exercitation cupidatat ex cupidatat mollit dolore ut. Et culpa minim laborum in ipsum laborum velit laboris fugiat ad culpa cillum. Sit nulla eu minim in nulla. Nulla esse sint occaecat eiusmod in irure in dolor veniam pariatur laboris consectetur sunt laboris excepteur. Dolor dolore ad incididunt consequat. Ad elit ullamco veniam cillum reprehenderit pariatur pariatur nisi ea. Pariatur quis ut deserunt eiusmod ipsum magna ullamco.
+
+Amet velit ea ex. Pariatur anim laboris fugiat labore velit ullamco aute aliquip incididunt. Ut labore voluptate exercitation esse aliquip dolor ex magna occaecat ullamco nisi sit non quis nulla. Elit qui do sunt consectetur officia sint veniam incididunt laboris aute eu nisi qui. Et voluptate consequat sunt commodo dolor dolor veniam minim incididunt culpa anim nulla duis est. Excepteur occaecat tempor veniam magna sit sunt enim sint exercitation dolore fugiat nulla consequat proident. Reprehenderit consequat reprehenderit amet dolore cillum elit dolore officia enim dolor.
+:::
