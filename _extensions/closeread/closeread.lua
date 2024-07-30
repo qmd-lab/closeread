@@ -14,6 +14,7 @@ local layout_type = "sidebar"
 local layout_side = "left"
 local layout_sides = { "left", "right", "center" }
 local remove_header_space = false
+local global_layout = "sidebar-left"
 
 
 --======================--
@@ -33,6 +34,11 @@ function read_meta(m)
   end
 
   -- layout options
+  if m["cr-section"] ~= nil then
+    if m["cr-section"]["layout"] ~= nil then
+      global_layout = m["cr-section"]["layout"][1].text
+    end
+  end
 
   -- check for disallowed values or use of both layouts simultaneously
   if m["sidebar-side"] ~= nil and m["overlay-side"] ~= nil then
@@ -104,7 +110,6 @@ function make_section_layout(div)
     -- make contents of narrative-col
     narrative_blocks = {}
     for _,block in ipairs(div.content) do
-      quarto.log.output(">>> narrative_blocks:", narrative_blocks)
       if not is_sticky(block) then
         if is_trigger(block) then
           table.insert(block.attr.classes, "narrative")
@@ -116,6 +121,14 @@ function make_section_layout(div)
         end
       end
     end
+    
+    -- identify section layout
+    local section_layout = global_layout -- inherit from doc yaml
+    for attr, value in pairs(div.attr.attributes) do
+      if attr == "layout" then
+        section_layout = value -- but override with section attr
+      end
+    end
 
     -- piece together the cr-section
     narrative_col = pandoc.Div(pandoc.Blocks(narrative_blocks),
@@ -125,8 +138,7 @@ function make_section_layout(div)
     sticky_col = pandoc.Div(sticky_col_stack,
       pandoc.Attr("", {"sticky-col"}, {}))
     cr_section = pandoc.Div({narrative_col, sticky_col},
-      pandoc.Attr("", {"column-screen", table.unpack(div.classes)},
-      {}))
+      pandoc.Attr("", {"column-screen",table.unpack(div.classes), section_layout}, {}))
 
     return cr_section
   end
@@ -339,10 +351,12 @@ quarto.doc.add_html_dependency({
 
 return {
   {
+    Meta = read_meta
+  },
+  {
     LineBlock = add_attributes
   },
   {
-    Meta = read_meta,
     Div = make_section_layout,
     Pandoc = add_classes_to_body
   }
