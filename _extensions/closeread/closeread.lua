@@ -1,6 +1,6 @@
 -- set defaults
 local debug_mode = false
-local step_selectors = {["focus-on"] = true}
+local trigger_selectors = {["focus-on"] = true}
 local cr_attributes = {["pan-to"] = true, ["scale-by"] = true}
 local layout_type = "sidebar"
 local layout_side = "left"
@@ -143,8 +143,8 @@ function read_meta(m)
   
 end
 
--- Construct sticky sidebar AST
-function make_sidebar_layout(div)
+-- Construct cr section AST
+function make_section_layout(div)
   
   if div.classes:includes("cr-layout") then
     
@@ -166,8 +166,8 @@ function make_sidebar_layout(div)
       Block = function(block)
         -- return only the non-sticky blocks...
         if not is_sticky(block) then
-          -- but check for step blocks
-          if block.attributes ~= nil and is_step(block) then
+          -- but check for trigger blocks
+          if block.attributes ~= nil and is_trigger(block) then
             -- and and wrap it in an enclosing div
             return wrap_block(block)
           else
@@ -180,13 +180,13 @@ function make_sidebar_layout(div)
     }
 
     narrative_col = pandoc.Div(narrative_blocks,
-      pandoc.Attr("", {"sidebar-col"}, {}))
+      pandoc.Attr("", {"narrative-col"}, {}))
     sticky_col_stack = pandoc.Div(sticky_blocks,
       pandoc.Attr("", {"sticky-col-stack"}))
     sticky_col = pandoc.Div(sticky_col_stack,
       pandoc.Attr("", {"sticky-col"}, {}))
     layout = pandoc.Div({narrative_col, sticky_col},
-      pandoc.Attr("", {"cr-layout", "column-screen", table.unpack(div.classes)},
+      pandoc.Attr("", {"column-screen", table.unpack(div.classes)},
       {}))
 
     return layout
@@ -215,20 +215,20 @@ function shift_id_to_block(block)
   return block
 end
 
--- wrap_block: wrap step blocks in a div that allows us to style steps visually
+-- wrap_block: wrap trigger blocks in a div that allows us to style triggers visually
 function wrap_block(block)
   
   -- extract attributes
   local attributesToMove = {}
   for attr, value in pairs(block.attributes) do
-    if step_selectors[attr] or cr_attributes[attr] then
+    if trigger_selectors[attr] or cr_attributes[attr] then
       attributesToMove[attr] = value
       block.attributes[attr] = nil
     end
   end
   
   -- finally construct a pandoc.div with the new details and content to return
-  return pandoc.Div(block, pandoc.Attr("", {"step"}, attributesToMove))
+  return pandoc.Div(block, pandoc.Attr("", {"trigger"}, attributesToMove))
 end
 
 
@@ -258,15 +258,15 @@ end
 
 -- utility functions
 
-function is_step(block) 
-  local is_step = false
-  for selector, _ in pairs(step_selectors) do
+function is_trigger(block) 
+  local is_trigger = false
+  for selector, _ in pairs(trigger_selectors) do
     if block.attributes[selector] then
-      is_step = true
+      is_trigger = true
       break
     end
   end
-  return is_step
+  return is_trigger
 end
 
 function find_in_arr(arr, value)
@@ -302,7 +302,7 @@ return {
   },
   {
     Meta = read_meta,
-    Div = make_sidebar_layout,
+    Div = make_section_layout,
     Pandoc = add_classes_to_body
   }
 }
