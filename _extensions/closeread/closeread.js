@@ -111,7 +111,8 @@ function highlightSpans(stickyEl, stepEl) {
   // add highlight class to appropriate spans
   highlightIds.split(',').forEach(highlightId => {
     const trimmedId = highlightId.trim(); // Ensure no whitespace issues
-    const highlightSpan = stickyEl.querySelector(`#${trimmedId}`);
+    console.log(">> trimmedId", trimmedId)
+    const highlightSpan = stickyEl.querySelector(`#cr-${trimmedId}`);
     if (highlightSpan !== null) {
       highlightSpan.classList.add("cr-hl");
     } else {
