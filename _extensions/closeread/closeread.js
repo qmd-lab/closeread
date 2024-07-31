@@ -1,3 +1,6 @@
+//==============//
+// closeread.js //
+//==============//
 
 /* each "scroller" requires an initiation that tells it:
    (a) which elements to watch (eg. .step)
@@ -5,18 +8,21 @@
    although users may have several scrollers in one quarto doc, i think with
    the right syntax we can get away with a single init block for everyone */
 
-   
+// set params
 const stepSelector = "[data-focus-on]"
 
+// code that will be run when the HTML file is initially loaded by a browser
 document.addEventListener("DOMContentLoaded", () => {
 
-  // if debugging, add .cr-debug to the body 
-  const debugOption = document
-    .querySelector("meta[cr-debug-mode]")?.getAttribute("cr-debug-mode")
-  const debugMode = debugOption === "true"
+  // attach meta classes to <body>
+  document.body.classList.add("closeread")
+  const debugMode         = getBooleanConfig("debug-mode")
+  const removeHeaderSpace = getBooleanConfig("remove-header-space")
   if (debugMode) {
-    console.info("Close Read: debug mode ON")
     document.body.classList.add("cr-debug")
+  } 
+  if (removeHeaderSpace) {
+    document.body.classList.add("cr-removeheaderspace")
   }
 
   // define ojs variables if the connector module is available
@@ -67,7 +73,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
  });
  
- /* updateStickies: fill in with description */
+//=================//
+// Update Stickies //
+//=================//
+ 
+ /* updateStickies: triggers effects and transformations of the focused sticky */
 function updateStickies(allStickies, focusedStickyName, response) {
   const focusedSticky = document.querySelectorAll("[id=" + focusedStickyName)[0];
   
@@ -232,9 +242,9 @@ function scalePoemToSpan(el, highlightIds, paddingX = 75, paddingY = 50) {
 }
 
 
-//=================//
+//==================//
 // Transform Sticky //
-//=================//
+//==================//
 
 function transformSticky(sticky, step) {
   
@@ -266,3 +276,12 @@ function transformSticky(sticky, step) {
   sticky.style.transform = transformStr;
   
 }
+
+/* getBooleanConfig: checks for a <meta> with named attribute `cr-[metaFlag]`
+   and returns true if its value is "true" or false otherwise */
+function getBooleanConfig(metaFlag) {
+  const option = document
+    .querySelector("meta[cr-" + metaFlag + "]")?.getAttribute("cr-" + metaFlag)
+  return option === "true"
+}
+

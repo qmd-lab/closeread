@@ -1,0 +1,149 @@
+/* global layout styles */
+.cr-section {
+  display: grid;
+  grid-template-rows: 1fr;
+}
+.cr-section .narrative-col {
+  grid-row: 1;
+}
+.cr-section .narrative-col .narrative {
+  padding-block: 45svh;
+  padding-inline: 1em;
+}
+.cr-section .narrative-col .narrative p {
+  margin-bottom: 0;
+}
+.cr-section .sticky-col {
+  grid-row: 1;
+}
+.cr-section .sticky-col .sticky-col-stack {
+  display: grid;
+  height: 100dvh;
+  position: sticky;
+  overflow: hidden;
+  top: 0;
+}
+.cr-section .sticky-col .sticky-col-stack .sticky {
+  grid-area: 1/1;
+  margin: auto;
+  opacity: 0;
+  transition: opacity linear 0.5s, color 1s linear, transform 1s ease-in-out, transform-origin 1s ease-in-out;
+}
+.cr-section .sticky-col .sticky-col-stack .cr-active {
+  opacity: 1;
+}
+
+/* mobile sizing (bootstrap: xs) is always overlay-center */
+@media (max-width: 575.98px) {
+  body.overlay-center .cr-layout {
+    grid-template-columns: 1fr;
+  }
+  body.overlay-center .cr-layout .narrative-col {
+    grid-column: 1;
+    z-index: 1;
+    margin-inline: 0.5em;
+  }
+  body.overlay-center .cr-layout .sticky-col {
+    grid-column: 1;
+  }
+}
+.overlay-left,
+.overlay-center,
+.overlay-right {
+  grid-template-columns: 1fr;
+}
+.overlay-left .narrative-col,
+.overlay-center .narrative-col,
+.overlay-right .narrative-col {
+  grid-column: 1;
+  z-index: 1;
+}
+.overlay-left .sticky-col,
+.overlay-center .sticky-col,
+.overlay-right .sticky-col {
+  grid-column: 1;
+}
+
+.overlay-left .narrative-col {
+  margin-inline-start: 5%;
+  margin-inline-end: 65%;
+}
+
+.overlay-center .narrative-col {
+  margin-inline: auto;
+}
+
+.overlay-right .narrative-col {
+  margin-inline-start: 65%;
+  margin-inline-end: 5%;
+}
+
+.sidebar-left {
+  grid-template-columns: 1fr 2fr;
+}
+.sidebar-left .narrative-col {
+  grid-column: 1;
+  margin-inline: 0;
+}
+.sidebar-left .sticky-col {
+  grid-column: 2;
+}
+
+.sidebar-right {
+  grid-template-columns: 2fr 1fr;
+}
+.sidebar-right .narrative-col {
+  grid-column: 2;
+  margin-inline: 0;
+}
+.sidebar-right .sticky-col {
+  grid-column: 1;
+}
+
+/* poem styles */
+.cr-poem {
+  font-family: Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+  /* need large font to stop safari text blurriness, but max-height to stop
+   other stickies from being pushed down by pre-scaled poem size */
+  max-height: 100dvh;
+  font-size: 300%;
+  white-space: pre;
+  line-height: 1em;
+  transform-origin: center center;
+}
+.cr-poem.cr-hl-within {
+  color: rgba(0, 0, 0, 0.5);
+}
+.cr-poem .cr-hl {
+  color: rgb(0, 0, 0);
+  font-weight: bold;
+}
+
+/* debug styles */
+body.cr-debug .cr-poem {
+  background-color: rgba(255, 255, 0, 0.6);
+  border: 1px solid orange;
+}
+body.cr-debug [id^=cr-] {
+  opacity: 0.8;
+}
+body.cr-debug .sidebar-col > * {
+  background: rgba(255, 255, 0, 0.5);
+  border: 1px solid rgba(255, 166, 0, 0.5);
+}
+body.cr-debug .sidebar-col > * > * {
+  background: rgba(0, 208, 255, 0.5);
+  border: 1px solid rgba(0, 115, 255, 0.5);
+  border-radius: 5px;
+}
+
+/* remove header option */
+body.cr-removeheaderspace #quarto-content main#quarto-document-content {
+  padding-top: 0;
+  margin-top: 0;
+}
+body.cr-removeheaderspace #quarto-content main#quarto-document-content .quarto-title-block {
+  display: none;
+}
+
+/*# sourceMappingURL=closeread.css.map */

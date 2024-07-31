@@ -1,41 +1,30 @@
-/*-- scss:defaults --*/
+/* global layout styles */
 
-/* TODO: Customize html appearance by setting SCSS variables */
-/* See https://quarto.org/docs/output-formats/html-themes.html#theme-options */
-
-/*-- scss:rules --*/
-
-/* TODO: Provide custom CSS rules */
-
-.cr-layout {
+.cr-section {
   display: grid;
-  grid-template-columns: 1fr 2fr;
-  
-  .sidebar-col {
-    grid-column: 1;
-    
-    /* extended wrapper around content to allow early scroll detection */
-    > * {
-      padding-block-start: 45svh;
-      padding-block-end: 45svh;
-      vertical-align: middle;
-      padding-left: 30px;
-      padding-right: 30px;
+  grid-template-rows: 1fr;
 
-    p {
-      margin-bottom: 0;
-    }
+  .narrative-col {
+    grid-row: 1;
+
+    .narrative {
+      padding-block: 45svh;
+      padding-inline: 1em;
+
+      p {
+        margin-bottom: 0;
+      }
     }
   }
-  
+
   .sticky-col {
-    grid-column: 2;
-    
+    grid-row: 1;
+
     // using a grid to stack sticky elements on top of each other to then
     // transition through (based on reveal's .r-stack)
     .sticky-col-stack {
       display: grid;
-      height: 100svh;
+      height: 100dvh;
       position: sticky;
       overflow: hidden;
       top: 0;
@@ -46,6 +35,7 @@
 
         // to be overruled when it is the active element
         opacity: 0;
+
         transition:
           opacity linear 0.5s,
           color 1s linear,
@@ -61,13 +51,99 @@
   }
 }
 
+/* mobile sizing (bootstrap: xs) is always overlay-center */
+@media (max-width: 575.98px) {
+  body.overlay-center {
+    .cr-layout {
+      grid-template-columns: 1fr;
+      
+      .narrative-col {
+        grid-column: 1;
+        z-index: 1;
+        margin-inline: 0.5em;
+      }
+  
+      .sticky-col {
+        grid-column: 1;
+      }
+    }
+  }
+}
+
+// layouts for wider-than-mobile sizing
+
+// overlay layouts use one column...
+.overlay-left,
+.overlay-center,
+.overlay-right
+{
+  grid-template-columns: 1fr;
+
+  .narrative-col {
+    grid-column: 1;
+    z-index: 1;
+  }
+
+  .sticky-col {
+    grid-column: 1;
+  }
+}
+
+// ... with inline margins set for narrative content depending on side
+.overlay-left {
+  .narrative-col {
+    margin-inline-start: 5%;
+    margin-inline-end: 65%;
+  }
+}
+.overlay-center {
+  .narrative-col {
+    margin-inline: auto;
+  }
+}
+.overlay-right {
+  .narrative-col {
+    margin-inline-start: 65%;
+    margin-inline-end: 5%;
+  }
+}
+
+
+// sidebar layouts use two columns
+.sidebar-left {
+  grid-template-columns: 1fr 2fr;
+
+  .narrative-col {
+    grid-column: 1;
+    margin-inline: 0;
+  }
+
+  .sticky-col {
+    grid-column: 2;
+  }
+}
+.sidebar-right {
+  grid-template-columns: 2fr 1fr;
+
+  .narrative-col {
+    grid-column: 2;
+    margin-inline: 0;
+  }
+
+  .sticky-col {
+    grid-column: 1;
+  }
+}
+
+/* poem styles */
+
 .cr-poem {
 
   font-family: Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
   
   /* need large font to stop safari text blurriness, but max-height to stop
    other stickies from being pushed down by pre-scaled poem size */
-  max-height: 100vh; 
+  max-height: 100dvh; 
   font-size: 300%;
 
   white-space: pre;
@@ -113,6 +189,22 @@ body.cr-debug {
       border: 1px solid rgba(0, 115, 255, 0.5);
       border-radius: 5px;
     }    
+  }
+
+}
+
+/* remove header option */
+
+body.cr-removeheaderspace {
+  #quarto-content {
+    main#quarto-document-content {
+      padding-top: 0;
+      margin-top: 0;
+  
+      .quarto-title-block {
+        display: none;
+      }
+    }
   }
 
 }

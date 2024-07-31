@@ -1,8 +1,210 @@
+--===============--
+-- Closeread.lua --
+--===============--
+-- This script creates the functions/filters that are used to process 
+-- a closeread document into the initial HTML file that is loaded by
+-- the browser. The filters are actually run at the very bottom of the
+-- script, so to understand the script it might be easiest to start there.
 
 -- set defaults
 local debug_mode = false
-local step_selectors = {["focus-on"] = true}
+local trigger_selectors = {["focus-on"] = true}
 local cr_attributes = {["pan-to"] = true, ["scale-by"] = true}
+local remove_header_space = false
+local global_layout = "sidebar-left"
+
+
+--======================--
+-- Process YAML options --
+--======================--
+
+function read_meta(m)
+
+  -- debug mode
+  if m["debug-mode"] ~= nil then
+    debug_mode = m["debug-mode"]
+  end
+
+  -- remove-header-space
+  if m["remove-header-space"] ~= nil then
+    remove_header_space = m["remove-header-space"]
+  end
+
+  -- layout options
+  if m["cr-section"] ~= nil then
+    if m["cr-section"]["layout"] ~= nil then
+      global_layout = m["cr-section"]["layout"][1].text
+    end
+  end
+  
+  -- inject debug mode option in html <meta>
+  quarto.doc.include_text("in-header", "<meta cr-debug-mode='" ..
+    tostring(debug_mode) .. "'>")
+
+  -- inject remove_header_space options into html <meta>
+  quarto.doc.include_text("in-header", "<meta cr-remove-header-space='" ..
+    tostring(remove_header_space) .. "'>")
+  
+end
+
+
+--=====================--
+-- Form CR-Section AST --
+--=====================--
+
+-- Construct cr section AST
+function make_section_layout(div)
+  
+  if div.classes:includes("cr-section") then
+    
+    -- make contents of stick-col
+    sticky_blocks = div.content:walk {
+      traverse = 'topdown',
+      Block = function(block)
+        if is_sticky(block) then
+          block = shift_id_to_block(block)
+          block.classes:insert("sticky") 
+          return block, false -- if a sticky element is found, don't process child blocks
+        else
+          return {}
+        end
+      end
+    }
+    
+    -- make contents of narrative-col
+    narrative_blocks = {}
+    for _,block in ipairs(div.content) do
+      if not is_sticky(block) then
+        if is_trigger(block) then
+          table.insert(block.attr.classes, "narrative")
+          table.insert(block.attr.classes, "trigger")
+          table.insert(narrative_blocks, block)
+        else
+          local wrapped_block = pandoc.Div(block, pandoc.Attr("", {"narrative"}, {}))
+          table.insert(narrative_blocks, wrapped_block)
+        end
+      end
+    end
+    
+    -- identify section layout
+    local section_layout = global_layout -- inherit from doc yaml
+    for attr, value in pairs(div.attr.attributes) do
+      if attr == "layout" then
+        section_layout = value -- but override with section attr
+      end
+    end
+
+    -- piece together the cr-section
+    narrative_col = pandoc.Div(pandoc.Blocks(narrative_blocks),
+      pandoc.Attr("", {"narrative-col"}, {}))
+    sticky_col_stack = pandoc.Div(sticky_blocks,
+      pandoc.Attr("", {"sticky-col-stack"}))
+    sticky_col = pandoc.Div(sticky_col_stack,
+      pandoc.Attr("", {"sticky-col"}, {}))
+    cr_section = pandoc.Div({narrative_col, sticky_col},
+      pandoc.Attr("", {"column-screen",table.unpack(div.classes), section_layout}, {}))
+
+    return cr_section
+  end
+end
+
+
+function shift_id_to_block(block)
+
+  -- if block contains inlines...
+  if pandoc.utils.type(block.content) == "Inlines" then
+    -- ... iterate over the inlines...
+    for i, inline in pairs(block.content) do
+      if inline.identifier ~= nil then
+        -- ... to find a "cr-" identifier on the child inline
+        if string.match(inline.identifier, "^cr-") then
+          -- remove id from the child inline
+          local id_to_move = inline.identifier
+          block.content[i].attr.identifier = ""
+          -- and wrap block in Div with #cr- (and converts Para to Plain)
+          block = pandoc.Div(block.content, pandoc.Attr(id_to_move, {}, {}))
+        end
+      end
+    end
+  end
+            
+  return block
+end
+
+
+-- wrap_block: wrap trigger blocks in a div that allows us to style triggers visually
+function wrap_block(block)
+  
+  -- extract attributes
+  local attributesToMove = {}
+  for attr, value in pairs(block.attributes) do
+    if trigger_selectors[attr] or cr_attributes[attr] then
+      attributesToMove[attr] = value
+      block.attributes[attr] = nil
+    end
+  end
+  
+  -- finally construct a pandoc.div with the new details and content to return
+  return pandoc.Div(block, pandoc.Attr("", {"trigger"}, attributesToMove))
+end
+
+
+function is_sticky(block)
+
+  sticky_block_id = false
+  sticky_inline_id = false
+  
+  if block.identifier ~= nil then
+    if string.match(block.identifier, "^cr-") then
+      sticky_block_id = true
+    end
+  end
+  
+  if pandoc.utils.type(block.content) == "Inlines" then
+    for _, inline in pairs(block.content) do
+      if inline.identifier ~= nil then
+        if string.match(inline.identifier, "^cr-") then
+          sticky_inline_id = true
+        end
+      end
+    end
+  end
+
+  return sticky_block_id or sticky_inline_id
+end
+
+
+function is_trigger(block)
+  -- it can't be a trigger without attributes
+  if block.attributes == nil then
+    return false
+  end
+  
+  -- if it has attributes, they must match a selector
+  local is_trigger = false
+  for selector, _ in pairs(trigger_selectors) do
+    if block.attributes[selector] then
+      is_trigger = true
+      break
+    end
+  end
+  
+  return is_trigger
+end
+
+
+function find_in_arr(arr, value)
+    for i, v in pairs(arr) do
+        if v == value then
+            return i
+        end
+    end
+end
+
+
+--======================--
+-- Lineblock Attributes --
+--======================--
 
 -- Append attributes to any cr line blocks
 function add_attributes(lineblock)
@@ -19,6 +221,7 @@ function add_attributes(lineblock)
   
   return lineblock
 end
+
 
 function extractAttr(el)
   local attr_tab = {}
@@ -56,6 +259,7 @@ function extractAttr(el)
   return attr_tab
 end
 
+
 function extractIds(el)
   local ids = {}
   for _,v in ipairs(el) do
@@ -70,6 +274,7 @@ function extractIds(el)
   return ids
 end
 
+
 function extractClasses(el)
   local classes = {}
   for _,v in ipairs(el) do
@@ -83,154 +288,10 @@ function extractClasses(el)
 end
 
 
+--================--
+-- HTML Injection --
+--================--
 
--- Read in YAML options
-function read_meta(m)
-
-  if m["debug-mode"] ~= nil then
-    debug_mode = m["debug-mode"]
-  end
-  
-  -- make accessible to scroller-init.js via <meta> tag
-  quarto.doc.include_text("in-header", "<meta cr-debug-mode='" .. tostring(debug_mode) .. "'>")
-  
-end
-
--- Construct sticky sidebar AST
-function make_sidebar_layout(div)
-  
-  if div.classes:includes("cr-layout") then
-    
-    sticky_blocks = div.content:walk {
-      traverse = 'topdown',
-      Block = function(block)
-        if is_sticky(block) then
-          block = shift_id_to_block(block)
-          block.classes:insert("sticky") 
-          return block, false -- if a sticky element is found, don't process child blocks
-        else
-          return {}
-        end
-      end
-    }
-    
-    narrative_blocks = div.content:walk {
-      traverse = 'topdown',
-      Block = function(block)
-        -- return only the non-sticky blocks...
-        if not is_sticky(block) then
-          -- but check for step blocks
-          if block.attributes ~= nil and is_step(block) then
-            -- and and wrap it in an enclosing div
-            return wrap_block(block)
-          else
-            return block
-          end
-        else
-          return {}
-        end
-      end
-    }
-
-    narrative_col = pandoc.Div(narrative_blocks,
-      pandoc.Attr("", {"sidebar-col"}, {}))
-    sticky_col_stack = pandoc.Div(sticky_blocks,
-      pandoc.Attr("", {"sticky-col-stack"}))
-    sticky_col = pandoc.Div(sticky_col_stack,
-      pandoc.Attr("", {"sticky-col"}, {}))
-    layout = pandoc.Div({narrative_col, sticky_col},
-      pandoc.Attr("", {"cr-layout", "column-screen", table.unpack(div.classes)},
-      {style = "grid-template-columns: 1fr 3fr;"}))
-
-    return layout
-  end
-end
-
-function shift_id_to_block(block)
-
-  -- if block contains inlines...
-  if pandoc.utils.type(block.content) == "Inlines" then
-    -- ... iterate over the inlines...
-    for i, inline in pairs(block.content) do
-      if inline.identifier ~= nil then
-        -- ... to find a "cr-" identifier on the child inline
-        if string.match(inline.identifier, "^cr-") then
-          -- remove id from the child inline
-          local id_to_move = inline.identifier
-          block.content[i].attr.identifier = ""
-          -- and wrap block in Div with #cr- (and converts Para to Plain)
-          block = pandoc.Div(block.content, pandoc.Attr(id_to_move, {}, {}))
-        end
-      end
-    end
-  end
-            
-  return block
-end
-
--- wrap_block: wrap step blocks in a div that allows us to style steps visually
-function wrap_block(block)
-  
-  -- extract attributes
-  local attributesToMove = {}
-  for attr, value in pairs(block.attributes) do
-    if step_selectors[attr] or cr_attributes[attr] then
-      attributesToMove[attr] = value
-      block.attributes[attr] = nil
-    end
-  end
-  
-  -- finally construct a pandoc.div with the new details and content to return
-  return pandoc.Div(block, pandoc.Attr("", {"step"}, attributesToMove))
-end
-
-
-function is_sticky(block)
-
-  sticky_block_id = false
-  sticky_inline_id = false
-  
-  if block.identifier ~= nil then
-    if string.match(block.identifier, "^cr-") then
-      sticky_block_id = true
-    end
-  end
-  
-  if pandoc.utils.type(block.content) == "Inlines" then
-    for _, inline in pairs(block.content) do
-      if inline.identifier ~= nil then
-        if string.match(inline.identifier, "^cr-") then
-          sticky_inline_id = true
-        end
-      end
-    end
-  end
-
-  return sticky_block_id or sticky_inline_id
-end
-
--- utility functions
-
-function is_step(block) 
-  local is_step = false
-  for selector, _ in pairs(step_selectors) do
-    if block.attributes[selector] then
-      is_step = true
-      break
-    end
-  end
-  return is_step
-end
-
-function find_in_arr(arr, value)
-    for i, v in pairs(arr) do
-        if v == value then
-            return i
-        end
-    end
-end
-
--- add scrollama.js, the intersection-observer polyfill and our scroller init
 quarto.doc.add_html_dependency({
   name = "intersection-observer-polyfill",
   version = "1.0.0",
@@ -242,15 +303,25 @@ quarto.doc.add_html_dependency({
   scripts = {"scrollama.min.js"}
 })
 quarto.doc.add_html_dependency({
-  name = "cr-sidebar-scroller-init",
+  name = "closereadjs",
   version = "0.0.1",
-  scripts = {"scroller-init.js"}
+  scripts = {"closeread.js"}
 })
 
--- TODO - add a js scrollama setup step (can i do this with a js script + yaml?)
+
+--=============--
+-- Run Filters --
+--=============--
 
 return {
-  {LineBlock = add_attributes},
-  {Meta = read_meta,
-  Div = make_sidebar_layout}
+  {
+    Meta = read_meta
+  },
+  {
+    LineBlock = add_attributes
+  },
+  {
+    Div = make_section_layout,
+    Pandoc = add_classes_to_body
+  }
 }

@@ -1,12 +1,14 @@
 ---
 format:
   closeread-html:
-    theme: nytimes.scss
+    css: nytimes.css
     code-tools:
       source: true
+    # note that you can't see code-tools when this option is true
+    remove-header-space: true
 ---
 
-:::{.cr-layout}
+:::{.cr-section}
 
 :::{}
 # A Poem (and a Painting) About the Suffering That Hides in Plain Sight

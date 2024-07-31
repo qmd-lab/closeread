@@ -7,7 +7,7 @@ contributes:
     html:
       filters:
         - closeread.lua
-      theme: [grid.scss]
+      css: closeread.css
       page-layout: full
       execute:
         echo: false
