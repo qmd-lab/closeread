@@ -27,7 +27,7 @@
   grid-area: 1/1;
   margin: auto;
   opacity: 0;
-  transition: opacity linear 0.5s, color 1s linear, transform 1s ease-in-out, transform-origin 1s ease-in-out;
+  transition: opacity linear 0.5s, color 1s linear, transform 1s ease-in-out, transform-origin 1s ease-in-out, font-size 1s ease-in-out;
 }
 .cr-section .sticky-col .sticky-col-stack .cr-active {
   opacity: 1;
@@ -112,11 +112,27 @@
   transform-origin: center center;
 }
 .cr-poem.cr-hl-within {
-  color: rgba(0, 0, 0, 0.5);
+  color: rgba(0, 0, 0, 0.4);
 }
 .cr-poem .cr-hl {
   color: rgb(0, 0, 0);
-  font-weight: bold;
+}
+
+.cr-poem2 {
+  font-family: Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+  max-height: 100svh;
+  max-width: 100svh;
+  font-size: 2.75cqmin;
+  white-space: pre;
+  line-height: 1em;
+  transform-origin: center center;
+}
+.cr-poem2.cr-hl-within {
+  color: rgba(0, 0, 0, 0.4);
+  font-size: 2.75cqi;
+}
+.cr-poem2 .cr-hl {
+  color: rgb(0, 0, 0);
 }
 
 /* debug styles */
