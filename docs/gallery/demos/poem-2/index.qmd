@@ -1,4 +1,5 @@
 ---
+description: Text xooming using font scaling.
 format:
   closeread-html:
     css: nytimes.css
@@ -26,7 +27,12 @@ How nice that it tells you in the first two words what it’s about.
 
 No matter how familiar a poem is, rereading it always gives me a sense of first encounter, as though I’ve gone back to sleep and re-entered the dream through a different door.
 
-| {#cr-musee .cr-poem}
+
+:::{#cr-musee .cr-poem2}
+
+| **MUSÉE DES BEAUX ARTS**
+| *by W.H. Auden*
+| 
 | [About suffering]{#cr-suffering} they were never wrong,
 | The old Masters: how well they understood
 | Its human position: how it takes place
@@ -49,5 +55,6 @@ No matter how familiar a poem is, rereading it always gives me a sense of first 
 | Water, and the expensive delicate ship that must have seen
 | Something amazing, a boy falling out of the sky,
 | Had somewhere to get to and sailed calmly on.
+:::
 
 :::
