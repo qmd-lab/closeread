@@ -10,9 +10,6 @@
 local debug_mode = false
 local trigger_selectors = {["focus-on"] = true}
 local cr_attributes = {["pan-to"] = true, ["scale-by"] = true}
-local layout_type = "sidebar"
-local layout_side = "left"
-local layout_sides = { "left", "right", "center" }
 local remove_header_space = false
 local global_layout = "sidebar-left"
 
@@ -39,39 +36,6 @@ function read_meta(m)
       global_layout = m["cr-section"]["layout"][1].text
     end
   end
-
-  -- check for disallowed values or use of both layouts simultaneously
-  if m["sidebar-side"] ~= nil and m["overlay-side"] ~= nil then
-    quarto.log.error(
-      "Closeread error: use either the `sidebar-side` option or the " ..
-      "`overlay-side` option, not both.")
-  end
-  if m["sidebar-side"] ~= nil and m["sidebar-side"][1].text ~= "left" and m["sidebar-side"][1].text ~= "right" then
-    quarto.log.error("Closeread error: `sidebar-side` should be one of " ..
-      "`left`, or `right`, not `" .. m["sidebar-side"][1].text .. "`")
-    
-  end
-  if m["overlay-side"] ~= nil and m["overlay-side"][1].text ~= "left" and m["overlay-side"][1].text ~= "center" and m["overlay-side"][1].text ~= "right" then
-    quarto.log.error("Closeread error: `overlay-side` should be one of " ..
-      "`left`, `center` or `right`, not `" .. m["sidebar-side"][1].text .. "`")
-  end
-  
-  -- set layout type and side if specified
-  if m["sidebar-side"] ~= nil then
-    layout_type = "sidebar"
-    layout_side = m["sidebar-side"][1].text
-  end
-  if m["overlay-side"] ~= nil then
-    layout_type = "overlay"
-    layout_side = m["overlay-side"][1].text
-  end
-  -- quarto.log.output("Default layout: " .. layout_type .. " " .. layout_side)
-  
-  -- inject layout options into html <meta>
-  quarto.doc.include_text("in-header", "<meta cr-layout-type='" ..
-    tostring(layout_type) .. "'>")
-  quarto.doc.include_text("in-header", "<meta cr-layout-side='" ..
-    tostring(layout_side) .. "'>")
   
   -- inject debug mode option in html <meta>
   quarto.doc.include_text("in-header", "<meta cr-debug-mode='" ..
