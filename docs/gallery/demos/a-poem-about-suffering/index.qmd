@@ -8,7 +8,7 @@ format:
     remove-header-space: true
 ---
 
-:::{.cr-layout}
+:::{.cr-section}
 
 :::{}
 # A Poem (and a Painting) About the Suffering That Hides in Plain Sight

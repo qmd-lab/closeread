@@ -2,11 +2,12 @@
 title: "Minard's Map"
 format:
   closeread-html:
-    sidebar-side: right
+    cr-section:
+      layout: sidebar-right
 ---
 
 
-:::{.cr-layout}
+:::{.cr-section}
 
 There once was a French engineer names Charles Minard who put his mind to creating a map that illustrated Napoleon's retreat from Moscow.
 

@@ -1,10 +1,11 @@
 ---
 format:
   closeread-html:
-    overlay-side: right
+    cr-section:
+      layout: overlay-right
 ---
 
-::::{.cr-layout}
+::::{.cr-section}
 
 # Test other sticky block types
 
@@ -36,7 +37,7 @@ I've replaced its margin with some padding to demonstrate that you can give it a
 Here's a little non-scrolling interlude before our next scrolly section!
 ::::
 
-::::{.cr-layout .cr-sidebar-left}
+::::{.cr-section layout="sidebar-left"}
 
 :::{focus-on="scatter"}
 This is a scatterplot.
@@ -165,11 +166,3 @@ graph G {
 :::
 
 # The End
-
-
-:::{.counter style="position: fixed; top: 10px; right: 10px; background-color: skyblue; border-radius: 5px; padding: 18px 18px 0 18px;"}
-```{ojs}
-md`Active element: ${crScrollerName}`
-md`Element progress: ${crScrollerProgress}`
-```
-:::
