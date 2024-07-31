@@ -1,14 +1,13 @@
 /* global layout styles */
 
-.cr-layout {
+.cr-section {
   display: grid;
   grid-template-rows: 1fr;
 
-  .sidebar-col {
+  .narrative-col {
     grid-row: 1;
 
-    > * {
-      // vertical-align: middle;  // this probably needs to be layout-dependent
+    .narrative {
       padding-block: 45svh;
       padding-inline: 1em;
 
@@ -77,16 +76,13 @@
 */
 
 // overlay layouts use one column...
-.cr-default-overlay-left .cr-layout,
-body .cr-layout.cr-overlay-left,
-.cr-default-overlay-right .cr-layout,
-body .cr-layout.cr-overlay-right,
-.cr-default-overlay-center .cr-layout,
-body .cr-layout.cr-overlay-center
+.overlay-left,
+.overlay-center,
+.overlay-right
 {
   grid-template-columns: 1fr;
 
-  .sidebar-col {
+  .narrative-col {
     grid-column: 1;
     z-index: 1;
   }
@@ -97,34 +93,30 @@ body .cr-layout.cr-overlay-center
 }
 
 // ... with inline margins set for narrative content depending on side
-.cr-default-overlay-left .cr-layout,
-body .cr-layout.cr-overlay-left {
-  .sidebar-col {
+.overlay-left {
+  .narrative-col {
     margin-inline-start: 5%;
     margin-inline-end: 65%;
   }
 }
-.cr-default-overlay-right .cr-layout,
-body .cr-layout.cr-overlay-right {
-  .sidebar-col {
+.overlay-center {
+  .narrative-col {
+    margin-inline: auto;
+  }
+}
+.overlay-right {
+  .narrative-col {
     margin-inline-start: 65%;
     margin-inline-end: 5%;
   }
 }
-.cr-default-overlay-center .cr-layout,
-body .cr-layout.cr-overlay-center {
-  .sidebar-col {
-    margin-inline: auto;
-  }
-}
+
 
 // sidebar layouts use two columns
-.cr-default-sidebar-left .cr-layout,
-body .cr-layout.cr-sidebar-left
-{
+.sidebar-left {
   grid-template-columns: 1fr 2fr;
 
-  .sidebar-col {
+  .narrative-col {
     grid-column: 1;
     margin-inline: 0;
   }
@@ -133,12 +125,10 @@ body .cr-layout.cr-sidebar-left
     grid-column: 2;
   }
 }
-.cr-default-sidebar-right .cr-layout,
-body .cr-layout.cr-sidebar-right
-{
+.sidebar-right {
   grid-template-columns: 2fr 1fr;
 
-  .sidebar-col {
+  .narrative-col {
     grid-column: 2;
     margin-inline: 0;
   }

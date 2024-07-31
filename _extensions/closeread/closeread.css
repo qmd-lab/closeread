@@ -1,35 +1,35 @@
 /* global layout styles */
-.cr-layout {
+.cr-section {
   display: grid;
   grid-template-rows: 1fr;
 }
-.cr-layout .sidebar-col {
+.cr-section .narrative-col {
   grid-row: 1;
 }
-.cr-layout .sidebar-col > * {
+.cr-section .narrative-col .narrative {
   padding-block: 45svh;
   padding-inline: 1em;
 }
-.cr-layout .sidebar-col > * p {
+.cr-section .narrative-col .narrative p {
   margin-bottom: 0;
 }
-.cr-layout .sticky-col {
+.cr-section .sticky-col {
   grid-row: 1;
 }
-.cr-layout .sticky-col .sticky-col-stack {
+.cr-section .sticky-col .sticky-col-stack {
   display: grid;
   height: 100dvh;
   position: sticky;
   overflow: hidden;
   top: 0;
 }
-.cr-layout .sticky-col .sticky-col-stack .sticky {
+.cr-section .sticky-col .sticky-col-stack .sticky {
   grid-area: 1/1;
   margin: auto;
   opacity: 0;
   transition: opacity linear 0.5s, color 1s linear, transform 1s ease-in-out, transform-origin 1s ease-in-out;
 }
-.cr-layout .sticky-col .sticky-col-stack .cr-active {
+.cr-section .sticky-col .sticky-col-stack .cr-active {
   opacity: 1;
 }
 
@@ -51,74 +51,56 @@
    note that .cr-[layout]-[side] class on .cr-layout should override the
     /cr-default-[layout]-[side] class on <body>
 */
-.cr-default-overlay-left .cr-layout,
-body .cr-layout.cr-overlay-left,
-.cr-default-overlay-right .cr-layout,
-body .cr-layout.cr-overlay-right,
-.cr-default-overlay-center .cr-layout,
-body .cr-layout.cr-overlay-center {
+.overlay-left,
+.overlay-center,
+.overlay-right {
   grid-template-columns: 1fr;
 }
-.cr-default-overlay-left .cr-layout .sidebar-col,
-body .cr-layout.cr-overlay-left .sidebar-col,
-.cr-default-overlay-right .cr-layout .sidebar-col,
-body .cr-layout.cr-overlay-right .sidebar-col,
-.cr-default-overlay-center .cr-layout .sidebar-col,
-body .cr-layout.cr-overlay-center .sidebar-col {
+.overlay-left .narrative-col,
+.overlay-center .narrative-col,
+.overlay-right .narrative-col {
   grid-column: 1;
   z-index: 1;
 }
-.cr-default-overlay-left .cr-layout .sticky-col,
-body .cr-layout.cr-overlay-left .sticky-col,
-.cr-default-overlay-right .cr-layout .sticky-col,
-body .cr-layout.cr-overlay-right .sticky-col,
-.cr-default-overlay-center .cr-layout .sticky-col,
-body .cr-layout.cr-overlay-center .sticky-col {
+.overlay-left .sticky-col,
+.overlay-center .sticky-col,
+.overlay-right .sticky-col {
   grid-column: 1;
 }
 
-.cr-default-overlay-left .cr-layout .sidebar-col,
-body .cr-layout.cr-overlay-left .sidebar-col {
+.overlay-left .narrative-col {
   margin-inline-start: 5%;
   margin-inline-end: 65%;
 }
 
-.cr-default-overlay-right .cr-layout .sidebar-col,
-body .cr-layout.cr-overlay-right .sidebar-col {
+.overlay-center .narrative-col {
+  margin-inline: auto;
+}
+
+.overlay-right .narrative-col {
   margin-inline-start: 65%;
   margin-inline-end: 5%;
 }
 
-.cr-default-overlay-center .cr-layout .sidebar-col,
-body .cr-layout.cr-overlay-center .sidebar-col {
-  margin-inline: auto;
-}
-
-.cr-default-sidebar-left .cr-layout,
-body .cr-layout.cr-sidebar-left {
+.sidebar-left {
   grid-template-columns: 1fr 2fr;
 }
-.cr-default-sidebar-left .cr-layout .sidebar-col,
-body .cr-layout.cr-sidebar-left .sidebar-col {
+.sidebar-left .narrative-col {
   grid-column: 1;
   margin-inline: 0;
 }
-.cr-default-sidebar-left .cr-layout .sticky-col,
-body .cr-layout.cr-sidebar-left .sticky-col {
+.sidebar-left .sticky-col {
   grid-column: 2;
 }
 
-.cr-default-sidebar-right .cr-layout,
-body .cr-layout.cr-sidebar-right {
+.sidebar-right {
   grid-template-columns: 2fr 1fr;
 }
-.cr-default-sidebar-right .cr-layout .sidebar-col,
-body .cr-layout.cr-sidebar-right .sidebar-col {
+.sidebar-right .narrative-col {
   grid-column: 2;
   margin-inline: 0;
 }
-.cr-default-sidebar-right .cr-layout .sticky-col,
-body .cr-layout.cr-sidebar-right .sticky-col {
+.sidebar-right .sticky-col {
   grid-column: 1;
 }
 
