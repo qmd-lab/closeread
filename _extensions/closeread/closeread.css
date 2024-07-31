@@ -108,7 +108,7 @@
   max-height: 100dvh;
   font-size: 300%;
   white-space: pre;
-  line-height: 1em;
+  line-height: 0.6em;
   transform-origin: center center;
 }
 .cr-poem.cr-hl-within {
@@ -124,7 +124,7 @@
   max-width: 100svh;
   font-size: 2.75cqmin;
   white-space: pre;
-  line-height: 1em;
+  line-height: 0.6em;
   transform-origin: center center;
 }
 .cr-poem2.cr-hl-within {
