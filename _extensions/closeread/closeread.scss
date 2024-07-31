@@ -53,11 +53,11 @@
 
 /* mobile sizing (bootstrap: xs) is always overlay-center */
 @media (max-width: 575.98px) {
-  body.closeread.cr-default-overlay-right {
+  body.overlay-center {
     .cr-layout {
       grid-template-columns: 1fr;
       
-      .sidebar-col {
+      .narrative-col {
         grid-column: 1;
         z-index: 1;
         margin-inline: 0.5em;
@@ -70,10 +70,7 @@
   }
 }
 
-/* layouts (for wider than mobile sizing)
-   note that .cr-[layout]-[side] class on .cr-layout should override the
-    /cr-default-[layout]-[side] class on <body>
-*/
+// layouts for wider-than-mobile sizing
 
 // overlay layouts use one column...
 .overlay-left,
