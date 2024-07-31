@@ -3,9 +3,6 @@ description: Text zooming using transforms
 format:
   closeread-html:
     css: nytimes.css
-    code-tools:
-      source: true
-    # note that you can't see code-tools when this option is true
     remove-header-space: true
     debug-mode: false
 ---

@@ -1,11 +1,8 @@
 ---
-description: Text xooming using font scaling.
+description: Text zooming using font scaling
 format:
   closeread-html:
     css: nytimes.css
-    code-tools:
-      source: true
-    # note that you can't see code-tools when this option is true
     remove-header-space: true
 ---
 
