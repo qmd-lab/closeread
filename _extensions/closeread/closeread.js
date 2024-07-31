@@ -93,8 +93,9 @@ function updateStickies(allStickies, focusedStickyName, trigger) {
   
   if (focusedSticky.classList.contains("cr-poem")) {
     scalePoemFull(focusedSticky);
-    highlightSpans(focusedSticky, trigger.element);
   }
+  
+  highlightSpans(focusedSticky, trigger.element);
 
 }
 
@@ -127,8 +128,10 @@ function highlightSpans(focusedSticky, triggerEl) {
     }
   });
   
-  // scale to span
-  scalePoemToSpan(focusedSticky, highlightIds);
+  if (focusedSticky.classList.contains("cr-poem") {
+    // scale to span using transform
+    scalePoemToSpan(focusedSticky, highlightIds);
+  }
   
 }
 
