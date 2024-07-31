@@ -1,55 +1,60 @@
 ---
 title: Reference
+toc: true
+toc-expand: true
+css: ref-styles.css
 listing:
   - id: yaml-options
     template: reference.ejs
     contents: yaml-options.yml
+  - id: section-options
+    template: reference.ejs
+    contents: section-options.yml
+  - id: trigger-options
+    template: reference.ejs
+    contents: trigger-options.yml
   - id: sticky-options
     template: reference.ejs
     contents: sticky-options.yml
-  - id: step-options
-    template: reference.ejs
-    contents: step-options.yml
 ---
 
-### Document Metadata
+## Document Metadata
 
-Document-wide options under the custom format key in YAML format.
-
-```yaml
-format:
-  closeread-html
-```
+Document-wide options under the `closeread-html` format key in YAML format.
 
 :::{#yaml-options}
 :::
 
-### Layout Block Options
+## Fenced Div Options
 
-Todo.
+Closeread takes advantage of the Pandocs's [fenced div syntax](https://quarto.org/docs/authoring/markdown-basics.html#sec-divs-and-spans) to pass options to sections, triggers, and stickies. The fenced div syntax allows you to wrap content (a figure, a paragraph, etc) in a div and pass it one or more identifiers, classes, and attributes.
+
+```markdown
+:::{#myid .myclass myattribute="something"}
+< block content like a figure or paragraph >
+:::
+```
+
+Identifiers start with `#`; classes start with `.`, and attributes have a key / value pair separated by `=` and no spaces. You can assign to a div one or more of each of these (though they must be supplied in identifier-class-attributes order) as long as each is separated by a space.
+
+### Section Options
+
+A closeread section is a div with the class `cr-section` that contains stickies and triggers.
+
+:::{#section-options}
+:::
+
+### Trigger Block Options
+
+A trigger block is an element with the `focus-on` attribute to trigger effects on a particular sticky element.
+
+:::{#trigger-options}
+:::
+
 
 ### Sticky Block Options
 
-A sticky block is an element tagged with an identifier prefixed with `cr-`. e.g.
-
-```qmd
-:::{#cr-mypara}
-Here is a paragraph that will be a sticky block.
-:::
-```
+A sticky block is an element tagged with an identifier prefixed with `cr-`.
 
 :::{#sticky-options}
-:::
-
-### Step Block Options
-
-A step block is an element that uses the `focus-on` attribute to trigger effects on a particular sticky block.
-
-```qmd
-:::{focus-on="cr-mypara"}
-Here is a paragraph that will trigger focus on `cr-mypara`.
-:::
-```
-
-:::{#step-options}
 :::

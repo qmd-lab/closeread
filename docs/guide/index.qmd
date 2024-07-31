@@ -1,3 +1,34 @@
 
 
-This is a landing page for a guide.
+This is a landing page for a guide. Draft materials added below can later be reorganized into different qmds linked off of the sidebar.
+
+# Layouts
+
+The relative positioning of the narrative column and the sticky column determine the *layout*. You can set the layout of a section using the `layout` attribute on the block that defines the section.
+
+```markdown
+:::{.cr-section layout="overlay-center"}
+< Content of the section, including stickies and narrative blocks >
+:::
+```
+Options for `layout` include:
+
+- `sidebar-left` (default)
+- `sidebar-right`
+- `overlay-left`
+- `overlay-center`
+- `overlay-right`
+
+In the overlay layouts, the sticky column occupies the entire screen width and the narrative column scrolls over it. All layouts will automatically revert to `overlay-center` when viewed on a mobile device.
+
+Documents containing multiple closeread sections can use the same layouts or different ones. As an alternative to specifying the layout on the section block, it can also be defined in the document yaml under the `cr-section` key.
+
+```yml
+---
+format:
+  closeread-html:
+    cr-section:
+      layout: "overlay-center"
+---
+```
+If a layout is specified in the document yaml, it will be propagated to all sections in the document. If a section has its own layout specified, that will override the document yaml similar to how code cell execution options work.

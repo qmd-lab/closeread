@@ -1,18 +1,36 @@
 ```{=html}
-<table class="caption-top table">
-<colgroup>
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 60%">
-</colgroup>
-<tbody>
+
 <% for (const item of items) { %>
-  <tr>
-  <td style="text-align: left;"><code><%= item.option %></code></td>
-  <td style="text-align: left;"><p><em><%= item['option-type'] %></em></p></td>
-  <td style="text-align: left;"><p><%= item.description %></p></td>
-  </tr>
+  <h5><code><%= item.option %></code></h5>
+  <div class="options-block" >
+  <p><%= item.description %></p>
+  <dl>
+  <% if (item['format']) { %>
+    <dt>format</dt>
+    <dd><%= item['format'] %></dd>
+  <% } %>
+  <% if (item['parent-key']) { %>
+    <dt>parent key</dt>
+    <dd><code><%= item['parent-key'] %></code></dd>
+  <% } %>
+  <% if (item['possible-values']) { %>
+    <dt>possible values</dt>
+    <dd>
+      <ul>
+      <% let index = 0; %> 
+      <% for (const val of item['possible-values']) { %>
+        <li>
+          <code><%= val %></code>
+          <% if (index === 0) { %>
+            <span>(default)</span>
+          <% } %>
+        </li>
+      <% index++; %>
+      <% } %>
+      </ul>
+    </dd>
+  <% } %>
+  </dl>
+  </div>
 <% } %>
-</tbody>
-</table>
 ```
