@@ -9,7 +9,7 @@
    the right syntax we can get away with a single init block for everyone */
 
 // set params
-const stepSelector = "[data-focus-on]"
+const triggerSelector = "[data-focus-on]"
 
 // code that will be run when the HTML file is initially loaded by a browser
 document.addEventListener("DOMContentLoaded", () => {
@@ -46,30 +46,31 @@ document.addEventListener("DOMContentLoaded", () => {
   const allStickies = Array.from(document.querySelectorAll(".sticky"));
   
   // define how scrolling triggers effects on stickies
+  // scrollama() is accessible because scrollama.min.js is attached via closeread.lua
   const scroller = scrollama();
   scroller
     .setup({
-      step: stepSelector,
+      step: triggerSelector,
       offset: 0.5,
       progress: true,
       debug: debugMode
     })
-    .onStepEnter((response) => {
+    .onStepEnter((trigger) => {
       
-      focusedStickyName = "cr-" + response.element.getAttribute("data-focus-on");
+      focusedStickyName = "cr-" + trigger.element.getAttribute("data-focus-on");
       
       // update ojs variables
-      ojsTriggerIndex?.define("crTriggerIndex", response.index);
+      ojsTriggerIndex?.define("crTriggerIndex", trigger.index);
       ojsStickyName?.define("crStickyName", focusedStickyName);
         
-      updateStickies(allStickies, focusedStickyName, response);
+      updateStickies(allStickies, focusedStickyName, trigger);
       
     })
-    .onStepProgress((response) => {
+    .onStepProgress((trigger) => {
       
       // update ojs variables
-      ojsTriggerProgress?.define("crTriggerProgress", response.progress);
-      ojsDirection?.define("crDirection", response.direction);
+      ojsTriggerProgress?.define("crTriggerProgress", trigger.progress);
+      ojsDirection?.define("crDirection", trigger.direction);
       
     });
 
@@ -80,7 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
 //=================//
  
  /* updateStickies: triggers effects and transformations of the focused sticky */
-function updateStickies(allStickies, focusedStickyName, response) {
+function updateStickies(allStickies, focusedStickyName, trigger) {
   const focusedSticky = document.querySelectorAll("[id=" + focusedStickyName)[0];
   
   // update which sticky is active
@@ -88,17 +89,23 @@ function updateStickies(allStickies, focusedStickyName, response) {
   focusedSticky.classList.add("cr-active");
         
   // apply additional effects
-  highlightSpans(focusedSticky, response.element);
-  transformSticky(focusedSticky, response.element);
+  transformSticky(focusedSticky, trigger.element);
+  
+  if (focusedSticky.classList.contains("cr-poem")) {
+    scalePoemFull(focusedSticky);
+    highlightSpans(focusedSticky, trigger.element);
+  }
+
 }
 
 
-function highlightSpans(stickyEl, stepEl) {
-  // remove any previous highlighting
-  stickyEl.querySelectorAll("span[id]").forEach(d => d.classList.remove("cr-hl"));
-  stickyEl.classList.remove("cr-hl-within");
+function highlightSpans(focusedSticky, triggerEl) {
+  // remove any previous highlighting from sticky
+  focusedSticky.querySelectorAll("span[id]").forEach(d => d.classList.remove("cr-hl"));
+  focusedSticky.classList.remove("cr-hl-within");
   
-  let highlightIds = stepEl.getAttribute("data-highlight-spans");
+  // get hightlighted spans from trigger
+  let highlightIds = triggerEl.getAttribute("data-highlight-spans");
   
   // exit function if there's no highlighting
   if (highlightIds === null) {
@@ -106,13 +113,12 @@ function highlightSpans(stickyEl, stepEl) {
   }
   
   // dim enclosing block
-  stickyEl.classList.add("cr-hl-within");
+  focusedSticky.classList.add("cr-hl-within");
   
   // add highlight class to appropriate spans
   highlightIds.split(',').forEach(highlightId => {
     const trimmedId = highlightId.trim(); // Ensure no whitespace issues
-    console.log(">> trimmedId", trimmedId)
-    const highlightSpan = stickyEl.querySelector(`#cr-${trimmedId}`);
+    const highlightSpan = focusedSticky.querySelector(`#cr-${trimmedId}`);
     if (highlightSpan !== null) {
       highlightSpan.classList.add("cr-hl");
     } else {
@@ -120,6 +126,9 @@ function highlightSpans(stickyEl, stepEl) {
       console.warn(`Could not find span with ID '${trimmedId}'. Please ensure the ID is correct.`);
     }
   });
+  
+  // scale to span
+  scalePoemToSpan(focusedSticky, highlightIds);
   
 }
 
@@ -198,49 +207,35 @@ function scalePoemFull(el, paddingX = 75, paddingY = 50) {
 }
 
 /* scalePoemToSpan:
-   given an element `el` and a span `focusEl` within it, rescales and translates
-   `el` so that `focusEl` is vertically centerd and its line fills the
+   given a sticky and a span `focusEl` within it, rescales and translates
+   sticky so that `focusEl` is vertically centerd and its line fills the
    containing .sticky-col-stack */
-function scalePoemToSpan(el, highlightIds, paddingX = 75, paddingY = 50) {
-
-  el.classList.add("cr-hl-within")
-  //focusEl.classList.add("cr-hl")
-  
-  highlightIds.forEach(highlightId => {
-    const trimmedId = highlightId.trim(); // Ensure no whitespace issues
-    const highlightSpan = el.querySelector(`#${trimmedId}`);
-    if (highlightSpan !== null) {
-      highlightSpan.classList.add("cr-hl");
-    } else {
-    // Handle the case where the ID does not correspond to a span
-      console.warn(`Could not find span with ID '${trimmedId}'. Please ensure the ID is correct.`);
-    }
-  });
+function scalePoemToSpan(focusedSticky, highlightIds, paddingX = 75, paddingY = 50) {
   
   // for now just get first span
-  const focusEl = el.querySelector(`#${highlightIds[0].trim()}`);
+  const focusedSpan = focusedSticky.querySelector(`#cr-${highlightIds.trim()}`);
   
   // get dimensions of element and its container
-  const container = el.closest(".sticky-col-stack")
+  const container = focusedSticky.closest(".sticky-col-stack")
   
-  const elHeight = el.scrollHeight
-  const elWidth = el.scrollWidth
+  const focusedStickyHeight = focusedSticky.scrollHeight
+  const focusedStickyWidth = focusedSticky.scrollWidth
   const containerHeight = container.offsetHeight - (paddingY * 2)
   const containerWidth = container.offsetWidth - (paddingX * 2)
 
-  const focusHeight = focusEl.offsetHeight
-  const focusTop = focusEl.offsetTop
-  const focusCentreY = focusTop + (focusHeight / 2)
+  const focusHeight = focusedSpan.offsetHeight
+  const focusTop = focusedSpan.offsetTop
+  const focusCenterY = focusTop + (focusHeight / 2)
   
   // note scaleWidth uses the whole line, not just the span width
-  const scaleWidth = elWidth / containerWidth
+  const scaleWidth = focusedStickyWidth / containerWidth
   const scaleHeight = focusHeight / containerHeight
   const scale = 1 / Math.max(scaleHeight, scaleWidth)
   
-  const centerDeltaY = (focusCentreY - (el.offsetHeight / 2)) * -1
+  const centerDeltaY = (focusCenterY - (focusedSticky.offsetHeight / 2)) * -1
 
   // apply styles
-  el.style.setProperty("transform",
+  focusedSticky.style.setProperty("transform",
     `matrix(${scale}, 0, 0, ${scale}, 0, ${centerDeltaY})`)
 }
 
