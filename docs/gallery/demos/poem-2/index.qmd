@@ -11,15 +11,13 @@ format:
 
 :::{.cr-section}
 
-:::{}
+:::{focus-on="musee"}
 # A Poem (and a Painting) About the Suffering That Hides in Plain Sight
 
 By Elisa Gabbert March 6, 2002
 :::
 
-:::{focus-on="musee"}
 I’ve been reading this short, wry poem about suffering for more than 20 years.
-:::
 
 :::{focus-on="musee" highlight-spans="suffering"}
 How nice that it tells you in the first two words what it’s about.
@@ -36,7 +34,8 @@ No matter how familiar a poem is, rereading it always gives me a sense of first 
 | [About suffering]{#cr-suffering} they were never wrong,
 | The old Masters: how well they understood
 | Its human position: how it takes place
-| While someone else is eating or opening a window or just walking dully along;
+| While someone else is eating or opening a window
+|     or just walking dully along;
 | How, when the aged are reverently, passionately waiting
 | For the miraculous birth, there always must be
 | Children who did not specially want it to happen, skating
@@ -47,7 +46,7 @@ No matter how familiar a poem is, rereading it always gives me a sense of first 
 | Where the dogs go on with their doggy life and the torturer's horse
 | Scratches its innocent behind on a tree.
 | 
-| In Breughel's Icarus, for instance: how everything turns away
+| In Breughel's *Icarus*, for instance: how everything turns away
 | Quite leisurely from the disaster; the ploughman may
 | Have heard the splash, the forsaken cry,
 | But for him it was not an important failure; the sun shone
