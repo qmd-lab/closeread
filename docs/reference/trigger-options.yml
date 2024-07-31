@@ -1,6 +1,5 @@
 - option: "focus-on"
-  option-type: "block attribute"
-  value-type: "scalar"
+  format: "pandoc attribute"
   possible-values:
     - "{string}"
   description: Indicate which sticky block to focus on. Will transition to that block and use it in any focus effects.

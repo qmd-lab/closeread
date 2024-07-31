@@ -1,7 +1,18 @@
 - option: "debug-mode"
-  option-type: document yaml
-  value-type: "scalar"
+  format: yaml
+  parent-key: "format:closeread-html"
   possible-values:
-    - "true"
     - "false"
+    - "true"
   description: Toggle debug mode.
+  
+- option: "layout"
+  format: yaml
+  parent-key: "format:closeread-html:cr-section"
+  possible-values:
+    - "sidebar-left"
+    - "sidebar-right"
+    - "overlay-left"
+    - "overlay-center"
+    - "overlay-right"
+  description: Define the relative positioning of the narrative and sticky columns in all sections in the document. Is overridden if a section specifies its own layout.

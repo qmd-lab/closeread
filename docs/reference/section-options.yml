@@ -1,0 +1,11 @@
+- option: "layout"
+  format: "pandoc attribute"
+  value-type: "scalar"
+  possible-values:
+    - "sidebar-left"
+    - "sidebar-right"
+    - "overlay-left"
+    - "overlay-center"
+    - "overlay-right"
+  description: Defines the relative positioning of the narrative and sticky columns. Overrides any layout set in the document metadata.
+  
