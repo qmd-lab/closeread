@@ -28,13 +28,13 @@ jobs:
       - name: Checkout closeread repo
         uses: actions/checkout@v4
 
-      - name: Extension into docs site
-        run: |
-          # copy closeread extension into docs 
-          cd docs
-          mkdir -p _extensions/
-          cp -Rf ../_extensions/closeread _extensions/
-        shell: bash
+#      - name: Extension into docs site
+#        run: |
+#          # copy closeread extension into docs 
+#          cd docs
+#          mkdir -p _extensions/
+#          cp -Rf ../_extensions/closeread _extensions/
+#        shell: bash
             
       - name: Render and Publish 
         uses: quarto-dev/quarto-actions/publish@v2
