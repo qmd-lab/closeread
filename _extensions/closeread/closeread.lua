@@ -303,8 +303,8 @@ quarto.doc.add_html_dependency({
   scripts = {"scrollama.min.js"}
 })
 quarto.doc.add_html_dependency({
-  name = "closereadjs",
-  version = "0.0.1",
+  name = "closeread",
+  version = "0.1.0",
   scripts = {"closeread.js"}
 })
 
