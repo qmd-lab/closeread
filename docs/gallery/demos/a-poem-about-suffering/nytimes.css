@@ -10,84 +10,14 @@
   line-height: 1;
 }
 
-.cr-layout {
-  display: grid;
-  grid-template-columns: 400px 1fr;
-}
-.cr-layout .sidebar-col {
-  grid-column: 1;
+.cr-section .narrative-col {
   background-color: rgb(17, 17, 17);
   color: white;
   min-width: 400px;
-  /* extended wrapper around content to allow early scroll detection */
   /* Override the padding for the first block */
 }
-.cr-layout .sidebar-col > * {
-  padding-block-start: 45svh;
-  padding-block-end: 45svh;
-  vertical-align: middle;
-  padding-left: 30px;
-  padding-right: 30px;
-}
-.cr-layout .sidebar-col > * p {
-  margin-bottom: 0;
-}
-.cr-layout .sidebar-col > *:first-child {
+.cr-section .narrative-col > *:first-child {
   padding-block-start: 10svh;
-}
-.cr-layout .sticky-col {
-  grid-column: 2;
-}
-.cr-layout .sticky-col .sticky-col-stack {
-  display: grid;
-  height: 100svh;
-  position: sticky;
-  top: 0;
-}
-.cr-layout .sticky-col .sticky-col-stack [id^=cr-] {
-  grid-area: 1/1;
-  margin: auto;
-  opacity: 0;
-  transition: opacity linear 0.5s, color 1s linear, transform 1s ease-in-out, transform-origin 1s ease-in-out;
-}
-.cr-layout .sticky-col .sticky-col-stack .cr-active {
-  opacity: 1;
-}
-
-.cr-poem {
-  font-family: Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
-  /* need large font to stop safari text blurriness, but max-height to stop
-   other stickies from being pushed down by pre-scaled poem size */
-  max-height: 100vh;
-  font-size: 300%;
-  white-space: pre;
-  line-height: 1em;
-  transform-origin: center center;
-}
-.cr-poem.cr-hl-within {
-  color: rgba(0, 0, 0, 0.5);
-}
-.cr-poem .cr-hl {
-  color: rgb(0, 0, 0);
-  font-weight: bold;
-}
-
-/* debug styles */
-body.cr-debug .cr-poem {
-  background-color: rgba(255, 255, 0, 0.6);
-  border: 1px solid orange;
-}
-body.cr-debug [id^=cr-] {
-  opacity: 0.8;
-}
-body.cr-debug .sidebar-col > * {
-  background: rgba(255, 255, 0, 0.5);
-  border: 1px solid rgba(255, 166, 0, 0.5);
-}
-body.cr-debug .sidebar-col > * > * {
-  background: rgba(0, 208, 255, 0.5);
-  border: 1px solid rgba(0, 115, 255, 0.5);
-  border-radius: 5px;
 }
 
 /*# sourceMappingURL=nytimes.css.map */

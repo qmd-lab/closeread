@@ -14,120 +14,16 @@
   }
 }
 
-.cr-layout {
-  display: grid;
-  grid-template-columns: 400px 1fr;
+.cr-section {
   
-  .sidebar-col {
-    grid-column: 1;
+  .narrative-col {
     background-color: rgba(17, 17, 17, 1);
     color: white;
     min-width: 400px;
-    
-    /* extended wrapper around content to allow early scroll detection */
-    > * {
-      padding-block-start: 45svh;
-      padding-block-end: 45svh;
-      vertical-align: middle;
-      padding-left: 30px;
-      padding-right: 30px;
-
-    p {
-      margin-bottom: 0;
-    }
-    }
     
     /* Override the padding for the first block */
     > *:first-child {
       padding-block-start: 10svh;
     }
-    
-    }
-  
-  .sticky-col {
-    grid-column: 2;
-    
-    // using a grid to stack sticky elements on top of each other to then
-    // transition through (based on reveal's .r-stack)
-    .sticky-col-stack {
-      display: grid;
-      height: 100svh;
-      position: sticky;
-      top: 0;
-
-      [id^="cr-"] {
-        grid-area: 1 / 1;
-        margin: auto;
-
-        // to be overruled when it is the active element
-        opacity: 0;
-        transition:
-          opacity linear 0.5s,
-          color 1s linear,
-          transform 1s ease-in-out,
-          transform-origin 1s ease-in-out;
-      }
-
-      // show active elements (this class is applied by scrollama
-      .cr-active {
-        opacity: 1;
-      }
-    }
   }
-}
-
-.cr-poem {
-
-  font-family: Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
-  
-  /* need large font to stop safari text blurriness, but max-height to stop
-   other stickies from being pushed down by pre-scaled poem size */
-  max-height: 100vh; 
-  font-size: 300%;
-
-  white-space: pre;
-  line-height: 1em;
-  
-  // transform transition is applied along with all stickies
-  transform-origin: center center;
-
-  // fade the rest of the poem out when there's a highlight active
-  &.cr-hl-within {
-    color: rgba(0, 0, 0, 0.5);
-  }
-
-  .cr-hl {
-    color: rgba(0, 0, 0, 1);
-    font-weight: bold;
-  }
-}
-
-
-/* debug styles */
-
-body.cr-debug {
-  
-  // give stickies borders
-  .cr-poem {
-    background-color: #ffff0099;
-    border: 1px solid orange;
-  }
-  
-  // make stickies slightly see-through
-  [id^="cr-"] {
-    opacity: 0.8;
-  }
-
-  // sidebar content and scroll zone debug styles
-  .sidebar-col > * {
-    background: rgba(255, 255, 0, 0.5);
-    border: 1px solid rgba(255, 166, 0, 0.5);
-
-    > * {
-      background: rgba(0, 208, 255, 0.5);
-      border: 1px solid rgba(0, 115, 255, 0.5);
-      border-radius: 5px;
-    }    
-  }
-
 }
