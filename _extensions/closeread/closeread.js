@@ -42,8 +42,10 @@ document.addEventListener("DOMContentLoaded", () => {
     console.error("Warning: Quarto OJS module not found")
   }
   
-  // define how scrolling triggers effects
-  const allStickies = Array.from(document.querySelectorAll("[id^='cr-']"));
+  // collect all sticky elements
+  const allStickies = Array.from(document.querySelectorAll(".sticky"));
+  
+  // define how scrolling triggers effects on stickies
   const scroller = scrollama();
   scroller
     .setup({
