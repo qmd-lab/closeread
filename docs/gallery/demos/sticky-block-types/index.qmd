@@ -1,8 +1,5 @@
 ---
-format:
-  closeread-html:
-    cr-section:
-      layout: overlay-right
+format: closeread-html
 ---
 
 ::::{.cr-section}
@@ -37,7 +34,7 @@ I've replaced its margin with some padding to demonstrate that you can give it a
 Here's a little non-scrolling interlude before our next scrolly section!
 ::::
 
-::::{.cr-section layout="sidebar-left"}
+::::{.cr-section}
 
 :::{focus-on="scatter"}
 This is a scatterplot.
@@ -95,7 +92,7 @@ This is a poem. It's called ["Bellringer", by Rita Dove](https://www.newyorker.c
 | I was given a name, it came out of a book—
 | I don’t know which. I’ve been told the Great Man
 | could recite every title in order on its shelf.
-| Well, [I was born]{#born}, and that’s a good thing,
+| Well, [I was born]{#cr-born}, and that’s a good thing,
 | although I arrived on the day of his passing,
 | 
 | a day on which our country fell into mourning.
@@ -105,9 +102,9 @@ This is a poem. It's called ["Bellringer", by Rita Dove](https://www.newyorker.c
 | in third person—a pretty way of saying
 | 
 | more than two men in a room means the third
-| can be ignored, as [I was when they spoke]{#birth1}
-| [of my birth]{#birth2} and Mr. Jefferson’s death
-| in one breath, voices [dusted with wonderment]{#wonder},
+| can be ignored, as [I was when they spoke]{#cr-birth1}
+| [of my birth]{#cr-birth2} and Mr. Jefferson’s death
+| in one breath, voices [dusted with wonderment]{#cr-wonder},
 | faint sunlight quivering on a hidden breeze.
 
 
@@ -129,8 +126,8 @@ But check out this phrase, right at the bottom.
 Let's look at a small limerick.
 :::
 
-| {#cr-mylimerick}
-| The limerick packs [laughs anatomical]{#laughs}
+| {#cr-mylimerick .cr-poem}
+| The limerick packs [laughs anatomical]{#cr-laughs}
 |   In space that is quite economical.
 
 :::{focus-on="mylimerick" highlight-spans="laughs"}

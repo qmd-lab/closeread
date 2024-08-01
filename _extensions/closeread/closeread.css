@@ -1,3 +1,5 @@
+/*-- scss:defaults --*/
+/*-- scss:rules --*/
 /* global layout styles */
 .cr-section {
   display: grid;
@@ -27,7 +29,13 @@
   grid-area: 1/1;
   margin: auto;
   opacity: 0;
-  transition: opacity linear 0.5s, color 1s linear, transform 1s ease-in-out, transform-origin 1s ease-in-out;
+  transition: opacity linear 0.5s, color 0.7s linear, transform 1s ease-in-out, transform-origin 1s ease-in-out;
+}
+.cr-section .sticky-col .sticky-col-stack .sticky.cr-poem {
+  transition: transform 0.8s ease-in-out;
+}
+.cr-section .sticky-col .sticky-col-stack .sticky.cr-poem2 {
+  transition: transform 0.8s ease-in-out, font-size 0.8s ease-in-out;
 }
 .cr-section .sticky-col .sticky-col-stack .cr-active {
   opacity: 1;
@@ -35,15 +43,37 @@
 
 /* mobile sizing (bootstrap: xs) is always overlay-center */
 @media (max-width: 575.98px) {
-  body.overlay-center .cr-layout {
+  .cr-section.sidebar-left,
+  .cr-section.sidebar-right,
+  .cr-section.overlay-left,
+  .cr-section.overlay-right,
+  .cr-section.overlay-center {
     grid-template-columns: 1fr;
   }
-  body.overlay-center .cr-layout .narrative-col {
+  .cr-section.sidebar-left .narrative-col,
+  .cr-section.sidebar-right .narrative-col,
+  .cr-section.overlay-left .narrative-col,
+  .cr-section.overlay-right .narrative-col,
+  .cr-section.overlay-center .narrative-col {
     grid-column: 1;
     z-index: 1;
-    margin-inline: 0.5em;
+    margin-inline: auto;
   }
-  body.overlay-center .cr-layout .sticky-col {
+  .cr-section.sidebar-left .narrative-col .narrative > *,
+  .cr-section.sidebar-right .narrative-col .narrative > *,
+  .cr-section.overlay-left .narrative-col .narrative > *,
+  .cr-section.overlay-right .narrative-col .narrative > *,
+  .cr-section.overlay-center .narrative-col .narrative > * {
+    background-color: rgba(17, 17, 17, 0.85);
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+  }
+  .cr-section.sidebar-left .sticky-col,
+  .cr-section.sidebar-right .sticky-col,
+  .cr-section.overlay-left .sticky-col,
+  .cr-section.overlay-right .sticky-col,
+  .cr-section.overlay-center .sticky-col {
     grid-column: 1;
   }
 }
@@ -108,15 +138,31 @@
   max-height: 100dvh;
   font-size: 300%;
   white-space: pre;
-  line-height: 1em;
+  line-height: 0.7em;
   transform-origin: center center;
 }
 .cr-poem.cr-hl-within {
-  color: rgba(0, 0, 0, 0.5);
+  color: rgba(0, 0, 0, 0.4);
 }
 .cr-poem .cr-hl {
   color: rgb(0, 0, 0);
-  font-weight: bold;
+}
+
+.cr-poem2 {
+  font-family: Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+  max-height: 100svh;
+  max-width: 100svh;
+  font-size: 2.75cqmin;
+  white-space: pre;
+  line-height: 0.6em;
+  transform-origin: center center;
+}
+.cr-poem2.cr-hl-within {
+  color: rgba(0, 0, 0, 0.4);
+  font-size: 2.75cqi;
+}
+.cr-poem2 .cr-hl {
+  color: rgb(0, 0, 0);
 }
 
 /* debug styles */
@@ -124,17 +170,16 @@ body.cr-debug .cr-poem {
   background-color: rgba(255, 255, 0, 0.6);
   border: 1px solid orange;
 }
-body.cr-debug [id^=cr-] {
+body.cr-debug .sticky {
   opacity: 0.8;
 }
-body.cr-debug .sidebar-col > * {
-  background: rgba(255, 255, 0, 0.5);
-  border: 1px solid rgba(255, 166, 0, 0.5);
-}
-body.cr-debug .sidebar-col > * > * {
+body.cr-debug .narrative-col .narrative {
   background: rgba(0, 208, 255, 0.5);
-  border: 1px solid rgba(0, 115, 255, 0.5);
+  border: 1px solid orange;
   border-radius: 5px;
+}
+body.cr-debug .narrative-col .narrative.trigger {
+  background: lightgreen;
 }
 
 /* remove header option */

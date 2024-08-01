@@ -1,0 +1,65 @@
+
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
+
+
+#quarto-document-content {
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: 15pt;
+  
+  h1 {
+    font-family: "Cormorant Garamond", "Times New Roman", Times, serif;
+    font-weight: 500;
+    font-size: 2.8em;
+    line-height: 1;
+  }
+}
+
+.cr-section {
+  
+  .narrative-col {
+    background-color: rgba(17, 17, 17, 1);
+    color: white;
+    min-width: 400px;
+    
+    /* Override the padding for the first block */
+    > *:first-child {
+      padding-block-start: 10svh;
+    }
+  }
+}
+
+/* mobile sizing (bootstrap: xs) is always overlay-center */
+//@media (max-width: 575.98px) {
+@media (max-width: 575.98px) {
+  .cr-section.sidebar-left,
+  .cr-section.sidebar-right,
+  .cr-section.overlay-left,
+  .cr-section.overlay-right,
+  .cr-section.overlay-center {
+    
+    .narrative-col {
+      background-color: transparent;
+      
+      .narrative {
+        
+        > * {
+          background-color: rgba(17, 17, 17, .85);
+          padding: 5px;
+          border-radius: 5px;
+        }
+      }
+    }
+  }
+}
+
+.cr-section.overlay-left,
+.cr-section.overlay-center,
+.cr-section.overlay-right {
+  .narrative-col {
+    background-color: transparent;
+    
+    .narrative {
+      background-color: rgba(17, 17, 17, .7);
+    }
+  }
+}
