@@ -1,3 +1,5 @@
+/*-- scss:defaults --*/
+/*-- scss:rules --*/
 /* global layout styles */
 .cr-section {
   display: grid;
@@ -56,6 +58,16 @@
     grid-column: 1;
     z-index: 1;
     margin-inline: auto;
+  }
+  .cr-section.sidebar-left .narrative-col .narrative > *,
+  .cr-section.sidebar-right .narrative-col .narrative > *,
+  .cr-section.overlay-left .narrative-col .narrative > *,
+  .cr-section.overlay-right .narrative-col .narrative > *,
+  .cr-section.overlay-center .narrative-col .narrative > * {
+    background-color: rgba(17, 17, 17, 0.85);
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
   }
   .cr-section.sidebar-left .sticky-col,
   .cr-section.sidebar-right .sticky-col,
@@ -124,6 +136,7 @@
   /* need large font to stop safari text blurriness, but max-height to stop
    other stickies from being pushed down by pre-scaled poem size */
   max-height: 100dvh;
+  font-size: 300%;
   white-space: pre;
   line-height: 0.7em;
   transform-origin: center center;
