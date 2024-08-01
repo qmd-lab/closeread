@@ -40,13 +40,18 @@
           opacity linear 0.5s,
           color .7s linear,
           transform 1s ease-in-out,
-          transform-origin 1s ease-in-out,
-        
+          transform-origin 1s ease-in-out;
       }
       
       .sticky.cr-poem {
         transition:
+          transform .8s ease-in-out;
+      }
+      
+      .sticky.cr-poem2 {
+        transition:
           transform .8s ease-in-out,
+          font-size .8s ease-in-out;
       }
 
       // show active elements (this class is applied by scrollama
@@ -58,20 +63,23 @@
 }
 
 /* mobile sizing (bootstrap: xs) is always overlay-center */
+//@media (max-width: 575.98px) {
 @media (max-width: 575.98px) {
-  body.overlay-center {
-    .cr-layout {
-      grid-template-columns: 1fr;
-      
-      .narrative-col {
-        grid-column: 1;
-        z-index: 1;
-        margin-inline: 0.5em;
-      }
-  
-      .sticky-col {
-        grid-column: 1;
-      }
+  .cr-section.sidebar-left,
+  .cr-section.sidebar-right,
+  .cr-section.overlay-left,
+  .cr-section.overlay-right,
+  .cr-section.overlay-center {
+    grid-template-columns: 1fr;
+    
+    .narrative-col {
+      grid-column: 1;
+      z-index: 1;
+      margin-inline: auto;
+    }
+
+    .sticky-col {
+      grid-column: 1;
     }
   }
 }

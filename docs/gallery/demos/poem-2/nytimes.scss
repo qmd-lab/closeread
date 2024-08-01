@@ -27,3 +27,39 @@
     }
   }
 }
+
+/* mobile sizing (bootstrap: xs) is always overlay-center */
+//@media (max-width: 575.98px) {
+@media (max-width: 575.98px) {
+  .cr-section.sidebar-left,
+  .cr-section.sidebar-right,
+  .cr-section.overlay-left,
+  .cr-section.overlay-right,
+  .cr-section.overlay-center {
+    
+    .narrative-col {
+      background-color: transparent;
+      
+      .narrative {
+        
+        > * {
+          background-color: rgba(17, 17, 17, .85);
+          padding: 5px;
+          border-radius: 5px;
+        }
+      }
+    }
+  }
+}
+
+.cr-section.overlay-left,
+.cr-section.overlay-center,
+.cr-section.overlay-right {
+  .narrative-col {
+    background-color: transparent;
+    
+    .narrative {
+      background-color: rgba(17, 17, 17, .7);
+    }
+  }
+}

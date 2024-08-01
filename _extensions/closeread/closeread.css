@@ -32,21 +32,36 @@
 .cr-section .sticky-col .sticky-col-stack .sticky.cr-poem {
   transition: transform 0.8s ease-in-out;
 }
+.cr-section .sticky-col .sticky-col-stack .sticky.cr-poem2 {
+  transition: transform 0.8s ease-in-out, font-size 0.8s ease-in-out;
+}
 .cr-section .sticky-col .sticky-col-stack .cr-active {
   opacity: 1;
 }
 
 /* mobile sizing (bootstrap: xs) is always overlay-center */
 @media (max-width: 575.98px) {
-  body.overlay-center .cr-layout {
+  .cr-section.sidebar-left,
+  .cr-section.sidebar-right,
+  .cr-section.overlay-left,
+  .cr-section.overlay-right,
+  .cr-section.overlay-center {
     grid-template-columns: 1fr;
   }
-  body.overlay-center .cr-layout .narrative-col {
+  .cr-section.sidebar-left .narrative-col,
+  .cr-section.sidebar-right .narrative-col,
+  .cr-section.overlay-left .narrative-col,
+  .cr-section.overlay-right .narrative-col,
+  .cr-section.overlay-center .narrative-col {
     grid-column: 1;
     z-index: 1;
-    margin-inline: 0.5em;
+    margin-inline: auto;
   }
-  body.overlay-center .cr-layout .sticky-col {
+  .cr-section.sidebar-left .sticky-col,
+  .cr-section.sidebar-right .sticky-col,
+  .cr-section.overlay-left .sticky-col,
+  .cr-section.overlay-right .sticky-col,
+  .cr-section.overlay-center .sticky-col {
     grid-column: 1;
   }
 }

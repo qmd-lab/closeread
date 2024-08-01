@@ -20,4 +20,34 @@
   padding-block-start: 10svh;
 }
 
+/* mobile sizing (bootstrap: xs) is always overlay-center */
+@media (max-width: 575.98px) {
+  .cr-section.sidebar-left .narrative-col,
+  .cr-section.sidebar-right .narrative-col,
+  .cr-section.overlay-left .narrative-col,
+  .cr-section.overlay-right .narrative-col,
+  .cr-section.overlay-center .narrative-col {
+    background-color: transparent;
+  }
+  .cr-section.sidebar-left .narrative-col .narrative > *,
+  .cr-section.sidebar-right .narrative-col .narrative > *,
+  .cr-section.overlay-left .narrative-col .narrative > *,
+  .cr-section.overlay-right .narrative-col .narrative > *,
+  .cr-section.overlay-center .narrative-col .narrative > * {
+    background-color: rgba(17, 17, 17, 0.85);
+    padding: 5px;
+    border-radius: 5px;
+  }
+}
+.cr-section.overlay-left .narrative-col,
+.cr-section.overlay-center .narrative-col,
+.cr-section.overlay-right .narrative-col {
+  background-color: transparent;
+}
+.cr-section.overlay-left .narrative-col .narrative,
+.cr-section.overlay-center .narrative-col .narrative,
+.cr-section.overlay-right .narrative-col .narrative {
+  background-color: rgba(17, 17, 17, 0.7);
+}
+
 /*# sourceMappingURL=nytimes.css.map */
