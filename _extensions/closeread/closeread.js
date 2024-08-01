@@ -128,7 +128,7 @@ function highlightSpans(focusedSticky, triggerEl) {
     }
   });
   
-  if (focusedSticky.classList.contains("cr-poem") {
+  if (focusedSticky.classList.contains("cr-poem")) {
     // scale to span using transform
     scalePoemToSpan(focusedSticky, highlightIds);
   }
