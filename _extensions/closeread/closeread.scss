@@ -105,8 +105,7 @@
 // overlay layouts use one column...
 .overlay-left,
 .overlay-center,
-.overlay-right
-{
+.overlay-right {
   grid-template-columns: 1fr;
 
   .narrative-col {
@@ -164,6 +163,27 @@
     grid-column: 1;
   }
 }
+
+// presentation-mode overrides layouts when its added alongside
+.presentation-mode.overlay-left,
+.presentation-mode.overlay-center,
+.presentation-mode.overlay-right,
+.presentation-mode.sidebar-left,
+.presentation-mode.sidebar-right {
+  grid-template-columns: 1fr !important;
+  
+  .narrative-col {
+    grid-column: 1 !important;
+    z-index: 1 !important;
+    margin-inline: auto !important;
+    opacity: 0 !important;
+  }
+  
+  .sticky-col {
+    grid-column: 1 !important;
+  }
+}
+
 
 /* poem styles */
 

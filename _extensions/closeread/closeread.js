@@ -76,9 +76,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
  });
  
-//=================//
-// Update Stickies //
-//=================//
+
+// Toggle Presentation Mode
+document.addEventListener('keydown', (event) => {
+  const crSections = document.querySelectorAll('.cr-section');
+  crSections.forEach((el) => {
+    if (event.key === "p") {
+            if (el.classList.contains("presentation-mode")) {
+                el.classList.remove("presentation-mode");
+            } else {
+                el.classList.add("presentation-mode");
+            }
+        }
+  });
+});
+
+ 
+ 
+//===========//
+// Functions //
+//===========//
  
  /* updateStickies: triggers effects and transformations of the focused sticky */
 function updateStickies(allStickies, focusedStickyName, trigger) {

@@ -130,6 +130,31 @@
   grid-column: 1;
 }
 
+.presentation-mode.overlay-left,
+.presentation-mode.overlay-center,
+.presentation-mode.overlay-right,
+.presentation-mode.sidebar-left,
+.presentation-mode.sidebar-right {
+  grid-template-columns: 1fr !important;
+}
+.presentation-mode.overlay-left .narrative-col,
+.presentation-mode.overlay-center .narrative-col,
+.presentation-mode.overlay-right .narrative-col,
+.presentation-mode.sidebar-left .narrative-col,
+.presentation-mode.sidebar-right .narrative-col {
+  grid-column: 1 !important;
+  z-index: 1 !important;
+  margin-inline: auto !important;
+  opacity: 0 !important;
+}
+.presentation-mode.overlay-left .sticky-col,
+.presentation-mode.overlay-center .sticky-col,
+.presentation-mode.overlay-right .sticky-col,
+.presentation-mode.sidebar-left .sticky-col,
+.presentation-mode.sidebar-right .sticky-col {
+  grid-column: 1 !important;
+}
+
 /* poem styles */
 .cr-poem {
   font-family: Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
