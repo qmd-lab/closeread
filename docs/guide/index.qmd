@@ -39,4 +39,4 @@ If a layout is specified in the document yaml, it will be propagated to all sect
 
 Closeread documents place special emphasis on the "stickies": the text, images, or code found in the main column that is described in the narrative. This 
 
-While viewing any closeread document in a browser, you can press `p`  on the keyboard to view it in presentation mode. Presentation mode is identical to the `overlay-center` layout except the narrative column is made transparent. You can return to the original layout by pressing `p` again.
+While viewing any closeread document in a browser, you can press `p`  on the keyboard to view it in presentation mode. Presentation mode is identical to the `overlay-center` layout except the narrative column is made transparent. You can return to the original layout by pressing `p` again. You can advance to the next trigger using the forward-arrow key and return to the previous trigger using the back-arrow key.

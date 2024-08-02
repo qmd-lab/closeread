@@ -62,6 +62,8 @@ A sticky block is an element tagged with an identifier prefixed with `cr-`.
 
 While viewing a closeread document in a browser, you can press certain hotkeys to toggle features.
 
-| Hotkey | Effect |
-|------|------|
-|    `p`  |   Toggle presentation mode   |
+| Hotkey                    | Effect                     |
+|---------------------------|----------------------------|
+| {{< kbd P >}}             | Toggle presentation mode   |
+| {{< kbd forward-arrow >}} | Scroll to next trigger     |
+| {{< kbd back-arrow >}}    | Scroll to previous trigger |
