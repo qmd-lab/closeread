@@ -9,7 +9,7 @@
 -- set defaults
 local debug_mode = false
 local trigger_selectors = {["focus-on"] = true}
-local cr_attributes = {["pan-to"] = true, ["scale-by"] = true}
+local cr_attributes = {["pan-to"] = true, ["scale-by"] = true, ["highlight-spans"] = true}
 local remove_header_space = false
 local global_layout = "sidebar-left"
 
@@ -75,13 +75,14 @@ function make_section_layout(div)
     narrative_blocks = {}
     for _,block in ipairs(div.content) do
       if not is_sticky(block) then
-        if is_trigger(block) then
+        if is_new_trigger(block) then
           table.insert(block.attr.classes, "narrative")
-          table.insert(block.attr.classes, "trigger")
-          table.insert(narrative_blocks, block)
+          local new_trigger_block = wrap_block(block, {"trigger", "new-trigger"})
+          table.insert(narrative_blocks, new_trigger_block)
         else
-          local wrapped_block = pandoc.Div(block, pandoc.Attr("", {"narrative"}, {}))
-          table.insert(narrative_blocks, wrapped_block)
+          local new_narrative_block = pandoc.Div(block, pandoc.Attr("", {"narrative"}, {}))
+          local not_new_trigger_block = wrap_block(block, {"trigger"})
+          table.insert(narrative_blocks, not_new_trigger_block)
         end
       end
     end
@@ -133,19 +134,21 @@ end
 
 
 -- wrap_block: wrap trigger blocks in a div that allows us to style triggers visually
-function wrap_block(block)
+function wrap_block(block, classList)
   
   -- extract attributes
   local attributesToMove = {}
-  for attr, value in pairs(block.attributes) do
-    if trigger_selectors[attr] or cr_attributes[attr] then
-      attributesToMove[attr] = value
-      block.attributes[attr] = nil
+  if block.attributes ~= nil then
+    for attr, value in pairs(block.attributes) do
+      if trigger_selectors[attr] or cr_attributes[attr] then
+        attributesToMove[attr] = value
+        block.attributes[attr] = nil
+      end
     end
   end
   
-  -- finally construct a pandoc.div with the new details and content to return
-  return pandoc.Div(block, pandoc.Attr("", {"trigger"}, attributesToMove))
+  -- construct a pandoc.div with the new attributes to return
+  return pandoc.Div(block, pandoc.Attr("", classList, attributesToMove))
 end
 
 
@@ -174,7 +177,7 @@ function is_sticky(block)
 end
 
 
-function is_trigger(block)
+function is_new_trigger(block)
   -- it can't be a trigger without attributes
   if block.attributes == nil then
     return false

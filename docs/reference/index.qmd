@@ -22,14 +22,14 @@ listing:
 
 Document-wide options under the `closeread-html` format key in YAML format.
 
-:::{#yaml-options}
+::: {#yaml-options}
 :::
 
 ## Fenced Div Options
 
 Closeread takes advantage of the Pandocs's [fenced div syntax](https://quarto.org/docs/authoring/markdown-basics.html#sec-divs-and-spans) to pass options to sections, triggers, and stickies. The fenced div syntax allows you to wrap content (a figure, a paragraph, etc) in a div and pass it one or more identifiers, classes, and attributes.
 
-```markdown
+``` markdown
 :::{#myid .myclass myattribute="something"}
 < block content like a figure or paragraph >
 :::
@@ -41,20 +41,29 @@ Identifiers start with `#`; classes start with `.`, and attributes have a key / 
 
 A closeread section is a div with the class `cr-section` that contains stickies and triggers.
 
-:::{#section-options}
+::: {#section-options}
 :::
 
 ### Trigger Block Options
 
 A trigger block is an element with the `focus-on` attribute to trigger effects on a particular sticky element.
 
-:::{#trigger-options}
+::: {#trigger-options}
 :::
-
 
 ### Sticky Block Options
 
 A sticky block is an element tagged with an identifier prefixed with `cr-`.
 
-:::{#sticky-options}
+::: {#sticky-options}
 :::
+
+## Keyboard Hotkeys
+
+While viewing a closeread document in a browser, you can press certain hotkeys to toggle features.
+
+| Hotkey                    | Effect                     |
+|---------------------------|----------------------------|
+| {{< kbd P >}}             | Toggle presentation mode   |
+| {{< kbd forward-arrow >}} | Scroll to next trigger     |
+| {{< kbd back-arrow >}}    | Scroll to previous trigger |

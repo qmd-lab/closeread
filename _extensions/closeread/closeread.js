@@ -2,16 +2,18 @@
 // closeread.js //
 //==============//
 
-/* each "scroller" requires an initiation that tells it:
-   (a) which elements to watch (eg. .step)
-   (b) what to do when these elements enter and exit.
-   although users may have several scrollers in one quarto doc, i think with
-   the right syntax we can get away with a single init block for everyone */
-
 // set params
-const triggerSelector = "[data-focus-on]"
+const triggerSelector = '.new-trigger'
 
-// code that will be run when the HTML file is initially loaded by a browser
+
+//=================//
+// Event Listeners //
+//=================//
+/* the interactive nature of closeread docs is enabled by event listeners that
+   execute code when the user loads the doc, scrolls, presses keys, etc. 
+*/
+
+// == Run upon the HTML file loaded === //
 document.addEventListener("DOMContentLoaded", () => {
 
   // attach meta classes to <body>
@@ -45,8 +47,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // collect all sticky elements
   const allStickies = Array.from(document.querySelectorAll(".sticky"));
   
-  // define how scrolling triggers effects on stickies
+  
+  // === Set up scrolling event listeners === //
   // scrollama() is accessible because scrollama.min.js is attached via closeread.lua
+  
   const scroller = scrollama();
   scroller
     .setup({
@@ -73,12 +77,61 @@ document.addEventListener("DOMContentLoaded", () => {
       ojsDirection?.define("crDirection", trigger.direction);
       
     });
+    
+    // Add a listener for scrolling between new triggers
+    let currentIndex = -1; // Start before the first element
+    
+    function scrollToNewTrigger(direction) {
+      const triggers = document.querySelectorAll('.new-trigger');
+      
+      if (triggers.length === 0) return; // do nothing if there's no triggers
+      
+      if (direction === "next") {
+        if (currentIndex >= triggers.length - 1) return; // exit if at end
+        currentIndex += 1;
+      }
+      
+      if (direction === "previous") {
+        if (currentIndex === 0) return; // exit if at start
+        currentIndex -= 1;
+      }
+      
+      const nextTrigger = triggers[currentIndex];
+      nextTrigger.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowRight') {
+          scrollToNewTrigger("next");
+      }
+      if (event.key === 'ArrowLeft') {
+          scrollToNewTrigger("previous");
+      }
+    });
 
  });
  
-//=================//
-// Update Stickies //
-//=================//
+// === Hotkey Listeners === //
+
+// toggle presentation mode
+document.addEventListener('keydown', (event) => {
+  const crSections = document.querySelectorAll('.cr-section');
+  crSections.forEach((el) => {
+    if (event.key === "p") {
+      if (el.classList.contains("presentation-mode")) {
+          el.classList.remove("presentation-mode");
+      } else {
+          el.classList.add("presentation-mode");
+      }
+    }
+  });
+});
+
+ 
+ 
+//===========//
+// Functions //
+//===========//
  
  /* updateStickies: triggers effects and transformations of the focused sticky */
 function updateStickies(allStickies, focusedStickyName, trigger) {
