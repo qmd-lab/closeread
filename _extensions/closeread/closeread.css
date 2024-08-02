@@ -1,6 +1,10 @@
 /*-- scss:defaults --*/
 /*-- scss:rules --*/
 /* global layout styles */
+.cr-section .narrative-col > *:first-child {
+  padding-block-start: 10svh !important;
+}
+
 .cr-section {
   display: grid;
   grid-template-rows: 1fr;
