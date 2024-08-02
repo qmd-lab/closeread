@@ -13,12 +13,12 @@
   .narrative-col {
     grid-row: 1;
 
-    .narrative {
+    .trigger {
       padding-block: 45svh;
       padding-inline: 1em;
 
       p {
-        margin-bottom: 0;
+        margin-bottom: 0; // override bootstrap rule
       }
     }
   }
@@ -84,13 +84,10 @@
       margin-inline: auto;
       
       .narrative {
-        
-        > * {
-          background-color: rgba(17, 17, 17, .85);
-          color: white;
-          padding: 5px;
-          border-radius: 5px;
-        }
+        background-color: rgba(17, 17, 17, .85);
+        color: white;
+        padding: 5px;
+        border-radius: 5px;
       }
     }
 
@@ -111,6 +108,14 @@
   .narrative-col {
     grid-column: 1;
     z-index: 1;
+    transition: opacity 0.5s ease-in-out;
+    
+    .narrative {
+      background-color: rgba(17, 17, 17, .85);
+      color: white;
+      padding: 5px;
+      border-radius: 5px;
+    }
   }
 
   .sticky-col {
@@ -127,7 +132,7 @@
 }
 .overlay-center {
   .narrative-col {
-    margin-inline: auto;
+    margin-inline: 30%;
   }
 }
 .overlay-right {
@@ -175,8 +180,9 @@
   .narrative-col {
     grid-column: 1 !important;
     z-index: 1 !important;
-    margin-inline: auto !important;
+    margin-inline: 30% !important;
     opacity: 0 !important;
+    transition: opacity 0.5s ease-in-out;
   }
   
   .sticky-col {
@@ -257,14 +263,14 @@ body.cr-debug {
     opacity: 0.8;
   }
 
-  // sidebar content and scroll zone debug styles
+  // narrative content and scroll zone debug styles
   .narrative-col {
-    .narrative {
+    .trigger {
       background: rgba(0, 208, 255, 0.5);
       border: 1px solid orange;
       border-radius: 5px;
       
-      &.trigger {
+      &.new-trigger {
         background: lightgreen;
       }
     }   

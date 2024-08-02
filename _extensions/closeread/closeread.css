@@ -8,11 +8,11 @@
 .cr-section .narrative-col {
   grid-row: 1;
 }
-.cr-section .narrative-col .narrative {
+.cr-section .narrative-col .trigger {
   padding-block: 45svh;
   padding-inline: 1em;
 }
-.cr-section .narrative-col .narrative p {
+.cr-section .narrative-col .trigger p {
   margin-bottom: 0;
 }
 .cr-section .sticky-col {
@@ -59,11 +59,11 @@
     z-index: 1;
     margin-inline: auto;
   }
-  .cr-section.sidebar-left .narrative-col .narrative > *,
-  .cr-section.sidebar-right .narrative-col .narrative > *,
-  .cr-section.overlay-left .narrative-col .narrative > *,
-  .cr-section.overlay-right .narrative-col .narrative > *,
-  .cr-section.overlay-center .narrative-col .narrative > * {
+  .cr-section.sidebar-left .narrative-col .narrative,
+  .cr-section.sidebar-right .narrative-col .narrative,
+  .cr-section.overlay-left .narrative-col .narrative,
+  .cr-section.overlay-right .narrative-col .narrative,
+  .cr-section.overlay-center .narrative-col .narrative {
     background-color: rgba(17, 17, 17, 0.85);
     color: white;
     padding: 5px;
@@ -87,6 +87,15 @@
 .overlay-right .narrative-col {
   grid-column: 1;
   z-index: 1;
+  transition: opacity 0.5s ease-in-out;
+}
+.overlay-left .narrative-col .narrative,
+.overlay-center .narrative-col .narrative,
+.overlay-right .narrative-col .narrative {
+  background-color: rgba(17, 17, 17, 0.85);
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
 }
 .overlay-left .sticky-col,
 .overlay-center .sticky-col,
@@ -100,7 +109,7 @@
 }
 
 .overlay-center .narrative-col {
-  margin-inline: auto;
+  margin-inline: 30%;
 }
 
 .overlay-right .narrative-col {
@@ -144,8 +153,9 @@
 .presentation-mode.sidebar-right .narrative-col {
   grid-column: 1 !important;
   z-index: 1 !important;
-  margin-inline: auto !important;
+  margin-inline: 30% !important;
   opacity: 0 !important;
+  transition: opacity 0.5s ease-in-out;
 }
 .presentation-mode.overlay-left .sticky-col,
 .presentation-mode.overlay-center .sticky-col,
@@ -198,12 +208,12 @@ body.cr-debug .cr-poem {
 body.cr-debug .sticky {
   opacity: 0.8;
 }
-body.cr-debug .narrative-col .narrative {
+body.cr-debug .narrative-col .trigger {
   background: rgba(0, 208, 255, 0.5);
   border: 1px solid orange;
   border-radius: 5px;
 }
-body.cr-debug .narrative-col .narrative.trigger {
+body.cr-debug .narrative-col .trigger.new-trigger {
   background: lightgreen;
 }
 
