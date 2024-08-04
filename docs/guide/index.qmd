@@ -4,6 +4,24 @@ toc: true
 
 This is a landing page for a guide. Draft materials added below can later be reorganized into different qmds linked off of the sidebar.
 
+# Components of a Closeread Document
+
+## Stickies
+
+## Triggers
+
+You can set a paragraph to trigger focus on a particular sticky by using Quarto's cross-referencing syntax: `@cr-mysticky`.
+
+```markdown
+When this paragraph scrolls into view it will reveal my sticky. @cr-mysticky
+
+:::{#cr-mysticky}
+ < an image, code, text, etc that will be focused on >
+:::
+```
+
+The reference can be placed anywhere in the paragraph, but it should be separated from other content by spaces.
+
 # Layouts
 
 The relative positioning of the narrative column and the sticky column determine the *layout*. You can set the layout of a section using the `layout` attribute on the block that defines the section.
