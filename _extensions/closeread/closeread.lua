@@ -81,7 +81,7 @@ function make_section_layout(div)
           table.insert(narrative_blocks, new_trigger_block)
         else
           local new_narrative_block = pandoc.Div(block, pandoc.Attr("", {"narrative"}, {}))
-          local not_new_trigger_block = wrap_block(block, {"trigger"})
+          local not_new_trigger_block = wrap_block(new_narrative_block, {"trigger"})
           table.insert(narrative_blocks, not_new_trigger_block)
         end
       end
@@ -98,6 +98,7 @@ function make_section_layout(div)
     -- piece together the cr-section
     narrative_col = pandoc.Div(pandoc.Blocks(narrative_blocks),
       pandoc.Attr("", {"narrative-col"}, {}))
+    quarto.log.output(">", narrative_col)
     sticky_col_stack = pandoc.Div(sticky_blocks,
       pandoc.Attr("", {"sticky-col-stack"}))
     sticky_col = pandoc.Div(sticky_col_stack,
@@ -291,6 +292,73 @@ function extractClasses(el)
 end
 
 
+--===================--
+-- Focus-on Shortcut --
+--===================--
+
+-- Allow a short cut syntax where the presence of something like `@cr-map` in a
+-- Para will result it getting wrapped in a focus Div (that is later turned into 
+-- a narrative trigger) and the citation is removed
+function process_trigger_shortcut(para)
+  
+  local new_inlines = pandoc.Inlines({})
+  local sticky_id = nil
+  local skip_next = false
+  local prefix = "cr-"
+  
+  for i, elem in ipairs(para.content) do
+    
+    if skip_next then
+      skip_next = false -- reset flag
+      -- skip any space that follows a cr-citation
+      if elem.t == "Space" then
+        goto endofloop
+      end
+    end
+    
+    if elem.t == 'Cite' then
+      local cite_id = elem.citations[1].id
+      
+      -- if it's a cr- citation
+      if string.find(cite_id, "^" .. prefix) == 1 then
+        sticky_id = cite_id
+        
+        -- don't insert this element but also
+        
+        -- remove any preceding Space
+        if i > 1 and para.content[i-1].t == "Space" then
+          new_inlines:remove(#new_inlines)
+          quarto.log.output("> pre space removed")
+        end
+        
+        -- and toggle flag to skip next element
+        skip_next = true
+      else
+        
+        -- if it's a Cite (but not a cr-citation), add it
+        new_inlines:insert(elem)
+      end
+    else
+      
+      -- if it's not a Cite, add it
+      new_inlines:insert(elem)
+    end
+    
+    ::endofloop::
+  end
+  
+  para.content = new_inlines
+  
+  -- if a cr-cite was found, wrap in focus block
+  if sticky_id ~= nil then
+    wrapped_para = pandoc.Div(para, pandoc.Attr("", {}, {['focus-on'] = sticky_id}))
+    para = wrapped_para
+  end
+  
+  return para
+end
+
+
 --================--
 -- HTML Injection --
 --================--
@@ -322,6 +390,9 @@ return {
   },
   {
     LineBlock = add_attributes
+  },
+  {
+    Para = process_trigger_shortcut
   },
   {
     Div = make_section_layout,
