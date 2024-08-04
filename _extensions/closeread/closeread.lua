@@ -98,7 +98,6 @@ function make_section_layout(div)
     -- piece together the cr-section
     narrative_col = pandoc.Div(pandoc.Blocks(narrative_blocks),
       pandoc.Attr("", {"narrative-col"}, {}))
-    quarto.log.output(">", narrative_col)
     sticky_col_stack = pandoc.Div(sticky_blocks,
       pandoc.Attr("", {"sticky-col-stack"}))
     sticky_col = pandoc.Div(sticky_col_stack,
@@ -328,7 +327,6 @@ function process_trigger_shortcut(para)
         -- remove any preceding Space
         if i > 1 and para.content[i-1].t == "Space" then
           new_inlines:remove(#new_inlines)
-          quarto.log.output("> pre space removed")
         end
         
         -- and toggle flag to skip next element
