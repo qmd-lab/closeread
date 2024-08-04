@@ -10,16 +10,12 @@ format:
 :::{.cr-section}
 
 :::{}
-
 # Minard's Map
 
 There once was a French engineer names Charles Minard who put his mind to creating a map that illustrated Napoleon's retreat from Moscow.
-
 :::
 
-:::{focus-on="map"}
-Here is Minard's Map.
-:::
+Here is Minard's Map. @cr-map
 
 :::{#cr-map}
 ![](minard-map.png)

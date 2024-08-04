@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .onStepEnter((trigger) => {
       
-      focusedStickyName = "cr-" + trigger.element.getAttribute("data-focus-on");
+      focusedStickyName = trigger.element.getAttribute("data-focus-on");
       
       // update ojs variables
       ojsTriggerIndex?.define("crTriggerIndex", trigger.index);
@@ -172,7 +172,7 @@ function highlightSpans(focusedSticky, triggerEl) {
   // add highlight class to appropriate spans
   highlightIds.split(',').forEach(highlightId => {
     const trimmedId = highlightId.trim(); // Ensure no whitespace issues
-    const highlightSpan = focusedSticky.querySelector(`#cr-${trimmedId}`);
+    const highlightSpan = focusedSticky.querySelector(`#${trimmedId}`);
     if (highlightSpan !== null) {
       highlightSpan.classList.add("cr-hl");
     } else {
@@ -269,7 +269,7 @@ function scalePoemFull(el, paddingX = 75, paddingY = 50) {
 function scalePoemToSpan(focusedSticky, highlightIds, paddingX = 75, paddingY = 50) {
   
   // for now just get first span
-  const focusedSpan = focusedSticky.querySelector(`#cr-${highlightIds.trim()}`);
+  const focusedSpan = focusedSticky.querySelector(`#${highlightIds.trim()}`);
   
   // get dimensions of element and its container
   const container = focusedSticky.closest(".sticky-col-stack")
@@ -335,7 +335,7 @@ function transformSticky(sticky, step) {
    and returns true if its value is "true" or false otherwise */
 function getBooleanConfig(metaFlag) {
   const option = document
-    .querySelector("meta[cr-" + metaFlag + "]")?.getAttribute("cr-" + metaFlag)
+    .querySelector("meta[" + metaFlag + "]")?.getAttribute(metaFlag)
   return option === "true"
 }
 
