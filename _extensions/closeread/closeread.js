@@ -4,6 +4,7 @@
 
 // set params
 const triggerSelector = '.new-trigger'
+const progressBlockSelector = '.progress-block'
 
 
 //=================//
@@ -33,12 +34,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const ojsTriggerIndex = ojsModule?.variable()
   const ojsTriggerProgress = ojsModule?.variable()
   const ojsDirection = ojsModule?.variable()
+  const ojsProgressBlock = ojsModule?.variable()
 
   let focusedSticky = "none";
   ojsStickyName?.define("crStickyName", focusedSticky);
   ojsTriggerIndex?.define("crTriggerIndex", 0);
   ojsTriggerProgress?.define("crTriggerProgress", 0);
   ojsDirection?.define("crDirection", null);
+  ojsProgressBlock?.define("crProgressBlock", 0);
 
   if (ojsModule === undefined) {
     console.error("Warning: Quarto OJS module not found")
@@ -51,8 +54,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // === Set up scrolling event listeners === //
   // scrollama() is accessible because scrollama.min.js is attached via closeread.lua
   
-  const scroller = scrollama();
-  scroller
+  const triggerScroller = scrollama();
+  triggerScroller
     .setup({
       step: triggerSelector,
       offset: 0.5,
@@ -76,6 +79,19 @@ document.addEventListener("DOMContentLoaded", () => {
       ojsTriggerProgress?.define("crTriggerProgress", trigger.progress);
       ojsDirection?.define("crDirection", trigger.direction);
       
+    });
+    
+    const progressBlockScroller = scrollama();
+    progressBlockScroller
+      .setup({
+        step: progressBlockSelector,
+        offset: 0.5,
+        progress: true,
+        debug: debugMode
+      })
+      .onStepProgress((progressBlock) => {
+      // update ojs variable
+      ojsProgressBlock?.define("crProgressBlock", progressBlock.progress);
     });
     
     // Add a listener for scrolling between new triggers
