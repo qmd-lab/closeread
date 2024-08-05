@@ -19,7 +19,7 @@ local global_layout = "sidebar-left"
 --======================--
 
 function read_meta(m)
-
+  
   -- debug mode
   if m["debug-mode"] ~= nil then
     debug_mode = m["debug-mode"]
@@ -52,47 +52,14 @@ end
 -- Form CR-Section AST --
 --=====================--
 
--- Construct cr section AST
+-- Construct cr-section AST
 function make_section_layout(div)
   
   if div.classes:includes("cr-section") then
     
-    -- make contents of stick-col
-    sticky_blocks = div.content:walk {
-      traverse = 'topdown',
-      Block = function(block)
-        if is_sticky(block) then
-          block = shift_id_to_block(block)
-          block.classes:insert("sticky") 
-          return block, false -- if a sticky element is found, don't process child blocks
-        else
-          return {}
-        end
-      end
-    }
-    
-    -- make contents of narrative-col
-    narrative_blocks = {}
-    for _,block in ipairs(div.content) do
-      if not is_sticky(block) then
-        if is_new_trigger(block) then
-          table.insert(block.attr.classes, "narrative")
-          local new_trigger_block = wrap_block(block, {"trigger", "new-trigger"})
-          table.insert(narrative_blocks, new_trigger_block)
-        else
-          -- if the block can hold attributes, make it a narrative block
-          if block.attr ~= nil then
-            table.insert(block.attr.classes, "narrative")
-          else
-            -- if it can't (like a Para), wrap it in a Div that can
-            block = wrap_block(block, {"narrative"})
-          end
-
-          local not_new_trigger_block = wrap_block(block, {"trigger"})
-          table.insert(narrative_blocks, not_new_trigger_block)
-        end
-      end
-    end
+    -- make key components of cr-section
+    narrative_col = make_narrative_col(div.content)
+    sticky_col    = make_sticky_col(div.content)
     
     -- identify section layout
     local section_layout = global_layout -- inherit from doc yaml
@@ -103,18 +70,90 @@ function make_section_layout(div)
     end
 
     -- piece together the cr-section
-    narrative_col = pandoc.Div(pandoc.Blocks(narrative_blocks),
-      pandoc.Attr("", {"narrative-col"}, {}))
-    sticky_col_stack = pandoc.Div(sticky_blocks,
-      pandoc.Attr("", {"sticky-col-stack"}))
-    sticky_col = pandoc.Div(sticky_col_stack,
-      pandoc.Attr("", {"sticky-col"}, {}))
     cr_section = pandoc.Div({narrative_col, sticky_col},
       pandoc.Attr("", {"column-screen",table.unpack(div.classes), section_layout}, {}))
 
     return cr_section
   end
 end
+
+
+function make_sticky_col(cr_section_blocks)
+  
+  sticky_blocks = cr_section_blocks:walk {
+    traverse = 'topdown',
+    Block = function(block)
+      if is_sticky(block) then
+        block = shift_id_to_block(block)
+        block.classes:insert("sticky") 
+        return block, false -- if a sticky element is found, don't process child blocks
+      else
+        return {}
+      end
+    end
+  }
+
+  sticky_col_stack = pandoc.Div(sticky_blocks,
+    pandoc.Attr("", {"sticky-col-stack"}))
+  sticky_col = pandoc.Div(sticky_col_stack,
+    pandoc.Attr("", {"sticky-col"}, {}))
+  
+  return sticky_col
+end
+
+
+function make_narrative_col(cr_section_blocks)
+  
+  narrative_blocks = make_narrative_blocks(cr_section_blocks)
+  narrative_col = pandoc.Div(pandoc.Blocks(narrative_blocks),
+    pandoc.Attr("", {"narrative-col"}, {}))
+  
+  return narrative_col
+end
+
+
+function make_narrative_blocks(cr_section_blocks)
+
+  local narrative_blocks = {}
+  for _,block in ipairs(cr_section_blocks) do
+    if not is_sticky(block) then
+      if block.attr ~= nil then
+        if block.attr.classes ~= nil then
+          if block.classes:includes("progress-block") then
+            quarto.log.output("> inside progress")
+            -- run function again inside progress-block
+            nested_narr_blocks = make_narrative_blocks(block.content)
+            progress_blocks = pandoc.Div(nested_narr_blocks, 
+              pandoc.Attr("", {"progress-block"}, {}))
+            table.insert(narrative_blocks, progress_blocks) 
+            goto endofloop
+          end
+        end
+      end
+      
+      if is_new_trigger(block) then
+        table.insert(block.attr.classes, "narrative")
+        local new_trigger_block = wrap_block(block, {"trigger", "new-trigger"})
+        table.insert(narrative_blocks, new_trigger_block)
+      else
+        -- if the block can hold attributes, make it a narrative block
+        if block.attr ~= nil then
+          table.insert(block.attr.classes, "narrative")
+        else
+          -- if it can't (like a Para), wrap it in a Div that can
+          block = wrap_block(block, {"narrative"})
+        end
+        local not_new_trigger_block = wrap_block(block, {"trigger"})
+        table.insert(narrative_blocks, not_new_trigger_block)
+      end
+    end
+    
+    ::endofloop::
+  end
+  
+  return pandoc.Blocks(narrative_blocks)
+end
+
 
 
 function shift_id_to_block(block)
@@ -364,6 +403,46 @@ function process_trigger_shortcut(para)
   
   return para
 end
+
+--=================--
+-- Progress Blocks --
+--=================--
+-- A progress block is a top-level Div with the class .progress-block that 
+-- provides a longer block (composed of many .narrative) that a progress listener
+-- can track. It is cut from the AST before the cr-section is made, then pasted 
+-- back in later.
+
+function cut_progress_block(div)
+  
+  if div.classes:includes("cr-section") then
+
+    local new_content = pandoc.Blocks({})
+    
+    for _, block in ipairs(div.content) do
+      if not block.classes:includes("progress-block") then
+        new_content:insert(block)
+      else
+        -- Log when a block is removed
+        quarto.log.output("Removed progress-block")
+      end
+    end
+    
+    div.content = new_content
+  end
+  
+  return div
+end
+
+
+function paste_progress_block(div)
+  if div.classes:includes(".progress-block") then
+    
+  end
+  
+  return div
+end
+
+
 
 
 --================--
