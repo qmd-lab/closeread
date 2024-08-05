@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const ojsProgressBlock = ojsModule?.variable()
 
   let focusedSticky = "none";
-  ojsStickyName?.define("crStickyName", focusedSticky);
+  ojsStickyName?.define("crActiveSticky", focusedSticky);
   ojsTriggerIndex?.define("crTriggerIndex", 0);
   ojsTriggerProgress?.define("crTriggerProgress", 0);
   ojsDirection?.define("crDirection", null);
@@ -68,7 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
       
       // update ojs variables
       ojsTriggerIndex?.define("crTriggerIndex", trigger.index);
-      ojsStickyName?.define("crStickyName", focusedStickyName);
+      ojsStickyName?.define("crActiveSticky", focusedStickyName);
         
       updateStickies(allStickies, focusedStickyName, trigger);
       
