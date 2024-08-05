@@ -6,9 +6,11 @@
 
 /* global layout styles */
 
+/* helpful for docs with no header space
 .cr-section .narrative-col > *:first-child {
   padding-block-start: 10svh !important;
 }
+*/
 
 .cr-section {
   display: grid;
