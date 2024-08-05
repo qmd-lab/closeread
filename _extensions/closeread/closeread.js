@@ -164,45 +164,90 @@ function updateStickies(allStickies, focusedStickyName, trigger) {
     scalePoemFull(focusedSticky);
   }
   
-  highlightLines(focusedSticky, trigger.element);
-  //highlightSpans(focusedSticky, trigger.element);
+  highlightSpans(focusedSticky, trigger.element);
 
 }
 
-function highlightLines(focusedSticky, triggerEl) {
+function highlightSpans(focusedSticky, triggerEl) {
   
   // remove any previous highlighting
   focusedSticky.querySelectorAll("span[id]").forEach(d => d.classList.remove("cr-hl"));
   focusedSticky.classList.remove("cr-hl-within");
   
   // get hightlighted spans from trigger
-  let highlightLineNums = triggerEl.getAttribute("data-highlight-lines");
+  let highlightIds = triggerEl.getAttribute("data-highlight");
   
   // exit function if there's no highlighting
-  if (highlightLineNums === null) {
+  if (highlightIds === null) {
     return;
+  }
+  
+  // turn a range of line numbers into a series
+  isRange = /\b(\d+)\s*-\s*(\d+)\b/;
+  if (isRange.test(highlightIds)) {
+    const match = highlightIds.match(isRange);
+  
+    if (match) {
+      const start = parseInt(match[1], 10);
+      const end = parseInt(match[2], 10);
+      const numbers = [];
+
+      for (let i = start; i <= end; i++) {
+        numbers.push(i);
+      }
+
+      highlightIds = numbers.join(',');
+    } else {
+      return '';
+    }
   }
   
   // dim enclosing block
   focusedSticky.classList.add("cr-hl-within");
+  console.log("focusedSticky:", focusedStickyName)
   
   // add highlight class to appropriate spans
-  highlightLineNums.split(',').forEach(highlightId => {
+  console.log(">> highlightIds", highlightIds)
+  highlightIds.split(',').forEach(highlightId => {
     const trimmedId = highlightId.trim();
-    const highlightSpan = focusedSticky.querySelector(`[id^="cb"][id*="-${trimmedId}"]`);
+    let spanSelector = "";
+    
+    // determine the appropriate spanSelector
+    // for line numbers
+    if (!isNaN(trimmedId)) {
+      
+      console.log("trying to highlight a number")
+      // that are in line blocks
+      if (focusedSticky.querySelector('.line-block') !== null) {
+        console.log("on a line block")
+        spanSelector = `span[id^="lb"][id*="-${trimmedId}"]`;
+        console.log("with this selector:", spanSelector)
+      }
+      // or in code cells
+      if (focusedSticky.querySelector('.cell') !== null) {
+        console.log("on a code cell")
+        spanSelector = `span[id^="cb"][id*="-${trimmedId}"]`;
+      }
+    // and for span ids
+    } else {
+      console.log("trying to highlight a span")
+      spanSelector = `span[id="${trimmedId}"]`;
+    }
+    
+    const highlightSpan = focusedSticky.querySelector(spanSelector);
 
     if (highlightSpan !== null) {
       highlightSpan.classList.add("cr-hl");
     } else {
     // Handle the case where the ID does not correspond to a span
-      console.warn(`Could not find span with ID '${trimmedId}'. Please ensure the ID is correct.`);
+      console.warn(`While highlighting, could not find span with corresponding to an ID of '${trimmedId}'. Please ensure the ID is correct.`);
     }
   });
   
 }
 
 
-function highlightSpans(focusedSticky, triggerEl) {
+function highlightans(focusedSticky, triggerEl) {
   // remove any previous highlighting from sticky
   focusedSticky.querySelectorAll("span[id]").forEach(d => d.classList.remove("cr-hl"));
   focusedSticky.classList.remove("cr-hl-within");
