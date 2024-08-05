@@ -115,13 +115,14 @@ end
 function make_narrative_blocks(cr_section_blocks)
 
   local narrative_blocks = {}
+  -- iterate over top-level blocks
   for _,block in ipairs(cr_section_blocks) do
     if not is_sticky(block) then
+      -- if it's progress-block...
       if block.attr ~= nil then
         if block.attr.classes ~= nil then
           if block.classes:includes("progress-block") then
-            quarto.log.output("> inside progress")
-            -- run function again inside progress-block
+            -- re-run this function on child blocks
             nested_narr_blocks = make_narrative_blocks(block.content)
             progress_blocks = pandoc.Div(nested_narr_blocks, 
               pandoc.Attr("", {"progress-block"}, {}))
@@ -131,10 +132,13 @@ function make_narrative_blocks(cr_section_blocks)
         end
       end
       
+      -- if it's a new trigger
       if is_new_trigger(block) then
         table.insert(block.attr.classes, "narrative")
         local new_trigger_block = wrap_block(block, {"trigger", "new-trigger"})
         table.insert(narrative_blocks, new_trigger_block)
+      
+      --if it's not a new trigger
       else
         -- if the block can hold attributes, make it a narrative block
         if block.attr ~= nil then
@@ -403,46 +407,6 @@ function process_trigger_shortcut(para)
   
   return para
 end
-
---=================--
--- Progress Blocks --
---=================--
--- A progress block is a top-level Div with the class .progress-block that 
--- provides a longer block (composed of many .narrative) that a progress listener
--- can track. It is cut from the AST before the cr-section is made, then pasted 
--- back in later.
-
-function cut_progress_block(div)
-  
-  if div.classes:includes("cr-section") then
-
-    local new_content = pandoc.Blocks({})
-    
-    for _, block in ipairs(div.content) do
-      if not block.classes:includes("progress-block") then
-        new_content:insert(block)
-      else
-        -- Log when a block is removed
-        quarto.log.output("Removed progress-block")
-      end
-    end
-    
-    div.content = new_content
-  end
-  
-  return div
-end
-
-
-function paste_progress_block(div)
-  if div.classes:includes(".progress-block") then
-    
-  end
-  
-  return div
-end
-
-
 
 
 --================--
