@@ -6,6 +6,8 @@ format:
     remove-header-space: true
 ---
 
+# Mindard's Map
+
 :::{.epigraph}
 > [The Visual Display of Quantitative Information](https://www.edwardtufte.com/tufte/books_vdqi) by Edward Tufte is a seminal text in the field of data visualization. On page 40, the text walks the reader through the complexity of a graphic by Charles Minard that depicts Napoleon's disastrous military campaign in Russia. An excerpt from that chapter is printed below, with permission.
 :::
