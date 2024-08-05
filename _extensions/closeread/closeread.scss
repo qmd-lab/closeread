@@ -66,13 +66,30 @@
           font-size .8s ease-in-out;
       }
 
-      // show active elements (this class is applied by scrollama
+      // show active stickies
       .cr-active {
         opacity: 1;
+        
+        // if the sticky contains highlighting code, dim it
+        &.cr-hl-within .sourceCode span[id^="cb"] {
+          opacity: .3;
+          
+          transition:
+            opacity linear 0.3s;
+          
+          // while keeping the highlighted spans bright
+          &.cr-hl{
+            opacity: 1;
+            
+            transition:
+            opacity linear 0.3s;
+          }
+        }
       }
     }
   }
 }
+
 
 /* mobile sizing (bootstrap: xs) is always overlay-center */
 //@media (max-width: 575.98px) {

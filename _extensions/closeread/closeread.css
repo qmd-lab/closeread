@@ -45,6 +45,14 @@
 .cr-section .sticky-col .sticky-col-stack .cr-active {
   opacity: 1;
 }
+.cr-section .sticky-col .sticky-col-stack .cr-active.cr-hl-within .sourceCode span[id^=cb] {
+  opacity: 0.3;
+  transition: opacity linear 0.3s;
+}
+.cr-section .sticky-col .sticky-col-stack .cr-active.cr-hl-within .sourceCode span[id^=cb].cr-hl {
+  opacity: 1;
+  transition: opacity linear 0.3s;
+}
 
 /* mobile sizing (bootstrap: xs) is always overlay-center */
 @media (max-width: 575.98px) {
