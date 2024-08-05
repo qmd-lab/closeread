@@ -164,8 +164,41 @@ function updateStickies(allStickies, focusedStickyName, trigger) {
     scalePoemFull(focusedSticky);
   }
   
-  highlightSpans(focusedSticky, trigger.element);
+  highlightLines(focusedSticky, trigger.element);
+  //highlightSpans(focusedSticky, trigger.element);
 
+}
+
+function highlightLines(focusedSticky, triggerEl) {
+  
+  // remove any previous highlighting
+  focusedSticky.querySelectorAll("span[id]").forEach(d => d.classList.remove("cr-hl"));
+  focusedSticky.classList.remove("cr-hl-within");
+  
+  // get hightlighted spans from trigger
+  let highlightLineNums = triggerEl.getAttribute("data-highlight-lines");
+  
+  // exit function if there's no highlighting
+  if (highlightLineNums === null) {
+    return;
+  }
+  
+  // dim enclosing block
+  focusedSticky.classList.add("cr-hl-within");
+  
+  // add highlight class to appropriate spans
+  highlightLineNums.split(',').forEach(highlightId => {
+    const trimmedId = highlightId.trim();
+    const highlightSpan = focusedSticky.querySelector(`[id^="cb"][id*="-${trimmedId}"]`);
+
+    if (highlightSpan !== null) {
+      highlightSpan.classList.add("cr-hl");
+    } else {
+    // Handle the case where the ID does not correspond to a span
+      console.warn(`Could not find span with ID '${trimmedId}'. Please ensure the ID is correct.`);
+    }
+  });
+  
 }
 
 
@@ -187,7 +220,7 @@ function highlightSpans(focusedSticky, triggerEl) {
   
   // add highlight class to appropriate spans
   highlightIds.split(',').forEach(highlightId => {
-    const trimmedId = highlightId.trim(); // Ensure no whitespace issues
+    const trimmedId = highlightId.trim();
     const highlightSpan = focusedSticky.querySelector(`#${trimmedId}`);
     if (highlightSpan !== null) {
       highlightSpan.classList.add("cr-hl");
