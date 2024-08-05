@@ -51,23 +51,23 @@ world = FileAttachment("naturalearth-land-110m.geojson").json()
 
 ::::{.cr-section layout="overlay-center"}
 
-:::{focus-on="map"}
+:::{focus-on="cr-map"}
 We want our globe to rotate with the scroll progress — between -180 and 180.  
 :::
 
-:::{focus-on="map"}
+:::{focus-on="cr-map"}
 Instead of trying to do the maths to scale it ourselves, we can make a scale with d3.
 :::
 
-:::{focus-on="map"}
+:::{focus-on="cr-map"}
 There are six narrative blocks that we want to scale over, but I'd like the scrolling to start a little late and end a little early — by the time the last block has just started.
 :::
 
-:::{focus-on="map"}
+:::{focus-on="cr-map"}
 So between 0.5 (because the scroll starts with the first narrative block of the document) and 5.1. If the numbers go outside this range, we'll _clamp_ them so that the scrolling doesn't continue.
 :::
 
-:::{focus-on="map"}
+:::{focus-on="cr-map"}
 Here's how we create that scale and then use it with Closeread's variables, `crTriggerIndex` and `crScrollProgress`:
   
 ```{ojs}
@@ -85,7 +85,7 @@ angle = angleScale(
 ```
 :::
 
-:::{focus-on="map"}
+:::{focus-on="cr-map"}
 With all that done, we can see our map!
 :::
 

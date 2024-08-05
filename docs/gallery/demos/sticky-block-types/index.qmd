@@ -12,7 +12,7 @@ First paragraph.
 This is a para nested in a div. These two first bits don't trigger anything...
 :::
 
-:::{focus-on="pink"}
+:::{focus-on="cr-pink"}
 This is an image with the sticky tag on the div.
 :::
 
@@ -20,7 +20,7 @@ This is an image with the sticky tag on the div.
 x![This is a caption](pink-desktop.png)
 :::
 
-:::{focus-on="blue"}
+:::{focus-on="cr-blue"}
 This is an image with the sticky tag on Image itself.
 
 I've replaced its margin with some padding to demonstrate that you can give it a larger "surface" area on which to trigger scroll events.
@@ -36,7 +36,7 @@ Here's a little non-scrolling interlude before our next scrolly section!
 
 ::::{.cr-section}
 
-:::{focus-on="scatter"}
+:::{focus-on="cr-scatter"}
 This is a scatterplot.
 :::
 
@@ -47,7 +47,7 @@ This is a scatterplot.
 plot(mtcars$mpg, mtcars$dist)
 ```
 
-:::{focus-on="hist"}
+:::{focus-on="cr-hist"}
 This is a histogram.
 :::
 
@@ -60,7 +60,7 @@ This is a histogram.
 hist(mtcars$mpg)
 ```
 
-:::{focus-on="list"}
+:::{focus-on="cr-list"}
 This is a list (a block element).
 :::
 
@@ -69,7 +69,7 @@ This is a list (a block element).
 2. Banana
 :::
 
-:::{focus-on="displaymath"}
+:::{focus-on="cr-displaymath"}
 This is display math, but I'm making it a bit longer so that it covers a few lines.
 :::
 
@@ -84,7 +84,7 @@ $$
 
 :::
 
-:::{focus-on="mypoem"}
+:::{focus-on="cr-mypoem"}
 This is a poem. It's called ["Bellringer", by Rita Dove](https://www.newyorker.com/culture/2019-in-review/our-year-in-poems).
 :::
 
@@ -108,21 +108,21 @@ This is a poem. It's called ["Bellringer", by Rita Dove](https://www.newyorker.c
 | faint sunlight quivering on a hidden breeze.
 
 
-:::{focus-on="mypoem" highlight-spans="born"}
+:::{focus-on="cr-mypoem" highlight-spans="cr-born"}
 The author refers to their birth twice: one here...
 :::
 
-:::{focus-on="mypoem" highlight-spans="birth1,birth2"}
+:::{focus-on="cr-mypoem" highlight-spans="cr-birth1,cr-birth2"}
 ... and again, further down.
 
 Interestingly, Pandoc doesn't let you carry a span across two lines in a line block!
 :::
 
-:::{focus-on="mypoem" highlight-spans="wonder"}
+:::{focus-on="cr-mypoem" highlight-spans="cr-wonder"}
 But check out this phrase, right at the bottom.
 :::
 
-:::{focus-on="mylimerick"}
+:::{focus-on="cr-mylimerick"}
 Let's look at a small limerick.
 :::
 
@@ -130,11 +130,11 @@ Let's look at a small limerick.
 | The limerick packs [laughs anatomical]{#cr-laughs}
 |   In space that is quite economical.
 
-:::{focus-on="mylimerick" highlight-spans="laughs"}
+:::{focus-on="cr-mylimerick" highlight-spans="cr-laughs"}
 The phrase 'laughs anatomical' is quite important here!
 :::
 
-:::{focus-on="mermaid"}
+:::{focus-on="cr-mermaid"}
 This is a mermaid diagram
 :::
 
@@ -147,7 +147,7 @@ flowchart LR
   C --> E[Result two]
 ```
 
-:::{focus-on="graphviz"}
+:::{focus-on="cr-graphviz"}
 This is a graphviz diagram
 :::
 

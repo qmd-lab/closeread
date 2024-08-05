@@ -80,8 +80,15 @@ function make_section_layout(div)
           local new_trigger_block = wrap_block(block, {"trigger", "new-trigger"})
           table.insert(narrative_blocks, new_trigger_block)
         else
-          local new_narrative_block = pandoc.Div(block, pandoc.Attr("", {"narrative"}, {}))
-          local not_new_trigger_block = wrap_block(new_narrative_block, {"trigger"})
+          -- if the block can hold attributes, make it a narrative block
+          if block.attr ~= nil then
+            table.insert(block.attr.classes, "narrative")
+          else
+            -- if it can't (like a Para), wrap it in a Div that can
+            block = wrap_block(block, {"narrative"})
+          end
+
+          local not_new_trigger_block = wrap_block(block, {"trigger"})
           table.insert(narrative_blocks, not_new_trigger_block)
         end
       end
@@ -133,22 +140,24 @@ function shift_id_to_block(block)
 end
 
 
--- wrap_block: wrap trigger blocks in a div that allows us to style triggers visually
+-- wrap_block: wrap block in a div, adds the classList, and transfers the attributes
 function wrap_block(block, classList)
   
   -- extract attributes
   local attributesToMove = {}
-  if block.attributes ~= nil then
-    for attr, value in pairs(block.attributes) do
-      if trigger_selectors[attr] or cr_attributes[attr] then
+  if block.attr ~= nil then
+    if block.attributes ~= nil then
+      for attr, value in pairs(block.attr.attributes) do
+       -- if trigger_selectors[attr] or cr_attributes[attr] then
         attributesToMove[attr] = value
         block.attributes[attr] = nil
+        --end
       end
     end
   end
   
   -- construct a pandoc.div with the new attributes to return
-  return pandoc.Div(block, pandoc.Attr("", classList, attributesToMove))
+  return pandoc.Div(block, pandoc.Attr("", classList, pandoc.AttributeList(attributesToMove)))
 end
 
 

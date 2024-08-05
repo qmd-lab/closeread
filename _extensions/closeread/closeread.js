@@ -18,8 +18,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // attach meta classes to <body>
   document.body.classList.add("closeread")
-  const debugMode         = getBooleanConfig("debug-mode")
-  const removeHeaderSpace = getBooleanConfig("remove-header-space")
+  const debugMode         = getBooleanConfig("cr-debug-mode")
+  const removeHeaderSpace = getBooleanConfig("cr-remove-header-space")
   if (debugMode) {
     document.body.classList.add("cr-debug")
   } 
