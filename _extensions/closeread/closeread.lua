@@ -258,7 +258,7 @@ end
 
 
 --======================--
--- Lineblock Attributes --
+-- Lineblock Processing --
 --======================--
 
 -- Append attributes to any cr line blocks
@@ -341,6 +341,27 @@ function extractClasses(el)
   end
   return classes
 end
+
+-- Wraps each line of a lineblock in a span with a particular id so that 
+-- the js can add highlight classes to particular lines
+lineblock_ind = 0
+function add_spans(lineblock)
+  lineblock_ind = lineblock_ind + 1
+  
+  new_lb_content = pandoc.List({})
+  line_ind = 0
+  for _,inlines in ipairs(lineblock.content) do
+    line_ind = line_ind + 1
+    span_id = "lb" .. tostring(lineblock_ind) .. "-" .. tostring(line_ind)
+    double_wrapped_line = pandoc.Inlines(pandoc.Span(inlines, pandoc.Attr(span_id, {}, {})))
+    table.insert(new_lb_content, double_wrapped_line)
+  end
+  
+  lineblock.content = new_lb_content
+
+  return lineblock
+end
+
 
 
 --===================--
@@ -440,6 +461,9 @@ return {
   },
   {
     LineBlock = add_attributes
+  },
+  {
+    LineBlock = add_spans
   },
   {
     Para = process_trigger_shortcut
