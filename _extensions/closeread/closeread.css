@@ -45,6 +45,26 @@
 .cr-section .sticky-col .sticky-col-stack .cr-active {
   opacity: 1;
 }
+.cr-section .sticky-col .sticky-col-stack .cr-active.cr-hl-within .sourceCode span[id^=cb] {
+  opacity: 0.3;
+  transition: opacity linear 0.3s;
+}
+.cr-section .sticky-col .sticky-col-stack .cr-active.cr-hl-within .sourceCode span[id^=cb].cr-hl {
+  opacity: 1;
+  transition: opacity linear 0.3s;
+}
+.cr-section .sticky-col .sticky-col-stack .cr-active.cr-hl-within div.line-block span[id^=lb] {
+  color: rgba(0, 0, 0, 0.4);
+  transition: color 0.7s linear;
+}
+.cr-section .sticky-col .sticky-col-stack .cr-active.cr-hl-within div.line-block span[id^=lb].cr-hl {
+  color: rgb(0, 0, 0);
+  transition: color 0.7s linear;
+}
+.cr-section .sticky-col .sticky-col-stack .cr-active.cr-hl-within div.line-block span[id^=lb] span.cr-hl {
+  color: rgb(0, 0, 0);
+  transition: color 0.7s linear;
+}
 
 /* mobile sizing (bootstrap: xs) is always overlay-center */
 @media (max-width: 575.98px) {

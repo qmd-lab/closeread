@@ -66,13 +66,53 @@
           font-size .8s ease-in-out;
       }
 
-      // show active elements (this class is applied by scrollama
+      // show active stickies
       .cr-active {
         opacity: 1;
+        
+        // -- Code Blocks -- //
+        // if the code cell contains highlighted code, dim it
+        &.cr-hl-within .sourceCode span[id^="cb"] {
+          opacity: .3;
+          
+          transition:
+            opacity linear 0.3s;
+          
+          // while keeping the highlighted lines bright
+          &.cr-hl{
+            opacity: 1;
+            
+            transition:
+            opacity linear 0.3s;
+          }
+        }
+        
+        // -- Line Blocks -- //
+        // if the line block contains highlighted lines, lighten text
+        &.cr-hl-within div.line-block span[id^="lb"]{
+          color: rgba(0, 0, 0, 0.4);
+          
+          transition: color .7s linear;
+          
+          // while keeping the highlighted lines black
+          &.cr-hl{
+            color: rgba(0, 0, 0, 1);
+            
+            transition: color .7s linear;
+          }
+          
+          // as well as any spans
+          span.cr-hl{
+            color: rgba(0, 0, 0, 1);
+            
+            transition: color .7s linear;
+          }
+        }
       }
     }
   }
 }
+
 
 /* mobile sizing (bootstrap: xs) is always overlay-center */
 //@media (max-width: 575.98px) {

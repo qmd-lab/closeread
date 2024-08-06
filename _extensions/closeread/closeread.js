@@ -168,8 +168,80 @@ function updateStickies(allStickies, focusedStickyName, trigger) {
 
 }
 
-
 function highlightSpans(focusedSticky, triggerEl) {
+  
+  // remove any previous highlighting
+  focusedSticky.querySelectorAll("span[id]").forEach(d => d.classList.remove("cr-hl"));
+  focusedSticky.classList.remove("cr-hl-within");
+  
+  // get hightlighted spans from trigger
+  let highlightIds = triggerEl.getAttribute("data-highlight");
+  
+  // exit function if there's no highlighting
+  if (highlightIds === null) {
+    return;
+  }
+  
+  // turn a range of line numbers into a series
+  isRange = /\b(\d+)\s*-\s*(\d+)\b/;
+  if (isRange.test(highlightIds)) {
+    const match = highlightIds.match(isRange);
+  
+    if (match) {
+      const start = parseInt(match[1], 10);
+      const end = parseInt(match[2], 10);
+      const numbers = [];
+
+      for (let i = start; i <= end; i++) {
+        numbers.push(i);
+      }
+
+      highlightIds = numbers.join(',');
+    } else {
+      return '';
+    }
+  }
+  
+  // dim enclosing block
+  focusedSticky.classList.add("cr-hl-within");
+  
+  // add highlight class to appropriate spans
+  highlightIds.split(',').forEach(highlightId => {
+    const trimmedId = highlightId.trim();
+    let spanSelector = "";
+    
+    // determine the right spanSelector
+    // for line numbers
+    if (!isNaN(trimmedId)) {
+      
+      // that are in line blocks
+      if (focusedSticky.querySelector('.line-block') !== null) {
+        spanSelector = `span[id^="lb"][id*="-${trimmedId}"]`;
+      }
+      // or in code cells
+      if (focusedSticky.querySelector('.cell') !== null) {
+        spanSelector = `span[id^="cb"][id*="-${trimmedId}"]`;
+      }
+      
+    // and for span ids
+    } else {
+      spanSelector = `span[id="${trimmedId}"]`;
+    }
+    
+    const highlightSpan = focusedSticky.querySelector(spanSelector);
+
+    if (highlightSpan !== null) {
+      highlightSpan.classList.add("cr-hl");
+    } else {
+    // Handle the case where the ID does not correspond to a span
+      console.warn(`While highlighting, could not find span with corresponding to an ID of '${trimmedId}'. Please ensure the ID is correct.`);
+    }
+  });
+  
+}
+
+
+function highlightans(focusedSticky, triggerEl) {
   // remove any previous highlighting from sticky
   focusedSticky.querySelectorAll("span[id]").forEach(d => d.classList.remove("cr-hl"));
   focusedSticky.classList.remove("cr-hl-within");
@@ -187,7 +259,7 @@ function highlightSpans(focusedSticky, triggerEl) {
   
   // add highlight class to appropriate spans
   highlightIds.split(',').forEach(highlightId => {
-    const trimmedId = highlightId.trim(); // Ensure no whitespace issues
+    const trimmedId = highlightId.trim();
     const highlightSpan = focusedSticky.querySelector(`#${trimmedId}`);
     if (highlightSpan !== null) {
       highlightSpan.classList.add("cr-hl");
