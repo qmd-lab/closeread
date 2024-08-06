@@ -22,6 +22,19 @@ When this paragraph scrolls into view it will reveal my sticky. @cr-mysticky
 
 The reference can be placed anywhere in the paragraph, but it should be separated from other content by spaces.
 
+# Trigger Effects
+
+## Highlighting
+
+You can highlight parts of the code and text of your sticky using the following syntax.
+
+1. `highlight="1,3"`: highlight lines 1 and 3
+2. `highlight="1-3"`: highlight lines 1, 2, and 3
+3. `highlight="cr-span1"`: highlight the span with id `cr-span1`
+4. `highlight="cr-span1,cr-span2"`: highlight the spans with ids `cr-span1` and `cr-span2`
+
+Line highlighting (1 and 2) works on code cells and line blocks while span highlighting (3 and 4) only works on Line Blocks.
+
 # Layouts
 
 The relative positioning of the narrative column and the sticky column determine the *layout*. You can set the layout of a section using the `layout` attribute on the block that defines the section.
