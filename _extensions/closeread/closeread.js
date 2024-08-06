@@ -204,33 +204,27 @@ function highlightSpans(focusedSticky, triggerEl) {
   
   // dim enclosing block
   focusedSticky.classList.add("cr-hl-within");
-  console.log("focusedSticky:", focusedStickyName)
   
   // add highlight class to appropriate spans
-  console.log(">> highlightIds", highlightIds)
   highlightIds.split(',').forEach(highlightId => {
     const trimmedId = highlightId.trim();
     let spanSelector = "";
     
-    // determine the appropriate spanSelector
+    // determine the right spanSelector
     // for line numbers
     if (!isNaN(trimmedId)) {
       
-      console.log("trying to highlight a number")
       // that are in line blocks
       if (focusedSticky.querySelector('.line-block') !== null) {
-        console.log("on a line block")
         spanSelector = `span[id^="lb"][id*="-${trimmedId}"]`;
-        console.log("with this selector:", spanSelector)
       }
       // or in code cells
       if (focusedSticky.querySelector('.cell') !== null) {
-        console.log("on a code cell")
         spanSelector = `span[id^="cb"][id*="-${trimmedId}"]`;
       }
+      
     // and for span ids
     } else {
-      console.log("trying to highlight a span")
       spanSelector = `span[id="${trimmedId}"]`;
     }
     
