@@ -2,7 +2,9 @@
 title: "Spinning Globe"
 image: "globe.png"
 description: "Smoothly transition interactive OJS graphics."
-format: closeread-html
+format:
+  closeread-html:
+    code-tools: true
 ---
 
 Closeread makes scrolling progress available to users as [Observable JavasScript](https://quarto.org/docs/interactive/ojs) variables, so you can create closeread sections with interactive graphics that change as you scroll.

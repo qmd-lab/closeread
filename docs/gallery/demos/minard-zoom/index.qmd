@@ -4,6 +4,7 @@ format:
   closeread-html:
     css: cr-tufte.css
     remove-header-space: true
+    code-tools: true
 ---
 
 # Mindard's Map
