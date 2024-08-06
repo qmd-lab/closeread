@@ -1,0 +1,74 @@
+---
+title: Zooming
+format:
+  closeread-html:
+    code-tools: true
+---
+
+Closeread enables the reader to zoom in on particular bits of both code and text using a similar syntax.
+
+To highlight particular lines of code for your reader, you can add an attribute to your trigger called `highlight`. To highlight lines of code, you can either use a series of line numbers separated by commas or a range separate by a hyphen. Some examples:
+
+- `zoom-to="1,5"`: highlight lines 1 and 5
+- `highlight="1-5"`: highlight lines 1 through 5
+
+The following section demonstrates that functionality.
+
+:::{.cr-section}
+
+We'll show an example that demonstrates the use of the `dplyr` R package for data wrangling.
+
+Here is a `dplyr` pipeline that processes a data frame containing information on Antarctic penguins. @cr-dplyr
+
+:::{focus-on="cr-dplyr" highlight="1,2"}
+In the first two lines we load the `dplyr` package and the `palmerpenguins` package, which contains the data frame.
+:::
+
+:::{focus-on="cr-dplyr" highlight="4-8"}
+The main block of code is referred as a pipeline or chain. Each line starts with a function and ends with a pipe, `|>`.
+:::
+
+:::{#cr-dplyr}
+```{r}
+#| echo: true
+#| message: false
+
+library(dplyr)
+library(palmerpenguins)
+
+penguins |>
+  filter(year == 2008) |>
+  group_by(species) |>
+  summarize(avg_bill_length = mean(bill_length_mm)) |>
+  arrange(avg_bill_length)
+```
+:::
+
+:::
+
+The syntax for a lineblock (like a poem) is the same, with one addition.
+
+- `highlight="cr-myspan"`: highlight particular span within a lineblock
+
+
+:::{.cr-section}
+
+The limerick is a form of poetry composed of five lines.
+
+Here is the first limerick appearing in the written record, from the *Saint John Daily News* in 1880. @cr-limerick
+
+:::{focus-on="cr-limerick" highlight="cr-mallory,cr-salary"}
+The end of the first two lines of a Limerick must rhyme.
+:::
+
+:::{focus-on="cr-limerick" highlight="3,4"}
+The end third and fourth line also rhyme and are nudged in a bit.
+:::
+
+| {#cr-limerick}
+| There was a young rustic named [Mallory]{#cr-mallory},
+| who drew but a very small [salary]{#cr-salary}.
+|   When he went to the show,
+|   his purse made him go
+| to a seat in the uppermost gallery.
+:::
