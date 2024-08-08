@@ -9,6 +9,8 @@
 .cr-section {
   display: grid;
   grid-template-rows: 1fr;
+  width: 100%;
+  max-width: 100%;
 }
 .cr-section .narrative-col {
   grid-row: 1;
@@ -143,7 +145,7 @@
 }
 
 .sidebar-left {
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 350px minmax(0, 1fr);
 }
 .sidebar-left .narrative-col {
   grid-column: 1;
@@ -154,7 +156,7 @@
 }
 
 .sidebar-right {
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 1fr 350px;
 }
 .sidebar-right .narrative-col {
   grid-column: 2;
@@ -226,11 +228,9 @@
 }
 
 /* debug styles */
-body.cr-debug .cr-poem {
+body.cr-debug .sticky-col .sticky-col-stack .sticky {
   background-color: rgba(255, 255, 0, 0.6);
   border: 1px solid orange;
-}
-body.cr-debug .sticky {
   opacity: 0.8;
 }
 body.cr-debug .narrative-col .trigger {
