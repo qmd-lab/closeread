@@ -9,7 +9,9 @@
 -- set defaults
 local debug_mode = false
 local trigger_selectors = {["focus-on"] = true}
-local cr_attributes = {["pan-to"] = true, ["scale-by"] = true, ["highlight-spans"] = true}
+local cr_attributes = {["pan-to"] = true, 
+                      ["scale-by"] = true, 
+                      ["highlight-spans"] = true}
 local remove_header_space = false
 local global_layout = "sidebar-left"
 
@@ -375,59 +377,79 @@ function process_trigger_shortcut(para)
   
   local new_inlines = pandoc.Inlines({})
   local sticky_id = nil
+  local focus_attributes = {}
   local skip_next = false
   local prefix = "cr-"
   
   for i, elem in ipairs(para.content) do
     
+    -- if there is a Space that follows a Cite, remove it
     if skip_next then
-      skip_next = false -- reset flag
-      -- skip any space that follows a cr-citation
       if elem.t == "Space" then
-        goto endofloop
-      end
-    end
-    
-    if elem.t == 'Cite' then
-      local cite_id = elem.citations[1].id
-      
-      -- if it's a cr- citation
-      if string.find(cite_id, "^" .. prefix) == 1 then
-        sticky_id = cite_id
-        
-        -- don't insert this element but also
-        
-        -- remove any preceding Space
-        if i > 1 and para.content[i-1].t == "Space" then
-          new_inlines:remove(#new_inlines)
-        end
-        
-        -- and toggle flag to skip next element
-        skip_next = true
-      else
-        
-        -- if it's a Cite (but not a cr-citation), add it
-        new_inlines:insert(elem)
+        skip_next = false -- reset flag and skip this space
+      --elseif elem.t ~= "Span" then
+      --  skip_next = false -- reset flag but don't skip this element
+      --  new_inlines:insert(elem) -- it's not a space or span, so we insert it
       end
     else
+      -- process Cite block
+      if elem.t == 'Cite' then
+        local cite_id = elem.citations[1].id
+        -- if it's a cr-cite, don't insert it
+        if string.find(cite_id, "^" .. prefix) == 1 then
+          -- but grab id for focus block
+          sticky_id = cite_id
+          -- and remove any Space that precedes it
+          if i > 1 and para.content[i-1].t == "Space" then
+            new_inlines:remove(#new_inlines)
+          end
+          skip_next = true -- and prepare to to skip following Space
+        else
+          -- if it's a cite that's not cr-, insert it
+          new_inlines:insert(elem)
+        end
       
-      -- if it's not a Cite, add it
-      new_inlines:insert(elem)
+      -- process Cite within a Span
+      elseif elem.t == "Span" and elem.content[1] ~= nil and elem.content[1].t == "Cite" then
+        local cite_id = elem.content[1].citations[1].id
+        -- if it's a cr-cite, don't insert it
+        if string.find(cite_id, "^" .. prefix) == 1 then
+          -- but do grab id and attributes for focus block
+          sticky_id = cite_id
+          for k,v in pairs(elem.attr.attributes) do
+            focus_attributes[k] = v
+          end
+          -- and remove any space that precedes it
+          if i > 1 and para.content[i-1].t == "Space" then
+            new_inlines:remove(#new_inlines)
+          end
+          skip_next = true -- and prepare to skip the following Space
+        else
+        -- if it's a Cite that's not cr-, insert it
+          new_inlines:insert(elem)
+        end
+      else
+      -- if it's a neither a Cite nor a Span > Cite, add it
+        new_inlines:insert(elem)
+      end
     end
-    
-    ::endofloop::
   end
   
   para.content = new_inlines
   
   -- if a cr-cite was found, wrap in focus block
   if sticky_id ~= nil then
-    wrapped_para = pandoc.Div(para, pandoc.Attr("", {}, {['focus-on'] = sticky_id}))
+    local attr = pandoc.Attr("", {}, {['focus-on'] = sticky_id})
+    for k, v in pairs(focus_attributes) do
+      attr.attributes[k] = v
+    end
+    wrapped_para = pandoc.Div(para, attr)
     para = wrapped_para
   end
   
   return para
 end
+
 
 
 --================--
