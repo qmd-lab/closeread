@@ -1,6 +1,54 @@
 ---
 title: Guide
-toc: true
+toc: false
+format:
+  closeread-html:
+    theme: cosmo
+    code-copy: true
 ---
 
-Closeread is a Quarto extension that allows you to author scrollytelling HTML documents. To learn how to create your first closeread document, start off by reading about the [Components of a Closeread Document](components.qmd).
+Closeread is a Quarto extension that allows you to author scrollytelling HTML documents.
+
+::::{.cr-section layout="overlay-center" style="font-size: 1.1em"}
+
+:::{focus-on="cr-doc" style="padding-top: 0"}
+Get your first closeread doc up and running in four steps.
+:::
+
+Step one: create a qmd file and set the format to closeread-html. [@cr-doc]{highlight="3"}
+
+Step two: open up a closeread section. [@cr-doc]{highlight="8-20"}
+
+Step three: flag an element to become a sticky. [@cr-doc]{highlight="14-18"}
+
+Step four: create a trigger to make the sticky appear. [@cr-doc]{highlight="12"}
+
+:::{#cr-doc filename="myfirstcr.qmd"}
+````markdown
+---
+title: My First Closeread
+format: closeread-html
+---
+
+Hello World! Please read my closeread story below.
+
+:::{.cr-section}
+
+Closeread is a Quarto extension that enables scrollytelling.
+
+These are my favorite fruits. @cr-list
+
+:::{#cr-list}
+1. Cherries
+2. Persimmons
+3. Bananas
+:::
+
+:::
+
+````
+:::
+::::
+
+To learn how to create your first closeread document, start off by reading about the [Components of a Closeread Document](components.qmd).
+

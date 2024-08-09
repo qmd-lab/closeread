@@ -70,10 +70,23 @@ function make_section_layout(div)
         section_layout = value -- but override with section attr
       end
     end
+    
+    -- todo: identify quarto layout to use in section
+    --local quarto_layouts = {"column-body", "column-outset", "column-page", 
+     -- "column-page-inset", "column-screen-inset", "column-margin"}
+    local quarto_layout = "column-screen" -- default
+    --if list_includes_any(div.classes, quarto_layouts) then
+    --  quarto_layout = ""
+    --end
 
+    -- Construct cr-section class list
+    local section_class_list = {table.unpack(div.classes)}
+    table.insert(section_class_list, quarto_layout)
+    table.insert(section_class_list, section_layout)
+    
     -- piece together the cr-section
     cr_section = pandoc.Div({narrative_col, sticky_col},
-      pandoc.Attr("", {"column-screen",table.unpack(div.classes), section_layout}, {}))
+      pandoc.Attr("", section_class_list, {}))
 
     return cr_section
   end
@@ -257,6 +270,17 @@ function find_in_arr(arr, value)
         end
     end
 end
+
+-- check whether a class list includes any of the items (also a class or list of classes)
+function list_includes_any(class_list, items)
+  for _, item in ipairs(items) do
+    if class_list:includes(item) then
+      return true
+    end
+  end
+  return false
+end
+
 
 
 --======================--

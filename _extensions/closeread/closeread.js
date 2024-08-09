@@ -219,7 +219,7 @@ function highlightSpans(focusedSticky, triggerEl) {
         spanSelector = `span[id^="lb"][id*="-${trimmedId}"]`;
       }
       // or in code cells
-      if (focusedSticky.querySelector('.cell') !== null) {
+      if (focusedSticky.querySelector('code.sourceCode') !== null) {
         spanSelector = `span[id^="cb"][id*="-${trimmedId}"]`;
       }
       
