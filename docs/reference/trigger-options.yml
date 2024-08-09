@@ -1,6 +1,16 @@
 - option: "focus-on"
   format: "pandoc attribute"
   possible-values:
-    - "{string}"
-  description: Indicate which sticky block to focus on. Will transition to that block and use it in any focus effects.
+    - "cr-{sticky-name}"
+  description: Used in a div to indicate which sticky to focus on. Will remove the transparency from the sticky and use it in any focus effects.
+
+- option: "highlight"
+  format: "pandoc attribute"
+  possible-values:
+    - '"3"'
+    - '"3,7"'
+    - '"3-7"'
+    - '"cr-span1"'
+    - '"cr-span1,cr-span2"'
+  description: Highlight a single line number, a set of line numbers (separated by commas), or a range of line numbers (separated by a hyphen). Works to highlight both code cell stickies and line blocks stickies. Within a line block sticky, you can additionally highlight a single span contained in that line block with an identifier prefixed with cr- or a set of spans separated by commas.
   

@@ -1,0 +1,51 @@
+---
+title: Layouts
+---
+
+The relative positioning of the narrative column and the sticky column determine the *layout*. You can set the layout of a section using the `layout` attribute on the block that defines the section.
+
+```markdown
+:::{.cr-section layout="overlay-center"}
+< Content of the section, including stickies and narrative blocks >
+:::
+```
+
+## Layout Options
+
+Options for `layout` include:
+
+- `sidebar-left` (default)
+- `sidebar-right`
+- `overlay-left`
+- `overlay-center`
+- `overlay-right`
+
+In the overlay layouts, the sticky column occupies the entire screen width and the narrative column scrolls over it. All layouts will automatically revert to `overlay-center` when viewed on a mobile device.
+
+Documents containing multiple closeread sections can use the same layouts or different ones. As an alternative to specifying the layout on the section block, it can also be defined in the document yaml under the `cr-section` key.
+
+```yml
+---
+format:
+  closeread-html:
+    cr-section:
+      layout: "overlay-center"
+---
+```
+If a layout is specified in the document yaml, it will be propagated to all sections in the document. If a section has its own layout specified, that will override the document yaml similar to how code cell execution options work.
+
+## Presentation Mode
+
+Closeread documents place special emphasis on the "stickies": the text, images, or code found in the main column that is described in the narrative. This 
+
+While viewing any closeread document in a browser, you can press `p`  on the keyboard to view it in presentation mode. Presentation mode is identical to the `overlay-center` layout except the narrative column is made transparent. You can return to the original layout by pressing `p` again. You can advance to the next trigger using the forward-arrow key and return to the previous trigger using the back-arrow key.
+
+## Removing Header Space
+
+By default, top of any Quarto HTML document, including `closeread-html` will reserve space at the top o the document for the title block. To remove this, you can use the `remove-header-space` option in the document header.
+
+```yaml
+format:
+  closeread-html:
+    remove-header-space: true
+```
