@@ -1,0 +1,138 @@
+---
+format: closeread-html
+---
+
+::::{.cr-section}
+
+# Test other sticky block types
+
+First paragraph.
+
+This is a para nested in a div. These two first bits don't trigger anything...
+
+This is an image with the sticky tag on the div. @cr-pink
+
+:::{#cr-pink}
+![This is a caption](pink-desktop.png)
+:::
+
+This is an image with the sticky tag on Image itself. @cr-blue
+
+![](blue-desktop.png){#cr-blue}
+
+:::
+
+::::{.column-screen-inset style="background-color: #dddddd; padding: 50px;"}
+Here's a little non-scrolling interlude before our next scrolly section!
+::::
+
+::::{.cr-section}
+
+This is a scatterplot. @cr-scatterplot
+
+:::{#cr-scatterplot}
+```{r}
+#| echo: false
+#| id: cr-scatter
+
+plot(mtcars$mpg, mtcars$dist)
+```
+:::
+
+This is a histogram. @cr-hist
+
+:::{#cr-hist}
+```{r}
+#| echo: true
+#| id: cr-hist
+#| fig-cap: "This is a caption."
+#| fig-height: 4
+
+hist(mtcars$mpg)
+```
+:::
+
+This is a list (a block element). @cr-list
+
+:::{#cr-list}
+1. Apple
+2. Banana
+:::
+
+This is display math, but I'm making it a bit longer so that it covers a few lines. @cr-displaymath
+
+::: {#cr-displaymath}
+
+$$
+\begin{align}
+\hat{y} &= \beta_0 + \beta_1 x + \epsilon \\
+&= 3.4 + 1.2 x
+\end{align}
+$$
+
+:::
+
+This is a poem. It's called ["Bellringer", by Rita Dove](https://www.newyorker.com/culture/2019-in-review/our-year-in-poems). @cr-mypoem
+
+:::{#cr-mypoem .cr-poem}
+| I was given a name, it came out of a book—
+| I don’t know which. I’ve been told the Great Man
+| could recite every title in order on its shelf.
+| Well, [I was born]{#cr-born}, and that’s a good thing,
+| although I arrived on the day of his passing,
+| 
+| a day on which our country fell into mourning.
+| This I heard over and over, from professors
+| to farmers, even duel-scarred students;
+| sometimes, in grand company, remarked upon
+| in third person—a pretty way of saying
+| 
+| more than two men in a room means the third
+| can be ignored, as [I was when they spoke]{#cr-birth1}
+| [of my birth]{#cr-birth2} and Mr. Jefferson’s death
+| in one breath, voices [dusted with wonderment]{#cr-wonder},
+| faint sunlight quivering on a hidden breeze.
+:::
+
+The author refers to their birth twice: one here... [@cr-mypoem]{highlight="cr-born"}
+
+... and again, further down. [@cr-mypoem]{highlight="cr-birth1,cr-birth2"}
+
+Interestingly, Pandoc doesn't let you carry a span across two lines in a line block!
+
+But check out this phrase, right at the bottom. [@cr-mypoem]{highlight="cr-wonder"}
+
+Let's look at a small limerick. @cr-mylimerick
+
+| {#cr-mylimerick .cr-poem}
+| The limerick packs [laughs anatomical]{#cr-laughs}
+|   In space that is quite economical.
+
+The phrase 'laughs anatomical' is quite important here! [@cr-mylimerick]{highlight="cr-laughs"}
+
+This is a mermaid diagram @cr-mermaid
+
+```{mermaid}
+%%| id: cr-mermaid
+flowchart LR
+  A[Hard edge] --> B(Round edge)
+  B --> C{Decision}
+  C --> D[Result one]
+  C --> E[Result two]
+```
+
+
+This is a graphviz diagram @cr-graphviz
+
+```{dot}
+//| id: cr-graphviz
+graph G {
+  layout=neato
+  run -- intr;
+  intr -- runbl;
+}
+```
+
+:::
+
+# The End
