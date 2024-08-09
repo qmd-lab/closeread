@@ -35,7 +35,7 @@ The width of this band indicates the size of the army at each place on the map.
 
 In September, the army reached Moscow, which was by then sacked and deserted, with 100,000 men. [@cr-map]{pan-to="-55%,10%" scale-by="1.5"}
 
-The path of Napoleon's retreat from Moscow is depicted by the darker, lower band, which is linked to a temperature scale and dates at the bottom of the chart. It was a bitterly cold winter, and many froze on the march out of Russia. [@cr-map]{pan-to="-25%,10%" scale-by="1.5"}}
+The path of Napoleon's retreat from Moscow is depicted by the darker, lower band, which is linked to a temperature scale and dates at the bottom of the chart. It was a bitterly cold winter, and many froze on the march out of Russia. [@cr-map]{pan-to="-25%,10%" scale-by="1.5"}
 
 As the graphic shows, the crossing of the Berezina River was a disaster, and the army finally struggled back into Poland with only 10,000 men remaining. [@cr-map]{pan-to="18%,-15%" scale-by="2.4"}
 
