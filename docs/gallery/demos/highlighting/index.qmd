@@ -15,18 +15,13 @@ To highlight particular lines of code for your reader, you can add an attribute 
 The following section demonstrates that functionality.
 
 :::{.cr-section}
-
 We'll show an example that demonstrates the use of the `dplyr` R package for data wrangling.
 
 Here is a `dplyr` pipeline that processes a data frame containing information on Antarctic penguins. @cr-dplyr
 
-:::{focus-on="cr-dplyr" highlight="1,2"}
-In the first two lines we load the `dplyr` package and the `palmerpenguins` package, which contains the data frame.
-:::
+In the first two lines we load the `dplyr` package and the `palmerpenguins` package, which contains the data frame. [@cr-dplyr]{highlight="1,2"}
 
-:::{focus-on="cr-dplyr" highlight="4-8"}
-The main block of code is referred as a pipeline or chain. Each line starts with a function and ends with a pipe, `|>`.
-:::
+The main block of code is referred as a pipeline or chain. Each line starts with a function and ends with a pipe, `|>`. [@cr-dplyr]{highlight="4-8"}
 
 :::{#cr-dplyr}
 ```{r}
@@ -52,18 +47,13 @@ The syntax for a lineblock (like a poem) is the same, with one addition.
 
 
 :::{.cr-section}
-
 The limerick is a form of poetry composed of five lines.
 
 Here is the first limerick appearing in the written record, from the *Saint John Daily News* in 1880. @cr-limerick
 
-:::{focus-on="cr-limerick" highlight="cr-mallory,cr-salary"}
-The end of the first two lines of a Limerick must rhyme.
-:::
+The end of the first two lines of a Limerick must rhyme. [@cr-limerick]{highlight="cr-mallory,cr-salary"}
 
-:::{focus-on="cr-limerick" highlight="3,4"}
-The end third and fourth line also rhyme and are nudged in a bit.
-:::
+The end of the third and fourth line also rhyme and are nudged in a bit. [@cr-limerick]{highlight="3-4"}
 
 | {#cr-limerick}
 | There was a young rustic named [Mallory]{#cr-mallory},

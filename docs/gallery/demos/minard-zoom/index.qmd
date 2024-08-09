@@ -29,22 +29,15 @@ The first is the classic of Charles Joseph Minard (1781-1870), the French engine
 ![](minard-map.png)
 :::
 
-:::{focus-on="cr-map" pan-to="70%,-10%" scale-by="2.1"}
-Beginning at left on the Polish-Russian border near the Niemen River, the thick tan flow-line shows the size of the Grand Army (422,000) as it invaded Russia in June 1812.
-:::
+Beginning at left on the Polish-Russian border near the Niemen River, the thick tan flow-line shows the size of the Grand Army (422,000) as it invaded Russia in June 1812. [@cr-map]{pan-to="70%,-10%" scale-by="2.1"}
+
 The width of this band indicates the size of the army at each place on the map.
 
-:::{focus-on="cr-map" pan-to="-55%,10%" scale-by="1.5"}
-In September, the army reached Moscow, which was by then sacked and deserted, with 100,000 men.
-:::
+In September, the army reached Moscow, which was by then sacked and deserted, with 100,000 men. [@cr-map]{pan-to="-55%,10%" scale-by="1.5"}
 
-:::{focus-on="cr-map" pan-to="-25%,10%" scale-by="1.5" style="padding-top: 0; padding-bottom: 60svh"}
-The path of Napoleon's retreat from Moscow is depicted by the darker, lower band, which is linked to a temperature scale and dates at the bottom of the chart. It was a bitterly cold winter, and many froze on the march out of Russia.
-:::
+The path of Napoleon's retreat from Moscow is depicted by the darker, lower band, which is linked to a temperature scale and dates at the bottom of the chart. It was a bitterly cold winter, and many froze on the march out of Russia. [@cr-map]{pan-to="-25%,10%" scale-by="1.5"}
 
-:::{focus-on="cr-map" pan-to="18%,-15%" scale-by="2.4"}
-As the graphic shows, the crossing of the Berezina River was a disaster, and the army finally struggled back into Poland with only 10,000 men remaining.
-:::
+As the graphic shows, the crossing of the Berezina River was a disaster, and the army finally struggled back into Poland with only 10,000 men remaining. [@cr-map]{pan-to="18%,-15%" scale-by="2.4"}
 
 Also shown are the movements of auxiliary troops, as they sought to protect the rear and the flank of the advancing army.
 

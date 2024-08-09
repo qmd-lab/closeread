@@ -4,12 +4,20 @@ title: "closeread"
 
 closeread is a custom format for [Quarto](https://quarto.org/) that enables scrollytelling features for html documents.
 
-Install the extension by running the following command in the directory you with to use it:
+Install the extension by running the following command in the directory you wish to use it:
 
 ```bash
 quarto add qmd-lab/closeread
 ```
 
-:::{.callout-note}
-This documentation is under active development. Please check back regularly for updates.
-:::
+With the extension installed, you can author documents using the `closeread-html` format:
+
+```yaml
+---
+title: My First Closeread
+format: closeread-html
+---
+```
+
+For guidance on how to author closeread documents, read the [Guide](guide/index.qmd). For examples of closeread documents alongside their source, see the [Gallery](gallery/index.qmd). For a catalog of the syntax and yaml options used in the closeread extension, see the [Reference](reference/index.qmd).
+
