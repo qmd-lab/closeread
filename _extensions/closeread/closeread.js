@@ -54,6 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // === Set up scrolling event listeners === //
   // scrollama() is accessible because scrollama.min.js is attached via closeread.lua
   
+  // primary scroller
   const triggerScroller = scrollama();
   triggerScroller
     .setup({
@@ -81,6 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
       
     });
     
+    // secondary scroller used for making progress blocks
     const progressBlockScroller = scrollama();
     progressBlockScroller
       .setup({
@@ -127,7 +129,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
  });
  
-// === Hotkey Listeners === //
+// === Other Hotkey Listeners === //
 
 // toggle presentation mode
 document.addEventListener('keydown', (event) => {
@@ -168,6 +170,7 @@ function updateStickies(allStickies, focusedStickyName, trigger) {
 
 }
 
+// highlights line number spans in line blocks and code, and id'ed spans in line blocks
 function highlightSpans(focusedSticky, triggerEl) {
   
   // remove any previous highlighting
