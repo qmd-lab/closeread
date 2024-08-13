@@ -244,42 +244,6 @@ function highlightSpans(focusedSticky, triggerEl) {
 }
 
 
-function highlightans(focusedSticky, triggerEl) {
-  // remove any previous highlighting from sticky
-  focusedSticky.querySelectorAll("span[id]").forEach(d => d.classList.remove("cr-hl"));
-  focusedSticky.classList.remove("cr-hl-within");
-  
-  // get hightlighted spans from trigger
-  let highlightIds = triggerEl.getAttribute("data-highlight-spans");
-  
-  // exit function if there's no highlighting
-  if (highlightIds === null) {
-    return;
-  }
-  
-  // dim enclosing block
-  focusedSticky.classList.add("cr-hl-within");
-  
-  // add highlight class to appropriate spans
-  highlightIds.split(',').forEach(highlightId => {
-    const trimmedId = highlightId.trim();
-    const highlightSpan = focusedSticky.querySelector(`#${trimmedId}`);
-    if (highlightSpan !== null) {
-      highlightSpan.classList.add("cr-hl");
-    } else {
-    // Handle the case where the ID does not correspond to a span
-      console.warn(`Could not find span with ID '${trimmedId}'. Please ensure the ID is correct.`);
-    }
-  });
-  
-  if (focusedSticky.classList.contains("cr-poem")) {
-    // scale to span using transform
-    scalePoemToSpan(focusedSticky, highlightIds);
-  }
-  
-}
-
-
 // make the given element active. if it's a poem, rescale it
 function updateActivePoem(el, priorSteps) {
 
