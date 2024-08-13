@@ -5,6 +5,8 @@ format:
     css: cr-tufte.css
     remove-header-space: true
     code-tools: true
+    image: mindard-map.png
+    description: Revisiting a classic of data visualization
 ---
 
 # Mindard's Map
