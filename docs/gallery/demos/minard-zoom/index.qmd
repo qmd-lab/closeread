@@ -5,12 +5,14 @@ format:
     css: cr-tufte.css
     remove-header-space: true
     code-tools: true
+    image: mindard-map.png
+    description: Revisiting a classic of data visualization
 ---
 
 # Mindard's Map
 
 :::{.epigraph}
-> [The Visual Display of Quantitative Information](https://www.edwardtufte.com/tufte/books_vdqi) by Edward Tufte is a seminal text in the field of data visualization. On page 40, the text walks the reader through the complexity of a graphic by Charles Minard that depicts Napoleon's disastrous military campaign in Russia. An excerpt from that chapter is printed below, with permission.
+> [The Visual Display of Quantitative Information](https://www.edwardtufte.com/tufte/books_vdqi) by Edward Tufte is a seminal text in the field of data visualization. On page 40, the text walks the reader through the complexity of a graphic by Charles Minard[^map] that depicts Napoleon's disastrous military campaign in Russia. An excerpt from that chapter is printed below, with permission[^text].
 :::
 
 
@@ -26,7 +28,7 @@ An especially effective device for enhancing the explanatory power of time-serie
 The first is the classic of Charles Joseph Minard (1781-1870), the French engineer, which shows the terrible fate of Napoleon's army in Russia. Described by E. J. Marey as seeming to defy the pen of the historian by its brutal eloquence, 12 this combination of data map and time-series, drawn in 1869, portrays a sequence of devastating losses suffered in Napoleon's Russian campaign of 1812. @cr-map
 
 :::{#cr-map}
-![](minard-map.png)
+![](minard-large.png)
 :::
 
 Beginning at left on the Polish-Russian border near the Niemen River, the thick tan flow-line shows the size of the Grand Army (422,000) as it invaded Russia in June 1812. [@cr-map]{pan-to="70%,-10%" scale-by="2.1"}
@@ -54,3 +56,8 @@ and temperature on various dates during the retreat from Moscow.
 It may well be the best statistical graphic ever drawn.
 
 :::
+
+
+[^text]: ©Tufte, Edward, *The Visual Display of Quantitative Information*, 2nd ed., 2001, Graphics Press, Cheshire Connecticut, 40. 
+
+[^map]: Charles Joseph Minard, *Tableaux Graphiques et Cartes Figuratives de M. Minard*, 1845-1869, a portfolio of his work held by the Bibliothèque de l’École Nationale des Ponts et Chaussées, Paris, as reproduced in Edward R. Tufte, *The Visual Display of Quantitative Information* (Cheshire, Connecticut © 1983, 2001), p. 176.

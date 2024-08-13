@@ -153,14 +153,15 @@
     vertical-align: baseline;
 }
 
-/* Chapter Epigraphs */
+/* Chapter Epigraphs 
 #quarto-content main#quarto-document-content div.epigraph {
     margin: 5em 0;
 }
+*/
 
 #quarto-content main#quarto-document-content div.epigraph > blockquote {
-    margin-top: 3em;
-    margin-bottom: 3em;
+    margin-top: 0em;
+    margin-bottom: 0em;
 }
 
 #quarto-content main#quarto-document-content div.epigraph > blockquote,
