@@ -47,6 +47,15 @@ document.addEventListener("DOMContentLoaded", () => {
     console.error("Warning: Quarto OJS module not found")
   }
   
+  // expand hlz option into highlight and zoom-to
+  const allHlzTriggers = Array.from(document.querySelectorAll('[data-hlz]'));
+  console.log(">> allHlzTriggers", allHlzTriggers)
+  allHlzTriggers.forEach(trigger => {
+    const hlzValue = trigger.getAttribute('data-hlz');
+    trigger.setAttribute('data-zoom-to', hlzValue);
+    trigger.setAttribute('data-highlight', hlzValue);
+  });
+    
   // collect all sticky elements
   const allStickies = Array.from(document.querySelectorAll(".sticky"));
   
@@ -152,7 +161,7 @@ document.addEventListener('keydown', (event) => {
 //===============//
 // A collection of functions that apply focus effects to stickies
  
- /* updateStickies: triggers effects and transformations of the focused sticky */
+// updateStickies: triggers effects on the focused sticky 
 function updateStickies(allStickies, focusedStickyName, trigger) {
   const focusedSticky = document.querySelectorAll("[id=" + focusedStickyName)[0];
   
@@ -161,11 +170,10 @@ function updateStickies(allStickies, focusedStickyName, trigger) {
   focusedSticky.classList.add("cr-active");
         
   // apply additional effects
-  
   transformSticky(focusedSticky, trigger.element);
   highlightSpans(focusedSticky, trigger.element);
   
-  if (
+  if ( // scale-to-fill only takes effect if there are no other transforms
     focusedSticky.classList.contains("scale-to-fill") &&
     !trigger.element.hasAttribute("data-zoom-to") &&
     !trigger.element.hasAttribute("data-pan-to") &&
@@ -268,10 +276,11 @@ function idToSpanSelector(focusedSticky, id) {
 }
 
 
-
-//==================//
-// Transform Sticky //
-//==================//
+//==============//
+// Transforming //
+//==============//
+// use the flexible `transform` attribute to trigger effects associated with
+// zoom-to, pan-to, scale-by, .scale-to-fill, and (indirectly) hlz
 
 function transformSticky(focusedSticky, trigger) {
   
@@ -280,6 +289,7 @@ function transformSticky(focusedSticky, trigger) {
   let scaleStr = "";
   let transformStr = "";
   
+  // determine type of transform
   if (trigger.hasAttribute("data-pan-to")) {
     // get translate attributes from trigger
     translateStr = "translate(" + trigger.getAttribute("data-pan-to") + ")";
@@ -294,7 +304,7 @@ function transformSticky(focusedSticky, trigger) {
     transformStr = zoomToTransform(focusedSticky, trigger);
   }
   
-  // if no zooming, form transform from pan-to and scale-by
+  // zooming will override pan-to and scale-by
   if (!transformStr) {
     if (translateStr && scaleStr) {
       transformStr = translateStr + " " + scaleStr;
@@ -305,7 +315,7 @@ function transformSticky(focusedSticky, trigger) {
     }
   }
 
-  // and use it to scale the sticky
+  // use the string to transform the sticky
   focusedSticky.style.transform = transformStr;
   
 }
@@ -376,7 +386,6 @@ function scaleToFill(el, paddingX = 75, paddingY = 50) {
   el.style.setProperty("transform",
     `matrix(${scale}, 0, 0, ${scale}, 0, ${centerDeltaY})`)
 }
-
 
 /* getBooleanConfig: checks for a <meta> with named attribute `cr-[metaFlag]`
    and returns true if its value is "true" or false otherwise */
