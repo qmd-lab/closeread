@@ -9,6 +9,8 @@
 .cr-section {
   display: grid;
   grid-template-rows: 1fr;
+  width: 100%;
+  max-width: 100%;
 }
 .cr-section .narrative-col {
   grid-row: 1;
@@ -143,18 +145,19 @@
 }
 
 .sidebar-left {
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 350px minmax(0, 1fr);
 }
 .sidebar-left .narrative-col {
   grid-column: 1;
   margin-inline: 0;
+  # min-width: 350px;
 }
 .sidebar-left .sticky-col {
   grid-column: 2;
 }
 
 .sidebar-right {
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 1fr 350px;
 }
 .sidebar-right .narrative-col {
   grid-column: 2;
@@ -201,36 +204,11 @@
   line-height: 0.7em;
   transform-origin: center center;
 }
-.cr-poem.cr-hl-within {
-  color: rgba(0, 0, 0, 0.4);
-}
-.cr-poem .cr-hl {
-  color: rgb(0, 0, 0);
-}
-
-.cr-poem2 {
-  font-family: Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
-  max-height: 100svh;
-  max-width: 100svh;
-  font-size: 2.75cqmin;
-  white-space: pre;
-  line-height: 0.6em;
-  transform-origin: center center;
-}
-.cr-poem2.cr-hl-within {
-  color: rgba(0, 0, 0, 0.4);
-  font-size: 2.75cqi;
-}
-.cr-poem2 .cr-hl {
-  color: rgb(0, 0, 0);
-}
 
 /* debug styles */
-body.cr-debug .cr-poem {
+body.cr-debug .sticky-col .sticky-col-stack .sticky {
   background-color: rgba(255, 255, 0, 0.6);
   border: 1px solid orange;
-}
-body.cr-debug .sticky {
   opacity: 0.8;
 }
 body.cr-debug .narrative-col .trigger {
