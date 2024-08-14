@@ -4,3 +4,7 @@ toc: true
 ---
 
 Closeread is a Quarto extension that allows you to author scrollytelling HTML documents. To learn how to create your first closeread document, start off by reading about the [Components of a Closeread Document](components.qmd).
+
+* * *
+
+This is an open-source tool built upon other open-source tools. Closeread extends [Quarto](https://github.com/quarto-dev/quarto-cli), a tool for technical publishing sponsored by Posit, PBC. The responsivity to user scrolling is made possible by the [scrollama v3.0](https://github.com/russellsamora/scrollama) javascript library by Russell Samora. Both tools are open-source and distributed under an MIT License.
