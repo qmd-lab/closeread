@@ -473,6 +473,27 @@ quarto.doc.add_html_dependency({
 })
 
 
+function move_cell_output(div)
+  
+  if not div.classes:includes("cell") then
+    return nil
+  end
+
+  local blocks = pandoc.Blocks({ div })
+  
+  div:walk({
+    Div = function(inner_div)
+      if inner_div.classes:includes("cell-output-display") then
+        blocks:insert(inner_div)
+        return {}
+      end
+      return nil
+    end
+  })
+  return blocks
+end
+
+
 --=============--
 -- Run Filters --
 --=============--
@@ -489,6 +510,9 @@ return {
   },
   {
     Para = process_trigger_shortcut
+  },
+  {
+    Div = move_cell_output
   },
   {
     Div = make_section_layout,
