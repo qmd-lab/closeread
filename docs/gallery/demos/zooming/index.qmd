@@ -5,12 +5,12 @@ format:
     code-tools: true
 ---
 
-Closeread enables the reader to zoom in on particular bits of both code and text using a similar syntax.
+Closeread enables the reader to zoom in on particular bits of both code and text using a similar syntax to highlighting
 
-To zoom to particular lines of code for your reader, you can add an attribute to your trigger called `highlight`. To highlight lines of code, you can either use a series of line numbers separated by commas or a range separate by a hyphen. Some examples:
+To zoom to particular lines of code for your reader, you can add an attribute to your trigger called `zoom-to`. To zoom to a line of code, you can either use a line number or a span id.
 
-- `zoom-to="1,5"`: highlight lines 1 and 5
-- `highlight="1-5"`: highlight lines 1 through 5
+- `zoom-to="3"`: zoom to line 3
+- `zoom-to="cr-love`: zoom to the line containing the span `cr-love`
 
 The following section demonstrates that functionality.
 
@@ -28,7 +28,7 @@ The end third and fourth line also rhyme and are nudged in a bit. [@cr-limerick]
 
 
 :::{#cr-limerick .scale-to-fill}
-| There was a young rustic named [Mallory]{#cr-mallory},
+| There was a young rustic named Mallory,
 | who drew but a very small [salary]{#cr-salary}.
 |   When he went to the show,
 |   his purse made him go
@@ -90,3 +90,38 @@ mtcars |>
 :::
 
 :::
+
+`hlz` is a short-cut that you can use when you want to zoom into on a line while also highlighting it (or a span within the line).
+
+:::{.cr-section}
+Let's revisit the limerick. @cr-limerick2
+
+Let's focus on this line. [@cr-limerick2]{hlz="15"}
+
+Or this phrase. [@cr-limerick2]{hlz="cr-salary"}
+
+:::{#cr-limerick2 .scale-to-fill}
+| There was a young rustic named Mallory
+| who drew but a very small [salary]{#cr-salary}.
+|   When he went to the show,
+|   his purse made him go
+| to a seat in the uppermost gallery.
+|   When he went to the show,
+|   his purse made him go
+| to a seat in the uppermost gallery.
+|   When he went to the show,
+|   his purse made him go
+| to a seat in the uppermost gallery.
+|   When he went to the show,
+|   his purse made him go
+| to a seat in the uppermost gallery.
+|   When he went to the show,
+|   his purse made him go
+| to a seat in the uppermost gallery.
+|   When he went to the show,
+|   his purse made him go
+| to a seat in the uppermost gallery.
+:::
+:::
+
+
