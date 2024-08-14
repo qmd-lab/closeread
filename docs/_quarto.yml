@@ -40,7 +40,12 @@ website:
           - guide/focus-effects.qmd
           - guide/layouts.qmd
           - guide/authoring-tools.qmd
-    
+          
+  page-footer:
+    background: light
+    center: 
+      - icon: github
+        href: https://github.com/qmd-lab/closeread
         
 
 format:

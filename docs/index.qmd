@@ -1,5 +1,9 @@
 ---
-title: "closeread"
+title: "Closeread"
+format:
+  closeread-html:
+    theme: cosmo
+    css: index-styles.css
 ---
 
 closeread is a custom format for [Quarto](https://quarto.org/) that enables scrollytelling features for html documents.
@@ -18,6 +22,54 @@ title: My First Closeread
 format: closeread-html
 ---
 ```
+
+\
+\
+
+::::{.cr-section layout="overlay-center" style="font-size: 1.5em; background-color: rgba(39, 128, 227, 0.2);"}
+
+Get your first closeread doc up and running in four steps. @cr-doc
+
+Step one: create a qmd file and set the format to closeread-html. [@cr-doc]{highlight="3"}
+
+Step two: open up a closeread section. [@cr-doc]{highlight="8-20"}
+
+Step three: flag an element to become a sticky. [@cr-doc]{highlight="14-18"}
+
+:::{focus-on="cr-doc" highlight="12" style="padding-bottom: 100dvh"}
+Step four: create a trigger to make the sticky appear. [@cr-doc]{highlight="12"}
+:::
+
+:::{#cr-doc filename="myfirstcr.qmd"}
+````markdown
+---
+title: My First Closeread
+format: closeread-html
+---
+
+Hello World! Please read my closeread story below.
+
+:::{.cr-section}
+
+Closeread enables scrollytelling.
+
+Draw your readers attention with: @cr-features
+
+:::{#cr-features}
+1. Highlighting
+2. Zooming
+3. Panning
+:::
+
+:::
+
+````
+:::
+::::
+
+\
+\
+\
 
 For guidance on how to author closeread documents, read the [Guide](guide/index.qmd). For examples of closeread documents alongside their source, see the [Gallery](gallery/index.qmd). For a catalog of the syntax and yaml options used in the closeread extension, see the [Reference](reference/index.qmd).
 
