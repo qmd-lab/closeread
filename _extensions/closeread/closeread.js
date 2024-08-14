@@ -49,7 +49,6 @@ document.addEventListener("DOMContentLoaded", () => {
   
   // expand hlz option into highlight and zoom-to
   const allHlzTriggers = Array.from(document.querySelectorAll('[data-hlz]'));
-  console.log(">> allHlzTriggers", allHlzTriggers)
   allHlzTriggers.forEach(trigger => {
     const hlzValue = trigger.getAttribute('data-hlz');
     trigger.setAttribute('data-zoom-to', hlzValue);
