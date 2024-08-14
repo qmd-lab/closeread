@@ -161,13 +161,18 @@ function updateStickies(allStickies, focusedStickyName, trigger) {
   focusedSticky.classList.add("cr-active");
         
   // apply additional effects
+  
   transformSticky(focusedSticky, trigger.element);
-  
-  if (focusedSticky.classList.contains("cr-poem")) {
-    scalePoemFull(focusedSticky);
-  }
-  
   highlightSpans(focusedSticky, trigger.element);
+  
+  if (
+    focusedSticky.classList.contains("scale-to-fill") &&
+    !trigger.element.hasAttribute("data-zoom-to") &&
+    !trigger.element.hasAttribute("data-pan-to") &&
+    !trigger.element.hasAttribute("data-scale-by")
+  ) {
+    scaleToFill(focusedSticky);
+  }
 
 }
 
@@ -350,17 +355,8 @@ function zoomToTransform(focusedSticky, trigger) {
   return transformStr
 }
 
-/* getBooleanConfig: checks for a <meta> with named attribute `cr-[metaFlag]`
-   and returns true if its value is "true" or false otherwise */
-function getBooleanConfig(metaFlag) {
-  const option = document
-    .querySelector("meta[" + metaFlag + "]")?.getAttribute(metaFlag)
-  return option === "true"
-}
-
-/* scalePoemFull:
-  given an element `el`, rescales it to fill its containing .sticky-col-stack */
-function scalePoemFull(el, paddingX = 75, paddingY = 50) {
+// given an element `el`, rescales it to fill its containing .sticky-col-stack 
+function scaleToFill(el, paddingX = 75, paddingY = 50) {
 
   // get dimensions of element and its container
   const container = el.closest(".sticky-col-stack")
@@ -380,3 +376,13 @@ function scalePoemFull(el, paddingX = 75, paddingY = 50) {
   el.style.setProperty("transform",
     `matrix(${scale}, 0, 0, ${scale}, 0, ${centerDeltaY})`)
 }
+
+
+/* getBooleanConfig: checks for a <meta> with named attribute `cr-[metaFlag]`
+   and returns true if its value is "true" or false otherwise */
+function getBooleanConfig(metaFlag) {
+  const option = document
+    .querySelector("meta[" + metaFlag + "]")?.getAttribute(metaFlag)
+  return option === "true"
+}
+
