@@ -1,0 +1,165 @@
+---
+format: closeread-html
+---
+
+::::{.cr-section}
+
+# Test other sticky block types
+
+First paragraph.
+
+::: {}
+This is a para nested in a div. These two first bits don't trigger anything...
+:::
+
+:::{focus-on="cr-pink"}
+This is an image with the sticky tag on the div.
+:::
+
+:::{#cr-pink}
+x![This is a caption](pink-desktop.png)
+:::
+
+:::{focus-on="cr-blue"}
+This is an image with the sticky tag on Image itself.
+
+I've replaced its margin with some padding to demonstrate that you can give it a larger "surface" area on which to trigger scroll events.
+:::
+
+![](blue-desktop.png){#cr-blue}
+
+::::
+
+::::{.column-screen-inset style="background-color: #dddddd; padding: 50px;"}
+Here's a little non-scrolling interlude before our next scrolly section!
+::::
+
+::::{.cr-section}
+
+:::{focus-on="cr-scatter"}
+This is a scatterplot.
+:::
+
+```{r}
+#| echo: false
+#| id: cr-scatter
+
+plot(mtcars$mpg, mtcars$dist)
+```
+
+:::{focus-on="cr-hist"}
+This is a histogram.
+:::
+
+```{r}
+#| echo: true
+#| id: cr-hist
+#| fig-cap: "This is a caption."
+#| fig-height: 4
+
+hist(mtcars$mpg)
+```
+
+:::{focus-on="cr-list"}
+This is a list (a block element).
+:::
+
+:::{#cr-list}
+1. Apple
+2. Banana
+:::
+
+:::{focus-on="cr-displaymath"}
+This is display math, but I'm making it a bit longer so that it covers a few lines.
+:::
+
+::: {#cr-displaymath}
+
+$$
+\begin{align}
+\hat{y} &= \beta_0 + \beta_1 x + \epsilon \\
+&= 3.4 + 1.2 x
+\end{align}
+$$
+
+:::
+
+:::{focus-on="cr-mypoem"}
+This is a poem. It's called ["Bellringer", by Rita Dove](https://www.newyorker.com/culture/2019-in-review/our-year-in-poems).
+:::
+
+| {#cr-mypoem .cr-poem}
+| I was given a name, it came out of a book—
+| I don’t know which. I’ve been told the Great Man
+| could recite every title in order on its shelf.
+| Well, [I was born]{#cr-born}, and that’s a good thing,
+| although I arrived on the day of his passing,
+| 
+| a day on which our country fell into mourning.
+| This I heard over and over, from professors
+| to farmers, even duel-scarred students;
+| sometimes, in grand company, remarked upon
+| in third person—a pretty way of saying
+| 
+| more than two men in a room means the third
+| can be ignored, as [I was when they spoke]{#cr-birth1}
+| [of my birth]{#cr-birth2} and Mr. Jefferson’s death
+| in one breath, voices [dusted with wonderment]{#cr-wonder},
+| faint sunlight quivering on a hidden breeze.
+
+
+:::{focus-on="cr-mypoem" highlight-spans="cr-born"}
+The author refers to their birth twice: one here...
+:::
+
+:::{focus-on="cr-mypoem" highlight-spans="cr-birth1,cr-birth2"}
+... and again, further down.
+
+Interestingly, Pandoc doesn't let you carry a span across two lines in a line block!
+:::
+
+:::{focus-on="cr-mypoem" highlight-spans="cr-wonder"}
+But check out this phrase, right at the bottom.
+:::
+
+:::{focus-on="cr-mylimerick"}
+Let's look at a small limerick.
+:::
+
+| {#cr-mylimerick .cr-poem}
+| The limerick packs [laughs anatomical]{#cr-laughs}
+|   In space that is quite economical.
+
+:::{focus-on="cr-mylimerick" highlight-spans="cr-laughs"}
+The phrase 'laughs anatomical' is quite important here!
+:::
+
+:::{focus-on="cr-mermaid"}
+This is a mermaid diagram
+:::
+
+```{mermaid}
+%%| id: cr-mermaid
+flowchart LR
+  A[Hard edge] --> B(Round edge)
+  B --> C{Decision}
+  C --> D[Result one]
+  C --> E[Result two]
+```
+
+:::{focus-on="cr-graphviz"}
+This is a graphviz diagram
+:::
+
+```{dot}
+//| id: cr-graphviz
+graph G {
+  layout=neato
+  run -- intr;
+  intr -- runbl;
+}
+```
+
+:::
+
+# The End

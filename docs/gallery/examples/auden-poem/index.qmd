@@ -1,0 +1,64 @@
+---
+title: "A Poem (and a Painting) About the Suffering That Hides in Plain Sight"
+image: gabbert.png
+author: Elisa Gabbert
+format:
+  closeread-html:
+    css: nytimes.css
+    remove-header-space: true
+    debug-mode: false
+---
+
+:::{.cr-section}
+
+:::{focus-on="cr-musee"}
+# A Poem (and a Painting) About the Suffering That Hides in Plain Sight
+
+By Elisa Gabbert March 6, 2002
+:::
+
+I’ve been reading this short, wry poem about suffering for more than 20 years.
+
+How nice that it tells you in the first two words what it’s about. [@cr-musee]{hlz="cr-suffering"}
+
+No matter how familiar a poem is, rereading it always gives me a sense of first encounter, as though I’ve gone back to sleep and re-entered the dream through a different door.
+
+
+:::{#cr-musee .scale-to-fill}
+
+| **MUSÉE DES BEAUX ARTS**
+| *by W.H. Auden*
+| 
+| [About suffering]{#cr-suffering} they were never wrong,
+| The old Masters: how well they understood
+| Its human position; how it takes place
+| While someone else is eating or opening a window 
+|     or just walking dully along;
+| How, when the aged are reverently, passionately waiting
+| For the miraculous birth, there always must be
+| Children who did not specially want it to happen, skating
+| On a pond at the edge of the wood:
+| They never forgot
+| That even the dreadful martyrdom must run its course
+| Anyhow in a corner, some untidy spot
+| Where the dogs go on with their doggy life and the torturer's horse
+| Scratches its innocent behind on a tree.
+| 
+| In Breughel's *Icarus*, for instance: how everything turns away
+| Quite leisurely from the disaster; the ploughman may
+| Have heard the splash, the forsaken cry,
+| But for him it was not an important failure; the sun shone
+| As it had to on the white legs disappearing into the green
+| Water, and the expensive delicate ship that must have seen
+| Something amazing, a boy falling out of the sky,
+| Had somewhere to get to and sailed calmly on.
+
+:::
+
+:::
+
+\
+\
+\
+
+This is an excerpt of the first three lines of *A Poem (and a Painting) About the Suffering That Hides in Plain Sight* by Elisa Gabbert, appearing in *The New York Times* on March 6, 2022 (<https://www.nytimes.com/interactive/2022/03/06/books/auden-musee-des-beaux-arts.html>) 

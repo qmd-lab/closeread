@@ -1,0 +1,207 @@
+---
+title: "OJS Variables"
+image: "globe.png"
+description: "Smoothly transition interactive OJS graphics."
+format:
+  closeread-html:
+    code-tools: true
+---
+
+Closeread makes scrolling progress available to users as [Observable JavasScript](https://quarto.org/docs/interactive/ojs) variables, so you can create closeread sections with interactive graphics that change as you scroll.
+
+Let's use this functionality to make a visualization of a globe. Before we start, let's define some cities that we'll plot on that glove. Here I've done it in OJS, but you could easily make an R or Python data frame available using `ojs_define()` (or load a CSV from elsewhere):
+
+```{ojs}
+//| echo: true
+//| code-fold: false
+cities = [
+  { name: "Brisbane",  lat: -27.467778, lon: 153.028056 },
+  { name: "New Delhi", lat: 28.613889,  lon: 77.208889 },
+  { name: "Singapore", lat: 1.283333,   lon: 103.833333 },
+  { name: "Istanbul",  lat: 41.013611,  lon: 28.955 },
+  { name: "Paris",     lat: 48.856667,  lon: 2.352222 },
+  { name: "Nairobi",   lat: -1.286389,  lon: 36.817222 },
+  { name: "São Paulo", lat: -23.55,     lon: -46.633333 },
+  { name: "Montreal",  lat: 45.508889,  lon: -73.554167 },
+  { name: "Houston",   lat: 29.762778,  lon: -95.383056 },
+  { name: "Vancouver", lat: 49.260833,  lon: -123.113889 },
+  { name: "Honolulu",  lat: 21.306944,  lom: -157.858333 }
+]
+```
+
+Now let's load data that describes the shape of the continents.
+
+```{ojs}
+//| echo: true
+world = FileAttachment("naturalearth-land-110m.geojson").json()
+```
+
+The cities above wrap the entire globe, so to view them all we'll need to be give the user the ability to spin the globe. We'll map the progress of the user's scroll, stored in a variable called `crProgressBlock`, to a variable called `angle`. The `scale.Linear` function handles the linear mapping of `crProgressBlock` going from 0 to 1 to `angle` going from -180 to 0.
+
+```{ojs}
+//| echo: true
+//| code-fold: false
+angleScale1 = d3.scaleLinear()
+  .domain([0, 1])
+  .range([-180, 0])
+  .clamp(true)
+    
+angle1 = angleScale1(crProgressBlock)
+```
+
+To see the OJS code that actually creates the globe, look into the source of this document. Here is the result:
+
+::::{.cr-section layout="overlay-center"}
+
+:::{.progress-block}
+This interactive globe visualization starts at an angle of 0 - the International Date Line. @cr-globe1
+
+It ends at an angle of 0: the prime median. @cr-globe1
+
+:::
+
+:::{#cr-globe1}
+
+```{ojs}
+//| echo: false
+Plot.plot({
+  marks: [
+    Plot.graticule(),
+    Plot.geo(world, {
+      fill: "#222222"
+    }),
+    Plot.sphere(),
+    Plot.dot(cities, {
+      x: "lon",
+      y: "lat",
+      fill: "#eb343d",
+      stroke: "white",
+      strokeWidth: 5,
+      paintOrder: "stroke",
+      size: 6
+    }),
+    Plot.text(cities, {
+      x: d => d.lon + 2,
+      y: d => d.lat + 2,
+      text: "name",
+      fill: "#eb343d",
+      stroke: "white",
+      strokeWidth: 5,
+      paintOrder: "stroke",
+      fontSize: 18,
+      textAnchor: "start"
+    }),
+  ],
+  projection: {
+    type: "orthographic",
+    rotate: [angle1, -10]
+  }
+})
+```
+
+:::
+
+::::
+
+:::{.counter style="position: fixed; top: 10px; right: 10px; background-color: skyblue; border-radius: 5px; padding: 18px 18px 0 18px; line-height: .8em;"}
+```{ojs}
+md`Active sticky: ${crActiveSticky}`
+md`Active trigger: ${crTriggerIndex}`
+md`Trigger progress: ${(crTriggerProgress * 100).toFixed(1)}%`
+md`Scroll direction: ${crDirection}`
+md`Progress Block progress: ${(crProgressBlock * 100).toFixed(1)}%`
+md`-----`
+md`(derived) Angle 1: ${angle1.toFixed(1)}°`
+md`(derived) Angle 2: ${angle2.toFixed(1)}°`
+```
+:::
+
+As you back and forth over this closeread section, note the values of the all six ojs variables that closeread makes available in ojs code cells:
+
+1. `crActiveSticky`: name of the active sticky
+2. `crTriggerIndex`: index of the active trigger
+3. `crTriggerProgress`: progress of the active trigger block from 0 to 1
+4. `crDirection`: either `"down"` or `"up"`, depending on the direction a user is scrolling
+5. `crProgressBlock`: progress of the active spanning progress block from 0 to 1
+
+To demonstrate the use of other ojs variables, we'll recreate the spinning behavior by a more creative mapping of `crTriggerIndex` and `crTriggerProgress` to form `angle2`. [This second globe demonstrates some interesting behavior: `angle2` was actually changing as a result of the two triggers used in making the first globe. ]
+
+
+::::{.cr-section layout="overlay-center"}
+
+We want our globe to rotate with the scroll progress — between -180 and 180. @cr-globe2
+
+Instead of trying to do the maths to scale it ourselves, we can make a scale with d3. @cr-globe2
+
+There are six narrative blocks that we want to scale over, but I'd like the scrolling to start a little late and end a little early — by the time the last block has just started. @cr-globe2
+
+So between 2.5 (because the scroll starts with the third trigger of the document) and 7.1. If the numbers go outside this range, we'll _clamp_ them so that the scrolling doesn't continue. @cr-globe2
+
+:::{focus-on="cr-globe2"}
+Here's how we create that scale and then use it with Closeread's variables, `crTriggerIndex` and `crScrollProgress`:
+  
+```{ojs}
+//| echo: true
+//| code-fold: false
+angleScale2 = d3.scaleLinear()
+  .domain([2.5, 7.1])
+  .range([-180, 180])
+  .clamp(true)
+
+angle2 = angleScale2(
+  (crTriggerIndex != null ? crTriggerIndex : -1)
+    + crTriggerProgress)
+```
+:::
+
+With all that done, we can see our map! @cr-globe2
+
+:::{#cr-globe2}
+
+```{ojs}
+Plot.plot({
+  marks: [
+    Plot.graticule(),
+    Plot.geo(world, {
+      fill: "#222222"
+    }),
+    Plot.sphere(),
+    Plot.dot(cities, {
+      x: "lon",
+      y: "lat",
+      fill: "#eb343d",
+      stroke: "white",
+      strokeWidth: 5,
+      paintOrder: "stroke",
+      size: 6
+    }),
+    Plot.text(cities, {
+      x: d => d.lon + 2,
+      y: d => d.lat + 2,
+      text: "name",
+      fill: "#eb343d",
+      stroke: "white",
+      strokeWidth: 5,
+      paintOrder: "stroke",
+      fontSize: 18,
+      textAnchor: "start"
+    }),
+  ],
+  projection: {
+    type: "orthographic",
+    rotate: [angle2, -10]
+  }
+})
+```
+
+:::
+
+::::
+
+:::{style="color: slategrey; font-style: italic;"}
+Eu in culpa officia cupidatat nostrud laborum do consequat officia Lorem tempor consectetur pariatur sunt. Veniam culpa dolore laborum nostrud ipsum pariatur ipsum dolore consectetur commodo ex. Non culpa deserunt voluptate. Amet excepteur incididunt deserunt pariatur velit labore do sunt occaecat eiusmod. Tempor proident sint exercitation culpa incididunt sunt proident sunt reprehenderit. Sint ipsum qui id nisi quis officia in. Anim velit minim fugiat qui dolor enim occaecat amet excepteur do aliqua ex adipisicing laboris labore.
+
+Culpa aute sint aliquip in aute enim cillum in exercitation cupidatat ex cupidatat mollit dolore ut. Et culpa minim laborum in ipsum laborum velit laboris fugiat ad culpa cillum. Sit nulla eu minim in nulla. Nulla esse sint occaecat eiusmod in irure in dolor veniam pariatur laboris consectetur sunt laboris excepteur. Dolor dolore ad incididunt consequat. Ad elit ullamco veniam cillum reprehenderit pariatur pariatur nisi ea. Pariatur quis ut deserunt eiusmod ipsum magna ullamco.
+
+Amet velit ea ex. Pariatur anim laboris fugiat labore velit ullamco aute aliquip incididunt. Ut labore voluptate exercitation esse aliquip dolor ex magna occaecat ullamco nisi sit non quis nulla. Elit qui do sunt consectetur officia sint veniam incididunt laboris aute eu nisi qui. Et voluptate consequat sunt commodo dolor dolor veniam minim incididunt culpa anim nulla duis est. Excepteur occaecat tempor veniam magna sit sunt enim sint exercitation dolore fugiat nulla consequat proident. Reprehenderit consequat reprehenderit amet dolore cillum elit dolore officia enim dolor.
+:::
