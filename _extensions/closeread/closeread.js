@@ -250,7 +250,7 @@ function idToSpanSelector(focusedSticky, id) {
       spanSelector = `span[id^="lb"][id*="-${id}"]`;
     }
     // or in code cells
-    if (focusedSticky.querySelector('.cell') !== null) {
+    if (focusedSticky.querySelector('.cell') !== null || focusedSticky.querySelector('.sourceCode') !== null) {
       spanSelector = `span[id^="cb"][id*="-${id}"]`;
     }
     
@@ -299,8 +299,6 @@ function transformSticky(focusedSticky, trigger) {
       transformStr = scaleStr;
     }
   }
-  
-  console.log(">>", transformStr)
 
   // and use it to scale the sticky
   focusedSticky.style.transform = transformStr;
@@ -335,8 +333,6 @@ function zoomToTransform(focusedSticky, trigger) {
   focusedSpan.offsetTop;
   const focusTop = focusedSpan.offsetTop
   const focusCenterY = focusTop + (focusHeight / 2)
-  console.log(">> focusTop:", focusTop)
-  console.log(">> focusSpan:", focusedSpan)
   const centerDeltaY = (focusCenterY - (focusedSticky.offsetHeight / 2)) * -1
   
   // measurements needed for scaling
@@ -348,10 +344,7 @@ function zoomToTransform(focusedSticky, trigger) {
   const scaleHeight = focusHeight / containerHeight
   const scaleFactor = 1 / Math.max(scaleHeight, scaleWidth)
   
-  // form scaling and translation strings
-  const scaleStr = "scale(" + scaleFactor + ")";
-  const translateStr = "translate(0," + centerDeltaY + "%)";
-  //const transformStr = translateStr + " " + scaleStr;
+  // form matrix transform string
   const transformStr = `matrix(${scaleFactor}, 0, 0, ${scaleFactor}, 0, ${centerDeltaY})`;
   
   return transformStr
