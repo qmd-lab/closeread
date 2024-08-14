@@ -150,6 +150,7 @@
 .sidebar-left .narrative-col {
   grid-column: 1;
   margin-inline: 0;
+  # min-width: 350px;
 }
 .sidebar-left .sticky-col {
   grid-column: 2;
@@ -202,29 +203,6 @@
   white-space: pre;
   line-height: 0.7em;
   transform-origin: center center;
-}
-.cr-poem.cr-hl-within {
-  color: rgba(0, 0, 0, 0.4);
-}
-.cr-poem .cr-hl {
-  color: rgb(0, 0, 0);
-}
-
-.cr-poem2 {
-  font-family: Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
-  max-height: 100svh;
-  max-width: 100svh;
-  font-size: 2.75cqmin;
-  white-space: pre;
-  line-height: 0.6em;
-  transform-origin: center center;
-}
-.cr-poem2.cr-hl-within {
-  color: rgba(0, 0, 0, 0.4);
-  font-size: 2.75cqi;
-}
-.cr-poem2 .cr-hl {
-  color: rgb(0, 0, 0);
 }
 
 /* debug styles */
