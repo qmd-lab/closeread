@@ -1,0 +1,152 @@
+---
+title: Focus Effects
+---
+
+Focus effects are used to closely guide your readers attention to particular aspects of your stickies. They are all supplied as [attributes](https://quarto.org/docs/authoring/markdown-basics.html#ordering-of-attributes), which follow a `attribute="value"` syntax where the value must be quoted and where `=` separates the value from the attribute with no spaces.
+
+All of these effects will remain on the sticky until there is a new trigger block scrolls into the viewport. You can "reset" the effects on a given sticky by following the focus effect trigger with a trigger without any focus effects.
+
+# Types of Focus Effects
+
+## Highlighting {#highlighting}
+
+You can highlight parts of the code and text of your sticky using the following syntax.
+
+1. `highlight="1,3"`: highlight lines 1 and 3
+2. `highlight="1-3"`: highlight lines 1, 2, and 3
+3. `highlight="cr-span1"`: highlight the span with id `cr-span1`
+4. `highlight="cr-span1,cr-span2"`: highlight the spans with ids `cr-span1` and `cr-span2`
+
+Line highlighting (1 and 2) works on code cells and line blocks while span highlighting (3 and 4) only works on Line Blocks.
+
+### Code Cell Examples
+
+This will highlight lines 1 and 2:
+
+````qmd
+This is where we load the library. [@cr-dplyr]{highlight="1,2"}
+
+:::{#cr-dplyr}
+```{{r}}
+library(dplyr)
+library(palmerpenguins)
+
+penguins |>
+  group_by(island) |>
+  summarize(avg_bill_length = mean(bill_length_mm))
+```
+:::
+````
+
+This will highlight lines 4 through 6.
+
+````qmd
+This calculates summary statistics. [@cr-dplyr]{highlight="4-6"}
+
+:::{#cr-dplyr}
+```{{r}}
+library(dplyr)
+library(palmerpenguins)
+
+penguins |>
+  group_by(island) |>
+  summarize(avg_bill_length = mean(bill_length_mm))
+```
+:::
+````
+
+Highlighting spans of code within a line is currently not possible.
+
+
+### Line Block Examples
+
+This will highlight lines 3 and 4.
+
+````markdown
+The end of the third and fourth line also rhyme and are nudged in a bit. [@cr-limerick]{highlight="3-4"}
+
+| {#cr-limerick}
+| There was a young rustic named [Mallory]{#cr-mallory},
+| who drew but a very small [salary]{#cr-salary}.
+|   When he went to the show,
+|   his purse made him go
+| to a seat in the uppermost gallery.
+````
+
+This will highlight spans `cr-mallory` and `cr-salary`.
+
+````markdown
+The end of the first two lines of a Limerick must rhyme. [@cr-limerick]{highlight="cr-mallory,cr-salary"}
+
+| {#cr-limerick}
+| There was a young rustic named [Mallory]{#cr-mallory},
+| who drew but a very small [salary]{#cr-salary}.
+|   When he went to the show,
+|   his purse made him go
+| to a seat in the uppermost gallery.
+````
+
+Note that closeread extends the native pandoc processing of line blocks. Instead of wrapping line blocks in a fenced divs and providing and id and classes there, you can provide them on the first line of the line block in curly braces as demonstrated above. The functionality is identical; the goal of the feature is to simplify the syntax.
+
+
+## Zooming
+
+You can zoom to parts of the code and text of your sticky using the following syntax.
+
+1. `zoom-to="3"`: zoom to line 3
+2. `zoom-to="cr-span1"`: zoom to the line with the span with id `cr-span1`
+
+Zooming works for both code blocks and line blocks but currently only supports a single line or span. When you trigger a zoom to a line, it will zoom such that the line occupies most of the horizontal space in the viewport and is roughly centered vertically.
+
+
+## Panning
+
+You can pan across any sticky element (often an image) by using the `pan-to` attribute. It supports several different units:
+
+- `pan-to="25%,-50%: pan the sticky 25% of its width to the right and 50% of its height up.
+- `pan-to="-30px, 30px": pan the sticky 30 pixels to the left and 30 pixels down.
+
+`pan-to` accepts a string that corresponds to any of the options in the analogous [`translate()`](https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function/translate) CSS function.
+
+## Scaling
+
+You can scale a sticky element up or down by using the `scale-by()` attribute and providing a numerical scaling factor. For example:
+
+- `scale-by=".5"`: shrinks a sticky to 50% its original size
+- `scale-by="3"`: triples the size of a sticky.
+
+`scale-by` accepts a string that corresponds to any of the options in the analogous [`scale()`](https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function/scale) CSS function.
+
+# Combining Focus Effects
+
+You can combine multiple focus effects on a single trigger. For example:
+
+- `[@cr-sticky]{pan-to="50%,50%" scale-by="1.5"}`: pan the sticky down and to the right why increasing its size by 50%.
+
+One exception is the `zoom-to` attribute. Since it performs both panning and zooming, it will override those options if they're included on the same trigger.
+
+## Highlight - Zoom
+
+It is common if want to zoom into a line or span of code or text while also highlighting. There is an additional attribute called `hlz` for this purpose.
+
+- `hlz="cr-love": highlight the span `cr-love` while zooming in on the line that contains it.
+- `hlz="4"`: highlight line 4 while zooming in on the line that contains it.
+
+Because this focus effect translates into `highlight` and `zoom-to`, the latter constrains it to only working for single spans or lines at the moment.
+
+# Other Features
+
+You can scale a sticky to fill the viewport without distortion or cropping by adding the `scale-to-fill` class. For example:
+
+````markdown
+This is the first limerick ever recorded. @cr-limerick
+
+| {#cr-limerick .scale-to-fill}
+| There was a young rustic named [Mallory]{#cr-mallory},
+| who drew but a very small [salary]{#cr-salary}.
+|   When he went to the show,
+|   his purse made him go
+| to a seat in the uppermost gallery.
+````
+
+When this sticky is triggered, it will fade in and transform such that it fills the viewport. This class can be applied to a wide range of sticky types.

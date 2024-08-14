@@ -1,0 +1,81 @@
+---
+title: Closeread Components
+---
+
+Every closeread document consists of three components:
+
+1. A section of the document flagged as a closeread section.
+2. Within the section, an element flagged to appear in the main column of the closeread section (the "sticky"), and also
+3. An element (often a paragraph of text) that will serve to trigger the appearance of the sticky element.
+
+## Closeread Sections
+
+To create a closeread section within a document, open up a [fenced div](https://quarto.org/docs/authoring/markdown-basics.html#sec-divs-and-spans) and add the `cr-section` class.
+
+```markdown
+:::{.cr-section}
+< add paragraphs, images, code cells, etc. >
+:::
+```
+
+Elements within a `.cr-section` div will appear as a closeread story while elements outside of a section will appear as a normal Quarto HTML document. This allows you to integrate one or more closeread sections into a conventional HTML document.
+
+By wrapping your entire document with a `cr-section` div, you can make a 100% closeread document. By default, all elements with a closeread section appear in the narrative column unless you've indicated that they should be a sticky.
+
+## Stickies
+
+An element of your document that you wish to do a close read of is called a "sticky": as the user scrolls, it will remained pinned in the middle of the main column like a sticky note. To flag an element as a sticky, wrap it in a fenced div and provide an identifier that is prefixed with `cr-`.
+
+```markdown
+:::{#cr-myimage}
+![](path-to-myimage.png)
+:::
+```
+
+The syntax is the same regardless of whether the element you'd like to turn into a sticky is an image, a paragraph, a list, math, a code cell, etc. For example, the the syntax for a code cell is:
+
+````markdown
+:::{#cr-myplot}
+```{{r}}
+hist(rnorm(15))
+```
+:::
+````
+All sticky elements are placed in the main column of the closeread section and will be transparent. To make them appear, you need to create a trigger.
+
+## Triggers
+
+Any elements within a closeread section that are not stickies - usually paragraphs - will be placed in the narrative column. You can set a paragraph to trigger focus on a particular sticky by using Quarto's cross-referencing syntax: `@cr-mysticky`.
+
+````markdown
+When this paragraph scrolls into view it will reveal a histogram. @cr-myplot
+
+:::{#cr-myplot}
+```{{r}}
+hist(rnorm(15))
+```
+:::
+````
+
+The reference can be placed anywhere in the paragraph, but it should be separated from other content by spaces. This syntax mirrors the syntax of Quarto Cross-refs but uses a distinct prefix for the identifier (`cr-`) and does not require a caption.
+
+If you have multiple document blocks (say, two paragraphs) that you'd like to appear as a single trigger, wrap the blocks in a fenced div and supply a `focus-on` attribute and provide the sticky name as a string. For example:
+
+````markdown
+:::{focus-on="cr-myplot"}
+This paragraph and the one that follows will appear as one narrative block
+
+When these paragraphs scroll into view, they will reveal a histogram.
+:::
+
+:::{#cr-myplot}
+```{{r}}
+hist(rnorm(15))
+```
+:::
+````
+
+The primary role of triggers is to make a sticky element appear. They can also be used to trigger focus effects by attaching additional attributes to your triggers. Learn more in [Focus Effects](focus-effects.qmd).
+
+
+

@@ -15,10 +15,33 @@ website:
         text: Gallery
       - href: reference/index.qmd
         text: Reference
+      - text: "Help"
+        menu:
+          - text: "Report a Bug"
+            icon: "bug"
+            href: "https://github.com/qmd-lab/closeread/issues"
+          - text: "Ask a Question"
+            icon: "chat-right-text"
+            href: "https://github.com/qmd-lab/closeread/discussions"
     tools:
-      - icon: github
+      - text: "Closeread GitHub"
+        icon: github
         href: https://github.com/qmd-lab/closeread
-        text: Closeread GitHub
+  
+  sidebar:
+    - id: Guide
+      style: "docked"
+      background: light
+      contents:
+        - section: Guide
+          href: guide/index.qmd
+          contents: 
+          - guide/components.qmd
+          - guide/focus-effects.qmd
+          - guide/layouts.qmd
+          - guide/authoring-tools.qmd
+    
+        
 
 format:
   html:

@@ -21,9 +21,6 @@
       <% for (const val of item['possible-values']) { %>
         <li>
           <code><%= val %></code>
-          <% if (index === 0) { %>
-            <span>(default)</span>
-          <% } %>
         </li>
       <% index++; %>
       <% } %>

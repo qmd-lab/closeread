@@ -1,73 +1,10 @@
 ---
+title: Guide
 toc: true
 ---
 
-This is a landing page for a guide. Draft materials added below can later be reorganized into different qmds linked off of the sidebar.
+Closeread is a Quarto extension that allows you to author scrollytelling HTML documents. To learn how to create your first closeread document, start off by reading about the [Components of a Closeread Document](components.qmd).
 
-# Components of a Closeread Document
+* * *
 
-## Stickies
-
-## Triggers
-
-You can set a paragraph to trigger focus on a particular sticky by using Quarto's cross-referencing syntax: `@cr-mysticky`.
-
-```markdown
-When this paragraph scrolls into view it will reveal my sticky. @cr-mysticky
-
-:::{#cr-mysticky}
- < an image, code, text, etc that will be focused on >
-:::
-```
-
-The reference can be placed anywhere in the paragraph, but it should be separated from other content by spaces.
-
-# Trigger Effects
-
-## Highlighting
-
-You can highlight parts of the code and text of your sticky using the following syntax.
-
-1. `highlight="1,3"`: highlight lines 1 and 3
-2. `highlight="1-3"`: highlight lines 1, 2, and 3
-3. `highlight="cr-span1"`: highlight the span with id `cr-span1`
-4. `highlight="cr-span1,cr-span2"`: highlight the spans with ids `cr-span1` and `cr-span2`
-
-Line highlighting (1 and 2) works on code cells and line blocks while span highlighting (3 and 4) only works on Line Blocks.
-
-# Layouts
-
-The relative positioning of the narrative column and the sticky column determine the *layout*. You can set the layout of a section using the `layout` attribute on the block that defines the section.
-
-```markdown
-:::{.cr-section layout="overlay-center"}
-< Content of the section, including stickies and narrative blocks >
-:::
-```
-Options for `layout` include:
-
-- `sidebar-left` (default)
-- `sidebar-right`
-- `overlay-left`
-- `overlay-center`
-- `overlay-right`
-
-In the overlay layouts, the sticky column occupies the entire screen width and the narrative column scrolls over it. All layouts will automatically revert to `overlay-center` when viewed on a mobile device.
-
-Documents containing multiple closeread sections can use the same layouts or different ones. As an alternative to specifying the layout on the section block, it can also be defined in the document yaml under the `cr-section` key.
-
-```yml
----
-format:
-  closeread-html:
-    cr-section:
-      layout: "overlay-center"
----
-```
-If a layout is specified in the document yaml, it will be propagated to all sections in the document. If a section has its own layout specified, that will override the document yaml similar to how code cell execution options work.
-
-## Presentation Mode
-
-Closeread documents place special emphasis on the "stickies": the text, images, or code found in the main column that is described in the narrative. This 
-
-While viewing any closeread document in a browser, you can press `p`  on the keyboard to view it in presentation mode. Presentation mode is identical to the `overlay-center` layout except the narrative column is made transparent. You can return to the original layout by pressing `p` again. You can advance to the next trigger using the forward-arrow key and return to the previous trigger using the back-arrow key.
+This is an open-source tool built upon other open-source tools. Closeread extends [Quarto](https://github.com/quarto-dev/quarto-cli), a tool for technical publishing sponsored by Posit, PBC. The responsivity to user scrolling is made possible by the [scrollama v3.0](https://github.com/russellsamora/scrollama) javascript library by Russell Samora. Both tools are open-source and distributed under an MIT License.

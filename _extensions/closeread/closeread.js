@@ -47,6 +47,15 @@ document.addEventListener("DOMContentLoaded", () => {
     console.error("Warning: Quarto OJS module not found")
   }
   
+  // expand hlz option into highlight and zoom-to
+  const allHlzTriggers = Array.from(document.querySelectorAll('[data-hlz]'));
+  console.log(">> allHlzTriggers", allHlzTriggers)
+  allHlzTriggers.forEach(trigger => {
+    const hlzValue = trigger.getAttribute('data-hlz');
+    trigger.setAttribute('data-zoom-to', hlzValue);
+    trigger.setAttribute('data-highlight', hlzValue);
+  });
+    
   // collect all sticky elements
   const allStickies = Array.from(document.querySelectorAll(".sticky"));
   
@@ -54,6 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // === Set up scrolling event listeners === //
   // scrollama() is accessible because scrollama.min.js is attached via closeread.lua
   
+  // primary scroller
   const triggerScroller = scrollama();
   triggerScroller
     .setup({
@@ -81,6 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
       
     });
     
+    // secondary scroller used for making progress blocks
     const progressBlockScroller = scrollama();
     progressBlockScroller
       .setup({
@@ -127,7 +138,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
  });
  
-// === Hotkey Listeners === //
+// === Other Hotkey Listeners === //
 
 // toggle presentation mode
 document.addEventListener('keydown', (event) => {
@@ -145,11 +156,12 @@ document.addEventListener('keydown', (event) => {
 
  
  
-//===========//
-// Functions //
-//===========//
+//===============//
+// Focus effects //
+//===============//
+// A collection of functions that apply focus effects to stickies
  
- /* updateStickies: triggers effects and transformations of the focused sticky */
+// updateStickies: triggers effects on the focused sticky 
 function updateStickies(allStickies, focusedStickyName, trigger) {
   const focusedSticky = document.querySelectorAll("[id=" + focusedStickyName)[0];
   
@@ -159,15 +171,25 @@ function updateStickies(allStickies, focusedStickyName, trigger) {
         
   // apply additional effects
   transformSticky(focusedSticky, trigger.element);
-  
-  if (focusedSticky.classList.contains("cr-poem")) {
-    scalePoemFull(focusedSticky);
-  }
-  
   highlightSpans(focusedSticky, trigger.element);
+  
+  if ( // scale-to-fill only takes effect if there are no other transforms
+    focusedSticky.classList.contains("scale-to-fill") &&
+    !trigger.element.hasAttribute("data-zoom-to") &&
+    !trigger.element.hasAttribute("data-pan-to") &&
+    !trigger.element.hasAttribute("data-scale-by")
+  ) {
+    scaleToFill(focusedSticky);
+  }
 
 }
 
+
+//==============//
+// Highlighting //
+//==============//
+
+// highlights line number spans in line blocks and code, and id'ed spans in line blocks
 function highlightSpans(focusedSticky, triggerEl) {
   
   // remove any previous highlighting
@@ -182,10 +204,34 @@ function highlightSpans(focusedSticky, triggerEl) {
     return;
   }
   
-  // turn a range of line numbers into a series
+  // dim enclosing block
+  focusedSticky.classList.add("cr-hl-within");
+  
+  // add highlight class to appropriate spans
+  highlightIds = rangeToSeries(highlightIds);
+  highlightIds.split(',').forEach(highlightId => {
+    
+    // build selector
+    const spanSelector = idToSpanSelector(focusedSticky, highlightId);
+    // find span
+    const highlightSpan = focusedSticky.querySelector(spanSelector);
+    
+    // apply effect
+    if (highlightSpan !== null) {
+      highlightSpan.classList.add("cr-hl");
+    } else {
+    // Handle the case where the ID does not correspond to a span
+      console.warn(`While highlighting, could not find span with corresponding to an ID of '${highlightId}'. Please ensure the ID is correct.`);
+    }
+  });
+  
+}
+
+// turn a range of line numbers into a series
+function rangeToSeries(ids) {
   isRange = /\b(\d+)\s*-\s*(\d+)\b/;
-  if (isRange.test(highlightIds)) {
-    const match = highlightIds.match(isRange);
+  if (isRange.test(ids)) {
+    const match = ids.match(isRange);
   
     if (match) {
       const start = parseInt(match[1], 10);
@@ -196,140 +242,131 @@ function highlightSpans(focusedSticky, triggerEl) {
         numbers.push(i);
       }
 
-      highlightIds = numbers.join(',');
-    } else {
-      return '';
+      ids = numbers.join(',');
     }
   }
   
-  // dim enclosing block
-  focusedSticky.classList.add("cr-hl-within");
-  
-  // add highlight class to appropriate spans
-  highlightIds.split(',').forEach(highlightId => {
-    const trimmedId = highlightId.trim();
-    let spanSelector = "";
-    
-    // determine the right spanSelector
-    // for line numbers
-    if (!isNaN(trimmedId)) {
-      
-      // that are in line blocks
-      if (focusedSticky.querySelector('.line-block') !== null) {
-        spanSelector = `span[id^="lb"][id*="-${trimmedId}"]`;
-      }
-      // or in code cells
-      if (focusedSticky.querySelector('.cell') !== null) {
-        spanSelector = `span[id^="cb"][id*="-${trimmedId}"]`;
-      }
-      
-    // and for span ids
-    } else {
-      spanSelector = `span[id="${trimmedId}"]`;
-    }
-    
-    const highlightSpan = focusedSticky.querySelector(spanSelector);
+  return ids;
+}
 
-    if (highlightSpan !== null) {
-      highlightSpan.classList.add("cr-hl");
-    } else {
-    // Handle the case where the ID does not correspond to a span
-      console.warn(`While highlighting, could not find span with corresponding to an ID of '${trimmedId}'. Please ensure the ID is correct.`);
-    }
-  });
+// convert id to appropriate span selector
+function idToSpanSelector(focusedSticky, id) {
+  id.trim();
+  let spanSelector = "";
   
+  // determine the right spanSelector
+  // for line numbers
+  if (!isNaN(id)) {
+    
+    // that are in line blocks
+    if (focusedSticky.querySelector('.line-block') !== null) {
+      spanSelector = `span[id^="lb"][id*="-${id}"]`;
+    }
+    // or in code cells
+    if (focusedSticky.querySelector('.cell') !== null || focusedSticky.querySelector('.sourceCode') !== null) {
+      spanSelector = `span[id^="cb"][id*="-${id}"]`;
+    }
+    
+  // and for span ids
+  } else {
+    spanSelector = `span[id="${id}"]`;
+  }
+  
+  return spanSelector;
 }
 
 
-function highlightans(focusedSticky, triggerEl) {
-  // remove any previous highlighting from sticky
-  focusedSticky.querySelectorAll("span[id]").forEach(d => d.classList.remove("cr-hl"));
-  focusedSticky.classList.remove("cr-hl-within");
+//==============//
+// Transforming //
+//==============//
+// use the flexible `transform` attribute to trigger effects associated with
+// zoom-to, pan-to, scale-by, .scale-to-fill, and (indirectly) hlz
+
+function transformSticky(focusedSticky, trigger) {
   
-  // get hightlighted spans from trigger
-  let highlightIds = triggerEl.getAttribute("data-highlight-spans");
+  // initialize empty strings
+  let translateStr = "";
+  let scaleStr = "";
+  let transformStr = "";
   
-  // exit function if there's no highlighting
-  if (highlightIds === null) {
+  // determine type of transform
+  if (trigger.hasAttribute("data-pan-to")) {
+    // get translate attributes from trigger
+    translateStr = "translate(" + trigger.getAttribute("data-pan-to") + ")";
+  }
+  
+  if (trigger.hasAttribute("data-scale-by")) {
+    // get scale attributes from trigger
+    scaleStr = "scale(" + trigger.getAttribute("data-scale-by") + ")";
+  }
+  
+  if (trigger.hasAttribute("data-zoom-to")) {
+    transformStr = zoomToTransform(focusedSticky, trigger);
+  }
+  
+  // zooming will override pan-to and scale-by
+  if (!transformStr) {
+    if (translateStr && scaleStr) {
+      transformStr = translateStr + " " + scaleStr;
+    } else if (translateStr) {
+      transformStr = translateStr;
+    } else if (scaleStr) {
+      transformStr = scaleStr;
+    }
+  }
+
+  // use the string to transform the sticky
+  focusedSticky.style.transform = transformStr;
+  
+}
+
+function zoomToTransform(focusedSticky, trigger) {
+  
+  const paddingX = 75;
+  const paddingY = 50;
+  
+  // get zoom-to spans from trigger
+  let zoomToIds = trigger.getAttribute("data-zoom-to");
+  zoomToIds = rangeToSeries(zoomToIds);
+  
+  // for now, exit function if user provides more than one span / line
+  const zoomToArray = zoomToIds.split(',');
+  if (zoomToArray.length > 1) {
+    console.warn(`zoom-to currently only supports a single line number or span id.`);
     return;
   }
   
-  // dim enclosing block
-  focusedSticky.classList.add("cr-hl-within");
+  // build selector
+  const spanSelector = idToSpanSelector(focusedSticky, zoomToIds);
+  // find span
+  const focusedSpan = focusedSticky.querySelector(spanSelector);
   
-  // add highlight class to appropriate spans
-  highlightIds.split(',').forEach(highlightId => {
-    const trimmedId = highlightId.trim();
-    const highlightSpan = focusedSticky.querySelector(`#${trimmedId}`);
-    if (highlightSpan !== null) {
-      highlightSpan.classList.add("cr-hl");
-    } else {
-    // Handle the case where the ID does not correspond to a span
-      console.warn(`Could not find span with ID '${trimmedId}'. Please ensure the ID is correct.`);
-    }
-  });
+  // measurements needed for translation
+  const focusedStickyHeight = focusedSticky.scrollHeight
+  const focusedStickyWidth = focusedSticky.scrollWidth
+  const focusHeight = focusedSpan.offsetHeight
+  focusedSpan.offsetTop;
+  const focusTop = focusedSpan.offsetTop
+  const focusCenterY = focusTop + (focusHeight / 2)
+  const centerDeltaY = (focusCenterY - (focusedSticky.offsetHeight / 2)) * -1
   
-  if (focusedSticky.classList.contains("cr-poem")) {
-    // scale to span using transform
-    scalePoemToSpan(focusedSticky, highlightIds);
-  }
+  // measurements needed for scaling
+  const container = focusedSticky.closest(".sticky-col-stack")
+  const containerHeight = container.offsetHeight - (paddingY * 2)
+  const containerWidth = container.offsetWidth - (paddingX * 2)
+  // note scaleWidth uses the whole line, not just the span width
+  const scaleWidth = focusedStickyWidth / containerWidth
+  const scaleHeight = focusHeight / containerHeight
+  const scaleFactor = 1 / Math.max(scaleHeight, scaleWidth)
   
+  // form matrix transform string
+  const transformStr = `matrix(${scaleFactor}, 0, 0, ${scaleFactor}, 0, ${centerDeltaY})`;
+  
+  return transformStr
 }
 
-
-// make the given element active. if it's a poem, rescale it
-function updateActivePoem(el, priorSteps) {
-
-  const elId = el.getAttribute("data-cr-id")
-
-  // active highlight is the most recent step with `cr-in` of this sticky
-
-  const activeHighlight = priorSteps
-    .filter(d => d.getAttribute("data-cr-in") == elId)
-    .at(-1)
-    ?.getAttribute("data-cr-highlight")
-
-  // no active highlight?
-  if (activeHighlight === undefined) {
-    rescaleElement(el);
-  } else {
-    // Split the `activeHighlight` value on commas to support multiple IDs
-    const highlightIds = activeHighlight.split(',');
-    
-    // Call rescaleElement with the first found id for focusing,
-    // or without a specific focus if no ids are found 
-    if (highlightIds) {
-      rescaleElement(el, highlightIds);
-    } else {
-      rescaleElement(el);
-    }
-  }
-}
-
-/* rescaleElement:
-   given a poem element `el` (and potentially a contained ids `highlightIds`),
-   resets the focus status of a poem's highlight spans, then rescales (and
-   potentially translates) the poem so that either the whole thing is visible
-   or the  line containing `highlightIds` is visible and centerd */
-function rescaleElement(el, highlightIds) {
-  
-  // find ALL spans within the `el` and remove `.cr-hl`
-  el.querySelectorAll("span[id]").forEach(d => d.classList.remove("cr-hl"))
-
-  if (highlightIds == undefined) {
-    scalePoemFull(el)
-  } else {
-    scalePoemToSpan(el, highlightIds)
-  }    
-}
-
-/* scalePoemFull:
-  given an element `el`, rescales it to fill its containing .sticky-col-stack */
-function scalePoemFull(el, paddingX = 75, paddingY = 50) {
-
-  console.log("Focusing on whole poem")
-
-  el.classList.remove("cr-hl-within")
+// given an element `el`, rescales it to fill its containing .sticky-col-stack 
+function scaleToFill(el, paddingX = 75, paddingY = 50) {
 
   // get dimensions of element and its container
   const container = el.closest(".sticky-col-stack")
@@ -348,75 +385,6 @@ function scalePoemFull(el, paddingX = 75, paddingY = 50) {
   // apply styles
   el.style.setProperty("transform",
     `matrix(${scale}, 0, 0, ${scale}, 0, ${centerDeltaY})`)
-}
-
-/* scalePoemToSpan:
-   given a sticky and a span `focusEl` within it, rescales and translates
-   sticky so that `focusEl` is vertically centerd and its line fills the
-   containing .sticky-col-stack */
-function scalePoemToSpan(focusedSticky, highlightIds, paddingX = 75, paddingY = 50) {
-  
-  // for now just get first span
-  const focusedSpan = focusedSticky.querySelector(`#${highlightIds.trim()}`);
-  
-  // get dimensions of element and its container
-  const container = focusedSticky.closest(".sticky-col-stack")
-  
-  const focusedStickyHeight = focusedSticky.scrollHeight
-  const focusedStickyWidth = focusedSticky.scrollWidth
-  const containerHeight = container.offsetHeight - (paddingY * 2)
-  const containerWidth = container.offsetWidth - (paddingX * 2)
-
-  const focusHeight = focusedSpan.offsetHeight
-  const focusTop = focusedSpan.offsetTop
-  const focusCenterY = focusTop + (focusHeight / 2)
-  
-  // note scaleWidth uses the whole line, not just the span width
-  const scaleWidth = focusedStickyWidth / containerWidth
-  const scaleHeight = focusHeight / containerHeight
-  const scale = 1 / Math.max(scaleHeight, scaleWidth)
-  
-  const centerDeltaY = (focusCenterY - (focusedSticky.offsetHeight / 2)) * -1
-
-  // apply styles
-  focusedSticky.style.setProperty("transform",
-    `matrix(${scale}, 0, 0, ${scale}, 0, ${centerDeltaY})`)
-}
-
-
-//==================//
-// Transform Sticky //
-//==================//
-
-function transformSticky(sticky, step) {
-  
-  // initialize empty strings
-  let translateStr = "";
-  let scaleStr = "";
-  let transformStr = "";
-  
-  if (step.hasAttribute("data-pan-to")) {
-    // get translate attributes from step
-    translateStr = "translate(" + step.getAttribute("data-pan-to") + ")";
-  }
-  
-  if (step.hasAttribute("data-scale-by")) {
-    // get scale attributes from step
-    scaleStr = "scale(" + step.getAttribute("data-scale-by") + ")";
-  }
-  
-  // form transform string
-  if (translateStr && scaleStr) {
-    transformStr = translateStr + " " + scaleStr;
-  } else if (translateStr) {
-    transformStr = translateStr;
-  } else if (scaleStr) {
-    transformStr = scaleStr;
-  }
-  
-  // and use it to scale the sticky
-  sticky.style.transform = transformStr;
-  
 }
 
 /* getBooleanConfig: checks for a <meta> with named attribute `cr-[metaFlag]`

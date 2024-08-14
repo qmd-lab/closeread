@@ -1,0 +1,53 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
+#quarto-document-content {
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: 15pt;
+}
+#quarto-document-content h1 {
+  font-family: "Cormorant Garamond", "Times New Roman", Times, serif;
+  font-weight: 500;
+  font-size: 2.8em;
+  line-height: 1;
+}
+
+.cr-section .narrative-col {
+  background-color: rgb(17, 17, 17);
+  color: white;
+  min-width: 400px;
+  /* Override the padding for the first block */
+}
+.cr-section .narrative-col > *:first-child {
+  padding-block-start: 10svh;
+}
+
+/* mobile sizing (bootstrap: xs) is always overlay-center */
+@media (max-width: 575.98px) {
+  .cr-section.sidebar-left .narrative-col,
+  .cr-section.sidebar-right .narrative-col,
+  .cr-section.overlay-left .narrative-col,
+  .cr-section.overlay-right .narrative-col,
+  .cr-section.overlay-center .narrative-col {
+    background-color: transparent;
+  }
+  .cr-section.sidebar-left .narrative-col .narrative > *,
+  .cr-section.sidebar-right .narrative-col .narrative > *,
+  .cr-section.overlay-left .narrative-col .narrative > *,
+  .cr-section.overlay-right .narrative-col .narrative > *,
+  .cr-section.overlay-center .narrative-col .narrative > * {
+    background-color: rgba(17, 17, 17, 0.85);
+    padding: 5px;
+    border-radius: 5px;
+  }
+}
+.cr-section.overlay-left .narrative-col,
+.cr-section.overlay-center .narrative-col,
+.cr-section.overlay-right .narrative-col {
+  background-color: transparent;
+}
+.cr-section.overlay-left .narrative-col .narrative,
+.cr-section.overlay-center .narrative-col .narrative,
+.cr-section.overlay-right .narrative-col .narrative {
+  background-color: rgba(17, 17, 17, 0.7);
+}
+
+/*# sourceMappingURL=nytimes.css.map */
