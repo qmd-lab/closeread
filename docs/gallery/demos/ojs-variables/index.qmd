@@ -1,5 +1,5 @@
 ---
-title: "Spinning Globe"
+title: "OJS Variables"
 image: "globe.png"
 description: "Smoothly transition interactive OJS graphics."
 format:

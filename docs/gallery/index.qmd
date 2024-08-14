@@ -1,15 +1,27 @@
 ---
 title: Gallery
 listing:
-  - id: demo-listings
-    contents: demos
+  - id: examples-listings
+    contents: examples
     sort: "date desc"
     type: grid
+    fields: [image, title, author]
+  - id: demo-listings
+    contents: demos
+    sort-ui: false
+    filter-ui: false
+    type: table
+    fields: [title, description]
+    field-display-names:
+      title: "Feature"
 ---
 
-### Demos
+:::{#examples-listings}
+:::
 
-Demonstrations of Closeread functionality.
+### Feature Demos
+
+A series of short closeread documents that each demonstrate one feature of the closeread custom format.
 
 :::{#demo-listings}
 :::

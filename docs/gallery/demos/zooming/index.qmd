@@ -1,0 +1,127 @@
+---
+title: Zooming
+format:
+  closeread-html:
+    code-tools: true
+---
+
+Closeread enables the reader to zoom in on particular bits of both code and text using a similar syntax to highlighting
+
+To zoom to particular lines of code for your reader, you can add an attribute to your trigger called `zoom-to`. To zoom to a line of code, you can either use a line number or a span id.
+
+- `zoom-to="3"`: zoom to line 3
+- `zoom-to="cr-love`: zoom to the line containing the span `cr-love`
+
+The following section demonstrates that functionality.
+
+:::{.cr-section}
+
+The limerick is a form of poetry composed of five lines.
+
+Here is the first limerick appearing in the written record, from the *Saint John Daily News* in 1880. @cr-limerick
+
+The end of the first two lines of a Limerick must rhyme. [@cr-limerick]{zoom-to="1"}
+
+The end third and fourth line also rhyme and are nudged in a bit. [@cr-limerick]{zoom-to="14"}
+
+The end third and fourth line also rhyme and are nudged in a bit. [@cr-limerick]{zoom-to="cr-salary"}
+
+
+:::{#cr-limerick .scale-to-fill}
+| There was a young rustic named Mallory,
+| who drew but a very small [salary]{#cr-salary}.
+|   When he went to the show,
+|   his purse made him go
+| to a seat in the uppermost gallery.
+|   When he went to the show,
+|   his purse made him go
+| to a seat in the uppermost gallery.
+|   When he went to the show,
+|   his purse made him go
+| to a seat in the uppermost gallery.
+|   When he went to the show,
+|   his purse made him go
+| to a seat in the uppermost gallery.
+|   When he went to the show,
+|   his purse made him go
+| to a seat in the uppermost gallery.
+|   When he went to the show,
+|   his purse made him go
+| to a seat in the uppermost gallery.
+:::
+
+:::
+
+Now here is some code zooming.
+
+:::{.cr-section}
+
+The limerick is a form of poetry composed of five lines.
+
+Here is the first limerick appearing in the written record, from the *Saint John Daily News* in 1880. @cr-dplyr
+
+The end of the first two lines of a Limerick must rhyme. [@cr-dplyr]{zoom-to="18"}
+
+The end third and fourth line also rhyme and are nudged in a bit. [@cr-dplyr]{zoom-to="3"}
+
+
+:::{#cr-dplyr .scale-to-fill}
+```r
+library(dplyr)
+
+mtcars |>
+  select(mpg, hp) |>
+  select(mpg, hp) |>
+  select(mpg, hp) |>
+  select(mpg, hp) |>
+  select(mpg, hp) |>
+  select(mpg, hp) |>
+  select(mpg, hp) |>
+  select(mpg, hp) |>
+  select(mpg, hp) |>
+  select(mpg, hp) |>
+  select(mpg, hp) |>
+  select(mpg, hp) |>
+  select(mpg, hp) |>
+  select(mpg, hp) |>
+  select(mpg, hp)
+```
+
+:::
+
+:::
+
+`hlz` is a short-cut that you can use when you want to zoom into on a line while also highlighting it (or a span within the line).
+
+:::{.cr-section}
+Let's revisit the limerick. @cr-limerick2
+
+Let's focus on this line. [@cr-limerick2]{hlz="15"}
+
+Or this phrase. [@cr-limerick2]{hlz="cr-salary"}
+
+:::{#cr-limerick2 .scale-to-fill}
+| There was a young rustic named Mallory
+| who drew but a very small [salary]{#cr-salary}.
+|   When he went to the show,
+|   his purse made him go
+| to a seat in the uppermost gallery.
+|   When he went to the show,
+|   his purse made him go
+| to a seat in the uppermost gallery.
+|   When he went to the show,
+|   his purse made him go
+| to a seat in the uppermost gallery.
+|   When he went to the show,
+|   his purse made him go
+| to a seat in the uppermost gallery.
+|   When he went to the show,
+|   his purse made him go
+| to a seat in the uppermost gallery.
+|   When he went to the show,
+|   his purse made him go
+| to a seat in the uppermost gallery.
+:::
+:::
+
+
