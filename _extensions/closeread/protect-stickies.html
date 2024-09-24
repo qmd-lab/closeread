@@ -1,0 +1,33 @@
+<script id="closeread-exclude-from-quarto-grid" type="application/javascript">
+  
+  // remove .column-* and other classes from elements inside .cr-section
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    
+    // remove .page-columns and .page-full from .c-section itself
+    const crSections = window.document.querySelectorAll(".cr-section");
+
+    crSections.forEach(el => {
+      console.log("Removing classes from .cr-section...");
+      el.classList.remove("page-full", "page-columns");
+    });
+
+    console.log("Looking for offending .column-* or .page-columns inside .cr-section...")
+
+    const allColumnEls =
+      window.document.querySelectorAll(
+        ".cr-section .page-columns, .cr-section .column-screen");
+
+    allColumnEls.forEach(el => {
+      const badClasses =
+        [...el.classList].filter(c => c.startsWith("column-"));
+      console.log("Removing classes from el: ", badClasses)
+      el.classList.remove("page-full", "page-columns", ...badClasses);
+    });
+
+
+    // TODO - what we do about about ancestors between .cr-section and main
+    // that have also been affected? no way to know whether they were supposed
+    // to get them...
+
+  });
+</script>

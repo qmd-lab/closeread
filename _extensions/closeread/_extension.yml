@@ -11,4 +11,6 @@ contributes:
       page-layout: full
       execute:
         echo: false
-
+      include-after-body:
+        file:
+          protect-stickies.html
