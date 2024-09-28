@@ -11,12 +11,28 @@ Just about any type of element that can be included in a Quarto doc can be flagg
 
 ## Images
 
-:::{.cr-section}
+::::{.cr-section}
 
-This is an image that inclues a caption. @cr-images-2
+This is an image that includes a caption. @cr-inline-working
 
-:::{#cr-images-2}
-![a caption](trees.png)
+:::{#cr-inline-working}
+This works: ![a caption](trees.png)
 :::
 
+This does too! @cr-nocaption-working
+
+:::{#cr-nocaption-working}
+![](trees.png)
 :::
+
+What about this, though? (Remove the image below to see things working as intended!) @cr-caption-notworking
+
+:::{#cr-caption-notworking}
+![This figure breaks the layout...](trees.png)
+:::
+
+::::
+
+## Another section
+
+{{< lipsum 1 >}}
