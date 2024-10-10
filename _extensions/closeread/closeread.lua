@@ -71,22 +71,28 @@ function make_section_layout(div)
       end
     end
     
-    -- todo: identify quarto layout to use in section
-    --local quarto_layouts = {"column-body", "column-outset", "column-page", 
-     -- "column-page-inset", "column-screen-inset", "column-margin"}
-    local quarto_layout = "column-screen" -- default
-    --if list_includes_any(div.classes, quarto_layouts) then
-    --  quarto_layout = ""
-    --end
+    -- get existing style on .cr-section so we don't lose user styles
+    local existing_style_str = div.attributes.style or ""
+
+    -- NOTE - we can't use quarto's .column-* classes, so we have to add those
+    -- styles manually (split them on `;`, add new ones, concat again)
+    local existing_style_table = {}
+    for str in string.gmatch(existing_style_str, "([^;]+)") do
+      table.insert(existing_style_table, str)
+    end
+    table.insert(existing_style_table, "grid-column: screen-start / screen-end")
+    table.insert(existing_style_table, "z-index: 998")
+    table.insert(existing_style_table, "opacity: .999")
+    local new_style_str = table.concat(existing_style_table, ";")
 
     -- Construct cr-section class list
     local section_class_list = {table.unpack(div.classes)}
-    table.insert(section_class_list, quarto_layout)
+    -- table.insert(section_class_list, quarto_layout)
     table.insert(section_class_list, section_layout)
     
     -- piece together the cr-section
     cr_section = pandoc.Div({narrative_col, sticky_col},
-      pandoc.Attr("", section_class_list, {}))
+      pandoc.Attr("", section_class_list, { style = new_style_str }))
 
     return cr_section
   end
