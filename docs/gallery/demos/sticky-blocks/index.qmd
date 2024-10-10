@@ -9,7 +9,7 @@ keep-md: true
 
 Just about any type of element that can be included in a Quarto doc can be flagged as a sticky. This demo shows many examples.
 
-## Images
+The current fix allows `.cr-section` to work, provided it's a "first level" child of the `main` content. For example:
 
 ::::{.cr-section}
 
@@ -25,13 +25,29 @@ This does too! @cr-nocaption-working
 ![](trees.png)
 :::
 
-What about this, though? (Remove the image below to see things working as intended!) @cr-caption-notworking
+::::
 
-:::{#cr-caption-notworking}
-![This figure breaks the layout...](trees.png)
+But things fall apart if you put one inside a `section` (which Quarto creates from an `h2`).
+
+## Images
+
+::::{.cr-section}
+
+This is an image that includes a caption. @cr-inline-working2
+
+:::{#cr-inline-working2}
+This works: ![a caption](trees.png)
+:::
+
+This does too! @cr-nocaption-working2
+
+:::{#cr-nocaption-working2}
+![](trees.png)
 :::
 
 ::::
+
+Adding `.page-columns.page-full` to the `section` appears to fix this problem (but how do we want to do it? And do we need to account for sidebar content?)
 
 ## Another section
 
