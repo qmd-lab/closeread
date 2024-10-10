@@ -28,6 +28,13 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.classList.add("cr-removeheaderspace")
   }
 
+  // attach quarto layout classes to `main`
+  const docMain = document.querySelector("main#quarto-document-content")
+  if (docMain === null) {
+    console.error ("No `main#quarto-document-content` found. Closeread is not functioning properly.")
+  }
+  docMain.classList.add("page-columns", "page-full")
+
   // define ojs variables if the connector module is available
   const ojsModule = window._ojs?.ojsConnector?.mainModule
   const ojsStickyName = ojsModule?.variable()
