@@ -23,9 +23,17 @@
       padding-block: 45svh;
       padding-inline: 1em;
 
-      p {
-        margin-bottom: 0; // override bootstrap rule
+      .narrative {
+
+        padding: 0.75em;
+
+        // override bootstrap margin when using a single paragraph trigger
+        // (but not when wrapping multiple pars with a div)
+        > p {
+          margin-bottom: 0;
+        }
       }
+
     }
   }
 
@@ -132,7 +140,7 @@
       .narrative {
         background-color: rgba(17, 17, 17, .85);
         color: white;
-        padding: 5px;
+        padding: 5px; // TODO
         border-radius: 5px;
       }
     }
@@ -159,7 +167,7 @@
     .narrative {
       background-color: rgba(17, 17, 17, .85);
       color: white;
-      padding: 5px;
+      padding: 5px; // TODO
       border-radius: 5px;
     }
   }
