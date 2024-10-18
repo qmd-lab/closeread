@@ -26,6 +26,12 @@
       p {
         margin-bottom: 0; // override bootstrap rule
       }
+
+      .narrative {
+        &:has(.cr-spacer) {
+          visibility: hidden;
+        }
+      }
     }
   }
 
