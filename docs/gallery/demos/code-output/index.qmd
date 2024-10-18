@@ -1,0 +1,60 @@
+---
+title: Code Output
+format:
+  closeread-html:
+    code-tools: true
+---
+
+Closeread sections can showcase a broad range of code output as stickies.
+
+1. Source code and code output (this works)
+1. Code output (this works)
+1. Source code and plot output (this doesn't work)
+
+:::{.cr-section}
+
+This sticky shows both the source code and the code output. @cr-codein-codeout
+
+You can add highlighting to the source code but not the output (this may be added in a future release). [@cr-codein-codeout]{highlight="3,4"}
+
+:::{#cr-codein-codeout}
+```{r}
+#| echo: true
+#| message: false
+library(dplyr)
+library(palmerpenguins)
+penguins |>
+  count(species, island)
+```
+:::
+
+This sticky shows only the code output. @cr-codeout
+
+:::{#cr-codeout}
+```{r}
+#| echo: false
+#| message: false
+library(dplyr)
+library(palmerpenguins)
+penguins |>
+  count(species, island)
+```
+:::
+
+
+This sticky shows the source code for a plot as well as the plot. @cr-codein-plotout
+
+:::{#cr-codein-plotout}
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+# This sticky blows up the grid layout
+library(ggplot2)
+ggplot(penguins, aes(x = bill_length_mm,
+                     y = bill_depth_mm)) +
+  geom_point()
+```
+:::
+
+:::
