@@ -25,7 +25,7 @@
 
       .narrative {
 
-        padding: 0.75em;
+        padding: 0.7em 0.75em;
 
         // override bootstrap margin when using a single paragraph trigger
         // (but not when wrapping multiple pars with a div)
@@ -140,7 +140,7 @@
       .narrative {
         background-color: rgba(17, 17, 17, .85);
         color: white;
-        padding: 5px; // TODO
+        padding: 0.3em 0.5em;
         border-radius: 5px;
       }
     }
@@ -167,7 +167,6 @@
     .narrative {
       background-color: rgba(17, 17, 17, .85);
       color: white;
-      padding: 5px; // TODO
       border-radius: 5px;
     }
   }
@@ -204,6 +203,10 @@
   .narrative-col {
     grid-column: 1;
     margin-inline: 0;
+
+    .narrative {
+      padding: 0 0.75em;
+    }
   }
 
   .sticky-col {
@@ -216,6 +219,10 @@
   .narrative-col {
     grid-column: 2;
     margin-inline: 0;
+
+    .narrative {
+      padding: 0 0.75em;
+    }
   }
 
   .sticky-col {
