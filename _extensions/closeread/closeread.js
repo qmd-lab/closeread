@@ -32,18 +32,10 @@ document.addEventListener("DOMContentLoaded", () => {
   /* this replicates quarto <= 1.6 functionality:
     https://github.com/quarto-dev/quarto-cli/blob/
       d85467627aae71c96e3d1e9718a3b47289329cde/src/format/html/
-      format-html-bootstrap.ts#L1163C1-L1186C7 */
-  const ensureInGrid = el => {
-    const parent = el.parentElement
-    parent.classList.add("page-columns", "page-full")
-    if (isDocumentMain(parent)) {
-      return
-    } else {
-      ensureInGrid(parent)
-    }
-  }  
+      format-html-bootstrap.ts#L1163C1-L1186C7 */ 
   const crSections = Array.from(document.querySelectorAll(".cr-section"))
-  crSections.map(ensureInGrid)
+  crSections.map(
+    el => el.parentElement.classList.add("page-columns", "page-full"))
 
   const ojsModule = window._ojs?.ojsConnector?.mainModule
   const ojsStickyName = ojsModule?.variable()
