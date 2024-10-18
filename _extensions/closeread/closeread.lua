@@ -71,10 +71,10 @@ function make_section_layout(div)
       end
     end
     
-    -- todo: identify quarto layout to use in section
+    -- todo: identify quarto layout to use in section 
     --local quarto_layouts = {"column-body", "column-outset", "column-page", 
-     -- "column-page-inset", "column-screen-inset", "column-margin"}
-    local quarto_layout = "column-screen" -- default
+      -- "column-page-inset", "column-screen-inset", "column-margin"}
+    local quarto_layout = "cr-column-screen" -- default
     --if list_includes_any(div.classes, quarto_layouts) then
     --  quarto_layout = ""
     --end
@@ -86,7 +86,7 @@ function make_section_layout(div)
     
     -- piece together the cr-section
     cr_section = pandoc.Div({narrative_col, sticky_col},
-      pandoc.Attr("", section_class_list, {}))
+      pandoc.Attr("", section_class_list, { style = new_style_str }))
 
     return cr_section
   end
