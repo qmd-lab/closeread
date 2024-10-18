@@ -16,10 +16,13 @@ jobs:
            NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         with:
           image: stat20/stat20-docker:latest
+          options: -v ${{ github.workspace }}:/home/rstudio/closeread -e NETLIFY_AUTH_TOKEN=${{ secrets.NETLIFY_AUTH_TOKEN }}
           shell: bash
           run: |
             # exit if any command returns non-zero exit
             set -e
+
+            cd /home/rstudio/closeread/
             
             # render and publish site
             quarto publish netlify docs --id ba6ca24d-1c6b-44b3-b907-16a2bfe5f4b5
