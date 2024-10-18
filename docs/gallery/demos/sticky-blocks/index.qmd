@@ -27,9 +27,9 @@ This does too! @cr-nocaption-working
 
 ::::
 
-But things fall apart if you put one inside a `section` (which Quarto creates from an `h2`).
+## This header becomes a section
 
-## Images
+We've reimplemented `.column-screen` so that we can even make `.cr-section` work if you've used an `h2` (which puts parts of the doc inside a `section`):
 
 ::::{.cr-section}
 
@@ -46,8 +46,6 @@ This does too! @cr-nocaption-working2
 :::
 
 ::::
-
-Adding `.page-columns.page-full` to the `section` appears to fix this problem (but how do we want to do it? And do we need to account for sidebar content?)
 
 ## Another section
 

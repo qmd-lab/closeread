@@ -20,7 +20,7 @@
   // behaviours that come with quarto responding to that class
   // see https://github.com/qmd-lab/closeread/issues/81
   &.cr-column-screen {
-    grid-column: screen-start / screen-end;
+    grid-column: screen-start / screen-end !important;
     z-index: 998;
     opacity: .999;
   }
