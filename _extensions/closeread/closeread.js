@@ -28,14 +28,23 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.classList.add("cr-removeheaderspace")
   }
 
-  // attach quarto layout classes to `main`
-  const docMain = document.querySelector("main#quarto-document-content")
-  if (docMain === null) {
-    console.error ("No `main#quarto-document-content` found. Closeread is not functioning properly.")
-  }
-  docMain.classList.add("page-columns", "page-full")
+  // attach layout classes to parents of `.cr-section`s up to main.content
+  /* this replicates quarto <= 1.6 functionality:
+    https://github.com/quarto-dev/quarto-cli/blob/
+      d85467627aae71c96e3d1e9718a3b47289329cde/src/format/html/
+      format-html-bootstrap.ts#L1163C1-L1186C7 */
+  const ensureInGrid = el => {
+    const parent = el.parentElement
+    parent.classList.add("page-columns", "page-full")
+    if (isDocumentMain(parent)) {
+      return
+    } else {
+      ensureInGrid(parent)
+    }
+  }  
+  const crSections = Array.from(document.querySelectorAll(".cr-section"))
+  crSections.map(ensureInGrid)
 
-  // define ojs variables if the connector module is available
   const ojsModule = window._ojs?.ojsConnector?.mainModule
   const ojsStickyName = ojsModule?.variable()
   const ojsTriggerIndex = ojsModule?.variable()
@@ -401,3 +410,7 @@ function getBooleanConfig(metaFlag) {
   return option === "true"
 }
 
+function isDocumentMain(el) {
+  return el === null ||
+      (el.tagName == "MAIN" && el.classList.contains("content"))
+}
