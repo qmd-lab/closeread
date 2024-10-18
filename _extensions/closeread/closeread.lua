@@ -515,7 +515,6 @@ return {
     Para = process_trigger_shortcut
   },
   {
-    Div = make_section_layout,
-    Pandoc = add_classes_to_body
+    Div = make_section_layout
   }
 }
