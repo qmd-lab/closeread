@@ -1,5 +1,9 @@
 on:
   workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+      - dev
 
 name: "Publish to closeread-pr.netlify.app"
 jobs:
