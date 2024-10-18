@@ -1,6 +1,5 @@
 
 quarto.log.output("===== Closeread Log =====")
-quarto.log.output("HELLO")
 
 -- set defaults
 local debug_mode = false
