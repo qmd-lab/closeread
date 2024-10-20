@@ -21,7 +21,7 @@
 
     .trigger {
       padding-block: 45svh;
-      padding-inline: 1em;
+      padding-inline: 24px;
 
       .narrative {
 
@@ -123,7 +123,6 @@
 
 
 /* mobile sizing (bootstrap: xs) is always overlay-center */
-//@media (max-width: 575.98px) {
 @media (max-width: 575.98px) {
   .cr-section.sidebar-left,
   .cr-section.sidebar-right,
@@ -163,6 +162,7 @@
     grid-column: 1;
     z-index: 1;
     transition: opacity 0.5s ease-in-out;
+    max-width: 527.98px;
     
     .narrative {
       background-color: rgba(17, 17, 17, .85);
@@ -179,19 +179,17 @@
 // ... with inline margins set for narrative content depending on side
 .overlay-left {
   .narrative-col {
-    margin-inline-start: 5%;
-    margin-inline-end: 65%;
+    justify-self: start;
   }
 }
 .overlay-center {
   .narrative-col {
-    margin-inline: 30%;
+    justify-self: center;
   }
 }
 .overlay-right {
   .narrative-col {
-    margin-inline-start: 65%;
-    margin-inline-end: 5%;
+    justify-self: end;
   }
 }
 
