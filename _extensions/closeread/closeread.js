@@ -2,6 +2,8 @@
 // closeread.js //
 //==============//
 
+// import throttleDebounce from "https://cdn.jsdelivr.net/npm/throttle-debounce@5.0.2/+esm"
+
 // set params
 const triggerSelector = '.new-trigger'
 const progressBlockSelector = '.progress-block'
@@ -58,82 +60,93 @@ document.addEventListener("DOMContentLoaded", () => {
   // collect all sticky elements
   const allStickies = Array.from(document.querySelectorAll(".sticky"));
   
-  
   // === Set up scrolling event listeners === //
-  // scrollama() is accessible because scrollama.min.js is attached via closeread.lua
-  
-  // primary scroller
-  const triggerScroller = scrollama();
-  triggerScroller
-    .setup({
-      step: triggerSelector,
-      offset: 0.5,
-      progress: true,
-      debug: debugMode
-    })
-    .onStepEnter((trigger) => {
-      
-      focusedStickyName = trigger.element.getAttribute("data-focus-on");
-      
-      // update ojs variables
-      ojsTriggerIndex?.define("crTriggerIndex", trigger.index);
-      ojsStickyName?.define("crActiveSticky", focusedStickyName);
+  // scrollama() is accessible because scrollama.min.js is attached
+  // via closeread.lua
+  const triggerScrollerConfig = {
+    step: triggerSelector,
+    offset: 0.5,
+    progress: true,
+    debug: debugMode
+  }
+  const progressScrollerConfig = {
+    step: progressBlockSelector,
+    offset: 0.5,
+    progress: true,
+    debug: debugMode
+  }
+
+  function crTriggerStepEnter(trigger) {
+    focusedStickyName = trigger.element.getAttribute("data-focus-on")
         
-      updateStickies(allStickies, focusedStickyName, trigger);
+    // update ojs variables
+    ojsTriggerIndex?.define("crTriggerIndex", trigger.index)
+    ojsStickyName?.define("crActiveSticky", focusedStickyName)
       
-    })
-    .onStepProgress((trigger) => {
-      
-      // update ojs variables
-      ojsTriggerProgress?.define("crTriggerProgress", trigger.progress);
-      ojsDirection?.define("crDirection", trigger.direction);
-      
-    });
+    updateStickies(allStickies, focusedStickyName, trigger)
+  }
+  
+  function crTriggerStepProgress(trigger) {
+    ojsTriggerProgress?.define("crTriggerProgress", trigger.progress)
+    ojsDirection?.define("crDirection", trigger.direction)
+  }
+  
+  function crProgressStepEnter(progressBlock) {
+    ojsProgressBlock?.define("crProgressBlock", progressBlock.progress)
+  }
+  
+  // set up scrollers on document load, and reset them when window zoom changes
+  // (they seem to misbehave on zoom change: see issue #101)
+
+  // primary scroller
+  const triggerScroller = scrollama()
+  triggerScroller
+    .setup(triggerScrollerConfig)
+    .onStepEnter(crTriggerStepEnter)
+    .onStepProgress(crTriggerStepProgress)
     
-    // secondary scroller used for making progress blocks
-    const progressBlockScroller = scrollama();
-    progressBlockScroller
-      .setup({
-        step: progressBlockSelector,
-        offset: 0.5,
-        progress: true,
-        debug: debugMode
-      })
-      .onStepProgress((progressBlock) => {
-      // update ojs variable
-      ojsProgressBlock?.define("crProgressBlock", progressBlock.progress);
-    });
+  // secondary scroller used for making progress blocks
+  const progressBlockScroller = scrollama()
+  progressBlockScroller
+    .setup(progressScrollerConfig)
+    .onStepProgress(crProgressStepEnter)
+
+  window.addEventListener("resize", (event) => {
+    setTimeout(() => triggerScroller.resize(), 1000)
+    setTimeout(() => progressBlockScroller.resize(), 1000)
+  })
+
     
-    // Add a listener for scrolling between new triggers
-    let currentIndex = -1; // Start before the first element
+  // Add a listener for scrolling between new triggers
+  let currentIndex = -1; // Start before the first element
+  
+  function scrollToNewTrigger(direction) {
+    const triggers = document.querySelectorAll('.new-trigger');
     
-    function scrollToNewTrigger(direction) {
-      const triggers = document.querySelectorAll('.new-trigger');
-      
-      if (triggers.length === 0) return; // do nothing if there's no triggers
-      
-      if (direction === "next") {
-        if (currentIndex >= triggers.length - 1) return; // exit if at end
-        currentIndex += 1;
-      }
-      
-      if (direction === "previous") {
-        if (currentIndex === 0) return; // exit if at start
-        currentIndex -= 1;
-      }
-      
-      const nextTrigger = triggers[currentIndex];
-      nextTrigger.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (triggers.length === 0) return; // do nothing if there's no triggers
+    
+    if (direction === "next") {
+      if (currentIndex >= triggers.length - 1) return; // exit if at end
+      currentIndex += 1;
     }
     
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'ArrowRight') {
-          scrollToNewTrigger("next");
-      }
-      if (event.key === 'ArrowLeft') {
-          scrollToNewTrigger("previous");
-      }
-    });
+    if (direction === "previous") {
+      if (currentIndex === 0) return; // exit if at start
+      currentIndex -= 1;
+    }
+    
+    const nextTrigger = triggers[currentIndex];
+    nextTrigger.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+  
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowRight') {
+        scrollToNewTrigger("next");
+    }
+    if (event.key === 'ArrowLeft') {
+        scrollToNewTrigger("previous");
+    }
+  });
 
  });
  
@@ -152,7 +165,6 @@ document.addEventListener('keydown', (event) => {
     }
   });
 });
-
  
  
 //===============//
@@ -393,4 +405,3 @@ function getBooleanConfig(metaFlag) {
     .querySelector("meta[" + metaFlag + "]")?.getAttribute(metaFlag)
   return option === "true"
 }
-
