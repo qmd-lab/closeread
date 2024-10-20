@@ -7,6 +7,8 @@ contributes:
     html:
       filters:
         - closeread.lua
+      shortcodes:
+        - spacer.lua
       css: closeread.css
       page-layout: full
       execute:
