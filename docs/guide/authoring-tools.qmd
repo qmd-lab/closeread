@@ -1,5 +1,42 @@
 ---
 title: Authoring Tools
+subtitle: Other tools to help you create scrollytelling content.
 ---
 
-Coming soon!
+## Observable JavaScript in Closeread
+
+Quarto lets you use [Observable JavaScript](https://quarto.org/docs/computations/ojs.html) (OJS) in your documents.
+
+Unlike R, Python and Julia, OJS runs continuously as your readers read the document, allowing your documents to react to things they do.
+
+Closeread makes the following variables available to your OJS code:
+
+- `crTriggerIndex` is a number representing the index of the currently visible trigger (starting from 0 and going down through the document).
+- `crTriggerProgress` is a number between 0 and 1 representing how far the currently active trigger has progressed through the visible window.
+- `crDirection` is either `"up"` or `"down"`, depending on the direction the user last scrolled.
+- `crActiveSticky` is the name of the currently visible sticky.
+- `crProgressBlock` is a number between 0 and 1 representing how far the currently active progress block has progressed through the visible window. (More on progress blocks [below](#progress-blocks))
+
+Because OJS is naturally reactive, any code that references these variables will continuously re-run as the reader scrolls. See the [OJS variables demo](/gallery/demos/ojs-variables) for an example of how to use these to make graphics that animate as the reader scrolls.
+
+### Progress blocks {#progress-blocks}
+
+If you want to animate a graphic across several triggers, you could manually work out arithmetic that uses both the trigger index and progress. But, due to the way our underlying libraries report progress, this can occasionally lead to hiccups - and the maths can be a little frustrating!
+
+Progress blocks alleviate this pain by letting you group several triggers and tracking the progress of the group as a whole.
+
+Using them is as easy as wrapping a series of triggers in a Pandoc div with `.progress-block`:
+
+````html
+::::{.cr-section}
+
+:::{.progress-block}
+Check out our graphic @cr-graphic
+
+We can keep referring to it as several triggers scroll by... @cr-graphic
+
+... and have OJS code elsewhere in the document to animate it @cr-graphic
+:::
+
+::::
+````
