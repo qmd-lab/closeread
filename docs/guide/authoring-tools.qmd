@@ -25,7 +25,7 @@ If you want to animate a graphic across several triggers, you could manually wor
 
 Progress blocks alleviate this pain by letting you group several triggers and tracking the progress of the group as a whole.
 
-Using them is as easy as wrapping a series of triggers in a Pandoc div with `.progress-block`:
+Using them is as easy as wrapping a series of triggers in a [fenced div](https://quarto.org/docs/authoring/markdown-basics.html#sec-divs-and-spans) and adding the `progress-block` class:
 
 ````html
 ::::{.cr-section}
