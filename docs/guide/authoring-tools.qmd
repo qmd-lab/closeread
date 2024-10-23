@@ -40,3 +40,5 @@ We can keep referring to it as several triggers scroll by... @cr-graphic
 
 ::::
 ````
+
+Finally, you might want to [style](styling.qmd) your documents to look the way your want.

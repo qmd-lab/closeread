@@ -55,3 +55,4 @@ format:
 If you use `remove-header-space`, you might want to add a title of your own! Be aware that the option will also hide other document metadata that is normally printed in the title block.
 :::
 
+Closeread has a few [other tools](authoring-tools.qmd) you can use to enhance your documents! You might also want to [style](styling.qmd) your documents to look the way your want.
