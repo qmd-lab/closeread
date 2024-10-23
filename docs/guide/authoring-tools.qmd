@@ -1,5 +1,5 @@
 ---
-title: Authoring Tools
+title: Authoring tools
 subtitle: Other tools to help you create scrollytelling content.
 ---
 
