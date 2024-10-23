@@ -8,11 +8,23 @@ format:
 
 Closeread is a custom format for [Quarto](https://quarto.org/) that enables scrollytelling features for html documents.
 
+Quarto first-timer? Get up and running with your first Closeread document.
+
+## Getting started {#gettingstarted}
+
 Install the extension by running the following command in the directory you wish to use it:
 
 ```bash
 quarto add qmd-lab/closeread
 ```
+
+:::{.callout-note collapse="true"}
+You can also install the development version of Closeread. It updates frequently and may break.
+
+```bash
+quarto add qmd-lab/closeread@dev
+```
+:::
 
 With the extension installed, you can author documents using the `closeread-html` format:
 
@@ -71,5 +83,20 @@ Draw your readers attention with: @cr-features
 \
 \
 
-For guidance on how to author closeread documents, read the [Guide](guide/index.qmd). For examples of closeread documents alongside their source, see the [Gallery](gallery/index.qmd). For a catalog of the syntax and yaml options used in the closeread extension, see the [Reference](reference/index.qmd).
+## What's next?
 
+For guidance on how to author Closeread documents, read the [Guide](guide/index.qmd), starting with [Components of a Closeread document](guide/components.qmd). These components are the essential building blocks of scrollytelling with Closeread. Follow the rest of the Guide for ways to add more advanced effects.
+
+### Publishing
+
+When you're ready to let the world (or just a few people) see your work, check out the [Quarto publishing section](https://quarto.org/docs/publishing/) of the Guide. Closeread documents follow the same publishing rules as other Quarto documents, so if you've worked with Quarto before, you're already already to go! Likewise, if you've published other static web pages before, you can take the files created by `quarto render` and put them anywhere on the web.
+
+### Gallery and Reference
+
+Need some inspiration? For examples of Closeread documents alongside their source, consult the [Gallery](gallery/index.qmd) to see how we made them. The Gallery also has examples that highlight particular features of Closeread.
+
+If you can't remember a particular option that Closeread uses, see the [Reference](reference/index.qmd).
+
+### Community
+
+Need help, or looking for others to connect with around Closeread? Come join us on the [discussion board](https://github.com/qmd-lab/closeread/discussions) or [file an issue](https://github.com/qmd-lab/closeread/issues).
