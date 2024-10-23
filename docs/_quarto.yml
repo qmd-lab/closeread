@@ -40,6 +40,7 @@ website:
           - guide/focus-effects.qmd
           - guide/layouts.qmd
           - guide/authoring-tools.qmd
+          - guide/styling.qmd
           
   page-footer:
     background: light

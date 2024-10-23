@@ -14,6 +14,8 @@ If you've never made a Closeread document, start with the very minimal example o
 
 [Authoring tools](authoring-tools.qmd) covers other useful tools to help you generate scrollytelling content, including ways to use [Observable JavaScript](https://quarto.org/docs/computations/ojs.html) to make animated graphics with Closeread.
 
+[Styling](styling.qmd) shows you how to change the appearance of your documents from the default Quarto theme.
+
 When you've finished the Guide, be sure to have a look at the [Gallery](/gallery) for more examples of what you can do with Closeread!
 
 * * *
