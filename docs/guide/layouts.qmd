@@ -1,8 +1,9 @@
 ---
 title: Layouts
+subtitle: Decide where your triggers and stickies lie on the page.
 ---
 
-The relative positioning of the narrative column and the sticky column determine the *layout*. You can set the layout of a section using the `layout` attribute on the block that defines the section.
+The relative positioning of the triggers and the stickies determine the *layout*. You can set the layout of a section using the `layout` attribute on the block that defines the section.
 
 ```markdown
 :::{.cr-section layout="overlay-center"}
@@ -10,7 +11,7 @@ The relative positioning of the narrative column and the sticky column determine
 :::
 ```
 
-## Layout Options
+## Layout options
 
 Options for `layout` include:
 
@@ -34,18 +35,23 @@ format:
 ```
 If a layout is specified in the document yaml, it will be propagated to all sections in the document. If a section has its own layout specified, that will override the document yaml similar to how code cell execution options work.
 
-## Presentation Mode
+## Presentation mode
 
-Closeread documents place special emphasis on the "stickies": the text, images, or code found in the main column that is described in the narrative. This 
+Closeread documents place special emphasis on the "stickies": the text, images, or code found in the main column that is described in the narrative. 
 
 While viewing any Closeread document in a browser, you can press `p`  on the keyboard to view it in presentation mode. Presentation mode is identical to the `overlay-center` layout except the narrative column is made transparent. You can return to the original layout by pressing `p` again. You can advance to the next trigger using the forward-arrow key and return to the previous trigger using the back-arrow key.
 
-## Removing Header Space
+## Removing header space
 
-By default, top of any Quarto HTML document, including `closeread-html` will reserve space at the top o the document for the title block. To remove this, you can use the `remove-header-space` option in the document header.
+By default, the top of any Quarto HTML document, including `closeread-html`, will reserve space at the top of the document for the title block. To remove this, you can use the `remove-header-space` option in the document header.
 
 ```yaml
 format:
   closeread-html:
     remove-header-space: true
 ```
+
+:::{.callout-note appearance="simple"}
+If you use `remove-header-space`, you might want to add a title of your own! Be aware that the option will also hide other document metadata that is normally printed in the title block.
+:::
+
