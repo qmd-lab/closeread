@@ -116,16 +116,15 @@ md`(derived) Angle 2: ${angle2.toFixed(1)}°`
 ```
 :::
 
-As you back and forth over this closeread section, note the values of the all six ojs variables that closeread makes available in ojs code cells:
+As you back and forth over this closeread section, note the values of the OJS variables that closeread makes available in OJS code cells:
 
-1. `crActiveSticky`: name of the active sticky
-2. `crTriggerIndex`: index of the active trigger
-3. `crTriggerProgress`: progress of the active trigger block from 0 to 1
-4. `crDirection`: either `"down"` or `"up"`, depending on the direction a user is scrolling
-5. `crProgressBlock`: progress of the active spanning progress block from 0 to 1
+1. `crTriggerIndex` is a number representing the index of the currently visible trigger (starting from 0 and going down through the document).
+2. `crTriggerProgress` is a number between 0 and 1 representing how far the currently active trigger has progressed through the visible window.
+3. `crDirection` is either `"up"` or `"down"`, depending on the direction the user last scrolled.
+4. `crActiveSticky` is the name of the currently visible sticky.
+5. `crProgressBlock` is a number between 0 and 1 representing how far the currently active progress block has progressed through the visible window (more on progress blocks in [Authoring Tools](/guide/authoring-tools.qmd)).
 
-To demonstrate the use of other ojs variables, we'll recreate the spinning behavior by a more creative mapping of `crTriggerIndex` and `crTriggerProgress` to form `angle2`. [This second globe demonstrates some interesting behavior: `angle2` was actually changing as a result of the two triggers used in making the first globe. ]
-
+To demonstrate the use of other OJS variables, we'll recreate the spinning behavior by a more creative mapping of `crTriggerIndex` and `crTriggerProgress` to form `angle2`. [This second globe demonstrates some interesting behavior: `angle2` was actually changing as a result of the two triggers used in making the first globe. ]
 
 ::::{.cr-section layout="overlay-center"}
 

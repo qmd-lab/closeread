@@ -45,7 +45,7 @@ Identifiers start with `#`; classes start with `.`, and attributes have a key / 
 
 ### Section Options
 
-A closeread section is a div with the class `cr-section` that contains stickies and triggers.
+A Closeread section is a div with the class `cr-section` that contains stickies and triggers.
 
 ::: {#section-options}
 :::
@@ -66,7 +66,7 @@ A trigger block is a div with the `focus-on` attribute to trigger effects on a p
 
 ## Keyboard Hotkeys
 
-While viewing a closeread document in a browser, you can press certain hotkeys to toggle features.
+While viewing a Closeread document in a browser, you can press certain hotkeys to toggle features.
 
 | Hotkey                    | Effect                     |
 |---------------------------|----------------------------|

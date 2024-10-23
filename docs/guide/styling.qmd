@@ -1,0 +1,33 @@
+---
+title: Styling
+subtitle: Change the way your Closeread documents look.
+---
+
+Closeread documents will generally follow the [Quarto theme](https://quarto.org/docs/output-formats/html-themes.html) you use. However, you'll likely want to customise the appearance of your Closeread sections.
+
+# (S)CSS customisation
+
+Users familiar with CSS or SCSS can add a stylesheet to tweak the appearance of Closeread sections.
+
+Closeread divides the content of sections into two columns:
+
+1. A `.narrative-col` contains triggers and other non-sticky content; and
+2. A `.sticky-col` contains the stickies, stacked on top of each other in a `.sticky-col-stack`
+
+The hierarchy of elements is as follows.
+
+```markdown
+.cr-section
+├ .narrative-col        # all non-stickies go in this column
+│ ╰ .trigger            # wraps each trigger block w/ vert padding
+│   ╰ .narrative        # visible trigger content
+╰ .sticky-col
+  ╰ .sticky-col-stack   # stickies go here
+    ╰ .sticky           # wraps each individual sticky 
+```
+
+You'll most likely want to target the following elements:
+
+- `.cr-section` if you want to add a background colour to the entire section
+- `.narrative-col` if you want to add a background colour to the column containing the triggers (especially in a sidebar layout), or change its width
+- `.narrative` to change the appearance of triggers, including their background colour, border radius (for curved or not curved boxes), text colour or font
