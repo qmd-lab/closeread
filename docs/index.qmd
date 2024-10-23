@@ -51,6 +51,8 @@ Step three: flag an element to become a sticky. [@cr-doc]{highlight="14-18"}
 Step four: create a trigger to make the sticky appear. [@cr-doc]{highlight="12"}
 :::
 
+Triggers, like this text, scroll past while the stickies stay "stuck" on the page. [@cr-doc]{highlight=""}
+
 :::{#cr-doc filename="myfirstcr.qmd"}
 ````markdown
 ---
