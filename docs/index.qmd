@@ -1,12 +1,11 @@
 ---
 title: "Closeread"
+subtitle: "Closeread is a custom format for [Quarto](https://quarto.org/) that enables scrollytelling features for HTML documents."
 format:
   closeread-html:
     theme: cosmo
     css: index-styles.css
 ---
-
-Closeread is a custom format for [Quarto](https://quarto.org/) that enables scrollytelling features for html documents.
 
 Quarto first-timer? Get up and running with your first Closeread document.
 
