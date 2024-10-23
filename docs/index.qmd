@@ -6,7 +6,7 @@ format:
     css: index-styles.css
 ---
 
-closeread is a custom format for [Quarto](https://quarto.org/) that enables scrollytelling features for html documents.
+Closeread is a custom format for [Quarto](https://quarto.org/) that enables scrollytelling features for html documents.
 
 Install the extension by running the following command in the directory you wish to use it:
 
@@ -28,11 +28,11 @@ format: closeread-html
 
 ::::{.cr-section layout="overlay-center" style="font-size: 1.5em; background-color: rgba(39, 128, 227, 0.2);"}
 
-Get your first closeread doc up and running in four steps. @cr-doc
+Get your first Closeread doc up and running in four steps. @cr-doc
 
 Step one: create a qmd file and set the format to closeread-html. [@cr-doc]{highlight="3"}
 
-Step two: open up a closeread section. [@cr-doc]{highlight="8-20"}
+Step two: open up a Closeread section. [@cr-doc]{highlight="8-20"}
 
 Step three: flag an element to become a sticky. [@cr-doc]{highlight="14-18"}
 

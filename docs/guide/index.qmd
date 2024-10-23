@@ -3,7 +3,7 @@ title: Guide
 toc: true
 ---
 
-Closeread is a Quarto extension that allows you to author scrollytelling HTML documents. To learn how to create your first closeread document, start off by reading about the [Components of a Closeread Document](components.qmd).
+Closeread is a Quarto extension that allows you to author scrollytelling HTML documents. To learn how to create your first Closeread document, start off by reading about the [Components of a Closeread Document](components.qmd).
 
 * * *
 

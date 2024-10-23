@@ -4,7 +4,7 @@ project:
     - './copy_extension.sh'
 
 website:
-  title: "closeread"
+  title: "Closeread"
   navbar:
     left:
       - href: index.qmd

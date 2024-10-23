@@ -86,7 +86,7 @@ The end of the first two lines of a Limerick must rhyme. [@cr-limerick]{highligh
 | to a seat in the uppermost gallery.
 ````
 
-Note that closeread extends the native pandoc processing of line blocks. Instead of wrapping line blocks in a fenced divs and providing and id and classes there, you can provide them on the first line of the line block in curly braces as demonstrated above. The functionality is identical; the goal of the feature is to simplify the syntax.
+Note that Closeread extends the native pandoc processing of line blocks. Instead of wrapping line blocks in a fenced divs and providing and id and classes there, you can provide them on the first line of the line block in curly braces as demonstrated above. The functionality is identical; the goal of the feature is to simplify the syntax.
 
 
 ## Zooming
