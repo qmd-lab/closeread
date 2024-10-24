@@ -40,7 +40,7 @@ Step three: flag an element to become a sticky. [@cr-doc]{highlight="14-18"}
 Step four: create a trigger to make the sticky appear. [@cr-doc]{highlight="12"}
 :::
 
-:::{#cr-doc filename="myfirstcr.qmd"}
+:::{#cr-doc filename="myfirstcr.qmd" .scale-to-fill}
 ````markdown
 ---
 title: My First Closeread
