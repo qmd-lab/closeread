@@ -7,7 +7,7 @@ format:
     css: index-styles.css
 ---
 
-Quarto first-timer? Get up and running with your first Closeread document.
+[New to Quarto? Get started by working through the [Quarto tutorials](https://quarto.org/docs/get-started/).]{.column-margin}
 
 ## Getting started {#gettingstarted}
 
@@ -16,14 +16,6 @@ Install the extension by running the following command in the directory you wish
 ```bash
 quarto add qmd-lab/closeread
 ```
-
-:::{.callout-note collapse="true"}
-You can also install the development version of Closeread. It updates frequently and may break.
-
-```bash
-quarto add qmd-lab/closeread@dev
-```
-:::
 
 With the extension installed, you can author documents using the `closeread-html` format:
 
@@ -101,3 +93,11 @@ If you can't remember a particular option that Closeread uses, see the [Referenc
 ### Community
 
 Need help, or looking for others to connect with around Closeread? Come join us on the [discussion board](https://github.com/qmd-lab/closeread/discussions) or [file an issue](https://github.com/qmd-lab/closeread/issues).
+
+:::{.callout-note collapse="true"}
+You can also install the development version of Closeread. It updates frequently and may break.
+
+```bash
+quarto add qmd-lab/closeread@dev
+```
+:::
