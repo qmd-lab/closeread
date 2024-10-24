@@ -116,7 +116,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => progressBlockScroller.resize(), 1000)
   })
 
-    
+  // === Hotkey Listeners === //
   // Add a listener for scrolling between new triggers
   let currentIndex = -1; // Start before the first element
   
@@ -148,23 +148,21 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
- });
- 
-// === Other Hotkey Listeners === //
-
-// toggle presentation mode
-document.addEventListener('keydown', (event) => {
-  const crSections = document.querySelectorAll('.cr-section');
-  crSections.forEach((el) => {
-    if (event.key === "p") {
-      if (el.classList.contains("presentation-mode")) {
-          el.classList.remove("presentation-mode");
-      } else {
-          el.classList.add("presentation-mode");
+  // toggle presentation mode
+  document.addEventListener('keydown', (event) => {
+    const crSections = document.querySelectorAll('.cr-section');
+    crSections.forEach((el) => {
+      if (event.key === "p") {
+        if (el.classList.contains("presentation-mode")) {
+            el.classList.remove("presentation-mode");
+        } else {
+            el.classList.add("presentation-mode");
+        }
       }
-    }
+    });
   });
-});
+
+ });
  
  
 //===============//
