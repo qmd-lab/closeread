@@ -2,8 +2,6 @@
 // closeread.js //
 //==============//
 
-// import throttleDebounce from "https://cdn.jsdelivr.net/npm/throttle-debounce@5.0.2/+esm"
-
 // set params
 const triggerSelector = '.new-trigger'
 const progressBlockSelector = '.progress-block'
