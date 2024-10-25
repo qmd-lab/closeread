@@ -1,5 +1,5 @@
 ---
-title: Components of a Closeread document
+title: Components of a Closeread Document
 subtitle: "Learn the essential building blocks of Closeread: sections, stickies and triggers."
 ---
 
