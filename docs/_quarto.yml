@@ -5,6 +5,7 @@ project:
 
 website:
   title: "Closeread"
+  page-navigation: true
   navbar:
     left:
       - href: index.qmd
