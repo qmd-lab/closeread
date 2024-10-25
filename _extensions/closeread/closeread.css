@@ -9,6 +9,7 @@
 .cr-section {
   display: grid;
   grid-template-rows: 1fr;
+  background-color: var(--cr-section-background-color);
 }
 .cr-section .narrative-col {
   grid-row: 1;
@@ -113,7 +114,7 @@
   grid-column: 1;
   z-index: 1;
   transition: opacity 0.5s ease-in-out;
-  max-width: 527.98px;
+  max-width: var(--cr-trigger-max-width);
 }
 .overlay-left .narrative-col .narrative,
 .overlay-center .narrative-col .narrative,
@@ -147,6 +148,7 @@
 .sidebar-left .narrative-col {
   grid-column: 1;
   margin-inline: 0;
+  background-color: var(--cr-sidebar-background-color);
 }
 .sidebar-left .sticky-col {
   grid-column: 2;
@@ -158,6 +160,7 @@
 .sidebar-right .narrative-col {
   grid-column: 2;
   margin-inline: 0;
+  background-color: var(--cr-sidebar-background-color);
 }
 .sidebar-right .sticky-col {
   grid-column: 1;
@@ -250,9 +253,17 @@ body.cr-removeheaderspace #quarto-content main#quarto-document-content .quarto-t
   display: none;
 }
 
-/* configurable style variables */
+/* configurable style variables. use bootstrap variables where possible */
 :root {
-  --cr-trigger-background-color: rgba(17, 17, 17, .85);
+  --cr-trigger-background-color: var(--bs-primary);
+  --cr-trigger-text-color: var(--bs-light);
+  --cr-trigger-border-radius: 1em;
+  --cr-trigger-max-width: 527.98px;
+  --cr-trigger-outer-margin: 5%;
+  --cr-sidebar-background-color: var(--bs-primary);
+  --cr-section-background-color: var(--bs-secondary-bg);
+  --cr-font-family: var(--bs-body-font-family);
+  --cr-font-size: 1.15rem;
 }
 
 /*# sourceMappingURL=closeread.css.map */

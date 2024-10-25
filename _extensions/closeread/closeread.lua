@@ -18,7 +18,15 @@ local global_layout = "sidebar-left"
 -- default style options
 local style_options = {}
 local allowed_style_options = {
-  "trigger-background-color"
+  "trigger-background-color",
+  "trigger-text-color",
+  "trigger-border-radius",
+  "trigger-max-width",
+  "trigger-outer-margin",
+  "sidebar-background-color",
+  "section-background-color",
+  "font-family",
+  "font-size"
 }
 
 --======================--
@@ -44,15 +52,14 @@ function read_meta(m)
     end
   end
 
-  -- style options
+  -- style options: add values for any allowed keys to injected style string
   if m["cr-section"] ~= nil then
     if m["cr-section"]["style"] ~= nil then
-      -- TODO - loop over allowed_style_options table instead
-      if m["cr-section"]["style"]["trigger-background-color"] ~= nil then
-        style_options["trigger-background-color"] =
-          m["cr-section"]["style"]["trigger-background-color"][1].text
+      for index, value in ipairs(allowed_style_options) do
+        if m["cr-section"]["style"][value] then
+          style_options[value] = m["cr-section"]["style"][value][1].text
+        end
       end
-      -- TODO - other style options?
     end
   end
 

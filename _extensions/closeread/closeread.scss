@@ -15,6 +15,7 @@
 .cr-section {
   display: grid;
   grid-template-rows: 1fr;
+  background-color: var(--cr-section-background-color);
 
   .narrative-col {
     grid-row: 1;
@@ -154,7 +155,7 @@
     grid-column: 1;
     z-index: 1;
     transition: opacity 0.5s ease-in-out;
-    max-width: 527.98px;
+    max-width: var(--cr-trigger-max-width);
     
     .narrative {
       background-color: var(--cr-trigger-background-color);
@@ -194,6 +195,7 @@
   .narrative-col {
     grid-column: 1;
     margin-inline: 0;
+    background-color: var(--cr-sidebar-background-color);
   }
 
   .sticky-col {
@@ -206,6 +208,7 @@
   .narrative-col {
     grid-column: 2;
     margin-inline: 0;
+    background-color: var(--cr-sidebar-background-color);
   }
 
   .sticky-col {
@@ -338,8 +341,16 @@ body.cr-removeheaderspace {
 
 }
 
-/* configurable style variables */
+/* configurable style variables. use bootstrap variables where possible */
 
 :root {
-  --cr-trigger-background-color: rgba(17, 17, 17, .85);
+  --cr-trigger-background-color: var(--bs-primary);
+  --cr-trigger-text-color: var(--bs-light);
+  --cr-trigger-border-radius: 1em;
+  --cr-trigger-max-width: 527.98px;
+  --cr-trigger-outer-margin: 5%;
+  --cr-sidebar-background-color: var(--bs-primary);
+  --cr-section-background-color: var(--bs-secondary-bg);
+  --cr-font-family: var(--bs-body-font-family);
+  --cr-font-size: 1.15rem;
 }
