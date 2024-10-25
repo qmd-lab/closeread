@@ -25,7 +25,7 @@ In the overlay layouts, the sticky column occupies the entire screen width and t
 
 Documents containing multiple Closeread sections can use the same layouts or different ones. As an alternative to specifying the layout on the section block, it can also be defined in the document yaml under the `cr-section` key.
 
-```
+```yaml
 ---
 format:
   closeread-html:
@@ -43,16 +43,20 @@ While viewing any Closeread document in a browser, you can press `p`  on the key
 
 ## Removing header space {#removeheaderspace}
 
-By default, the top of any Quarto HTML document, including `closeread-html`, will reserve space at the top of the document for the title block. To remove this, you can use the `remove-header-space` option in the document header.
+By default, the top of any Quarto HTML document, including `closeread-html`, will reserve space at the top of the document for the title block. To remove this, you can use the `remove-header-space` option in the document header[^1].
 
 ```yaml
+---
 format:
   closeread-html:
     remove-header-space: true
+---
 ```
 
-:::{.callout-note appearance="simple"}
-If you use `remove-header-space`, you might want to add a title of your own! Be aware that the option will also hide other document metadata that is normally printed in the title block.
-:::
 
-Closeread has a few [other tools](authoring-tools.qmd) you can use to enhance your documents! You might also want to [style](styling.qmd) your documents to look the way your want.
+[^1]: If you use `remove-header-space`, you might want to add a title of your own! Be aware that the option will also hide other document metadata that is normally printed in the title block.
+
+
+Removing the header space is often a good choice if your entire document is one large Closeread section. If that is the case, you may also want to consider [disabling the Quarto sidebar](https://quarto.org/docs/websites/website-navigation.html#hiding-navigation).
+
+One of the unique characteristics of a scrollytelling Quarto doc is it allows you to link the animation of a graphic with the scrolling of the user. Read on to learn how to include [interactive graphics](interactive-graphics.qmd)!
