@@ -129,7 +129,7 @@
       margin-inline: auto;
       
       .narrative {
-        background-color: rgba(17, 17, 17, .85);
+        background-color: var(--cr-trigger-background-color);
         color: white;
         padding: 5px;
         border-radius: 5px;
@@ -157,7 +157,7 @@
     max-width: 527.98px;
     
     .narrative {
-      background-color: rgba(17, 17, 17, .85);
+      background-color: var(--cr-trigger-background-color);
       color: white;
       padding: 5px;
       border-radius: 5px;
@@ -336,4 +336,10 @@ body.cr-removeheaderspace {
     }
   }
 
+}
+
+/* configurable style variables */
+
+:root {
+  --cr-trigger-background-color: rgba(17, 17, 17, .85);
 }

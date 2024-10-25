@@ -15,6 +15,11 @@ local cr_attributes = {["pan-to"] = true,
 local remove_header_space = false
 local global_layout = "sidebar-left"
 
+-- default style options
+local style_options = {}
+local allowed_style_options = {
+  "trigger-background-color"
+}
 
 --======================--
 -- Process YAML options --
@@ -38,6 +43,39 @@ function read_meta(m)
       global_layout = m["cr-section"]["layout"][1].text
     end
   end
+
+  -- style options
+  if m["cr-section"] ~= nil then
+    if m["cr-section"]["style"] ~= nil then
+      -- TODO - loop over allowed_style_options table instead
+      if m["cr-section"]["style"]["trigger-background-color"] ~= nil then
+        style_options["trigger-background-color"] =
+          m["cr-section"]["style"]["trigger-background-color"][1].text
+      end
+      -- TODO - other style options?
+    end
+  end
+
+  -- process style options into style strings using keys as css vars
+  local style_string = ""
+  for key, value in pairs(style_options) do
+    style_string = style_string ..
+      "--cr-" .. key .. ": " .. value .. ";\n"
+  end
+
+  -- inject style option style block
+  if style_string ~= "" then
+    local style_tag = [[
+      <!-- user-provided yaml closeread style options -->
+      <style>
+        :root {
+          ]] .. style_string .. [[
+        }
+      </style>
+    ]]
+    quarto.doc.include_text("before-body", style_tag)
+  end
+
   
   -- inject debug mode option in html <meta>
   quarto.doc.include_text("in-header", "<meta cr-debug-mode='" ..

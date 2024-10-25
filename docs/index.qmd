@@ -4,6 +4,9 @@ format:
   closeread-html:
     theme: cosmo
     css: index-styles.css
+    # cr-section:
+    #   style:
+    #     trigger-background-color: red
 ---
 
 closeread is a custom format for [Quarto](https://quarto.org/) that enables scrollytelling features for html documents.

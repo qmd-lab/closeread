@@ -89,7 +89,7 @@
   .cr-section.overlay-left .narrative-col .narrative,
   .cr-section.overlay-right .narrative-col .narrative,
   .cr-section.overlay-center .narrative-col .narrative {
-    background-color: rgba(17, 17, 17, 0.85);
+    background-color: var(--cr-trigger-background-color);
     color: white;
     padding: 5px;
     border-radius: 5px;
@@ -118,7 +118,7 @@
 .overlay-left .narrative-col .narrative,
 .overlay-center .narrative-col .narrative,
 .overlay-right .narrative-col .narrative {
-  background-color: rgba(17, 17, 17, 0.85);
+  background-color: var(--cr-trigger-background-color);
   color: white;
   padding: 5px;
   border-radius: 5px;
@@ -248,6 +248,11 @@ body.cr-removeheaderspace #quarto-content main#quarto-document-content {
 }
 body.cr-removeheaderspace #quarto-content main#quarto-document-content .quarto-title-block {
   display: none;
+}
+
+/* configurable style variables */
+:root {
+  --cr-trigger-background-color: rgba(17, 17, 17, .85);
 }
 
 /*# sourceMappingURL=closeread.css.map */
