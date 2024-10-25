@@ -1,5 +1,5 @@
 ---
-title: Focus Fffects
+title: Focus Effects
 subtitle: Guide your readers' attention to aspects of your stickies.
 ---
 
