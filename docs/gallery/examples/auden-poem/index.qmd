@@ -4,10 +4,37 @@ image: gabbert.png
 author: Elisa Gabbert
 format:
   closeread-html:
-    css: nytimes.css
+    # css: nytimes.css
     remove-header-space: true
     debug-mode: false
+    cr-section:
+      style:
+        trigger-text-color-sidebar: white
+        trigger-font-family: Georgia
+        trigger-border-radius: 5px
+        trigger-background-color-overlay: "#111111dd"
+        sidebar-background-color: "#111111"
+        section-background-color: white
+        poem-font-family: Georgia
 ---
+
+```{=html}
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
+
+  #quarto-document-content h1 {
+    font-family: "Cormorant Garamond", "Times New Roman", Times, serif;
+    font-weight: 500;
+    font-size: 2.8em;
+    line-height: 1;
+    margin-top: 0;
+  }
+
+  .cr-section  .narrative-col  > *:first-child {
+    padding-block-start: 10svh;
+  }
+</style>
+```
 
 :::{.cr-section}
 
