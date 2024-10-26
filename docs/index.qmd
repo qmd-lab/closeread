@@ -36,8 +36,9 @@ Step two: open up a closeread section. [@cr-doc]{highlight="8-20"}
 
 Step three: flag an element to become a sticky. [@cr-doc]{highlight="14-18"}
 
-:::{focus-on="cr-doc" highlight="12" style="padding-bottom: 100dvh"}
 Step four: create a trigger to make the sticky appear. [@cr-doc]{highlight="12"}
+
+:::{style="height: 40dvh; visibility: hidden"}
 :::
 
 :::{#cr-doc filename="myfirstcr.qmd" .scale-to-fill}

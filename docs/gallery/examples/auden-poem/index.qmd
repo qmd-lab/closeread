@@ -61,4 +61,4 @@ No matter how familiar a poem is, rereading it always gives me a sense of first 
 \
 \
 
-This is an excerpt of the first three lines of *A Poem (and a Painting) About the Suffering That Hides in Plain Sight* by Elisa Gabbert, appearing in *The New York Times* on March 6, 2022 (<https://www.nytimes.com/interactive/2022/03/06/books/auden-musee-des-beaux-arts.html>) 
+This is an excerpt of the first three lines of [*A Poem (and a Painting) About the Suffering That Hides in Plain Sight*](https://www.nytimes.com/interactive/2022/03/06/books/auden-musee-des-beaux-arts.html) by Elisa Gabbert, appearing in *The New York Times* on March 6, 2022.
