@@ -3,11 +3,24 @@ title: "Closeread"
 format:
   closeread-html:
     theme: cosmo
-    css: index-styles.css
-    # cr-section:
-    #   style:
-    #     trigger-background-color: red
+    cr-section:
+      style:
+        trigger-background-color: "#111111d9"
+        # if you refer to other css variables, escape the double-hyphen
+        section-background-color: "var(\\-\\-bs-primary)"
 ---
+
+```{=html}
+<style>
+  .cr-section .narrative-col {
+    font-size: 1.4em;
+  }
+
+  .cr-section .sticky-col {
+    font-size: 0.6em;
+  }
+</style>
+```
 
 closeread is a custom format for [Quarto](https://quarto.org/) that enables scrollytelling features for html documents.
 
@@ -29,7 +42,7 @@ format: closeread-html
 \
 \
 
-::::{.cr-section layout="overlay-center" style="font-size: 1.5em; background-color: rgba(39, 128, 227, 0.2);"}
+::::{.cr-section layout="overlay-center" style="font-size: 1.5em;"}
 
 Get your first closeread doc up and running in four steps. @cr-doc
 
@@ -76,4 +89,3 @@ Draw your readers attention with: @cr-features
 \
 
 For guidance on how to author closeread documents, read the [Guide](guide/index.qmd). For examples of closeread documents alongside their source, see the [Gallery](gallery/index.qmd). For a catalog of the syntax and yaml options used in the closeread extension, see the [Reference](reference/index.qmd).
-
