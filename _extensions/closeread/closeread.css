@@ -18,7 +18,10 @@
   padding-block: 45svh;
   padding-inline: 24px;
 }
-.cr-section .narrative-col .trigger p {
+.cr-section .narrative-col .trigger .narrative {
+  padding: 0.7em 0.75em;
+}
+.cr-section .narrative-col .trigger .narrative > p {
   margin-bottom: 0;
 }
 .cr-section .sticky-col {
@@ -92,7 +95,7 @@
   .cr-section.overlay-center .narrative-col .narrative {
     background-color: var(--cr-trigger-background-color);
     color: white;
-    padding: 5px;
+    padding: 0.3em 0.5em;
     border-radius: 5px;
   }
   .cr-section.sidebar-left .sticky-col,
@@ -121,7 +124,6 @@
 .overlay-right .narrative-col .narrative {
   background-color: var(--cr-trigger-background-color);
   color: white;
-  padding: 5px;
   border-radius: 5px;
 }
 .overlay-left .sticky-col,
@@ -150,6 +152,9 @@
   margin-inline: 0;
   background-color: var(--cr-sidebar-background-color);
 }
+.sidebar-left .narrative-col .narrative {
+  padding: 0 0.75em;
+}
 .sidebar-left .sticky-col {
   grid-column: 2;
 }
@@ -161,6 +166,9 @@
   grid-column: 2;
   margin-inline: 0;
   background-color: var(--cr-sidebar-background-color);
+}
+.sidebar-right .narrative-col .narrative {
+  padding: 0 0.75em;
 }
 .sidebar-right .sticky-col {
   grid-column: 1;
