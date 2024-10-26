@@ -20,6 +20,9 @@
   .narrative-col {
     grid-row: 1;
 
+    font-family: var(--cr-trigger-font-family);
+    font-size: var(--cr-trigger-font-size);
+
     .trigger {
       padding-block: 45svh;
       padding-inline: 24px;
@@ -138,10 +141,10 @@
       margin-inline: auto;
       
       .narrative {
-        background-color: var(--cr-trigger-background-color);
-        color: white;
+        background-color: var(--cr-trigger-background-color-overlay);
+        color: var(--cr-trigger-text-color-overlay);
         padding: 0.3em 0.5em;
-        border-radius: 5px;
+        border-radius: var(--cr-trigger-border-radius);
       }
     }
 
@@ -166,9 +169,9 @@
     max-width: var(--cr-trigger-max-width);
     
     .narrative {
-      background-color: var(--cr-trigger-background-color);
-      color: white;
-      border-radius: 5px;
+      background-color: var(--cr-trigger-background-color-overlay);
+      color: var(--cr-trigger-text-color-overlay);
+      border-radius: var(--cr-trigger-border-radius);
     }
   }
 
@@ -181,6 +184,7 @@
 .overlay-left {
   .narrative-col {
     justify-self: start;
+    margin-left: var(--cr-trigger-outer-margin);
   }
 }
 .overlay-center {
@@ -191,6 +195,7 @@
 .overlay-right {
   .narrative-col {
     justify-self: end;
+    margin-right: var(--cr-trigger-outer-margin);
   }
 }
 
@@ -206,6 +211,7 @@
 
     .narrative {
       padding: 0 0.75em;
+      color: var(--cr-trigger-text-color-sidebar);
     }
   }
 
@@ -220,9 +226,10 @@
     grid-column: 2;
     margin-inline: 0;
     background-color: var(--cr-sidebar-background-color);
-
+    
     .narrative {
       padding: 0 0.75em;
+      color: var(--cr-trigger-text-color-sidebar);
     }
   }
 
@@ -251,7 +258,6 @@
     grid-column: 1 !important;
   }
 }
-
 
 /* poem styles */
 
@@ -330,7 +336,7 @@ body.cr-debug {
     .trigger {
       background: rgba(0, 208, 255, 0.5);
       border: 1px solid orange;
-      border-radius: 5px;
+      border-radius: var(--cr-trigger-border-radius);
       
       &.new-trigger {
         background: lightgreen;
@@ -359,13 +365,15 @@ body.cr-removeheaderspace {
 /* configurable style variables. use bootstrap variables where possible */
 
 :root {
-  --cr-trigger-background-color: var(--bs-primary);
-  --cr-trigger-text-color: var(--bs-light);
+  --cr-trigger-background-color-overlay: var(--bs-primary);
+  --cr-trigger-text-color-overlay: var(--bs-light);
+  --cr-trigger-text-color-sidebar: var(--bs-dark);
   --cr-trigger-border-radius: 1em;
   --cr-trigger-max-width: 527.98px;
   --cr-trigger-outer-margin: 5%;
+  --cr-trigger-font-family: var(--bs-body-font-family);
+  --cr-trigger-font-size: 1.15rem;
   --cr-sidebar-background-color: var(--bs-primary);
   --cr-section-background-color: var(--bs-secondary-bg);
-  --cr-font-family: var(--bs-body-font-family);
-  --cr-font-size: 1.15rem;
 }
+

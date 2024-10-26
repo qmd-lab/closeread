@@ -18,15 +18,16 @@ local global_layout = "sidebar-left"
 -- default style options
 local style_options = {}
 local allowed_style_options = {
-  "trigger-background-color",
-  "trigger-text-color",
+  "trigger-background-color-overlay",
+  "trigger-text-color-overlay",
+  "trigger-text-color-sidebar",
   "trigger-border-radius",
   "trigger-max-width",
   "trigger-outer-margin",
+  "trigger-font-family",
+  "trigger-font-size",
   "sidebar-background-color",
-  "section-background-color",
-  "font-family",
-  "font-size"
+  "section-background-color"
 }
 
 --======================--
