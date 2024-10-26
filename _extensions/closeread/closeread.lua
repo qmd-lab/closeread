@@ -26,6 +26,7 @@ local allowed_style_options = {
   "trigger-outer-margin",
   "trigger-font-family",
   "trigger-font-size",
+  "poem-font-family",
   "sidebar-background-color",
   "section-background-color"
 }

@@ -67,12 +67,14 @@
           transform-origin 1s ease-in-out;
       }
       
-      .sticky.cr-poem {
+      .sticky:has(.line-block) {
+        font-family: var(--cr-poem-font-family);
         transition:
           transform .8s ease-in-out;
       }
       
-      .sticky.cr-poem2 {
+      .sticky:has(.line-block) {
+        font-family: var(--cr-poem-font-family);
         transition:
           transform .8s ease-in-out,
           font-size .8s ease-in-out;
@@ -139,6 +141,7 @@
       grid-column: 1;
       z-index: 1;
       margin-inline: auto;
+      background-color: transparent;
       
       .narrative {
         background-color: var(--cr-trigger-background-color-overlay);
@@ -259,63 +262,6 @@
   }
 }
 
-/* poem styles */
-
-.cr-poem {
-
-  font-family: Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
-  
-  /* need large font to stop safari text blurriness, but max-height to stop
-   other stickies from being pushed down by pre-scaled poem size */
-  max-height: 100dvh; 
-  font-size: 300%;
-
-  white-space: pre;
-  line-height: .7em;
-  
-  // transform transition is applied along with all stickies
-  transform-origin: center center;
-
-  // fade the rest of the poem out when there's a highlight active
-  &.cr-hl-within {
-    color: rgba(0, 0, 0, 0.4);
-  }
-
-  .cr-hl {
-    color: rgba(0, 0, 0, 1);
-  }
-}
-
-.cr-poem2 {
-
-  font-family: Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
-  
-  // size the poem to fit the screen
-  max-height: 100svh;
-  max-width: 100svh;
-  
-  // maybe this can be overridden with lua
-  font-size: 2.75cqmin;
-
-  white-space: pre;
-  line-height: .6em;
-  
-  // transform transition is applied along with all stickies
-  transform-origin: center center;
-
-  // fade the rest of the poem out when there's a highlight active
-  &.cr-hl-within {
-    color: rgba(0, 0, 0, 0.4);
-    // when there's a highlight, we only want to scale based on width!
-    font-size: 2.75cqi;
-  }
-
-  .cr-hl {
-    color: rgba(0, 0, 0, 1);
-  }
-}
-
-
 /* debug styles */
 
 body.cr-debug {
@@ -373,6 +319,7 @@ body.cr-removeheaderspace {
   --cr-trigger-outer-margin: 5%;
   --cr-trigger-font-family: var(--bs-body-font-family);
   --cr-trigger-font-size: 1.15rem;
+  --cr-poem-font-family: Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
   --cr-sidebar-background-color: var(--bs-primary);
   --cr-section-background-color: var(--bs-secondary-bg);
 }

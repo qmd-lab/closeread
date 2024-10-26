@@ -13,6 +13,8 @@
 }
 .cr-section .narrative-col {
   grid-row: 1;
+  font-family: var(--cr-trigger-font-family);
+  font-size: var(--cr-trigger-font-size);
 }
 .cr-section .narrative-col .trigger {
   padding-block: 45svh;
@@ -40,10 +42,12 @@
   opacity: 0;
   transition: opacity linear 0.5s, color 0.7s linear, transform 1s ease-in-out, transform-origin 1s ease-in-out;
 }
-.cr-section .sticky-col .sticky-col-stack .sticky.cr-poem {
+.cr-section .sticky-col .sticky-col-stack .sticky:has(.line-block) {
+  font-family: var(--cr-poem-font-family);
   transition: transform 0.8s ease-in-out;
 }
-.cr-section .sticky-col .sticky-col-stack .sticky.cr-poem2 {
+.cr-section .sticky-col .sticky-col-stack .sticky:has(.line-block) {
+  font-family: var(--cr-poem-font-family);
   transition: transform 0.8s ease-in-out, font-size 0.8s ease-in-out;
 }
 .cr-section .sticky-col .sticky-col-stack .cr-active {
@@ -87,16 +91,17 @@
     grid-column: 1;
     z-index: 1;
     margin-inline: auto;
+    background-color: transparent;
   }
   .cr-section.sidebar-left .narrative-col .narrative,
   .cr-section.sidebar-right .narrative-col .narrative,
   .cr-section.overlay-left .narrative-col .narrative,
   .cr-section.overlay-right .narrative-col .narrative,
   .cr-section.overlay-center .narrative-col .narrative {
-    background-color: var(--cr-trigger-background-color);
-    color: white;
+    background-color: var(--cr-trigger-background-color-overlay);
+    color: var(--cr-trigger-text-color-overlay);
     padding: 0.3em 0.5em;
-    border-radius: 5px;
+    border-radius: var(--cr-trigger-border-radius);
   }
   .cr-section.sidebar-left .sticky-col,
   .cr-section.sidebar-right .sticky-col,
@@ -122,9 +127,9 @@
 .overlay-left .narrative-col .narrative,
 .overlay-center .narrative-col .narrative,
 .overlay-right .narrative-col .narrative {
-  background-color: var(--cr-trigger-background-color);
-  color: white;
-  border-radius: 5px;
+  background-color: var(--cr-trigger-background-color-overlay);
+  color: var(--cr-trigger-text-color-overlay);
+  border-radius: var(--cr-trigger-border-radius);
 }
 .overlay-left .sticky-col,
 .overlay-center .sticky-col,
@@ -134,6 +139,7 @@
 
 .overlay-left .narrative-col {
   justify-self: start;
+  margin-left: var(--cr-trigger-outer-margin);
 }
 
 .overlay-center .narrative-col {
@@ -142,6 +148,7 @@
 
 .overlay-right .narrative-col {
   justify-self: end;
+  margin-right: var(--cr-trigger-outer-margin);
 }
 
 .sidebar-left {
@@ -154,6 +161,7 @@
 }
 .sidebar-left .narrative-col .narrative {
   padding: 0 0.75em;
+  color: var(--cr-trigger-text-color-sidebar);
 }
 .sidebar-left .sticky-col {
   grid-column: 2;
@@ -169,6 +177,7 @@
 }
 .sidebar-right .narrative-col .narrative {
   padding: 0 0.75em;
+  color: var(--cr-trigger-text-color-sidebar);
 }
 .sidebar-right .sticky-col {
   grid-column: 1;
@@ -200,41 +209,6 @@
   grid-column: 1 !important;
 }
 
-/* poem styles */
-.cr-poem {
-  font-family: Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
-  /* need large font to stop safari text blurriness, but max-height to stop
-   other stickies from being pushed down by pre-scaled poem size */
-  max-height: 100dvh;
-  font-size: 300%;
-  white-space: pre;
-  line-height: 0.7em;
-  transform-origin: center center;
-}
-.cr-poem.cr-hl-within {
-  color: rgba(0, 0, 0, 0.4);
-}
-.cr-poem .cr-hl {
-  color: rgb(0, 0, 0);
-}
-
-.cr-poem2 {
-  font-family: Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
-  max-height: 100svh;
-  max-width: 100svh;
-  font-size: 2.75cqmin;
-  white-space: pre;
-  line-height: 0.6em;
-  transform-origin: center center;
-}
-.cr-poem2.cr-hl-within {
-  color: rgba(0, 0, 0, 0.4);
-  font-size: 2.75cqi;
-}
-.cr-poem2 .cr-hl {
-  color: rgb(0, 0, 0);
-}
-
 /* debug styles */
 body.cr-debug .cr-poem {
   background-color: rgba(255, 255, 0, 0.6);
@@ -246,7 +220,7 @@ body.cr-debug .sticky {
 body.cr-debug .narrative-col .trigger {
   background: rgba(0, 208, 255, 0.5);
   border: 1px solid orange;
-  border-radius: 5px;
+  border-radius: var(--cr-trigger-border-radius);
 }
 body.cr-debug .narrative-col .trigger.new-trigger {
   background: lightgreen;
@@ -263,15 +237,17 @@ body.cr-removeheaderspace #quarto-content main#quarto-document-content .quarto-t
 
 /* configurable style variables. use bootstrap variables where possible */
 :root {
-  --cr-trigger-background-color: var(--bs-primary);
-  --cr-trigger-text-color: var(--bs-light);
+  --cr-trigger-background-color-overlay: var(--bs-primary);
+  --cr-trigger-text-color-overlay: var(--bs-light);
+  --cr-trigger-text-color-sidebar: var(--bs-dark);
   --cr-trigger-border-radius: 1em;
   --cr-trigger-max-width: 527.98px;
   --cr-trigger-outer-margin: 5%;
+  --cr-trigger-font-family: var(--bs-body-font-family);
+  --cr-trigger-font-size: 1.15rem;
+  --cr-poem-font-family: Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
   --cr-sidebar-background-color: var(--bs-primary);
   --cr-section-background-color: var(--bs-secondary-bg);
-  --cr-font-family: var(--bs-body-font-family);
-  --cr-font-size: 1.15rem;
 }
 
 /*# sourceMappingURL=closeread.css.map */
