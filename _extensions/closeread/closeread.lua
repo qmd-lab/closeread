@@ -59,7 +59,7 @@ function read_meta(m)
     if m["cr-section"]["style"] ~= nil then
       for index, value in ipairs(allowed_style_options) do
         if m["cr-section"]["style"][value] then
-          style_options[value] = m["cr-section"]["style"][value][1].text
+          style_options[value] = pandoc.utils.stringify(m["cr-section"]["style"][value])
         end
       end
     end

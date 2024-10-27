@@ -10,12 +10,12 @@ format:
     cr-section:
       style:
         trigger-text-color-sidebar: white
-        trigger-font-family: Georgia
+        trigger-font-family: 'Georgia, "Times New Roman", Times, serif'
         trigger-border-radius: 5px
         trigger-background-color-overlay: "#111111dd"
         sidebar-background-color: "#111111"
         section-background-color: white
-        poem-font-family: Georgia
+        poem-font-family: 'Georgia, "Times New Roman", Times, serif'
 ---
 
 ```{=html}
