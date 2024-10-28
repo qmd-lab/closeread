@@ -28,7 +28,8 @@ local allowed_style_options = {
   "trigger-font-size",
   "poem-font-family",
   "sidebar-background-color",
-  "section-background-color"
+  "section-background-color",
+  "sidebar-width",
 }
 
 --======================--

@@ -211,6 +211,7 @@
     grid-column: 1;
     margin-inline: 0;
     background-color: var(--cr-sidebar-background-color);
+    width: var(--cr-sidebar-width);
 
     .narrative {
       padding: 0 0.75em;
@@ -316,6 +317,7 @@ body.cr-removeheaderspace {
   --cr-trigger-text-color-sidebar: var(--bs-dark);
   --cr-trigger-border-radius: 1em;
   --cr-trigger-max-width: 527.98px;
+  --cr-trigger-min-width: none;
   --cr-trigger-outer-margin: 5%;
   --cr-trigger-font-family: var(--bs-body-font-family);
   --cr-trigger-font-size: 1.15rem;
