@@ -205,13 +205,12 @@
 
 // sidebar layouts use two columns
 .sidebar-left {
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: var(--cr-sidebar-width) 2fr;
 
   .narrative-col {
     grid-column: 1;
     margin-inline: 0;
     background-color: var(--cr-sidebar-background-color);
-    width: var(--cr-sidebar-width);
 
     .narrative {
       padding: 0 0.75em;
@@ -224,7 +223,7 @@
   }
 }
 .sidebar-right {
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 2fr var(cr-sidebar-width);
 
   .narrative-col {
     grid-column: 2;
@@ -322,6 +321,7 @@ body.cr-removeheaderspace {
   --cr-trigger-font-family: var(--bs-body-font-family);
   --cr-trigger-font-size: 1.15rem;
   --cr-poem-font-family: Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+  --cr-sidebar-width: 1fr;
   --cr-sidebar-background-color: var(--bs-primary);
   --cr-section-background-color: var(--bs-secondary-bg);
 }
