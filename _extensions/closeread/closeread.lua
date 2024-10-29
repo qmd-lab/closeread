@@ -15,6 +15,23 @@ local cr_attributes = {["pan-to"] = true,
 local remove_header_space = false
 local global_layout = "sidebar-left"
 
+-- default style options
+local style_options = {}
+local allowed_style_options = {
+  "narrative-background-color-overlay",
+  "narrative-text-color-overlay",
+  "narrative-text-color-sidebar",
+  "narrative-border-radius",
+  "narrative-overlay-max-width",
+  "narrative-overlay-min-width",
+  "narrative-outer-margin",
+  "narrative-font-family",
+  "narrative-font-size",
+  "poem-font-family",
+  "narrative-background-color-sidebar",
+  "section-background-color",
+  "narrative-sidebar-width"
+}
 
 --======================--
 -- Process YAML options --
@@ -38,6 +55,36 @@ function read_meta(m)
       global_layout = m["cr-section"]["layout"][1].text
     end
   end
+
+  -- style options: add values for any allowed keys to injected style string
+  if m["cr-style"] ~= nil then
+    for index, value in ipairs(allowed_style_options) do
+      if m["cr-style"][value] then
+        style_options[value] = pandoc.utils.stringify(m["cr-style"][value])
+      end
+    end
+  end
+
+  -- process style options into style strings using keys as css vars
+  local style_string = ""
+  for key, value in pairs(style_options) do
+    style_string = style_string ..
+      "--cr-" .. key .. ": " .. value .. ";\n"
+  end
+
+  -- inject style option style block
+  if style_string ~= "" then
+    local style_tag = [[
+      <!-- user-provided yaml closeread style options -->
+      <style>
+        :root {
+          ]] .. style_string .. [[
+        }
+      </style>
+    ]]
+    quarto.doc.include_text("before-body", style_tag)
+  end
+
   
   -- inject debug mode option in html <meta>
   quarto.doc.include_text("in-header", "<meta cr-debug-mode='" ..
