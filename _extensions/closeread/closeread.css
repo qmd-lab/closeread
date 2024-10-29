@@ -13,8 +13,8 @@
 }
 .cr-section .narrative-col {
   grid-row: 1;
-  font-family: var(--cr-trigger-font-family);
-  font-size: var(--cr-trigger-font-size);
+  font-family: var(--cr-narrative-font-family);
+  font-size: var(--cr-narrative-font-size);
 }
 .cr-section .narrative-col .trigger {
   padding-block: 45svh;
@@ -98,10 +98,10 @@
   .cr-section.overlay-left .narrative-col .narrative,
   .cr-section.overlay-right .narrative-col .narrative,
   .cr-section.overlay-center .narrative-col .narrative {
-    background-color: var(--cr-trigger-background-color-overlay);
-    color: var(--cr-trigger-text-color-overlay);
+    background-color: var(--cr-narrative-background-color-overlay);
+    color: var(--cr-narrative-text-color-overlay);
     padding: 0.3em 0.5em;
-    border-radius: var(--cr-trigger-border-radius);
+    border-radius: var(--cr-narrative-border-radius);
   }
   .cr-section.sidebar-left .sticky-col,
   .cr-section.sidebar-right .sticky-col,
@@ -122,14 +122,14 @@
   grid-column: 1;
   z-index: 1;
   transition: opacity 0.5s ease-in-out;
-  max-width: var(--cr-trigger-max-width);
+  max-width: var(--cr-narrative-max-width);
 }
 .overlay-left .narrative-col .narrative,
 .overlay-center .narrative-col .narrative,
 .overlay-right .narrative-col .narrative {
-  background-color: var(--cr-trigger-background-color-overlay);
-  color: var(--cr-trigger-text-color-overlay);
-  border-radius: var(--cr-trigger-border-radius);
+  background-color: var(--cr-narrative-background-color-overlay);
+  color: var(--cr-narrative-text-color-overlay);
+  border-radius: var(--cr-narrative-border-radius);
 }
 .overlay-left .sticky-col,
 .overlay-center .sticky-col,
@@ -139,7 +139,7 @@
 
 .overlay-left .narrative-col {
   justify-self: start;
-  margin-left: var(--cr-trigger-outer-margin);
+  margin-left: var(--cr-narrative-outer-margin);
 }
 
 .overlay-center .narrative-col {
@@ -148,7 +148,7 @@
 
 .overlay-right .narrative-col {
   justify-self: end;
-  margin-right: var(--cr-trigger-outer-margin);
+  margin-right: var(--cr-narrative-outer-margin);
 }
 
 .sidebar-left {
@@ -161,7 +161,7 @@
 }
 .sidebar-left .narrative-col .narrative {
   padding: 0 0.75em;
-  color: var(--cr-trigger-text-color-sidebar);
+  color: var(--cr-narrative-text-color-sidebar);
 }
 .sidebar-left .sticky-col {
   grid-column: 2;
@@ -177,7 +177,7 @@
 }
 .sidebar-right .narrative-col .narrative {
   padding: 0 0.75em;
-  color: var(--cr-trigger-text-color-sidebar);
+  color: var(--cr-narrative-text-color-sidebar);
 }
 .sidebar-right .sticky-col {
   grid-column: 1;
@@ -220,7 +220,7 @@ body.cr-debug .sticky {
 body.cr-debug .narrative-col .trigger {
   background: rgba(0, 208, 255, 0.5);
   border: 1px solid orange;
-  border-radius: var(--cr-trigger-border-radius);
+  border-radius: var(--cr-narrative-border-radius);
 }
 body.cr-debug .narrative-col .trigger.new-trigger {
   background: lightgreen;
@@ -237,15 +237,15 @@ body.cr-removeheaderspace #quarto-content main#quarto-document-content .quarto-t
 
 /* configurable style variables. use bootstrap variables where possible */
 :root {
-  --cr-trigger-background-color-overlay: var(--bs-primary);
-  --cr-trigger-text-color-overlay: var(--bs-light);
-  --cr-trigger-text-color-sidebar: var(--bs-dark);
-  --cr-trigger-border-radius: 1em;
-  --cr-trigger-max-width: 527.98px;
-  --cr-trigger-min-width: none;
-  --cr-trigger-outer-margin: 5%;
-  --cr-trigger-font-family: var(--bs-body-font-family);
-  --cr-trigger-font-size: 1.15rem;
+  --cr-narrative-background-color-overlay: var(--bs-primary);
+  --cr-narrative-text-color-overlay: var(--bs-light);
+  --cr-narrative-text-color-sidebar: var(--bs-dark);
+  --cr-narrative-border-radius: 1em;
+  --cr-narrative-max-width: 527.98px;
+  --cr-narrative-min-width: none;
+  --cr-narrative-outer-margin: 5%;
+  --cr-narrative-font-family: var(--bs-body-font-family);
+  --cr-narrative-font-size: 1.15rem;
   --cr-poem-font-family: Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
   --cr-sidebar-width: 1fr;
   --cr-sidebar-background-color: var(--bs-primary);

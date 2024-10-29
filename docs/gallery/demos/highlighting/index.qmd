@@ -6,10 +6,10 @@ format:
   closeread-html:
     code-tools: true
     cr-style:
-      trigger-background-color-overlay: transparent
+      narrative-background-color-overlay: transparent
       sidebar-background-color: transparent
       section-background-color: transparent
-      trigger-text-color-overlay: black
+      narrative-text-color-overlay: black
 ---
 
 Closeread enables the [highlighting](../../../guide/focus-effects.html#highlighting) of both code and text using a similar syntax.

@@ -6,8 +6,8 @@ format:
   closeread-html:
     code-tools: true
     cr-style:
-      trigger-background-color-overlay: "#111111dd"
-      trigger-text-color-overlay: white
+      narrative-background-color-overlay: "#111111dd"
+      narrative-text-color-overlay: white
       sidebar-background-color: transparent
       section-background-color: transparent
 ---
