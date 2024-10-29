@@ -1,5 +1,6 @@
 ---
 title: "Closeread"
+subtitle: "Closeread is a custom format for [Quarto](https://quarto.org/) that enables scrollytelling features for HTML documents."
 format:
   closeread-html:
     theme: cosmo
@@ -10,6 +11,10 @@ format:
       section-background-color: "var(\\-\\-bs-primary)"
       narrative-text-color-overlay: "var(\\-\\-bs-light)"
 ---
+
+[New to Quarto? Get started by working through the [Quarto tutorials](https://quarto.org/docs/get-started/).]{.column-margin}
+
+## Getting started {#gettingstarted}
 
 ```{=html}
 <style>
@@ -23,7 +28,7 @@ format:
 </style>
 ```
 
-closeread is a custom format for [Quarto](https://quarto.org/) that enables scrollytelling features for html documents.
+Closeread is a custom format for [Quarto](https://quarto.org/) that enables scrollytelling features for html documents.
 
 Install the extension by running the following command in the directory you wish to use it:
 
@@ -45,11 +50,11 @@ format: closeread-html
 
 ::::{.cr-section layout="overlay-center" style="font-size: 1.5em;"}
 
-Get your first closeread doc up and running in four steps. @cr-doc
+Get your first Closeread doc up and running in four steps. @cr-doc
 
 Step one: create a qmd file and set the format to closeread-html. [@cr-doc]{highlight="3"}
 
-Step two: open up a closeread section. [@cr-doc]{highlight="8-20"}
+Step two: open up a Closeread section. [@cr-doc]{highlight="8-20"}
 
 Step three: flag an element to become a sticky. [@cr-doc]{highlight="14-18"}
 
@@ -58,7 +63,10 @@ Step four: create a trigger to make the sticky appear. [@cr-doc]{highlight="12"}
 :::{style="height: 40dvh; visibility: hidden"}
 :::
 
+Triggers, like this text, scroll past while the stickies stay "stuck" on the page. [@cr-doc]{highlight=""}
+
 :::{#cr-doc filename="myfirstcr.qmd" .scale-to-fill}
+
 ````markdown
 ---
 title: My First Closeread
@@ -89,4 +97,31 @@ Draw your readers attention with: @cr-features
 \
 \
 
-For guidance on how to author closeread documents, read the [Guide](guide/index.qmd). For examples of closeread documents alongside their source, see the [Gallery](gallery/index.qmd). For a catalog of the syntax and yaml options used in the closeread extension, see the [Reference](reference/index.qmd).
+## What's next?
+
+For guidance on how to author Closeread documents, read the [Guide](guide/index.qmd), starting with [Components of a Closeread document](guide/components.qmd). These components are the essential building blocks of scrollytelling with Closeread. Follow the rest of the Guide for ways to add more advanced effects.
+
+### Publishing
+
+When you're ready to let the world (or just a few people) see your work, check out the [Quarto publishing section](https://quarto.org/docs/publishing/) of the Guide. Closeread documents follow the same publishing rules as other Quarto documents, so if you've worked with Quarto before, you're already already to go! Likewise, if you've published other static web pages before, you can take the files created by `quarto render` and put them anywhere on the web.
+
+### Gallery and Reference
+
+Need some inspiration? For examples of Closeread documents alongside their source, consult the [Gallery](gallery/index.qmd) to see how we made them. The Gallery also has examples that highlight particular features of Closeread.
+
+If you can't remember a particular option that Closeread uses, see the [Reference](reference/index.qmd).
+
+### Community
+
+Need help, or looking for others to connect with around Closeread? Come join us on the [discussion board](https://github.com/qmd-lab/closeread/discussions) or [file an issue](https://github.com/qmd-lab/closeread/issues).
+
+:::{.callout-note collapse="true"}
+You can also install the development version of Closeread. It updates frequently and may break.
+
+```bash
+quarto add qmd-lab/closeread@dev
+```
+:::
+
+For guidance on how to author Closeread documents, read the [Guide](guide/index.qmd). For examples of Closeread documents alongside their source, see the [Gallery](gallery/index.qmd). For a catalog of the syntax and yaml options used in the Closeread extension, see the [Reference](reference/index.qmd).
+

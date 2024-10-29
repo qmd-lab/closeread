@@ -1,16 +1,17 @@
 ---
-title: Closeread Components
+title: Components of a Closeread Document
+subtitle: "Learn the essential building blocks of Closeread: sections, stickies and triggers."
 ---
 
-Every closeread document consists of three components:
+Every Closeread document consists of three components:
 
-1. A section of the document flagged as a closeread section.
-2. Within the section, an element flagged to appear in the main column of the closeread section (the "sticky"), and also
-3. An element (often a paragraph of text) that will serve to trigger the appearance of the sticky element.
+1. A **section** of the document flagged as a Closeread section;
+2. Within the section, a **"sticky"** element flagged to appear in the main column of the Closeread section; and
+3. An element (often a paragraph of text) that will serve to **trigger** the appearance of the sticky element.
 
-## Closeread Sections
+## Sections
 
-To create a closeread section within a document, open up a [fenced div](https://quarto.org/docs/authoring/markdown-basics.html#sec-divs-and-spans) and add the `cr-section` class.
+To create a Closeread section within a document, open up a [fenced div](https://quarto.org/docs/authoring/markdown-basics.html#sec-divs-and-spans) and add the `cr-section` class.
 
 ```markdown
 :::{.cr-section}
@@ -18,13 +19,16 @@ To create a closeread section within a document, open up a [fenced div](https://
 :::
 ```
 
-Elements within a `.cr-section` div will appear as a closeread story while elements outside of a section will appear as a normal Quarto HTML document. This allows you to integrate one or more closeread sections into a conventional HTML document.
+Elements within a `.cr-section` div will appear as a Closeread story while elements outside of a section will appear as a normal Quarto HTML document. This allows you to integrate one or more Closeread sections into a conventional HTML document.
 
-By wrapping your entire document with a `cr-section` div, you can make a 100% closeread document. By default, all elements with a closeread section appear in the narrative column unless you've indicated that they should be a sticky.
+By wrapping your entire document with a `cr-section` div, you can make a 100% Closeread document. By default, all elements with a Closeread section appear as the narrative, scrolling by, unless you've indicated that they should be a sticky.
+
 
 ## Stickies
 
-An element of your document that you wish to do a close read of is called a "sticky": as the user scrolls, it will remained pinned in the middle of the main column like a sticky note. To flag an element as a sticky, wrap it in a fenced div and provide an identifier that is prefixed with `cr-`.
+An element of your document that you wish to do a close read of is called a "sticky": as the user scrolls, it will remained pinned in the middle of the main column like a sticky note.
+
+To flag an element as a sticky, wrap it in a [fenced div](https://quarto.org/docs/authoring/markdown-basics.html#sec-divs-and-spans) and provide an identifier that is prefixed with `cr-`.
 
 ```markdown
 :::{#cr-myimage}
@@ -41,11 +45,11 @@ hist(rnorm(15))
 ```
 :::
 ````
-All sticky elements are placed in the main column of the closeread section and will be transparent. To make them appear, you need to create a trigger.
+Sticky elements are placed in the main column of the Closeread section and will be transparent. To make them appear, you need to create a trigger.
 
 ## Triggers
 
-Any elements within a closeread section that are not stickies - usually paragraphs - will be placed in the narrative column. You can set a paragraph to trigger focus on a particular sticky by using Quarto's cross-referencing syntax: `@cr-mysticky`.
+Any elements within a Closeread section that are not stickies - usually paragraphs - will be placed in the narrative column. You can set a paragraph to trigger focus on a particular sticky by using Quarto's cross-referencing syntax: `@cr-mysticky`.
 
 ````markdown
 When this paragraph scrolls into view it will reveal a histogram. @cr-myplot
@@ -75,7 +79,4 @@ hist(rnorm(15))
 :::
 ````
 
-The primary role of triggers is to make a sticky element appear. They can also be used to trigger focus effects by attaching additional attributes to your triggers. Learn more in [Focus Effects](focus-effects.qmd).
-
-
-
+The primary role of triggers is to make a sticky element appear. They can also be used to trigger focus effects by attaching additional attributes to your triggers. Learn more in [Focus effects](focus-effects.qmd).
