@@ -169,7 +169,8 @@
     grid-column: 1;
     z-index: 1;
     transition: opacity 0.5s ease-in-out;
-    max-width: var(--cr-narrative-max-width);
+    max-width: var(--cr-narrative-overlay-max-width);
+    min-width: var(--cr-narrative-overlay-min-width);
     
     .narrative {
       background-color: var(--cr-narrative-background-color-overlay);
@@ -205,7 +206,7 @@
 
 // sidebar layouts use two columns
 .sidebar-left {
-  grid-template-columns: var(--cr-sidebar-width) 2fr;
+  grid-template-columns: var(--cr-narrative-sidebar-width) 2fr;
 
   .narrative-col {
     grid-column: 1;
@@ -223,7 +224,7 @@
   }
 }
 .sidebar-right {
-  grid-template-columns: 2fr var(cr-sidebar-width);
+  grid-template-columns: 2fr var(cr-narrative-sidebar-width);
 
   .narrative-col {
     grid-column: 2;
@@ -315,13 +316,13 @@ body.cr-removeheaderspace {
   --cr-narrative-text-color-overlay: var(--bs-light);
   --cr-narrative-text-color-sidebar: var(--bs-dark);
   --cr-narrative-border-radius: 1em;
-  --cr-narrative-max-width: 527.98px;
-  --cr-narrative-min-width: none;
+  --cr-narrative-overlay-max-width: 527.98px;
+  --cr-narrative-overlay-min-width: none;
   --cr-narrative-outer-margin: 5%;
   --cr-narrative-font-family: var(--bs-body-font-family);
   --cr-narrative-font-size: 1.15rem;
   --cr-poem-font-family: Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
-  --cr-sidebar-width: 1fr;
+  --cr-narrative-sidebar-width: 1fr;
   --cr-sidebar-background-color: var(--bs-primary);
   --cr-section-background-color: var(--bs-secondary-bg);
 }

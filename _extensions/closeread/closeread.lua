@@ -22,14 +22,15 @@ local allowed_style_options = {
   "narrative-text-color-overlay",
   "narrative-text-color-sidebar",
   "narrative-border-radius",
-  "narrative-max-width",
+  "narrative-overlay-max-width",
+  "narrative-overlay-min-width",
   "narrative-outer-margin",
   "narrative-font-family",
   "narrative-font-size",
   "poem-font-family",
   "sidebar-background-color",
   "section-background-color",
-  "sidebar-width",
+  "narrative-sidebar-width"
 }
 
 --======================--
