@@ -238,7 +238,7 @@ body.cr-removeheaderspace #quarto-content main#quarto-document-content .quarto-t
 
 /* configurable style variables. use bootstrap variables where possible */
 :root {
-  --cr-narrative-background-color-overlay: lightslategrey;
+  --cr-narrative-background-color-overlay: #708090e1;
   --cr-narrative-text-color-overlay: white;
   --cr-narrative-background-color-sidebar: transparent;
   --cr-narrative-text-color-sidebar: black;
