@@ -15,17 +15,29 @@
 .cr-section {
   display: grid;
   grid-template-rows: 1fr;
+  background-color: var(--cr-section-background-color);
 
   .narrative-col {
     grid-row: 1;
 
+    font-family: var(--cr-narrative-font-family);
+    font-size: var(--cr-narrative-font-size);
+
     .trigger {
       padding-block: 45svh;
-      padding-inline: 1em;
+      padding-inline: 24px;
 
-      p {
-        margin-bottom: 0; // override bootstrap rule
+      .narrative {
+
+        padding: 0.7em 0.75em;
+
+        // override bootstrap margin when using a single paragraph trigger
+        // (but not when wrapping multiple pars with a div)
+        > p {
+          margin-bottom: 0;
+        }
       }
+
     }
   }
 
@@ -55,12 +67,14 @@
           transform-origin 1s ease-in-out;
       }
       
-      .sticky.cr-poem {
+      .sticky:has(.line-block) {
+        font-family: var(--cr-poem-font-family);
         transition:
           transform .8s ease-in-out;
       }
       
-      .sticky.cr-poem2 {
+      .sticky:has(.line-block) {
+        font-family: var(--cr-poem-font-family);
         transition:
           transform .8s ease-in-out,
           font-size .8s ease-in-out;
@@ -119,7 +133,6 @@
 
 
 /* mobile sizing (bootstrap: xs) is always overlay-center */
-//@media (max-width: 575.98px) {
 @media (max-width: 575.98px) {
   .cr-section.sidebar-left,
   .cr-section.sidebar-right,
@@ -132,12 +145,13 @@
       grid-column: 1;
       z-index: 1;
       margin-inline: auto;
+      background-color: transparent;
       
       .narrative {
-        background-color: rgba(17, 17, 17, .85);
-        color: white;
-        padding: 5px;
-        border-radius: 5px;
+        background-color: var(--cr-narrative-background-color-overlay);
+        color: var(--cr-narrative-text-color-overlay);
+        padding: 0.3em 0.5em;
+        border-radius: var(--cr-narrative-border-radius);
       }
     }
 
@@ -159,12 +173,13 @@
     grid-column: 1;
     z-index: 1;
     transition: opacity 0.5s ease-in-out;
+    max-width: var(--cr-narrative-overlay-max-width);
+    min-width: var(--cr-narrative-overlay-min-width);
     
     .narrative {
-      background-color: rgba(17, 17, 17, .85);
-      color: white;
-      padding: 5px;
-      border-radius: 5px;
+      background-color: var(--cr-narrative-background-color-overlay);
+      color: var(--cr-narrative-text-color-overlay);
+      border-radius: var(--cr-narrative-border-radius);
     }
   }
 
@@ -176,30 +191,36 @@
 // ... with inline margins set for narrative content depending on side
 .overlay-left {
   .narrative-col {
-    margin-inline-start: 5%;
-    margin-inline-end: 65%;
+    justify-self: start;
+    margin-left: var(--cr-narrative-outer-margin);
   }
 }
 .overlay-center {
   .narrative-col {
-    margin-inline: 30%;
+    justify-self: center;
   }
 }
 .overlay-right {
   .narrative-col {
-    margin-inline-start: 65%;
-    margin-inline-end: 5%;
+    justify-self: end;
+    margin-right: var(--cr-narrative-outer-margin);
   }
 }
 
 
 // sidebar layouts use two columns
 .sidebar-left {
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: var(--cr-narrative-sidebar-width) 2fr;
 
   .narrative-col {
     grid-column: 1;
     margin-inline: 0;
+    background-color: var(--cr-narrative-background-color-sidebar);
+
+    .narrative {
+      padding: 0 0.75em;
+      color: var(--cr-narrative-text-color-sidebar);
+    }
   }
 
   .sticky-col {
@@ -207,11 +228,17 @@
   }
 }
 .sidebar-right {
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 2fr var(cr-narrative-sidebar-width);
 
   .narrative-col {
     grid-column: 2;
     margin-inline: 0;
+    background-color: var(--cr-narrative-background-color-sidebar);
+    
+    .narrative {
+      padding: 0 0.75em;
+      color: var(--cr-narrative-text-color-sidebar);
+    }
   }
 
   .sticky-col {
@@ -240,64 +267,6 @@
   }
 }
 
-
-/* poem styles */
-
-.cr-poem {
-
-  font-family: Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
-  
-  /* need large font to stop safari text blurriness, but max-height to stop
-   other stickies from being pushed down by pre-scaled poem size */
-  max-height: 100dvh; 
-  font-size: 300%;
-
-  white-space: pre;
-  line-height: .7em;
-  
-  // transform transition is applied along with all stickies
-  transform-origin: center center;
-
-  // fade the rest of the poem out when there's a highlight active
-  &.cr-hl-within {
-    color: rgba(0, 0, 0, 0.4);
-  }
-
-  .cr-hl {
-    color: rgba(0, 0, 0, 1);
-  }
-}
-
-.cr-poem2 {
-
-  font-family: Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
-  
-  // size the poem to fit the screen
-  max-height: 100svh;
-  max-width: 100svh;
-  
-  // maybe this can be overridden with lua
-  font-size: 2.75cqmin;
-
-  white-space: pre;
-  line-height: .6em;
-  
-  // transform transition is applied along with all stickies
-  transform-origin: center center;
-
-  // fade the rest of the poem out when there's a highlight active
-  &.cr-hl-within {
-    color: rgba(0, 0, 0, 0.4);
-    // when there's a highlight, we only want to scale based on width!
-    font-size: 2.75cqi;
-  }
-
-  .cr-hl {
-    color: rgba(0, 0, 0, 1);
-  }
-}
-
-
 /* debug styles */
 
 body.cr-debug {
@@ -318,7 +287,7 @@ body.cr-debug {
     .trigger {
       background: rgba(0, 208, 255, 0.5);
       border: 1px solid orange;
-      border-radius: 5px;
+      border-radius: var(--cr-narrative-border-radius);
       
       &.new-trigger {
         background: lightgreen;
@@ -343,3 +312,22 @@ body.cr-removeheaderspace {
   }
 
 }
+
+/* configurable style variables. use bootstrap variables where possible */
+
+:root {
+  --cr-narrative-background-color-overlay: #708090e1;
+  --cr-narrative-text-color-overlay: white;
+  --cr-narrative-background-color-sidebar: transparent;
+  --cr-narrative-text-color-sidebar: black;
+  --cr-narrative-border-radius: 1em;
+  --cr-narrative-overlay-max-width: 527.98px;
+  --cr-narrative-overlay-min-width: none;
+  --cr-narrative-outer-margin: 5%;
+  --cr-narrative-font-family: var(--bs-body-font-family);
+  --cr-narrative-font-size: 1.15rem;
+  --cr-poem-font-family: Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+  --cr-narrative-sidebar-width: 1fr;
+  --cr-section-background-color: lightgrey;
+}
+

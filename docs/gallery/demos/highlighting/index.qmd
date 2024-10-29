@@ -5,6 +5,11 @@ description: "Highlight lines or spans of code or line blocks."
 format:
   closeread-html:
     code-tools: true
+    cr-style:
+      narrative-background-color-overlay: transparent
+      narrative-background-color-sidebar: transparent
+      section-background-color: transparent
+      narrative-text-color-overlay: black
 ---
 
 Closeread enables the [highlighting](../../../guide/focus-effects.html#highlighting) of both code and text using a similar syntax.
