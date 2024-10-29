@@ -66,6 +66,10 @@
           font-size .8s ease-in-out;
       }
 
+      div.sourceCode {
+        background-color: rgba(233, 236, 239, 1);
+      }
+
       // show active stickies
       .cr-active {
         opacity: 1;

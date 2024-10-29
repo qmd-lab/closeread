@@ -42,6 +42,9 @@
 .cr-section .sticky-col .sticky-col-stack .sticky.cr-poem2 {
   transition: transform 0.8s ease-in-out, font-size 0.8s ease-in-out;
 }
+.cr-section .sticky-col .sticky-col-stack div.sourceCode {
+  background-color: rgb(233, 236, 239);
+}
 .cr-section .sticky-col .sticky-col-stack .cr-active {
   opacity: 1;
 }
