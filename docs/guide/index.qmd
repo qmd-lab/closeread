@@ -1,20 +1,41 @@
 ---
 title: Guide
 subtitle: Start with the basics of a Closeread document, then learn to master more advanced techniques.
-toc: true
 ---
 
-If you've never made a Closeread document, start with the very minimal example on the [home page](/), then come back here!
+If you've never made a Closeread document, copy and paste the following document into a qmd document.
 
-[Components of a Closeread document](components.qmd) teaches you the essential parts of a Closeread document: sections, stickies and triggers.
+```{.markdown filename="myfirstcr.qmd"}
+---
+title: My First Closeread
+format: closeread-html
+---
 
-[Focus Effects](focus-effects.qmd) let you guide your readers to parts of your content by highlighting text and code, or zooming in on parts of an image or text. You can also ensure that content scales responsively, no matter what devices your readers use.
+Hello World! Please read my closeread story below.
 
-[Layouts](layouts.qmd) teaches you how to customise the layouts of your Closeread sections - that is, where the stickies and triggers sit - as well as other useful tools that change the structure of the page.
+:::{.cr-section}
 
-[Authoring tools](authoring-tools.qmd) covers other useful tools to help you generate scrollytelling content, including ways to use [Observable JavaScript](https://quarto.org/docs/computations/ojs.html) to make animated graphics with Closeread.
+Closeread enables scrollytelling.
 
-[Styling](styling.qmd) shows you how to change the appearance of your documents from the default Quarto theme.
+Draw your readers attention with focus effects. @cr-features
+
+:::{#cr-features}
+1. Highlighting
+2. Zooming
+3. Panning
+:::
+
+:::
+
+```
+
+In the same directory as this qmd file, run the following command to make the Closeread extension available to this document.
+
+```bash
+quarto add qmd-lab/closeread
+```
+
+Now you can render the document and scroll through your first scrollytelling story. Continue the adventure by reading about the [Components of a Closeread Document](components.qmd).
 
 When you've finished the Guide, be sure to have a look at the [Gallery](/gallery) for more examples of what you can do with Closeread!
 

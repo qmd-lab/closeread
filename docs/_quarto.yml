@@ -5,6 +5,7 @@ project:
 
 website:
   title: "Closeread"
+  page-navigation: true
   navbar:
     left:
       - href: index.qmd
@@ -39,7 +40,7 @@ website:
           - guide/components.qmd
           - guide/focus-effects.qmd
           - guide/layouts.qmd
-          - guide/authoring-tools.qmd
+          - guide/interactive-graphics.qmd
           - guide/styling.qmd
           
   page-footer:

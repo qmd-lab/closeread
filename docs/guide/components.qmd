@@ -1,5 +1,5 @@
 ---
-title: Components of a Closeread document
+title: Components of a Closeread Document
 subtitle: "Learn the essential building blocks of Closeread: sections, stickies and triggers."
 ---
 
@@ -21,11 +21,8 @@ To create a Closeread section within a document, open up a [fenced div](https://
 
 Elements within a `.cr-section` div will appear as a Closeread story while elements outside of a section will appear as a normal Quarto HTML document. This allows you to integrate one or more Closeread sections into a conventional HTML document.
 
-By wrapping your entire document with a `cr-section` div, you can make a 100% Closeread document. By default, all elements with a Closeread section appear with the triggers, scrolling by, unless you've indicated that they should be a sticky.
+By wrapping your entire document with a `cr-section` div, you can make a 100% Closeread document. By default, all elements with a Closeread section appear as the narrative, scrolling by, unless you've indicated that they should be a sticky.
 
-:::{.callout-tip appearance="simple"}
-If your whole document is a Closeread section, you might want to consider [removing the title block](layouts.qmd##removeheaderspace) and [disabling the Quarto sidebar](https://quarto.org/docs/websites/website-navigation.html#hiding-navigation).
-:::
 
 ## Stickies
 

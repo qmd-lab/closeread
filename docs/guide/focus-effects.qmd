@@ -1,13 +1,9 @@
 ---
-title: Focus effects
+title: Focus Effects
 subtitle: Guide your readers' attention to aspects of your stickies.
 ---
 
-Focus effects are all supplied as [attributes on an inline span](https://quarto.org/docs/authoring/markdown-basics.html#ordering-of-attributes) that is attached to a trigger.
-
-:::{.callout-tip appearance="simple"}
-Like all Quarto inline spans, focus effects follow a `attribute="value"` syntax: the value must be quoted and `=` separates the value from the attribute with no spaces.
-:::
+Focus effects are all supplied as [attributes on an inline span](https://quarto.org/docs/authoring/markdown-basics.html#ordering-of-attributes) that is attached to a trigger. Like all Quarto inline spans, they follow a `attribute="value"` syntax: the value must be quoted and `=` separates the value from the attribute with no spaces.
 
 ```markdown
 Here's a trigger with no focus effect @cr-content
@@ -15,7 +11,7 @@ Here's a trigger with no focus effect @cr-content
 Here's a trigger with a focus effect [@cr-mycontent]{effect="value"}
 ```
 
-All of these effects will remain on the sticky until there is a new trigger block scrolls into the viewport. You can "reset" the effects on a given sticky by following the focus effect trigger with a trigger without any focus effects.
+All of these effects will remain on the sticky until a new trigger block scrolls into the viewport. You can "reset" the effects on a given sticky by following the focus effect trigger with a trigger without any focus effects.
 
 # Types of focus effects
 
@@ -32,8 +28,8 @@ You can scale a sticky element up or down by using the `scale-by()` attribute an
 
 You can pan across any sticky element (often an image) by using the `pan-to` attribute. It supports several different units:
 
-- `pan-to="25%,-50%: pan the sticky 25% of its width to the right and 50% of its height up.
-- `pan-to="-30px, 30px": pan the sticky 30 pixels to the left and 30 pixels down.
+- `pan-to="25%,-50%"`: pan the sticky 25% of its width to the right and 50% of its height up.
+- `pan-to="-30px, 30px"`: pan the sticky 30 pixels to the left and 30 pixels down.
 
 `pan-to` accepts a string that corresponds to any of the options in the analogous [`translate()`](https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function/translate) CSS function.
 
@@ -55,7 +51,7 @@ You can highlight parts of the code and text of your sticky using the following 
 3. `highlight="cr-span1"`: highlight the span with id `cr-span1`
 4. `highlight="cr-span1,cr-span2"`: highlight the spans with ids `cr-span1` and `cr-span2`
 
-Line highlighting (1 and 2) works on code cells and line blocks while span highlighting (3 and 4) only works on Line Blocks.
+Line highlighting (1 and 2) works on code cells and line blocks while span highlighting (3 and 4) only works on line blocks.
 
 ### Code cell examples
 
@@ -129,7 +125,7 @@ Note that Closeread extends the native Pandoc processing of line blocks. Instead
 
 You can combine multiple focus effects on a single trigger. For example:
 
-- `[@cr-sticky]{pan-to="50%,50%" scale-by="1.5"}`: pan the sticky down and to the right why increasing its size by 50%.
+- `[@cr-sticky]{pan-to="50%,50%" scale-by="1.5"}`: pan the sticky down and to the right while increasing its size by 50%.
 
 One exception is the `zoom-to` attribute. Since it performs both panning and zooming, it will override those options if they're included on the same trigger.
 
@@ -137,10 +133,10 @@ One exception is the `zoom-to` attribute. Since it performs both panning and zoo
 
 It is common to want to zoom into a line or span of code or text while also highlighting. There is an additional attribute called `hlz` for this purpose.
 
-- `hlz="cr-love": highlight the span `cr-love` while zooming in on the line that contains it.
+- `hlz="cr-love"`: highlight the span `cr-love` while zooming in on the line that contains it.
 - `hlz="4"`: highlight line 4 while zooming in on the line that contains it.
 
-Because this focus effect translates into `highlight` and `zoom-to`, the latter constrains it to only working for single spans or lines at the moment.
+Because this focus effect translates into `highlight` and `zoom-to`, the latter constrains it to only work for single spans or lines at the moment.
 
 # Other features
 

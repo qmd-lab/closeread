@@ -1,13 +1,11 @@
 ---
-title: Authoring tools
-subtitle: Other tools to help you create scrollytelling content.
+title: Interactive Graphics
+subtitle: Create graphics that animate as your reader scrolls.
 ---
 
 ## Observable JavaScript in Closeread
 
-Quarto lets you use [Observable JavaScript](https://quarto.org/docs/computations/ojs.html) (OJS) in your documents.
-
-Unlike R, Python and Julia, OJS runs continuously as your readers read the document, allowing your documents to react to things they do.
+Quarto lets you use [Observable JavaScript](https://quarto.org/docs/computations/ojs.html) (OJS) in your documents. Unlike R, Python and Julia, OJS runs continuously as your readers read the document, allowing your documents to react to things they do.
 
 Closeread makes the following variables available to your OJS code:
 
