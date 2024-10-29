@@ -28,7 +28,7 @@ local allowed_style_options = {
   "narrative-font-family",
   "narrative-font-size",
   "poem-font-family",
-  "sidebar-background-color",
+  "narrative-background-color-sidebar",
   "section-background-color",
   "narrative-sidebar-width"
 }

@@ -7,7 +7,7 @@ format:
     code-tools: true
     cr-style:
       narrative-background-color-overlay: transparent
-      sidebar-background-color: transparent
+      narrative-background-color-sidebar: transparent
       section-background-color: transparent
       narrative-text-color-overlay: black
 ---

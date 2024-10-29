@@ -8,7 +8,7 @@ format:
     cr-style:
       narrative-background-color-overlay: "#111111dd"
       narrative-text-color-overlay: white
-      sidebar-background-color: transparent
+      narrative-background-color-sidebar: transparent
       section-background-color: transparent
 ---
 

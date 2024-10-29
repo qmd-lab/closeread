@@ -158,7 +158,7 @@
 .sidebar-left .narrative-col {
   grid-column: 1;
   margin-inline: 0;
-  background-color: var(--cr-sidebar-background-color);
+  background-color: var(--cr-narrative-background-color-sidebar);
 }
 .sidebar-left .narrative-col .narrative {
   padding: 0 0.75em;
@@ -174,7 +174,7 @@
 .sidebar-right .narrative-col {
   grid-column: 2;
   margin-inline: 0;
-  background-color: var(--cr-sidebar-background-color);
+  background-color: var(--cr-narrative-background-color-sidebar);
 }
 .sidebar-right .narrative-col .narrative {
   padding: 0 0.75em;
@@ -238,9 +238,10 @@ body.cr-removeheaderspace #quarto-content main#quarto-document-content .quarto-t
 
 /* configurable style variables. use bootstrap variables where possible */
 :root {
-  --cr-narrative-background-color-overlay: var(--bs-primary);
-  --cr-narrative-text-color-overlay: var(--bs-light);
-  --cr-narrative-text-color-sidebar: var(--bs-dark);
+  --cr-narrative-background-color-overlay: lightslategrey;
+  --cr-narrative-text-color-overlay: white;
+  --cr-narrative-background-color-sidebar: transparent;
+  --cr-narrative-text-color-sidebar: black;
   --cr-narrative-border-radius: 1em;
   --cr-narrative-overlay-max-width: 527.98px;
   --cr-narrative-overlay-min-width: none;
@@ -249,8 +250,7 @@ body.cr-removeheaderspace #quarto-content main#quarto-document-content .quarto-t
   --cr-narrative-font-size: 1.15rem;
   --cr-poem-font-family: Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
   --cr-narrative-sidebar-width: 1fr;
-  --cr-sidebar-background-color: var(--bs-primary);
-  --cr-section-background-color: var(--bs-secondary-bg);
+  --cr-section-background-color: lightgrey;
 }
 
 /*# sourceMappingURL=closeread.css.map */

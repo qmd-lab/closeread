@@ -13,7 +13,7 @@ format:
       narrative-sidebar-width: minmax(400px, 1fr)
       narrative-border-radius: 5px
       narrative-background-color-overlay: "#111111dd"
-      sidebar-background-color: "#111111"
+      narrative-background-color-sidebar: "#111111"
       section-background-color: white
       poem-font-family: 'Georgia, "Times New Roman", Times, serif'
 ---
