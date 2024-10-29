@@ -56,12 +56,10 @@ function read_meta(m)
   end
 
   -- style options: add values for any allowed keys to injected style string
-  if m["cr-section"] ~= nil then
-    if m["cr-section"]["style"] ~= nil then
-      for index, value in ipairs(allowed_style_options) do
-        if m["cr-section"]["style"][value] then
-          style_options[value] = pandoc.utils.stringify(m["cr-section"]["style"][value])
-        end
+  if m["cr-style"] ~= nil then
+    for index, value in ipairs(allowed_style_options) do
+      if m["cr-style"][value] then
+        style_options[value] = pandoc.utils.stringify(m["cr-style"][value])
       end
     end
   end

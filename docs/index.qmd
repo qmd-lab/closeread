@@ -3,13 +3,12 @@ title: "Closeread"
 format:
   closeread-html:
     theme: cosmo
-    cr-section:
-      style:
-        trigger-background-color-overlay: "#111111d9"
-        trigger-border-radius: 10px
-        # if you refer to other css variables, escape the double-hyphen
-        section-background-color: "var(\\-\\-bs-primary)"
-        trigger-text-color-overlay: "var(\\-\\-bs-light)"
+    cr-style:
+      trigger-background-color-overlay: "#111111d9"
+      trigger-border-radius: 10px
+      # if you refer to other css variables, escape the double-hyphen
+      section-background-color: "var(\\-\\-bs-primary)"
+      trigger-text-color-overlay: "var(\\-\\-bs-light)"
 ---
 
 ```{=html}

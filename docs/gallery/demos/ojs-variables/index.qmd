@@ -5,12 +5,11 @@ description: "Smoothly transition interactive OJS graphics."
 format:
   closeread-html:
     code-tools: true
-    cr-section:
-      style:
-        trigger-background-color-overlay: "#111111dd"
-        trigger-text-color-overlay: white
-        sidebar-background-color: transparent
-        section-background-color: transparent
+    cr-style:
+      trigger-background-color-overlay: "#111111dd"
+      trigger-text-color-overlay: white
+      sidebar-background-color: transparent
+      section-background-color: transparent
 ---
 
 Closeread makes scrolling progress available to users as [Observable JavasScript](https://quarto.org/docs/interactive/ojs) variables, so you can create closeread sections with interactive graphics that change as you scroll.

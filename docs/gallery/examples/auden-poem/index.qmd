@@ -6,17 +6,16 @@ format:
   closeread-html:
     remove-header-space: true
     debug-mode: false
-    cr-section:
-      style:
-        trigger-text-color-sidebar: white
-        trigger-font-family: 'Georgia, "Times New Roman", Times, serif'
-        trigger-font-size: 1.25rem
-        sidebar-width: 400px
-        trigger-border-radius: 5px
-        trigger-background-color-overlay: "#111111dd"
-        sidebar-background-color: "#111111"
-        section-background-color: white
-        poem-font-family: 'Georgia, "Times New Roman", Times, serif'
+    cr-style:
+      trigger-text-color-sidebar: white
+      trigger-font-family: 'Georgia, "Times New Roman", Times, serif'
+      trigger-font-size: 1.25rem
+      sidebar-width: 400px
+      trigger-border-radius: 5px
+      trigger-background-color-overlay: "#111111dd"
+      sidebar-background-color: "#111111"
+      section-background-color: white
+      poem-font-family: 'Georgia, "Times New Roman", Times, serif'
 ---
 
 ```{=html}
