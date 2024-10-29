@@ -10,7 +10,7 @@ format:
       narrative-text-color-sidebar: white
       narrative-font-family: 'Georgia, "Times New Roman", Times, serif'
       narrative-font-size: 1.25rem
-      sidebar-width: 400px
+      sidebar-width: minmax(400px, 1fr)
       narrative-border-radius: 5px
       narrative-background-color-overlay: "#111111dd"
       sidebar-background-color: "#111111"
