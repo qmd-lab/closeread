@@ -25,6 +25,12 @@ This does too! @cr-nocaption-working
 ![](trees.png)
 :::
 
+Does this one, which has a caption but no content? @cr-caption-working
+
+:::{#cr-caption-working}
+![Look at this tree!](trees.png)
+:::
+
 ::::
 
 ## This header becomes a section
@@ -43,6 +49,12 @@ This does too! @cr-nocaption-working2
 
 :::{#cr-nocaption-working2}
 ![](trees.png)
+:::
+
+Does this one, which has a caption but no content? @cr-caption-working2
+
+:::{#cr-caption-working2}
+![Look at this tree!](trees.png)
 :::
 
 ::::
