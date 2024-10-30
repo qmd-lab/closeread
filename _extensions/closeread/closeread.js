@@ -402,7 +402,3 @@ function getBooleanConfig(metaFlag) {
   return option === "true"
 }
 
-function isDocumentMain(el) {
-  return el === null ||
-      (el.tagName == "MAIN" && el.classList.contains("content"))
-}
