@@ -1,0 +1,13 @@
+---
+title: Tests
+subtitle: These tests are for internal testing purposes. They likely aren't of use to you unless you're editing Closeread itself.
+listing:
+  - id: tests-listing
+    contents: .
+    sort: "date desc"
+    type: table
+    fields: [title]
+---
+
+:::{#tests-listing}
+:::
