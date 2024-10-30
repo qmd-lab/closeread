@@ -8,6 +8,13 @@ format:
     code-tools: true
     image: mindard-map.png
     description: Revisiting a classic of data visualization
+    mainfont: 'et-book, Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif'
+    cr-style:
+      narrative-background-color-overlay: transparent
+      narrative-background-color-sidebar: transparent
+      section-background-color: transparent
+      narrative-text-color-overlay: black
+      narrative-font-family: 'et-book, Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif'
 ---
 
 :::{.epigraph}
