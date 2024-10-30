@@ -1,5 +1,6 @@
 ---
 title: Gallery
+subtitle: Learn how to use specific Closeread features or find some inspiration in our examples.
 listing:
   - id: examples-listings
     contents: examples
