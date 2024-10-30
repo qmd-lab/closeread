@@ -20,8 +20,9 @@
 .cr-section .narrative-col .trigger p {
   margin-bottom: 0;
 }
-.cr-section .narrative-col .trigger .narrative:has(.cr-spacer) {
+.cr-section .narrative-col .trigger:has(.cr-spacer) {
   visibility: hidden;
+  padding-block: 0;
 }
 .cr-section .sticky-col {
   grid-row: 1;
