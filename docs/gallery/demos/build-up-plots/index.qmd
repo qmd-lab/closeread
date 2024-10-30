@@ -1,6 +1,6 @@
 ---
 title: Build up plots
-description: "If your plot is too complicated, try introducing elements one at a time."
+subtitle: "If your plot is too complicated, try introducing elements one at a time."
 format:
   closeread-html:
     code-fold: true
@@ -12,7 +12,7 @@ knitr:
       bg: transparent
 ---
 
-In this demo, we'll recreate a plot from the documentation of Allison Horst's `{palmerpenguins}` R package, which provides access to penguin data from Dr. Kristen Gorman and the Palmer Station in Antarctica.
+In this demo, we'll recreate a plot from the documentation of Allison Horst's [`{palmerpenguins}`](https://allisonhorst.github.io/palmerpenguins/) R package, which provides access to penguin data from Dr. Kristen Gorman and the Palmer Station in Antarctica.
 
 ```{r}
 #| label: setup
@@ -111,6 +111,11 @@ ggplot(penguins_forplot) +
     "Adelie" = "#000000",
     "Chinstrap" = "#000000",
     "Gentoo" = "#000000"
+  )) +
+  scale_shape_manual(values = c(
+    "Adelie" = 16,
+    "Chinstrap" = 16,
+    "Gentoo" = 16
   )) +
   guides(colour = "none", shape = "none") +
   theme_minimal() +

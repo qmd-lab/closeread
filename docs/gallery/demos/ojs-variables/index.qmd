@@ -1,7 +1,7 @@
 ---
 title: "OJS Variables"
 image: "globe.png"
-description: "Smoothly transition interactive OJS graphics."
+subtitle: "Smoothly transition interactive OJS graphics."
 format:
   closeread-html:
     code-tools: true
@@ -12,7 +12,7 @@ format:
       section-background-color: transparent
 ---
 
-Closeread makes scrolling progress available to users as [Observable JavasScript](https://quarto.org/docs/interactive/ojs) variables, so you can create closeread sections with interactive graphics that change as you scroll.
+Closeread makes scrolling progress available to users as [Observable JavasScript](https://quarto.org/docs/interactive/ojs) variables, so you can create Closeread sections with interactive graphics that change as you scroll.
 
 Let's use this functionality to make a visualization of a globe. Before we start, let's define some cities that we'll plot on that glove. Here I've done it in OJS, but you could easily make an R or Python data frame available using `ojs_define()` (or load a CSV from elsewhere):
 
@@ -121,7 +121,7 @@ md`(derived) Angle 2: ${angle2.toFixed(1)}°`
 ```
 :::
 
-As you back and forth over this closeread section, note the values of the OJS variables that closeread makes available in OJS code cells:
+As you back and forth over this Closeread section, note the values of the OJS variables that Closeread makes available in OJS code cells:
 
 1. `crTriggerIndex` is a number representing the index of the currently visible trigger (starting from 0 and going down through the document).
 2. `crTriggerProgress` is a number between 0 and 1 representing how far the currently active trigger has progressed through the visible window.

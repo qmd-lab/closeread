@@ -11,7 +11,7 @@ title: My First Closeread
 format: closeread-html
 ---
 
-Hello World! Please read my closeread story below.
+Hello World! Please read my Closeread story below.
 
 :::{.cr-section}
 
