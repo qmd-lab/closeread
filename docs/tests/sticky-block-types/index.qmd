@@ -40,25 +40,27 @@ Here's a little non-scrolling interlude before our next scrolly section!
 This is a scatterplot.
 :::
 
+:::{#cr-scatter}
 ```{r}
 #| echo: false
-#| id: cr-scatter
 
 plot(mtcars$mpg, mtcars$dist)
 ```
+:::
 
 :::{focus-on="cr-hist"}
 This is a histogram.
 :::
 
+:::{#cr-hist}
 ```{r}
 #| echo: true
-#| id: cr-hist
 #| fig-cap: "This is a caption."
 #| fig-height: 4
 
 hist(mtcars$mpg)
 ```
+:::
 
 :::{focus-on="cr-list"}
 This is a list (a block element).
@@ -73,7 +75,7 @@ This is a list (a block element).
 This is display math, but I'm making it a bit longer so that it covers a few lines.
 :::
 
-::: {#cr-displaymath}
+::: {#cr-displaymath style="font-size: 300%;"}
 
 $$
 \begin{align}
@@ -88,7 +90,7 @@ $$
 This is a poem. It's called ["Bellringer", by Rita Dove](https://www.newyorker.com/culture/2019-in-review/our-year-in-poems).
 :::
 
-| {#cr-mypoem .cr-poem}
+| {#cr-mypoem .cr-poem  .scale-to-fill}
 | I was given a name, it came out of a book—
 | I don’t know which. I’ve been told the Great Man
 | could recite every title in order on its shelf.
@@ -138,27 +140,29 @@ The phrase 'laughs anatomical' is quite important here!
 This is a mermaid diagram
 :::
 
+:::{#cr-mermaid .scale-to-fill}
 ```{mermaid}
-%%| id: cr-mermaid
 flowchart LR
   A[Hard edge] --> B(Round edge)
   B --> C{Decision}
   C --> D[Result one]
   C --> E[Result two]
 ```
+:::
 
 :::{focus-on="cr-graphviz"}
 This is a graphviz diagram
 :::
 
+:::{#cr-graphviz .scale-to-fill}
 ```{dot}
-//| id: cr-graphviz
 graph G {
   layout=neato
   run -- intr;
   intr -- runbl;
 }
 ```
+:::
 
 :::
 
