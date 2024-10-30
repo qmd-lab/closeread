@@ -86,7 +86,7 @@ function make_section_layout(div)
     
     -- piece together the cr-section
     cr_section = pandoc.Div({narrative_col, sticky_col},
-      pandoc.Attr("", section_class_list, { style = new_style_str }))
+      pandoc.Attr("", section_class_list, {}))
 
     return cr_section
   end
