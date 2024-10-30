@@ -11,6 +11,11 @@
   grid-template-rows: 1fr;
   background-color: var(--cr-section-background-color);
 }
+.cr-section.cr-column-screen {
+  grid-column: screen-start/screen-end !important;
+  z-index: 998;
+  opacity: 0.999;
+}
 .cr-section .narrative-col {
   grid-row: 1;
   font-family: var(--cr-narrative-font-family);

@@ -28,7 +28,15 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.classList.add("cr-removeheaderspace")
   }
 
-  // define ojs variables if the connector module is available
+  // attach layout classes to direct parents of `.cr-section`s
+  /* this replicates quarto <= 1.6 functionality:
+    https://github.com/quarto-dev/quarto-cli/blob/
+      d85467627aae71c96e3d1e9718a3b47289329cde/src/format/html/
+      format-html-bootstrap.ts#L1163C1-L1186C7 */ 
+  const crSections = Array.from(document.querySelectorAll(".cr-section"))
+  crSections.map(
+    el => el.parentElement.classList.add("page-columns", "page-full"))
+
   const ojsModule = window._ojs?.ojsConnector?.mainModule
   const ojsStickyName = ojsModule?.variable()
   const ojsTriggerIndex = ojsModule?.variable()
