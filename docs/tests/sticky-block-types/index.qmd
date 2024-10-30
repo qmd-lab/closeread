@@ -36,9 +36,7 @@ Here's a little non-scrolling interlude before our next scrolly section!
 
 ::::{.cr-section}
 
-:::{focus-on="cr-scatter"}
-This is a scatterplot.
-:::
+This is a scatterplot. @cr-scatter
 
 :::{#cr-scatter}
 ```{r}
@@ -48,9 +46,7 @@ plot(mtcars$mpg, mtcars$dist)
 ```
 :::
 
-:::{focus-on="cr-hist"}
-This is a histogram.
-:::
+This is a histogram. @cr-hist
 
 :::{#cr-hist}
 ```{r}
@@ -62,18 +58,14 @@ hist(mtcars$mpg)
 ```
 :::
 
-:::{focus-on="cr-list"}
-This is a list (a block element).
-:::
+This is a list (a block element). @cr-list
 
 :::{#cr-list}
 1. Apple
 2. Banana
 :::
 
-:::{focus-on="cr-displaymath"}
-This is display math, but I'm making it a bit longer so that it covers a few lines.
-:::
+This is display math, but I'm making it a bit longer so that it covers a few lines. @cr-displaymath
 
 ::: {#cr-displaymath style="font-size: 300%;"}
 
@@ -86,9 +78,7 @@ $$
 
 :::
 
-:::{focus-on="cr-mypoem"}
-This is a poem. It's called ["Bellringer", by Rita Dove](https://www.newyorker.com/culture/2019-in-review/our-year-in-poems).
-:::
+This is a poem. It's called ["Bellringer", by Rita Dove](https://www.newyorker.com/culture/2019-in-review/our-year-in-poems). @cr-mypoem
 
 | {#cr-mypoem .cr-poem  .scale-to-fill}
 | I was given a name, it came out of a book—
@@ -109,36 +99,23 @@ This is a poem. It's called ["Bellringer", by Rita Dove](https://www.newyorker.c
 | in one breath, voices [dusted with wonderment]{#cr-wonder},
 | faint sunlight quivering on a hidden breeze.
 
+The author refers to their birth twice: one here... [@cr-mypoem]{highlight="cr-born"}
 
-:::{focus-on="cr-mypoem" highlight-spans="cr-born"}
-The author refers to their birth twice: one here...
-:::
-
-:::{focus-on="cr-mypoem" highlight-spans="cr-birth1,cr-birth2"}
-... and again, further down.
+... and again, further down. [@cr-mypoem]{highlight="cr-birth1,cr-birth2"}
 
 Interestingly, Pandoc doesn't let you carry a span across two lines in a line block!
-:::
 
-:::{focus-on="cr-mypoem" highlight-spans="cr-wonder"}
-But check out this phrase, right at the bottom.
-:::
+But check out this phrase, right at the bottom. [@cr-mypoem]{hlz="cr-wonder"}
 
-:::{focus-on="cr-mylimerick"}
-Let's look at a small limerick.
-:::
+Let's look at a small limerick. @cr-mylimerick
 
 | {#cr-mylimerick .cr-poem}
 | The limerick packs [laughs anatomical]{#cr-laughs}
 |   In space that is quite economical.
 
-:::{focus-on="cr-mylimerick" highlight-spans="cr-laughs"}
-The phrase 'laughs anatomical' is quite important here!
-:::
+The phrase 'laughs anatomical' is quite important here! [@cr-mylimerick]{hlz="cr-laughs"}
 
-:::{focus-on="cr-mermaid"}
-This is a mermaid diagram
-:::
+This is a mermaid diagram @cr-mermaid
 
 :::{#cr-mermaid .scale-to-fill}
 ```{mermaid}
@@ -150,9 +127,8 @@ flowchart LR
 ```
 :::
 
-:::{focus-on="cr-graphviz"}
-This is a graphviz diagram
-:::
+This is a graphviz diagram @cr-graphviz
+
 
 :::{#cr-graphviz .scale-to-fill}
 ```{dot}
@@ -164,6 +140,6 @@ graph G {
 ```
 :::
 
-:::
+::::
 
 # The End
