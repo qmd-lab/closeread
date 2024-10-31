@@ -16,15 +16,19 @@
   <% if (item['possible-values']) { %>
     <dt>possible values</dt>
     <dd>
-      <ul>
-      <% let index = 0; %> 
-      <% for (const val of item['possible-values']) { %>
-        <li>
-          <code><%= val %></code>
-        </li>
-      <% index++; %>
-      <% } %>
-      </ul>
+      <% if (typeof item['possible-values'] === "string") { %>
+        <p><%= item['possible-values'] %></p>
+      <% } else {%>
+        <ul>
+        <% let index = 0; %> 
+        <% for (const val of item['possible-values']) { %>
+          <li>
+            <code><%= val %></code>
+          </li>
+        <% index++; %>
+        <% } %>
+        </ul>
+    <% } %>
     </dd>
   <% } %>
   </dl>
