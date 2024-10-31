@@ -1,0 +1,196 @@
+---
+title: Build up plots
+subtitle: "If your plot is too complicated, try introducing elements one at a time."
+format:
+  closeread-html:
+    code-fold: true
+    cr-section:
+      layout: overlay-left
+knitr:
+  opts_chunk: 
+    dev.args:
+      bg: transparent
+---
+
+In this demo, we'll recreate a plot from the documentation of Allison Horst's [`{palmerpenguins}`](https://allisonhorst.github.io/palmerpenguins/) R package, which provides access to penguin data from Dr. Kristen Gorman and the Palmer Station in Antarctica.
+
+```{r}
+#| label: setup
+#| echo: true
+#| output: false
+library(dplyr)
+library(ggplot2)
+library(palmerpenguins)
+
+penguins |>
+  filter(
+    !is.na(species),
+    !is.na(flipper_length_mm),
+    !is.na(body_mass_g)) ->
+penguins_forplot
+```
+
+The plot looks like this:
+
+```{r}
+#| label: original-plot
+#| echo: true
+ggplot(penguins_forplot) +
+  aes(
+    x = flipper_length_mm,
+    y = body_mass_g) +
+  geom_point(
+    aes(
+      colour = species,
+      shape = species)) +
+  theme_minimal() +
+  theme(
+    legend.position = "inside",
+    legend.position.inside = c(0.9, 0.15)) +
+  labs(
+    x = "Flipper length (mm)",
+    y = "Body mass (g)")
+```
+
+There's a bit going on in this dataset! What if we built it up one step at a time instead?
+
+The key to seamlessly blending graphics is making sure they're exactly the same size.
+
+\
+\
+
+::::{.cr-section}
+
+To start, let's hide all of the data and add some explanatory text annotations. @cr-penguins-blank
+
+:::{#cr-penguins-blank}
+```{r}
+#| label: blank-plot
+ggplot(penguins_forplot) +
+  aes(
+    x = flipper_length_mm,
+    y = body_mass_g) +
+  geom_point(
+    aes(
+      colour = species,
+      shape = species),
+    alpha = 0) +
+  annotate("text", x = Inf, y = -Inf,
+    label = "Penguins with long flippers →",
+    hjust = 1, vjust = -0.5) +
+  annotate("text", x = -Inf, y = Inf,
+    label = "↑\nHeavy\npenguins",
+    hjust = 0, vjust = 1) +
+  theme_minimal() +
+  guides(colour = "none", shape = "none") +
+  theme(
+    legend.position = "inside",
+    legend.position.inside = c(0.9, 0.15)) +
+  labs(
+    x = "Flipper length (mm)",
+    y = "Body mass (g)")
+```
+:::
+
+Now let's reveal the data... but without talking about the species just yet. \
+\
+We can already see that heavier penguins tend to have longer flippers. @cr-penguins-nospecies
+
+:::{#cr-penguins-nospecies}
+```{r}
+#| label: no-species-plot
+ggplot(penguins_forplot) +
+  aes(
+    x = flipper_length_mm,
+    y = body_mass_g) +
+  geom_point(
+    aes(
+      colour = species,
+      shape = species)) +
+  scale_colour_manual(values = c(
+    "Adelie" = "#000000",
+    "Chinstrap" = "#000000",
+    "Gentoo" = "#000000"
+  )) +
+  scale_shape_manual(values = c(
+    "Adelie" = 16,
+    "Chinstrap" = 16,
+    "Gentoo" = 16
+  )) +
+  guides(colour = "none", shape = "none") +
+  theme_minimal() +
+  theme(
+    legend.position = "inside",
+    legend.position.inside = c(0.9, 0.15)) +
+  labs(
+    x = "Flipper length (mm)",
+    y = "Body mass (g)")
+```
+:::
+
+By adding colour and shape, we can now move to our plot's second message: \
+\
+Some species are heavier and larger than others! @cr-penguins-species
+
+:::{#cr-penguins-species}
+```{r}
+#| label: species-plot
+ggplot(penguins_forplot) +
+  aes(
+    x = flipper_length_mm,
+    y = body_mass_g) +
+  geom_point(
+    aes(
+      colour = species,
+      shape = species),
+  ) +
+  theme_minimal() +
+  theme(
+    legend.position = "inside",
+    legend.position.inside = c(0.9, 0.15)) +
+  labs(
+    x = "Flipper length (mm)",
+    y = "Body mass (g)")
+```
+:::
+
+::::
+
+\
+\
+
+And there we have it!
+
+## Things to help sell the illusion
+
+There are a few things to keep in mind if you want a "built-up" plot to blend seamlessly.
+
+When one plot replaces another, it's crucial that things like your axes don't move. By default, `ggplot2` will calculate axes based on the data you're plotting, so if your data changes - for example, because you're not ready to show all of it - the axes will move, breaking the illusion.
+
+One way to get around this to "pre-calculate" the domain of your axes and specify those limits (with `xlim()` and `ylim()` in `ggplot2`, or using the `limits` argument in a scale function).
+
+Another way around it to include all of your plot layers in every step and to simply hide the ones you don't want to show with zero opacity (in `ggplot2`, this is `alpha = 0` argument, or providing a colour with zero opacity).
+
+Your axes might also move because one step has a legend and another doesn't - for example, when we show a step where all of the points are the same colour and shape.
+
+Again, there are two ways around it. The easiest, which we've used, is to put the legend _inside_ the plot space - that way, `ggplot2` doesn't reserve any space for it.
+
+The other way is to still map colour and shape even for the step where you want all the points to be the same, but to use `scale_[color/shape]_manual()` to set all of the species to black circles. You may still want to manually hide your legend in this case.
+
+```{=html}
+<!-- some quick style customisation: see https://closeread.dev/guide/styling -->
+<style>
+  .cr-section.overlay-left {
+    background-color: aliceblue;
+  }
+
+  .cr-section.overlay-left .narrative-col .narrative {
+    font-size: 1.15em;
+    background-color: #11111199;
+    color: #f1f1f1;
+    padding: 0.6em 0.8em;
+    border-radius: 0;
+    backdrop-filter: blur(10px);
+  }
+</style>
+```

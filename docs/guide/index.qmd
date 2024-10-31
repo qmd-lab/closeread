@@ -1,10 +1,46 @@
 ---
 title: Guide
-toc: true
+subtitle: Start with the basics of a Closeread document, then learn to master more advanced techniques.
 ---
 
-Closeread is a Quarto extension that allows you to author scrollytelling HTML documents. To learn how to create your first closeread document, start off by reading about the [Components of a Closeread Document](components.qmd).
+If you've never made a Closeread document, copy and paste the following document into a qmd document.
+
+```{.markdown filename="myfirstcr.qmd"}
+---
+title: My First Closeread
+format: closeread-html
+---
+
+Hello World! Please read my Closeread story below.
+
+:::{.cr-section}
+
+Closeread enables scrollytelling.
+
+Draw your readers attention with focus effects. @cr-features
+
+:::{#cr-features}
+1. Highlighting
+2. Zooming
+3. Panning
+:::
+
+:::
+
+```
+
+In the same directory as this qmd file, run the following command to make the Closeread extension available to this document.
+
+```bash
+quarto add qmd-lab/closeread
+```
+
+Now you can render the document and scroll through your first scrollytelling story. Continue the adventure by reading about the [Components of a Closeread Document](components.qmd).
+
+When you've finished the Guide, be sure to have a look at the [Gallery](/gallery) for more examples of what you can do with Closeread!
 
 * * *
 
-This is an open-source tool built upon other open-source tools. Closeread extends [Quarto](https://github.com/quarto-dev/quarto-cli), a tool for technical publishing sponsored by Posit, PBC. The responsivity to user scrolling is made possible by the [scrollama v3.0](https://github.com/russellsamora/scrollama) javascript library by Russell Samora. Both tools are open-source and distributed under an MIT License.
+:::{.text-muted .small}
+This is an open-source tool built upon other open-source tools. Closeread extends [Quarto](https://github.com/quarto-dev/quarto-cli), a tool for technical publishing sponsored by Posit, PBC. The responsivity to user scrolling is made possible by the [scrollama v3.0](https://github.com/russellsamora/scrollama) JavaScript library by Russell Samora. Both tools are open-source and distributed under an MIT License.
+:::

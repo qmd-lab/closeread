@@ -66,7 +66,6 @@
 /* A small subset of the official Tufte CSS styles */
 
 #quarto-content {
-  font-family: et-book, Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antqua", Georgia, serif;
   background-color: #fffff8;
   color: #111;
   counter-reset: sidenote-counter;

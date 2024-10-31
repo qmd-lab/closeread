@@ -1,53 +1,30 @@
-# workflow to build docs site and publish to github pages
-
 on:
-  workflow_dispatch:
   push:
-    branches: main
+    branches:
+      - main
 
-name: closeread-publish
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
-
+name: "Publish closeread.dev"
 jobs:
-  build-docs:
+  publish:
     runs-on: ubuntu-latest
-    container:
-      image: ucbscf/berkeley-stat-course:latest
-      options: --user root
-    env:
-      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - name: Checkout closeread repo
-        uses: actions/checkout@v4
-
-      - name: Check Quarto version
-        run: quarto check
-
-      - name: Render docs site
-        run: |
-          # copy closeread extension into docs 
-          cd docs
-          mkdir -p _extensions/
-          cp -Rf ../_extensions/closeread _extensions/
-          quarto render
-        shell: bash
-            
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-        
-      - name: Upload docs/ artifact
-        uses: actions/upload-pages-artifact@v3
+      # for accessing this repo's assets in the container
+      - name: Check out the repo
+        uses: actions/checkout@v3
+      # run the container, attaching this repo as a working directory
+      - name: Run the build process with Docker
+        uses: addnab/docker-run-action@v3
+        env:
+           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         with:
-          path: "./docs/_site"
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
-          
+          image: stat20/stat20-docker:latest
+          options: -v ${{ github.workspace }}:/home/rstudio/closeread -e NETLIFY_AUTH_TOKEN=${{ secrets.NETLIFY_AUTH_TOKEN }}
+          shell: bash
+          run: |
+            # exit if any command returns non-zero exit
+            set -e
+
+            cd /home/rstudio/closeread/
+            
+            # render and publish site
+            quarto publish netlify docs --id 2a052dac-9a3d-43c1-9f3d-e37e3cb55af2
