@@ -7,6 +7,9 @@ listing:
   - id: yaml-options
     template: reference.ejs
     contents: yaml-options.yml
+  - id: style-options
+    template: reference.ejs
+    contents: style-options.yml
   - id: section-options
     template: reference.ejs
     contents: section-options.yml
@@ -43,9 +46,16 @@ Hello world [@cr-hello]{#myid .myclass myattribute="something"}
 
 Identifiers start with `#`; classes start with `.`, and attributes have a key / value pair separated by `=` and no spaces. You can assign to a div one or more of each of these (though they must be supplied in identifier-class-attributes order) as long as each is separated by a space.
 
+### Style Options
+
+Options used to control various visual aspects of a Closeread document.
+
+::: {#style-options}
+:::
+
 ### Section Options
 
-A closeread section is a div with the class `cr-section` that contains stickies and triggers.
+A Closeread section is a div with the class `cr-section` that contains stickies and triggers.
 
 ::: {#section-options}
 :::
@@ -66,7 +76,7 @@ A trigger block is a div with the `focus-on` attribute to trigger effects on a p
 
 ## Keyboard Hotkeys
 
-While viewing a closeread document in a browser, you can press certain hotkeys to toggle features.
+While viewing a Closeread document in a browser, you can press certain hotkeys to toggle features.
 
 | Hotkey                    | Effect                     |
 |---------------------------|----------------------------|

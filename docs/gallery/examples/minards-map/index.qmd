@@ -8,6 +8,13 @@ format:
     code-tools: true
     image: mindard-map.png
     description: Revisiting a classic of data visualization
+    mainfont: 'et-book, Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif'
+    cr-style:
+      narrative-background-color-overlay: transparent
+      narrative-background-color-sidebar: transparent
+      section-background-color: transparent
+      narrative-text-color-overlay: black
+      narrative-font-family: 'et-book, Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif'
 ---
 
 :::{.epigraph}
@@ -20,8 +27,7 @@ An especially effective device for enhancing the explanatory power of time-serie
 
 :::{.cr-section}
 
-:::{style="padding-block: 20svh"}
-:::
+{{< spacer 10svh >}}
 
 The first is the classic of Charles Joseph Minard (1781-1870), the French engineer, which shows the terrible fate of Napoleon's army in Russia. Described by E. J. Marey as seeming to defy the pen of the historian by its brutal eloquence, 12 this combination of data map and time-series, drawn in 1869, portrays a sequence of devastating losses suffered in Napoleon's Russian campaign of 1812. @cr-map
 

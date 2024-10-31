@@ -3,7 +3,7 @@ on:
     branches:
       - main
 
-name: "Publish to closeread.netlify.app"
+name: "Publish closeread.dev"
 jobs:
   publish:
     runs-on: ubuntu-latest

@@ -1,0 +1,64 @@
+---
+title: Figure environments
+format:
+  closeread-html:
+    code-tools: true
+    toc: true
+keep-md: true
+---
+
+Just about any type of element that can be included in a Quarto doc can be flagged as a sticky. This demo shows many examples.
+
+The current fix allows `.cr-section` to work, provided it's a "first level" child of the `main` content. For example:
+
+::::{.cr-section}
+
+This is an image that includes a caption. @cr-inline-working
+
+:::{#cr-inline-working}
+This works: ![a caption](trees.png)
+:::
+
+This does too! @cr-nocaption-working
+
+:::{#cr-nocaption-working}
+![](trees.png)
+:::
+
+Does this one, which has a caption but no content? @cr-caption-working
+
+:::{#cr-caption-working}
+![Look at this tree!](trees.png)
+:::
+
+::::
+
+## This header becomes a section
+
+We've reimplemented `.column-screen` so that we can even make `.cr-section` work if you've used an `h2` (which puts parts of the doc inside a `section`):
+
+::::{.cr-section}
+
+This is an image that includes a caption. @cr-inline-working2
+
+:::{#cr-inline-working2}
+This works: ![a caption](trees.png)
+:::
+
+This does too! @cr-nocaption-working2
+
+:::{#cr-nocaption-working2}
+![](trees.png)
+:::
+
+Does this one, which has a caption but no content? @cr-caption-working2
+
+:::{#cr-caption-working2}
+![Look at this tree!](trees.png)
+:::
+
+::::
+
+## Another section
+
+{{< lipsum 1 >}}

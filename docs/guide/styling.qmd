@@ -1,0 +1,65 @@
+---
+title: Styling
+subtitle: Change the way your Closeread documents look.
+---
+
+Closeread documents will generally follow the [Quarto theme](https://quarto.org/docs/output-formats/html-themes.html) you use. However, you'll likely want to customise the appearance of your Closeread sections.
+
+# Document frontmatter
+
+The `cr-style` key provides a number of options for quickly customising your Closeread document. Put them under `format.closeread-html.cr-style`. For example:
+
+````yaml
+---
+title: My document
+format:
+  closeread-html:
+    cr-style:
+      narrative-background-color-overlay: darkslategrey
+      narrative-text-color-overlay: "#e2e2e2"
+---
+````
+
+Options include:
+
+- `narrative-background-color-overlay`: the background color used for narrative text blocks in sidebar layouts
+- `narrative-text-color-overlay`: the color of narrative text in overlay layouts
+- `narrative-background-color-sidebar`: the background color used for the narrative column in sidebar layouts
+- `narrative-text-color-sidebar`: the color of narrative text in sidebar layouts
+- `narrative-border-radius`: the border radius of narrative text blocks in overlay layouts
+- `narrative-overlay-max-width`: the maximum width of narrative text blocks in overlay layouts
+- `narrative-overlay-min-width`: the minimum width of narrative text blocks in overlay layouts
+  * It's generally best to leave this one alone: setting it can cause mobile layout issues.
+- `narrative-outer-margin`: the margin pushing narrative content in from the left (on `overlay-left` layouts) or right edge (on `overlay-right`)
+- `narrative-font-family`: the font(s) used for narrative content
+- `narrative-font-size`: the font size used for narrative content
+- `poem-font-family`: the font(s) used for lineblock poems
+- `section-background-color`: the background color used for Closeread sections
+- `narrative-sidebar-width`: the width of the sidebar. Defaults to `1fr`: the sticky content is `2fr` in sidebar layouts, dividing the page 1:2 by default. You can adjust this ratio with a different `fr` value, a fixed value, or a combination of the two using [`minmax()`](https://developer.mozilla.org/en-US/docs/Web/CSS/minmax).
+
+# (S)CSS customisation
+
+Users familiar with CSS or SCSS can add a stylesheet to more heavily customise the appearance of Closeread sections.
+
+Closeread divides the content of sections into two columns:
+
+1. A `.narrative-col` contains triggers and other non-sticky content; and
+2. A `.sticky-col` contains the stickies, stacked on top of each other in a `.sticky-col-stack`
+
+The hierarchy of elements is as follows.
+
+```markdown
+.cr-section
+├ .narrative-col        # all non-stickies go in this column
+│ ╰ .trigger            # wraps each trigger block w/ vert padding
+│   ╰ .narrative        # visible trigger content
+╰ .sticky-col
+  ╰ .sticky-col-stack   # stickies go here
+    ╰ .sticky           # wraps each individual sticky 
+```
+
+You'll most likely want to target the following elements:
+
+- `.cr-section` if you want to add a background color to the entire section
+- `.narrative-col` if you want to add a background color to the column containing the triggers (especially in a sidebar layout), or change its width
+- `.narrative` to change the appearance of triggers, including their background color, border radius (for curved or not curved boxes), text color or font

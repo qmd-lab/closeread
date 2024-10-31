@@ -1,5 +1,6 @@
 ---
 title: Gallery
+subtitle: Learn how to use specific Closeread features or find some inspiration in our examples.
 listing:
   - id: examples-listings
     contents: examples
@@ -21,7 +22,7 @@ listing:
 
 ### Feature Demos
 
-A series of short closeread documents that each demonstrate one feature of the closeread custom format.
+A series of short Closeread documents that each demonstrate one feature of the Closeread custom format.
 
 :::{#demo-listings}
 :::

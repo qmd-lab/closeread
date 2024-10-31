@@ -5,7 +5,7 @@ on:
       - main
       - dev
 
-name: "Publish to closeread-pr.netlify.app"
+name: "Publish preview.closeread.dev"
 jobs:
   publish:
     runs-on: ubuntu-latest
