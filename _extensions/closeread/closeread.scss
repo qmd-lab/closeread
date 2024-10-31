@@ -46,7 +46,11 @@
           margin-bottom: 0;
         }
       }
-
+      
+      &:has(.cr-spacer) {
+        visibility: hidden;
+        padding-block: 0;
+      }
     }
   }
 
