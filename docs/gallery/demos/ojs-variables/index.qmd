@@ -127,7 +127,7 @@ As you back and forth over this Closeread section, note the values of the OJS va
 2. `crTriggerProgress` is a number between 0 and 1 representing how far the currently active trigger has progressed through the visible window.
 3. `crDirection` is either `"up"` or `"down"`, depending on the direction the user last scrolled.
 4. `crActiveSticky` is the name of the currently visible sticky.
-5. `crProgressBlock` is a number between 0 and 1 representing how far the currently active progress block has progressed through the visible window (more on progress blocks in [Authoring Tools](/guide/authoring-tools.qmd)).
+5. `crProgressBlock` is a number between 0 and 1 representing how far the currently active progress block has progressed through the visible window (more on progress blocks in [Interactive Graphics](/guide/interactive-graphics.qmd)).
 
 To demonstrate the use of other OJS variables, we'll recreate the spinning behavior by a more creative mapping of `crTriggerIndex` and `crTriggerProgress` to form `angle2`. [This second globe demonstrates some interesting behavior: `angle2` was actually changing as a result of the two triggers used in making the first globe. ]
 
