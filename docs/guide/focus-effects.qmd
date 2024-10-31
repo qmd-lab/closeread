@@ -155,4 +155,4 @@ This is the first limerick ever recorded. @cr-limerick
 
 When this sticky is triggered, it will fade in and transform such that it fills the viewport. This class can be applied to a wide range of sticky types.
 
-Once you've used these tools to write your story, you might want to turn your attention to the [Layout](/gguide/layouts.qmd) of your document.
+Once you've used these tools to write your story, you might want to turn your attention to the [Layout](/guide/layouts.qmd) of your document.
