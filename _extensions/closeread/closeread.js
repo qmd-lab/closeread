@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.classList.add("cr-removeheaderspace")
   }
 
-  // attach layout classes to direct parents of `.cr-section`s
+  // attach layout classes to parents of `.cr-section`s up to main.content
   /* this replicates quarto <= 1.6 functionality:
     https://github.com/quarto-dev/quarto-cli/blob/
       d85467627aae71c96e3d1e9718a3b47289329cde/src/format/html/
