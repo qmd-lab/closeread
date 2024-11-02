@@ -14,7 +14,7 @@ format:
 
 Closeread makes scrolling progress available to users as [Observable JavasScript](https://quarto.org/docs/interactive/ojs) variables, so you can create Closeread sections with interactive graphics that change as you scroll.
 
-Let's use this functionality to make a visualization of a globe. Before we start, let's define some cities that we'll plot on that glove. Here I've done it in OJS, but you could easily make an R or Python data frame available using `ojs_define()` (or load a CSV from elsewhere):
+Let's use this functionality to make a visualization of a globe. Before we start, let's define some cities that we'll plot on that globe. Here I've done it in OJS, but you could easily make an R or Python data frame available using `ojs_define()` (or load a CSV from elsewhere):
 
 ```{ojs}
 //| echo: true
