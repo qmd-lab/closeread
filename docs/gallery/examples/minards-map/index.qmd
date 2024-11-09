@@ -13,6 +13,7 @@ format:
       narrative-background-color-overlay: transparent
       narrative-background-color-sidebar: transparent
       section-background-color: transparent
+      narrative-sidebar-width: minmax(320px, 1fr)
       narrative-text-color-overlay: black
       narrative-font-family: 'et-book, Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif'
 ---
