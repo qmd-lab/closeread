@@ -5,6 +5,12 @@ project:
 
 website:
   title: "Closeread"
+  announcement: 
+    icon: award
+    dismissable: false
+    content: "**[The Closeread Prize](https://posit.co/blog/closeread-prize-announcement/){style=\"color: var(--bs-warning-text-emphasis)\"}:** prizes for the best scrollytelling! Entries close Dec 15. [**Learn more and enter!**](https://posit.co/blog/closeread-prize-announcement/){style=\"color: var(--bs-warning-text-emphasis)\"}"
+    type: warning
+    position: below-navbar
   page-navigation: true
   navbar:
     left:

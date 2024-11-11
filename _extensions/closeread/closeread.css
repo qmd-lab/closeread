@@ -181,7 +181,7 @@
 }
 
 .sidebar-right {
-  grid-template-columns: 2fr var(cr-narrative-sidebar-width);
+  grid-template-columns: 2fr var(--cr-narrative-sidebar-width);
 }
 .sidebar-right .narrative-col {
   grid-column: 2;
