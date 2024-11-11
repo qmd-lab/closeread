@@ -159,6 +159,8 @@
       z-index: 1;
       margin-inline: auto;
       background-color: transparent;
+      max-width: var(--cr-narrative-overlay-max-width);
+      min-width: var(--cr-narrative-overlay-min-width);
       
       .narrative {
         background-color: var(--cr-narrative-background-color-overlay);
@@ -185,6 +187,8 @@
       z-index: 1;
       margin-inline: auto;
       background-color: transparent;
+      max-width: var(--cr-narrative-overlay-max-width);
+      min-width: var(--cr-narrative-overlay-min-width);
       
       .narrative {
         background-color: var(--cr-narrative-background-color-overlay);
