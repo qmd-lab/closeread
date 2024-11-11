@@ -26,9 +26,9 @@ Maybe you've gone on a journey.
 
 ![](ship.mp4){#cr-ship .scale-to-cover alt="A ship sails in a polar region" autoplay="true" loop="true"}
 
-Apply the `.scale-to-cover` class to videos to ensure that they fill up the whole Closeread sticky column (even if they need to be cropped to do it). @cr-tea
+Apply the `.scale-to-cover` class to videos to ensure that they fill up the whole Closeread sticky column (even if they need to be cropped to do it). @cr-ship
 
-This is great for photojournalistic use cases like interviews where not every part of the frame needs to be visible. @cr-tea
+This is great for photojournalistic use cases like interviews where not every part of the frame needs to be visible. @cr-ship
 
 ::::
 
