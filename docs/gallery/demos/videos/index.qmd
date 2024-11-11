@@ -1,0 +1,64 @@
+---
+title: "Videos"
+# image: "globe.png"
+subtitle: "Use videos that loop or progress on user scroll."
+format:
+  closeread-html:
+    cr-style:
+      narrative-border-radius: 0
+      narrative-background-color-overlay: "#d8e4f2aa"
+      narrative-text-color-overlay: black
+      narrative-background-color-sidebar: "#914e4e"
+      narrative-text-color-sidebar: white
+      section-background-color: "#213243"
+---
+
+Something something video
+
+Now here's an example of a video filling to fit the space:
+
+::::{.cr-section layout="overlay-left"}
+
+You can tell all sorts of stories with videos.
+
+Maybe you've gone on a journey.  
+[Credit: [Cristian-Manieri/Pixabay](https://pixabay.com/videos/drone-landscape-green-greenland-236893/)]{style="font-size: 65%;"} @cr-ship
+
+![](ship.mp4){#cr-ship .scale-to-cover alt="A ship sails in a polar region" autoplay="true" loop="true"}
+
+Apply the `.scale-to-cover` class to videos to ensure that they fill up the whole Closeread sticky column (even if they need to be cropped to do it). @cr-tea
+
+This is great for photojournalistic use cases like interviews where not every part of the frame needs to be visible. @cr-tea
+
+::::
+
+\
+\
+
+The works for sidebar layouts too:
+
+\
+\
+
+::::{.cr-section layout="sidebar-right"}
+
+The video may even be there simply to establish a mood for your story.  
+[Credit: [Domka_1611/Pixabay](https://pixabay.com/videos/fire-evening-nature-forest-autumn-148594/)]{style="font-size: 65%;"} @cr-tea
+
+![](tea.mp4){#cr-tea .scale-to-cover alt="One person pours tea into another person's tea cup in front of an open fire." autoplay="true" loop="true"}
+
+:::{focus-on="cr-tea"}
+You may want to add `autoplay="true"` and `loop="true"` to your videos.
+\
+\
+In this case, we've shifted the video and put a crossfade in the middle of it for a seamless loop.
+:::
+
+::::
+
+\
+\
+
+# Videos that progress on scroll
+
+TODO
