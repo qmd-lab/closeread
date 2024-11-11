@@ -6,8 +6,6 @@ You can contribute to Closeread in many ways:
 - By submitting Pull Request (PR) to fix opened issues
 - By submitting Pull Request (PR) to suggest new features (it is considered good practice to open an issue for discussion before working on a pull request for a new feature).
 
-Please be mindful of our [code of conduct](https://github.com/quarto-dev/quarto-cli/blob/main/.github/CODE_OF_CONDUCT.md) as you interact with other community members.
-
 ## Pull Requests
 
 Pull requests are very welcome! Here's how to contribute via PR:
