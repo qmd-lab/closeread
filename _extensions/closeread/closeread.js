@@ -195,6 +195,7 @@ function updateStickies(allStickies, focusedStickyName, trigger) {
   // apply additional effects
   transformSticky(focusedSticky, trigger.element);
   highlightSpans(focusedSticky, trigger.element);
+  controlVideo(focusedSticky, trigger.element);
   
   if ( // scale-to-fill only takes effect if there are no other transforms
     focusedSticky.classList.contains("scale-to-fill") &&
@@ -409,6 +410,45 @@ function scaleToFill(el, paddingX = 75, paddingY = 50) {
   el.style.setProperty("transform",
     `matrix(${scale}, 0, 0, ${scale}, 0, ${centerDeltaY})`)
 }
+
+//==============//
+//    Videos    //
+//==============//
+// Execute different methods on video elements such as play() and pause().
+function controlVideo(focusedSticky, triggerEl) {
+
+  // get any video methods
+  const videoAttributes = Array.from(triggerEl.attributes).filter(attr => 
+    /^data-.*-video$/.test(attr.name));
+
+  // exit function if there's no video method
+  if (videoAttributes.length == 0) {
+    return;
+  }
+
+  if (videoAttributes.length > 1) {
+    console.warn(`Multiple video method are called by a single trigger. Applying only the first one, ${videoAttributes[0].name}`)
+  }
+
+  // get video element
+  const videoEl = focusedSticky.querySelector("video");
+
+  // execute method on video
+  if (videoAttributes[0].value === "true") {
+    const attributeName = videoAttributes[0].name;
+
+    // extract method from attribute name
+    const methodName = attributeName.replace(/^data-/, "").replace(/-video$/, "");
+
+    // check if the method exists on videoEl, then call it
+    if (typeof videoEl[methodName] === "function") {
+      videoEl[methodName]();
+    } else {
+      console.log(`Method ${methodName} does not exist for a video element.`);
+    }
+  }
+}
+
 
 /* getBooleanConfig: checks for a <meta> with named attribute `cr-[metaFlag]`
    and returns true if its value is "true" or false otherwise */
