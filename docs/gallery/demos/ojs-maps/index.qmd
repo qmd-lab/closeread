@@ -1,0 +1,102 @@
+---
+title: "OJS Maps"
+# image: "globe.png"
+subtitle: "Animate a Mapbox or MapLibre map."
+format:
+  closeread-html:
+    code-tools: true
+    cr-style:
+      narrative-background-color-overlay: "#111111dd"
+      narrative-text-color-overlay: white
+      narrative-background-color-sidebar: transparent
+      section-background-color: transparent
+    css:
+      - https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.css
+---
+
+If you've seen the [OJS Variables](/gallery/demos/ojs-variables/index.qmd) demo, you've seen ways that we can use scroll progress to make graphics that "animate" as the user scrolls.
+
+That demo completely destroys and recreates the graphic continuously as the user scrolls, which works well for Observable Plot.
+
+But many other JavaScript frameworks have animation capabilities built in, and if you want to leverage those capabilities, you may not be able to use this technique - any potential animation in them is lost the moment you destroy it.
+
+In these cases, we initialise the map in one chunk of OJS code, then write the reactive bit — the part that ties it to our scroll progress — in a separate chunk.
+
+# Bertin.js
+
+[Bertin.js](https://github.com/riatelab/bertin) is a simple mapping library. You can absolutely use it as we do in the [OJS Variables](/gallery/demos/ojs-variables/index.qmd) demo, replacing the map wholesale.
+
+```{ojs}
+import { cities, world } from "/gallery/demos/ojs-variables/index.qmd"
+
+// add a population column and convert to geojson
+citiesGeo = bertin.table2geo(cities.map(d => ({...d, size: 3})))
+
+bertin = require("bertin@1.8")
+```
+
+::::{.cr-section}
+
+First, let's draw the map. Let's mark the cities from the [OJS Variables](/gallery/demos/ojs-variables/index.qmd) demo too. @cr-bertin
+
+:::{#cr-bertin}
+```{ojs}
+bertinMap = bertin.draw({
+  params: { projection: d3.geoNaturalEarth1() },
+  layers: [
+    {
+      id: "city-layer",
+      type: "bubble",
+      geojson: citiesGeo,
+      values: "size",
+      k: 20,
+      fill: "orangered",
+
+      tooltip: [ "$name" ]
+    },
+    {
+      type: "layer",
+      geojson: world,
+      fill: "#f5d482"
+    },
+    { type: "graticule" },
+    { type: "outline" }
+  ]
+})
+```
+:::
+
+:::{focus-on="cr-bertin"}
+Now we can update aspects of the map:
+
+```{ojs}
+// echo: true
+newMap = {
+  const scrollColour = crTriggerIndex >= 1 ?
+    "royalblue" : "orangered"
+
+  bertinMap.update({
+    id: "city-layer",
+    attr: "fill",
+    value: scrollColour,
+    duration: 1000
+  })
+}
+```
+:::
+
+Notice that the map transitions between states instead of being replaced! @cr-bertin
+
+::::
+
+
+<!-- display our ojs variables in the corner -->
+:::{.counter style="position: fixed; top: 10px; right: 10px; background-color: skyblue; border-radius: 5px; padding: 18px 18px 0 18px; line-height: .8em;"}
+```{ojs}
+md`Active sticky: ${crActiveSticky}`
+md`Active trigger: ${crTriggerIndex}`
+md`Trigger progress: ${(crTriggerProgress * 100).toFixed(1)}%`
+md`Scroll direction: ${crDirection}`
+md`Progress Block progress: ${(crProgressBlock * 100).toFixed(1)}%`
+```
+:::
