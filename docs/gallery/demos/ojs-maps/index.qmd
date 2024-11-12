@@ -6,16 +6,15 @@ format:
   closeread-html:
     code-tools: true
     cr-style:
-      narrative-background-color-overlay: "#111111dd"
+      narrative-background-color-overlay: "#708090dd"
       narrative-text-color-overlay: white
       narrative-background-color-sidebar: transparent
       section-background-color: transparent
     css:
       - https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.css
-
 ---
 
-If you've seen the [OJS Variables](/gallery/demos/ojs-variables/index.qmd) demo, you've seen ways that we can use scroll progress to make graphics that "animate" as the user scrolls.
+If you've seen the [OJS Basics](/gallery/demos/ojs-basics/index.qmd) demo, you've seen ways that we can use scroll progress to make graphics that "animate" as the user scrolls.
 
 That demo completely destroys and recreates the graphic continuously as the user scrolls, which works well for Observable Plot.
 
@@ -25,10 +24,10 @@ In these cases, we initialise the map in one chunk of OJS code, then write the r
 
 # Bertin.js
 
-[Bertin.js](https://github.com/riatelab/bertin) is a simple mapping library. You can absolutely use it as we do in the [OJS Variables](/gallery/demos/ojs-variables/index.qmd) demo, replacing the map wholesale. But you can also use its `update()` function to change it 
+[Bertin.js](https://github.com/riatelab/bertin) is a simple mapping library. You can absolutely use it as we do in the [OJS Basics](/gallery/demos/ojs-basics/index.qmd) demo, replacing the map wholesale. But you can also use its `update()` function to change it 
 
 ```{ojs}
-import { cities, world } from "/gallery/demos/ojs-variables/index.qmd"
+import { cities, world } from "/gallery/demos/ojs-basics/index.qmd"
 
 // add a population column and convert to geojson
 citiesGeo = bertin.table2geo(cities.map(d => ({...d, size: 3})))
@@ -38,7 +37,7 @@ bertin = require("bertin@1.8")
 
 ::::{.cr-section}
 
-First, let's draw the map. Let's mark the cities from the [OJS Variables](/gallery/demos/ojs-variables/index.qmd) demo too. @cr-bertin
+First, let's draw the map. Let's mark the cities from the [OJS Basics](/gallery/demos/ojs-basics/index.qmd) demo too. @cr-bertin
 
 :::{#cr-bertin}
 ```{ojs}
@@ -90,26 +89,14 @@ Notice that the map transitions between states instead of being replaced! @cr-be
 
 ::::
 
-
-<!-- display our ojs variables in the corner -->
-:::{.counter style="position: fixed; top: 10px; right: 10px; background-color: skyblue; border-radius: 5px; padding: 18px 18px 0 18px; line-height: .8em;"}
-```{ojs}
-md`Active sticky: ${crActiveSticky}`
-md`Active trigger: ${crTriggerIndex}`
-md`Trigger progress: ${(crTriggerProgress * 100).toFixed(1)}%`
-md`Scroll direction: ${crDirection}`
-md`Progress Block progress: ${(crProgressBlock * 100).toFixed(1)}%`
-```
-:::
-
-Let's look at a slightly more complex example.
+Nice! Let's see if we can apply this to a slightly more complex example.
 
 # MapLibre
 
 Let's try the technique out with [MapLibre](https://maplibre.org), an open fork of [Mapbox GL JS](https://docs.mapbox.com/mapbox-gl-js/guides/).
 
-:::{margin-aside}
-The technique will work just as well with Mapbox, as well as with most frameworks that let you call code to 'update' their graphics.
+:::{.column-margin}
+This pattern will work just as well with Mapbox, as well as with most frameworks that let you call separate code to 'update' their graphics.
 :::
 
 MapLibre doesn't require an API key the way Mapbox does, but it also doesn't come with any tiles out of the box.
@@ -177,17 +164,19 @@ Now that the map is ready, we can start to change it!
 
 ```{ojs}
 //| echo: true
-{
+tour = {
   switch (crTriggerIndex) {
     case 5:
       scrollMap.flyTo({
+        // se australia
         center: [147, -35],
         zoom: 4
       })
       break
     case 6:
       scrollMap.flyTo({
-        center: [120, 42],
+        // western usa
+        center: [-120, 42],
         zoom: 4
       })
       break
@@ -218,3 +207,12 @@ md`Scroll direction: ${crDirection}`
 md`Progress Block progress: ${(crProgressBlock * 100).toFixed(1)}%`
 ```
 :::
+
+```{=html}
+<!-- blur the narrative backgrounds a bit for readability -->
+<style>
+.narrative {
+  backdrop-filter: blur(10px)
+}
+</style>
+```
