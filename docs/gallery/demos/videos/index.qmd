@@ -24,11 +24,15 @@ You can tell all sorts of stories with videos.
 Maybe you've gone on a journey.  
 [Credit: [Cristian-Manieri/Pixabay](https://pixabay.com/videos/drone-landscape-green-greenland-236893/)]{style="font-size: 65%;"} @cr-ship
 
-![](ship.mp4){#cr-ship .scale-to-cover alt="A ship sails in a polar region" autoplay="true" loop="true"}
+![](ship.mp4){#cr-ship .scale-to-cover alt="A ship sails in a polar region" loop="true"}
 
-Apply the `.scale-to-cover` class to videos to ensure that they fill up the whole Closeread sticky column (even if they need to be cropped to do it). @cr-ship
+You can trigger a video to play using `[@cr-ship]{play-video="true"}`. [@cr-ship]{play-video="true"}
 
-This is great for photojournalistic use cases like interviews where not every part of the frame needs to be visible. @cr-ship
+You can also pause it using `[@cr-ship]{pause-video="true"}`. [@cr-ship]{pause-video="true"}
+
+Apply the `.scale-to-cover` class to videos to ensure that they fill up the whole Closeread sticky column (even if they need to be cropped to do it).
+
+This is great for photojournalistic use cases like interviews where not every part of the frame needs to be visible.
 
 ::::
 
