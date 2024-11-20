@@ -44,6 +44,8 @@
 
 /* Closeread CSS styles */
 
+
+
 .cr-section.sticky-col.sticky-col-stack {
   transition:
     transform 3s ease-in-out !important;
@@ -69,6 +71,7 @@
   background-color: #fffff8;
   color: #111;
   counter-reset: sidenote-counter;
+  font-family: et-book, Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
 }
 
 #quarto-content main#quarto-document-content {
