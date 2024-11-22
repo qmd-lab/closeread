@@ -1,5 +1,5 @@
 ---
-title: "OJS Variables"
+title: "OJS Basics"
 image: "globe.png"
 subtitle: "Smoothly transition interactive OJS graphics."
 format:
@@ -38,7 +38,7 @@ Now let's load data that describes the shape of the continents.
 
 ```{ojs}
 //| echo: true
-world = FileAttachment("naturalearth-land-110m.geojson").json()
+world = FileAttachment("/gallery/demos/ojs-basics/naturalearth-land-110m.geojson").json()
 ```
 
 The cities above wrap the entire globe, so to view them all we'll need to be give the user the ability to spin the globe. We'll map the progress of the user's scroll, stored in a variable called `crProgressBlock`, to a variable called `angle`. The `scale.Linear` function handles the linear mapping of `crProgressBlock` going from 0 to 1 to `angle` going from -180 to 0.

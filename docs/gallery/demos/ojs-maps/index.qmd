@@ -1,0 +1,218 @@
+---
+title: "OJS Maps"
+# image: "globe.png"
+subtitle: "Animate a Mapbox or MapLibre map."
+format:
+  closeread-html:
+    code-tools: true
+    cr-style:
+      narrative-background-color-overlay: "#708090dd"
+      narrative-text-color-overlay: white
+      narrative-background-color-sidebar: transparent
+      section-background-color: transparent
+    css:
+      - https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.css
+---
+
+If you've seen the [OJS Basics](/gallery/demos/ojs-basics/index.qmd) demo, you've seen ways that we can use scroll progress to make graphics that "animate" as the user scrolls.
+
+That demo completely destroys and recreates the graphic continuously as the user scrolls, which works well for Observable Plot.
+
+But many other JavaScript frameworks have animation capabilities built in, and if you want to leverage those capabilities, you may not be able to use this technique - any potential animation in them is lost the moment you destroy it.
+
+In these cases, we initialise the map in one chunk of OJS code, then write the reactive bit — the part that ties it to our scroll progress — in a separate chunk.
+
+# Bertin.js
+
+[Bertin.js](https://github.com/riatelab/bertin) is a simple mapping library. You can absolutely use it as we do in the [OJS Basics](/gallery/demos/ojs-basics/index.qmd) demo, replacing the map wholesale. But you can also use its `update()` function to change it 
+
+```{ojs}
+import { cities, world } from "/gallery/demos/ojs-basics/index.qmd"
+
+// add a population column and convert to geojson
+citiesGeo = bertin.table2geo(cities.map(d => ({...d, size: 3})))
+
+bertin = require("bertin@1.8")
+```
+
+::::{.cr-section}
+
+First, let's draw the map. Let's mark the cities from the [OJS Basics](/gallery/demos/ojs-basics/index.qmd) demo too. @cr-bertin
+
+:::{#cr-bertin}
+```{ojs}
+bertinMap = bertin.draw({
+  params: { projection: d3.geoNaturalEarth1() },
+  layers: [
+    {
+      id: "city-layer",
+      type: "bubble",
+      geojson: citiesGeo,
+      values: "size",
+      k: 20,
+      fill: "orangered",
+
+      tooltip: [ "$name" ]
+    },
+    {
+      type: "layer",
+      geojson: world,
+      fill: "#f5d482"
+    },
+    { type: "graticule" },
+    { type: "outline" }
+  ]
+})
+```
+:::
+
+:::{focus-on="cr-bertin"}
+Now we can update aspects of the map:
+
+```{ojs}
+// echo: true
+newMap = {
+  const scrollColour = crTriggerIndex >= 1 ?
+    "royalblue" : "orangered"
+
+  bertinMap.update({
+    id: "city-layer",
+    attr: "fill",
+    value: scrollColour,
+    duration: 1000
+  })
+}
+```
+:::
+
+Notice that the map transitions between states instead of being replaced! @cr-bertin
+
+::::
+
+Nice! Let's see if we can apply this to a slightly more complex example.
+
+# MapLibre
+
+Let's try the technique out with [MapLibre](https://maplibre.org), an open fork of [Mapbox GL JS](https://docs.mapbox.com/mapbox-gl-js/guides/).
+
+:::{.column-margin}
+This pattern will work just as well with Mapbox, as well as with most frameworks that let you call separate code to 'update' their graphics.
+:::
+
+MapLibre doesn't require an API key the way Mapbox does, but it also doesn't come with any tiles out of the box.
+
+```{ojs}
+r = require.alias({
+  maplibregl: "maplibre-gl@2.1.9/dist/maplibre-gl.js",
+  h3: {},
+  // deck: "deck.gl@8.9.35/dist.min.js"
+})
+
+maplibregl = r("maplibregl").catch(() => window["maplibregl"])
+```
+
+Today we'll use some [demo tiles](https://github.com/maplibre/demotiles) that MapLibre provides — they're great for global or continental scale maps, but if you need to show more fine-grained stuff like streets, you might need to make your own tiles or look for a commercial service.
+
+::::{.cr-section layout="overlay-left"}
+
+:::{focus-on="cr-maplibre"}
+Firstly, we'll initialise our map. This has three steps:
+
+1. Create a container for it
+2. Initialise the map itself
+3. When the map is ready, connect it back to OJS. This lets us [use the map as an input](https://observablehq.com/@observablehq/a-brief-introduction-to-viewof) if we want to do that
+:::
+
+:::{#cr-maplibre}
+```{ojs}
+viewof scrollMap = {
+  
+  // set the space up for the map
+  // (note that you must currently manually size a full-bleed map!)
+  let container = html`<div style="height: 100vh; width: 100vw;"></div>`
+  
+  /* you can also create an element for the map to appear where you
+     initialise it. this also requires some extra fiddling with size */
+  // let container = document.getElementById("cr-maplibre")
+  
+  yield container
+  
+  // set the map up
+  let map = new maplibregl.Map({
+    container,
+    bounds: [[-175, -80], [175, 85]],
+    pitch: 30,
+    antialias: true,
+    style: "style.json",
+    interactive: false
+  })
+
+  map.on("load", () => {
+    container.value = map
+    container.dispatchEvent(new CustomEvent("input"))
+
+    // if your map has layers, create them separately and
+    // call `map.addLayer()` here!
+  })
+
+}
+```
+:::
+
+:::{focus-on="cr-maplibre"}
+Now that the map is ready, we can start to change it!
+
+```{ojs}
+//| echo: true
+tour = {
+  switch (crTriggerIndex) {
+    case 5:
+      scrollMap.flyTo({
+        // se australia
+        center: [147, -35],
+        zoom: 4
+      })
+      break
+    case 6:
+      scrollMap.flyTo({
+        // western usa
+        center: [-120, 42],
+        zoom: 4
+      })
+      break
+    default:
+      scrollMap.flyTo({
+        bounds: [[-175, -80], [175, 85]]
+      })
+  }
+}
+```
+:::
+
+Let's move the map to south-eastern Australia. @cr-maplibre
+
+And then to the west coast of the US! @cr-maplibre
+
+We can modify any of the [map's methods](https://maplibre.org/maplibre-gl-js/docs/API/classes/Map/#methods) — or even update a layer on the map, like filtering it or changing its colours.  @cr-maplibre
+
+::::
+
+<!-- display our ojs variables in the corner -->
+:::{.counter style="position: fixed; top: 10px; right: 10px; background-color: skyblue; border-radius: 5px; padding: 18px 18px 0 18px; line-height: .8em; z-index: 9999"}
+```{ojs}
+md`Active sticky: ${crActiveSticky}`
+md`Active trigger: ${crTriggerIndex}`
+md`Trigger progress: ${(crTriggerProgress * 100).toFixed(1)}%`
+md`Scroll direction: ${crDirection}`
+md`Progress Block progress: ${(crProgressBlock * 100).toFixed(1)}%`
+```
+:::
+
+```{=html}
+<!-- blur the narrative backgrounds a bit for readability -->
+<style>
+.narrative {
+  backdrop-filter: blur(10px)
+}
+</style>
+```

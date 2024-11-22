@@ -2,6 +2,10 @@ project:
   type: website
   pre-render:
     - './copy_extension.sh'
+  resources:
+      - "*.json"
+      - "*.pbf"
+      - "*.geojson"
 
 website:
   title: "Closeread"
