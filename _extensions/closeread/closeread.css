@@ -86,17 +86,13 @@
   transition: color 0.7s linear;
 }
 
-/* mobile sizing (bootstrap: xs) is always overlay-center */
+/* mobile sizing is always overlay-center */
 @media (max-width: 575.98px) {
-  .cr-section.sidebar-left,
-  .cr-section.sidebar-right,
   .cr-section.overlay-left,
   .cr-section.overlay-right,
   .cr-section.overlay-center {
     grid-template-columns: 1fr;
   }
-  .cr-section.sidebar-left .narrative-col,
-  .cr-section.sidebar-right .narrative-col,
   .cr-section.overlay-left .narrative-col,
   .cr-section.overlay-right .narrative-col,
   .cr-section.overlay-center .narrative-col {
@@ -104,9 +100,9 @@
     z-index: 1;
     margin-inline: auto;
     background-color: transparent;
+    max-width: var(--cr-narrative-overlay-max-width);
+    min-width: var(--cr-narrative-overlay-min-width);
   }
-  .cr-section.sidebar-left .narrative-col .narrative,
-  .cr-section.sidebar-right .narrative-col .narrative,
   .cr-section.overlay-left .narrative-col .narrative,
   .cr-section.overlay-right .narrative-col .narrative,
   .cr-section.overlay-center .narrative-col .narrative {
@@ -115,14 +111,39 @@
     padding: 0.3em 0.5em;
     border-radius: var(--cr-narrative-border-radius);
   }
-  .cr-section.sidebar-left .sticky-col,
-  .cr-section.sidebar-right .sticky-col,
   .cr-section.overlay-left .sticky-col,
   .cr-section.overlay-right .sticky-col,
   .cr-section.overlay-center .sticky-col {
     grid-column: 1;
   }
 }
+@media (max-width: 767.98px) {
+  .cr-section.sidebar-left,
+  .cr-section.sidebar-right {
+    grid-template-columns: 1fr;
+  }
+  .cr-section.sidebar-left .narrative-col,
+  .cr-section.sidebar-right .narrative-col {
+    grid-column: 1;
+    z-index: 1;
+    margin-inline: auto;
+    background-color: transparent;
+    max-width: var(--cr-narrative-overlay-max-width);
+    min-width: var(--cr-narrative-overlay-min-width);
+  }
+  .cr-section.sidebar-left .narrative-col .narrative,
+  .cr-section.sidebar-right .narrative-col .narrative {
+    background-color: var(--cr-narrative-background-color-overlay);
+    color: var(--cr-narrative-text-color-overlay);
+    padding: 0.3em 0.5em;
+    border-radius: var(--cr-narrative-border-radius);
+  }
+  .cr-section.sidebar-left .sticky-col,
+  .cr-section.sidebar-right .sticky-col {
+    grid-column: 1;
+  }
+}
+/* desktop sizing */
 .overlay-left,
 .overlay-center,
 .overlay-right {

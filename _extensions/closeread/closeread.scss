@@ -145,10 +145,10 @@
 }
 
 
-/* mobile sizing (bootstrap: xs) is always overlay-center */
+/* mobile sizing is always overlay-center */
+
+// (switch to mobile sizing from overlay layouts at bootstrap xs)
 @media (max-width: 575.98px) {
-  .cr-section.sidebar-left,
-  .cr-section.sidebar-right,
   .cr-section.overlay-left,
   .cr-section.overlay-right,
   .cr-section.overlay-center {
@@ -159,6 +159,8 @@
       z-index: 1;
       margin-inline: auto;
       background-color: transparent;
+      max-width: var(--cr-narrative-overlay-max-width);
+      min-width: var(--cr-narrative-overlay-min-width);
       
       .narrative {
         background-color: var(--cr-narrative-background-color-overlay);
@@ -174,7 +176,35 @@
   }
 }
 
-// layouts for wider-than-mobile sizing
+// (sidebar layouts switch to overlay-center at a wider breakpoint: sm)
+@media (max-width: 767.98px) {
+  .cr-section.sidebar-left,
+  .cr-section.sidebar-right {
+    grid-template-columns: 1fr;
+    
+    .narrative-col {
+      grid-column: 1;
+      z-index: 1;
+      margin-inline: auto;
+      background-color: transparent;
+      max-width: var(--cr-narrative-overlay-max-width);
+      min-width: var(--cr-narrative-overlay-min-width);
+      
+      .narrative {
+        background-color: var(--cr-narrative-background-color-overlay);
+        color: var(--cr-narrative-text-color-overlay);
+        padding: 0.3em 0.5em;
+        border-radius: var(--cr-narrative-border-radius);
+      }
+    }
+
+    .sticky-col {
+      grid-column: 1;
+    }
+  }
+}
+
+/* desktop sizing */
 
 // overlay layouts use one column...
 .overlay-left,
