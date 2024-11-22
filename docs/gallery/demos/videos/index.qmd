@@ -65,4 +65,47 @@ In this case, we've shifted the video and put a crossfade in the middle of it fo
 
 # Videos that progress on scroll
 
-TODO
+To have a video progress as we scroll, we actually need it as a sequence of images:
+
+- `video0001.png`
+- `video0002.png`
+- `video0003.png`
+- `[...]`
+
+Let's use the popular `{rayshader}` package to generate a video like that. First, we'll build the scene up:
+
+```{r}
+#| label: build-scene
+library(tibble)
+library(dplyr)
+library(stringr)
+library(purrr)
+library(rayshader)
+
+mont_shadow <- ray_shade(montereybay, zscale = 50, lambert = FALSE)
+mont_amb <- ambient_shade(montereybay, zscale = 50)
+montereybay |>
+  sphere_shade(zscale = 10, texture = "imhof1") |>
+  add_shadow(mont_shadow, 0.5) |>
+  add_shadow(mont_amb, 0) ->
+mont_scene
+```
+
+Now we'll render the sequence of images, changing the camera angle for each frame. We'll end up with 100 frames, from `image001.png` to `image100.png`:
+
+```{r}
+#| label: render-images
+tibble(angle = seq(0.01, 1, by = 0.01) * 360 + 45) |>
+  mutate(
+    n = 1:n(),
+    fname = paste0("image", str_pad(n, 3, pad = "0")),
+    render = map2(angle, fname, function(angle, fname) {
+      plot_3d(
+        mont_scene, montereybay, zscale = 50, fov = 0, theta = angle, phi = 45,
+        windowsize = c(1000, 800), zoom = 0.75, water = TRUE, waterdepth = 0,
+        wateralpha = 0.5, watercolor = "lightblue", waterlinecolor = "white",
+        waterlinealpha = 0.5)
+      Sys.sleep(0.5)
+      render_snapshot(fname)
+    }))
+```
