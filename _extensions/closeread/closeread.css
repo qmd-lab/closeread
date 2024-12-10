@@ -85,6 +85,25 @@
   color: rgb(0, 0, 0);
   transition: color 0.7s linear;
 }
+.cr-section .sticky-col .sticky-col-stack .scale-to-cover,
+.cr-section .sticky-col .sticky-col-stack .sticky:has(.scale-to-cover) {
+  width: 100%;
+  height: 100%;
+}
+.cr-section .sticky-col .sticky-col-stack .scale-to-cover > p,
+.cr-section .sticky-col .sticky-col-stack .sticky:has(.scale-to-cover) > p {
+  margin: 0;
+}
+.cr-section .sticky-col .sticky-col-stack .scale-to-cover *,
+.cr-section .sticky-col .sticky-col-stack .sticky:has(.scale-to-cover) * {
+  width: 100%;
+  height: 100%;
+}
+.cr-section .sticky-col .sticky-col-stack .scale-to-cover :is(video, img, iframe), .cr-section .sticky-col .sticky-col-stack .scale-to-cover:is(video, img, iframe),
+.cr-section .sticky-col .sticky-col-stack .sticky:has(.scale-to-cover) :is(video, img, iframe),
+.cr-section .sticky-col .sticky-col-stack .sticky:has(.scale-to-cover):is(video, img, iframe) {
+  object-fit: cover;
+}
 
 /* mobile sizing is always overlay-center */
 @media (max-width: 575.98px) {

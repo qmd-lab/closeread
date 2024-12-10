@@ -140,6 +140,26 @@
           }
         }
       }
+
+      .scale-to-cover,
+      .sticky:has(.scale-to-cover) {
+        width: 100%;
+        height: 100%;
+
+        > p {
+          margin: 0;
+        }
+
+        * {
+          width: 100%;
+          height: 100%;
+        }
+
+        :is(video, img, iframe),
+        &:is(video, img, iframe) {
+          object-fit: cover;
+        }
+      }
     }
   }
 }

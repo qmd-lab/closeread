@@ -1,0 +1,113 @@
+---
+title: "Videos"
+# image: "globe.png"
+subtitle: "Use videos that loop or progress on user scroll."
+format:
+  closeread-html:
+    cr-style:
+      narrative-border-radius: 0
+      narrative-background-color-overlay: "#d8e4f2aa"
+      narrative-text-color-overlay: black
+      narrative-background-color-sidebar: "#914e4e"
+      narrative-text-color-sidebar: white
+      section-background-color: "#213243"
+---
+
+Something something video
+
+Now here's an example of a video filling to fit the space:
+
+::::{.cr-section layout="overlay-left"}
+
+You can tell all sorts of stories with videos.
+
+Maybe you've gone on a journey.  
+[Credit: [Cristian-Manieri/Pixabay](https://pixabay.com/videos/drone-landscape-green-greenland-236893/)]{style="font-size: 65%;"} @cr-ship
+
+:::{#cr-ship .scale-to-cover}
+![](ship.mp4){alt="A ship sails in a polar region" loop="true"}
+:::
+
+You can trigger a video to play using `[@cr-ship]{play-video="true"}`. [@cr-ship]{play-video="true"}
+
+You can also pause it using `[@cr-ship]{pause-video="true"}`. [@cr-ship]{pause-video="true"}
+
+Apply the `.scale-to-cover` class to videos to ensure that they fill up the whole Closeread sticky column (even if they need to be cropped to do it).
+
+This is great for photojournalistic use cases like interviews where not every part of the frame needs to be visible.
+
+::::
+
+\
+\
+
+The works for sidebar layouts too:
+
+\
+\
+
+::::{.cr-section layout="sidebar-right"}
+
+The video may even be there simply to establish a mood for your story.  
+[Credit: [Domka_1611/Pixabay](https://pixabay.com/videos/fire-evening-nature-forest-autumn-148594/)]{style="font-size: 65%;"} @cr-tea
+
+![](tea.mp4){#cr-tea .scale-to-cover alt="One person pours tea into another person's tea cup in front of an open fire." autoplay="true" loop="true"}
+
+:::{focus-on="cr-tea"}
+You may want to add `autoplay="true"` and `loop="true"` to your videos.
+\
+\
+In this case, we've shifted the video and put a crossfade in the middle of it for a seamless loop.
+:::
+
+::::
+
+\
+\
+
+# Videos that progress on scroll
+
+To have a video progress as we scroll, we actually need it as a sequence of images:
+
+- `video0001.png`
+- `video0002.png`
+- `video0003.png`
+- `[...]`
+
+Let's use the popular `{rayshader}` package to generate a video like that. First, we'll build the scene up:
+
+```{r}
+#| label: build-scene
+library(tibble)
+library(dplyr)
+library(stringr)
+library(purrr)
+library(rayshader)
+
+mont_shadow <- ray_shade(montereybay, zscale = 50, lambert = FALSE)
+mont_amb <- ambient_shade(montereybay, zscale = 50)
+montereybay |>
+  sphere_shade(zscale = 10, texture = "imhof1") |>
+  add_shadow(mont_shadow, 0.5) |>
+  add_shadow(mont_amb, 0) ->
+mont_scene
+```
+
+Now we'll render the sequence of images, changing the camera angle for each frame. We'll end up with 100 frames, from `image001.png` to `image100.png`:
+
+```{r}
+#| label: render-images
+tibble(angle = seq(0.01, 1, by = 0.01) * 360 + 45) |>
+  mutate(
+    n = 1:n(),
+    fname = paste0("image", str_pad(n, 3, pad = "0")),
+    render = map2(angle, fname, function(angle, fname) {
+      plot_3d(
+        mont_scene, montereybay, zscale = 50, fov = 0, theta = angle, phi = 45,
+        windowsize = c(1000, 800), zoom = 0.75, water = TRUE, waterdepth = 0,
+        wateralpha = 0.5, watercolor = "lightblue", waterlinecolor = "white",
+        waterlinealpha = 0.5)
+      Sys.sleep(0.5)
+      render_snapshot(fname)
+    }))
+```
