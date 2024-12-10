@@ -70,6 +70,13 @@ document.addEventListener("DOMContentLoaded", () => {
     trigger.setAttribute('data-zoom-to', hlzValue);
     trigger.setAttribute('data-highlight', hlzValue);
   });
+
+  // initialise scrolly videos
+  let scrollyVideo = new ScrollyVideo({
+    scrollyVideoContainer: "cr-rayshader",
+    src: "rayshader.mp4",
+    trackScroll: false
+  })
     
   // collect all sticky elements
   const allStickies = Array.from(document.querySelectorAll(".sticky"));
@@ -103,6 +110,9 @@ document.addEventListener("DOMContentLoaded", () => {
   function crTriggerStepProgress(trigger) {
     ojsTriggerProgress?.define("crTriggerProgress", trigger.progress)
     ojsDirection?.define("crDirection", trigger.direction)
+    scrollyVideo.setVideoPercentage(trigger.progress, {
+      transitionSpeed: 12, easing: t => +t // linear easing
+    })
   }
   
   function crProgressStepEnter(progressBlock) {

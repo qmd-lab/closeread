@@ -4,6 +4,7 @@ title: "Videos"
 subtitle: "Use videos that loop or progress on user scroll."
 format:
   closeread-html:
+    resources: rayshader.mp4
     cr-style:
       narrative-border-radius: 0
       narrative-background-color-overlay: "#d8e4f2aa"
@@ -67,13 +68,6 @@ In this case, we've shifted the video and put a crossfade in the middle of it fo
 
 # Videos that progress on scroll
 
-To have a video progress as we scroll, we actually need it as a sequence of images:
-
-- `video0001.png`
-- `video0002.png`
-- `video0003.png`
-- `[...]`
-
 Let's use the popular `{rayshader}` package to generate a video like that. First, we'll build the scene up:
 
 ```{r}
@@ -93,21 +87,54 @@ montereybay |>
 mont_scene
 ```
 
-Now we'll render the sequence of images, changing the camera angle for each frame. We'll end up with 100 frames, from `image001.png` to `image100.png`:
+Now we'll render the movie as `rayshader.mp4`:
 
 ```{r}
 #| label: render-images
-tibble(angle = seq(0.01, 1, by = 0.01) * 360 + 45) |>
-  mutate(
-    n = 1:n(),
-    fname = paste0("image", str_pad(n, 3, pad = "0")),
-    render = map2(angle, fname, function(angle, fname) {
-      plot_3d(
-        mont_scene, montereybay, zscale = 50, fov = 0, theta = angle, phi = 45,
-        windowsize = c(1000, 800), zoom = 0.75, water = TRUE, waterdepth = 0,
-        wateralpha = 0.5, watercolor = "lightblue", waterlinecolor = "white",
-        waterlinealpha = 0.5)
-      Sys.sleep(0.5)
-      render_snapshot(fname)
-    }))
+# tibble(angle = seq(0.01, 1, by = 0.01) * 360 + 45) |>
+#   mutate(
+#     n = 1:n(),
+#     fname = paste0("image", str_pad(n, 3, pad = "0")),
+#     render = map2(angle, fname, function(angle, fname) {
+#       plot_3d(
+#         mont_scene, montereybay, zscale = 50, fov = 0, theta = angle, phi = 45,
+#         windowsize = c(1000, 800), zoom = 0.75, water = TRUE, waterdepth = 0,
+#         wateralpha = 0.5, watercolor = "lightblue", waterlinecolor = "white",
+#         waterlinealpha = 0.5)
+#       Sys.sleep(0.5)
+#       render_snapshot(fname)
+#     }))
+plot_3d(
+  mont_scene, montereybay, zscale = 50, fov = 0, phi = 45,
+  windowsize = c(1000, 800), zoom = 0.75, water = TRUE, waterdepth = 0,
+  wateralpha = 0.5, watercolor = "lightblue", waterlinecolor = "white",
+  waterlinealpha = 0.5)
+
+render_movie("rayshader.mp4")
 ```
+
+Let's incorporate `rayshader.mp4` into a scrolly section:
+
+::::{.cr-section}
+
+Here's our rayshader video! [@cr-rayshader]{.scroll-video}
+
+We can keep talking about it for a while... @cr-rayshader
+
+... and a while longer! @cr-rayshader
+
+:::{#cr-rayshader}
+:::
+
+::::
+
+
+:::{.counter style="position: fixed; top: 10px; right: 10px; background-color: skyblue; border-radius: 5px; padding: 18px 18px 0 18px; line-height: .8em; z-index: 1000"}
+```{ojs}
+md`Active sticky: ${crActiveSticky}`
+md`Active trigger: ${crTriggerIndex}`
+md`Trigger progress: ${(crTriggerProgress * 100).toFixed(1)}%`
+md`Scroll direction: ${crDirection}`
+md`Progress Block progress: ${(crProgressBlock * 100).toFixed(1)}%`
+```
+:::

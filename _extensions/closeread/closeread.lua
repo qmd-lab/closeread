@@ -543,6 +543,12 @@ quarto.doc.add_html_dependency({
   scripts = {"closeread.js"}
 })
 
+quarto.doc.add_html_dependency({
+  name = "scrollyvideo",
+  version = "0.0.23",
+  scripts = {"scrollyvideo.js"}
+})
+
 
 --=============--
 -- Run Filters --
