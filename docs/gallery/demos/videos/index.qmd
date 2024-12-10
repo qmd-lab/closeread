@@ -24,7 +24,9 @@ You can tell all sorts of stories with videos.
 Maybe you've gone on a journey.  
 [Credit: [Cristian-Manieri/Pixabay](https://pixabay.com/videos/drone-landscape-green-greenland-236893/)]{style="font-size: 65%;"} @cr-ship
 
-![](ship.mp4){#cr-ship .scale-to-cover alt="A ship sails in a polar region" loop="true"}
+:::{#cr-ship .scale-to-cover}
+![](ship.mp4){alt="A ship sails in a polar region" loop="true"}
+:::
 
 You can trigger a video to play using `[@cr-ship]{play-video="true"}`. [@cr-ship]{play-video="true"}
 

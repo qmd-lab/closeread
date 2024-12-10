@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
   ojsProgressBlock?.define("crProgressBlock", 0);
 
   if (ojsModule === undefined) {
-    console.error("Warning: Quarto OJS module not found")
+    console.warn("Warning: Quarto OJS module not found")
   }
   
   // expand hlz option into highlight and zoom-to
@@ -417,6 +417,8 @@ function scaleToFill(el, paddingX = 75, paddingY = 50) {
 // Execute different methods on video elements such as play() and pause().
 function controlVideo(focusedSticky, triggerEl) {
 
+  console.log("Controlling video ", focusedSticky, "from trigger", triggerEl)
+
   // get any video methods
   const videoAttributes = Array.from(triggerEl.attributes).filter(attr => 
     /^data-.*-video$/.test(attr.name));
@@ -434,7 +436,7 @@ function controlVideo(focusedSticky, triggerEl) {
   const videoEl = focusedSticky.querySelector("video");
 
   // execute method on video
-  if (videoAttributes[0].value === "true") {
+  if (videoAttributes[0].value !== "false") {
     const attributeName = videoAttributes[0].name;
 
     // extract method from attribute name
