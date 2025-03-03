@@ -8,7 +8,7 @@ website:
   announcement: 
     icon: award
     dismissable: false
-    content: "**[The Closeread Prize](https://posit.co/blog/closeread-prize-announcement/){style=\"color: var(--bs-warning-text-emphasis)\"}:** prizes for the best scrollytelling! Entries close Jan 5. [**Learn more and enter!**](https://posit.co/blog/closeread-prize-announcement/){style=\"color: var(--bs-warning-text-emphasis)\"}"
+    content: "[Discover the [**winners of the Closeread Prize!**](https://posit.co/blog/closeread-prize-winners/){style=\"color: var(--bs-warning-text-emphasis)\"}]{style=\"color: var(--bs-warning-text-emphasis)\"}"
     type: warning
     position: below-navbar
   page-navigation: true

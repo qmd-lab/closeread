@@ -15,14 +15,57 @@ listing:
     fields: [title, description]
     field-display-names:
       title: "Feature"
+  - id: prize-nov2024-grandwinner
+    contents:
+      - prizes/nov2024-grandwinner.yml
+    type: grid
+    fields: [image, title, author, subtitle]
+    grid-columns: 1
+  - id: prize-nov2024-specialprizes
+    contents:
+      - prizes/nov2024-specialprizes.yml
+    type: grid
+    fields: [image, title, author, subtitle]
+  - id: prize-nov2024-honourablementions
+    contents:
+      - prizes/nov2024-honourablementions.yml
+    type: table
+    fields: [image, title, author, subtitle]
+    table-striped: true
+    sort-ui: false
+    filter-ui: false
 ---
+
 
 :::{#examples-listings}
 :::
 
-### Feature Demos
+## Feature Demos
 
 A series of short Closeread documents that each demonstrate one feature of the Closeread custom format.
 
 :::{#demo-listings}
+:::
+
+## Closeread Prize
+
+In November 2024, we put the call out: show us the most amazing things you can do with Closeread!
+
+The Quarto community did not disappoint. 40 amazing entries covered a wide range of topics, from sports data to deep history. Here we feature the most outstanding entries, with links to their source code so you can learn from their expertise.
+
+With so many fantastic entries, Andrew and James had their work cut out for them. They were joined by [Curtis Kephart](https://www.linkedin.com/in/curtiskephart/), a data scientist at [Posit](https://posit.co), [Suzannah Lyons](https://www.suzannahlyons.com/), a science journalist at [360info](https://360info.org/), and Joshua Byrd, a data journalist and developer at the [Australian Broadcasting Corporation](https://abc.net.au/).
+
+### Grand Prize Winner
+
+:::{#prize-nov2024-grandwinner}
+:::
+
+### Special Prizes
+
+:::{#prize-nov2024-specialprizes}
+:::
+
+### Honourable Mentions
+
+:::{#prize-nov2024-honourablementions}
 :::
