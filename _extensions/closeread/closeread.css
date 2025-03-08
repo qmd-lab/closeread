@@ -38,12 +38,20 @@
 .cr-section .sticky-col {
   grid-row: 1;
 }
+.cr-section .sticky-col .sticky {
+    transition: transform 3s ease-in-out;
+}
+.cr-section .sticky-col .sticky img {
+    transition: clip-path 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
 .cr-section .sticky-col .sticky-col-stack {
   display: grid;
   height: 100dvh;
   position: sticky;
   overflow: hidden;
   top: 0;
+  transition:
+  transform 3s ease-in-out !important;
 }
 .cr-section .sticky-col .sticky-col-stack .sticky {
   grid-area: 1/1;

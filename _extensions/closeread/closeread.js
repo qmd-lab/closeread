@@ -187,12 +187,14 @@ document.addEventListener("DOMContentLoaded", () => {
 // updateStickies: triggers effects on the focused sticky 
 function updateStickies(allStickies, focusedStickyName, trigger) {
   const focusedSticky = document.querySelectorAll("[id=" + focusedStickyName)[0];
-  
-  // update which sticky is active
-  allStickies.forEach(node => {node.classList.remove("cr-active")});
+
+  allStickies.forEach(node => {
+    node.classList.remove("cr-active");
+    applyCrop(node, null); // Reset crop on all stickies
+  });
+
   focusedSticky.classList.add("cr-active");
-        
-  // apply additional effects
+
   transformSticky(focusedSticky, trigger.element);
   highlightSpans(focusedSticky, trigger.element);
   
@@ -311,6 +313,7 @@ function transformSticky(focusedSticky, trigger) {
   let translateStr = "";
   let scaleStr = "";
   let transformStr = "";
+  let cropStr = "";
   
   // determine type of transform
   if (trigger.hasAttribute("data-pan-to")) {
@@ -326,6 +329,9 @@ function transformSticky(focusedSticky, trigger) {
   if (trigger.hasAttribute("data-zoom-to")) {
     transformStr = zoomToTransform(focusedSticky, trigger);
   }
+  if (trigger.hasAttribute("data-crop")) {
+    cropStr = trigger.getAttribute("data-crop");
+  }
   
   // zooming will override pan-to and scale-by
   if (!transformStr) {
@@ -340,8 +346,25 @@ function transformSticky(focusedSticky, trigger) {
 
   // use the string to transform the sticky
   focusedSticky.style.transform = transformStr;
-  
+  if (cropStr) {
+    applyCrop(focusedSticky, cropStr);
+  }
 }
+
+function applyCrop(element, cropStr) {
+    const img = element.querySelector('img');
+    if (img) {
+      if (cropStr === null || cropStr === undefined) {
+        // Reset the crop
+        img.style.clipPath = 'inset(0% 0% 0% 0%)';
+      } else {
+        const [left, top, right, bottom] = cropStr.split(',').map(v => parseFloat(v));
+        setTimeout(() => {
+          img.style.clipPath = `inset(${top}% ${right}% ${bottom}% ${left}%)`;
+        }, 100); // Small delay to allow transform to start first
+      }
+    }
+  }
 
 function zoomToTransform(focusedSticky, trigger) {
   
