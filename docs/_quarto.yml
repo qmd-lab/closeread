@@ -5,6 +5,7 @@ project:
 
 website:
   title: "Closeread"
+  site-url: "https://closeread.dev"
   announcement: 
     icon: award
     dismissable: false
