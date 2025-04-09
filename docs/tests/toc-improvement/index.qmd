@@ -1,0 +1,16 @@
+---
+title: Improving TOCs
+format: closeread-html
+toc: true
+toc-depth: 3
+---
+
+## Hello
+
+:::{.cr-section}
+
+apple
+
+## World
+
+:::

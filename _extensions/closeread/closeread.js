@@ -17,13 +17,19 @@ const progressBlockSelector = '.progress-block'
 // == Run upon the HTML file loaded === //
 document.addEventListener("DOMContentLoaded", () => {
 
+
   // attach meta classes to <body>
   document.body.classList.add("closeread")
   const debugMode         = getBooleanConfig("cr-debug-mode")
+  const improveTOC        = getBooleanConfig("cr-improve-toc")
   const removeHeaderSpace = getBooleanConfig("cr-remove-header-space")
+  
   if (debugMode) {
     document.body.classList.add("cr-debug")
-  } 
+  }
+  if (improveTOC) {
+    improveTOC()
+  }
   if (removeHeaderSpace) {
     document.body.classList.add("cr-removeheaderspace")
   }
@@ -421,4 +427,22 @@ function getBooleanConfig(metaFlag) {
 function isDocumentMain(el) {
   return el === null ||
       (el.tagName == "MAIN" && el.classList.contains("content"))
+}
+
+function improveTOC() {
+
+  const toc = document.querySelector("nav#TOC")
+  const tocLinks = toc.querySelectorAll("a.nav-link")
+  
+  // get toc depth and construct a css selector for those headings immediately
+  // within narrative columns
+  const depth = parseInt(
+    document.querySelector("meta[cr-toc-depth]")?.getAttribute("cr-toc-depth"))
+  const headingLevels =
+    Array.from({length: depth}, (_, i) => `h${i + 1}`)
+    .join(", ")
+  const narrativeHeadSelector = document.querySelectorAll(
+    `.narrative-col > :is(${headingLevels})`)
+
+  
 }
