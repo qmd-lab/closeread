@@ -8,6 +8,8 @@
 
 -- set defaults
 local debug_mode = false
+local improve_toc = true
+local toc_depth = 2
 local trigger_selectors = {["focus-on"] = true}
 local cr_attributes = {["pan-to"] = true, 
                       ["scale-by"] = true, 
@@ -42,6 +44,18 @@ function read_meta(m)
   -- debug mode
   if m["debug-mode"] ~= nil then
     debug_mode = m["debug-mode"]
+  end
+
+  if m["improve-toc"] ~= nil then
+    improve_toc = m["improve-toc"]
+  end
+
+  if m["toc-depth"] ~= nil then
+    local depth = m["toc-depth"]
+    toc_depth = depth
+    print("FOUND TOC DEPTH: ".. depth)
+  else
+    print("DEFAULTING TO TOC DEPTH: 2")
   end
 
   -- remove-header-space
@@ -86,13 +100,15 @@ function read_meta(m)
   end
 
   
-  -- inject debug mode option in html <meta>
-  quarto.doc.include_text("in-header", "<meta cr-debug-mode='" ..
-    tostring(debug_mode) .. "'>")
-
-  -- inject remove_header_space options into html <meta>
-  quarto.doc.include_text("in-header", "<meta cr-remove-header-space='" ..
-    tostring(remove_header_space) .. "'>")
+  -- inject options in html <meta>
+  quarto.doc.include_text("in-header",
+    make_meta_tag("cr-debug-mode", debug_mode))
+  quarto.doc.include_text("in-header",
+    make_meta_tag("cr-improve-toc", improve_toc))
+  quarto.doc.include_text("in-header",
+    make_meta_tag("cr-toc-depth", toc_depth))
+  quarto.doc.include_text("in-header",
+    make_meta_tag("cr-remove-header-space", remove_header_space))
   
 end
 
@@ -328,7 +344,10 @@ function list_includes_any(class_list, items)
   return false
 end
 
-
+-- helper to construct a <meta> name/value tag
+function make_meta_tag(name, value)
+  return "<meta " .. name .."='" .. tostring(value) .. "'>"
+end
 
 --======================--
 -- Lineblock Processing --
