@@ -1,0 +1,57 @@
+---
+title: Widgets in R
+format: closeread-html
+keep-md: true
+echo: false
+---
+
+The `{htmlwidgets}` package should just work! These examples are taken from the [`htmlwidgets` documentation](https://www.htmlwidgets.org).
+
+::::{.cr-section}
+
+Here's one type of widget... @cr-widget-leaflet
+
+... that is a map! @cr-widget-leaflet
+
+:::{#cr-widget-leaflet}
+
+:::{#fig-leaflet}
+
+```{r}
+#| fig-caption: This is a great map!
+library(leaflet)
+
+leaflet() |>
+  addTiles() |>
+  setView(-93.65, 42.0285, zoom = 17) |>
+  addPopups(-93.65, 42.0285, "Here is the <b>Department of Statistics</b>, ISU")
+```
+:::
+
+:::
+
+And another. This one's a scene rendered with `{rgl}`. @cr-widget-rgl
+
+:::{#cr-widget-rgl}
+```{r}
+library(rgl)
+library(htmltools)
+
+theta <- seq(0, 6 * pi, len = 100)
+xyz <- cbind(sin(theta), cos(theta), theta)
+lineid <- plot3d(xyz, type = "l", alpha = 1:0, lwd = 5, col = "blue")["data"]
+
+browsable(tagList(
+  rglwidget(elementId = "example", width = 500, height = 400,
+    controllers = "player"),
+  playwidget("example", 
+    ageControl(births = theta, ages = c(0, 0, 1), objids = lineid,
+      alpha = c(0, 1, 0)), start = 1, stop = 6 * pi, step = 0.1, rate = 6,
+      elementId = "player")
+))
+```
+:::
+
+::::
+
+Also check out the [Jupyter widgets example](/tests/widgets-in-python).
