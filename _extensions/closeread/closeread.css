@@ -44,6 +44,8 @@
   position: sticky;
   overflow: hidden;
   top: 0;
+  container-name: sticky-stack;
+  container-type: size;
 }
 .cr-section .sticky-col .sticky-col-stack .sticky {
   grid-area: 1/1;
@@ -58,6 +60,25 @@
 .cr-section .sticky-col .sticky-col-stack .sticky:has(.line-block) {
   font-family: var(--cr-poem-font-family);
   transition: transform 0.8s ease-in-out, font-size 0.8s ease-in-out;
+}
+.cr-section .sticky-col .sticky-col-stack .sticky:has(:is(.html-widget, .jupyter-widget)) figure {
+  width: calc(100cqw - var(--cr-widget-padding-width));
+  height: calc(100cqh - var(--cr-widget-padding-height));
+  display: flex;
+  flex-flow: column nowrap;
+  margin: auto;
+}
+.cr-section .sticky-col .sticky-col-stack .sticky:has(:is(.html-widget, .jupyter-widget)) figure > [aria-describedby]:has(:is(.html-widget, .jupyter-widget)) {
+  flex-grow: 1;
+}
+.cr-section .sticky-col .sticky-col-stack .sticky:has(:is(.html-widget, .jupyter-widget)) figure > [aria-describedby]:has(:is(.html-widget, .jupyter-widget)) .cell,
+.cr-section .sticky-col .sticky-col-stack .sticky:has(:is(.html-widget, .jupyter-widget)) figure > [aria-describedby]:has(:is(.html-widget, .jupyter-widget)) .cell-output-display {
+  height: 100%;
+  width: 100%;
+}
+.cr-section .sticky-col .sticky-col-stack .sticky:has(:is(.html-widget, .jupyter-widget)) figure > [aria-describedby]:has(:is(.html-widget, .jupyter-widget)) .html-widget, .cr-section .sticky-col .sticky-col-stack .sticky:has(:is(.html-widget, .jupyter-widget)) figure > [aria-describedby]:has(:is(.html-widget, .jupyter-widget)) .jupyter-widget {
+  height: 100% !important;
+  width: 100% !important;
 }
 .cr-section .sticky-col .sticky-col-stack div.sourceCode {
   background-color: rgb(233, 236, 239);
@@ -284,6 +305,7 @@ body.cr-removeheaderspace #quarto-content main#quarto-document-content .quarto-t
   --cr-poem-font-family: Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
   --cr-narrative-sidebar-width: 1fr;
   --cr-section-background-color: lightgrey;
+  --cr-widget-padding: 0px;
+  --cr-widget-padding-width: var(--cr-widget-padding);
+  --cr-widget-padding-height: var(--cr-widget-padding);
 }
-
-/*# sourceMappingURL=closeread.css.map */

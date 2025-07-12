@@ -66,6 +66,10 @@
       overflow: hidden;
       top: 0;
 
+      // establishing a container helps to size widgets below
+      container-name: sticky-stack;
+      container-type: size;
+
       .sticky {
         grid-area: 1 / 1;
         margin: auto;
@@ -78,6 +82,7 @@
           color .7s linear,
           transform 1s ease-in-out,
           transform-origin 1s ease-in-out;
+
       }
       
       .sticky:has(.line-block) {
@@ -91,6 +96,49 @@
         transition:
           transform .8s ease-in-out,
           font-size .8s ease-in-out;
+      }
+
+      // widget sizing
+      .sticky:has(:is(.html-widget, .jupyter-widget)) {
+        
+
+        // widgets wrapped in figures
+        figure {
+          width: calc(100cqw - var(--cr-widget-padding-width));
+          height: calc(100cqh - var(--cr-widget-padding-height));
+          display: flex;
+          flex-flow: column nowrap;
+          margin: auto;
+
+          > [aria-describedby]:has(:is(.html-widget, .jupyter-widget)) {
+            flex-grow: 1;
+
+            .cell,
+            .cell-output-display {
+              height: 100%;
+              width: 100%;
+            }
+
+            .html-widget, .jupyter-widget {
+              height: 100% !important;
+              width: 100% !important;
+            }
+          }
+        }
+
+        // widgets not wrapped in figures
+        .cell-output-display {
+          width: calc(100cqw - var(--cr-widget-padding-width));
+          height: calc(100cqh - var(--cr-widget-padding-height));
+
+          .html-widget, .jupyter-widget {
+            width: 100%;
+            flex-grow: 1;
+            // TODO - this doesn't work for the {rgl} example as we put
+            // out multiple widgets
+          }
+        }
+
       }
 
       div.sourceCode {
@@ -372,5 +420,8 @@ body.cr-removeheaderspace {
   --cr-poem-font-family: Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
   --cr-narrative-sidebar-width: 1fr;
   --cr-section-background-color: lightgrey;
+  --cr-widget-padding: 0px;
+  --cr-widget-padding-width: var(--cr-widget-padding);
+  --cr-widget-padding-height: var(--cr-widget-padding);
 }
 
