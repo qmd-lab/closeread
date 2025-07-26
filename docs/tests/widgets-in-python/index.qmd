@@ -1,0 +1,61 @@
+---
+title: Widgets in Python
+format: closeread-html
+keep-md: true
+echo: false
+---
+
+Because James is less experienced with Python, these Jupyter examples are taken from the [Quarto documentation page]
+(https://quarto.org/docs/interactive/widgets/jupyter.html):
+
+:::::{.cr-section}
+
+Here's one type of widget... @cr-widget-leaflet
+
+... that is a map! Note it's a figure (it has a caption down below). @cr-widget-leaflet
+
+::::{#cr-widget-leaflet}
+
+:::{#fig-leaflet}
+
+```{python}
+from ipyleaflet import Map, Marker, basemaps, basemap_to_tiles
+
+m = Map(
+  basemap = basemap_to_tiles(
+    basemaps.NASAGIBS.ModisTerraTrueColorCR, "2017-04-08"
+  ),
+  center = (52.204793, 360.121558),
+  zoom = 4
+)
+m.add_layer(Marker(location = (52.204793, 360.121558)))
+
+m
+```
+
+This is a great map!
+:::
+
+::::
+
+And another. This one's a chart rendered with plotly. @cr-widget-plotly
+
+Plotly doesn't seem to use Jupyter widgets — it's doing its own thing with several layered SVGs.  
+This needs more work. @cr-widget-plotly
+
+::::{#cr-widget-plotly}
+```{python}
+import plotly.express as px
+import plotly.io as pio
+df = px.data.iris()
+fig = px.scatter(df, x = "sepal_width", y = "sepal_length", 
+                 color = "species", 
+                 marginal_y = "violin", marginal_x = "box", 
+                 trendline = "ols", template = "simple_white")
+fig.show()
+```
+::::
+
+:::::
+
+Also check out the [R widgets example](/tests/widgets-in-r).

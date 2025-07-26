@@ -99,14 +99,12 @@
       }
 
       // widget sizing
-      .sticky:has(:is(.html-widget, .jupyter-widget)) {
+      .sticky:has(:is(.html-widget, .jupyter-widgets)) {
         width: calc(100cqw - var(--cr-widget-padding-width));
         height: calc(100cqh - var(--cr-widget-padding-height));
 
-        .cell,
-        .cell-output-display,
-        .quarto-figure,
-        figure {
+        // ensure intermediary divs grow to all available space
+        :has(:is(.html-widget, .jupyter-widgets)) {
           height: 100%;
           width: 100%;
         }
@@ -119,16 +117,17 @@
           margin: auto;
 
           // the first widget is considered the 'main' one and can grow
-          :nth-child(1 of :is(.html-widget, .jupyter-widget)) {
+          :nth-child(1 of :is(.html-widget, .jupyter-widgets)) {
             flex-grow: 1;
           }
 
-          // widgets take all space allocated by the flexboxes
-          // .html-widget,
-          // .jupyter-widget {
-          //   height: 100% !important;
-          //   width: 100% !important;
-          // }
+          // force jupyter widgets to take all space allocated by the flexboxes
+          .jupyter-widgets {
+            height: 100% !important;
+            width: 100% !important;
+          }
+
+          // TODO - plotly plots seem to use their own framework ugh
         }
 
         // also let the 'main' widget content grow when it's in a figure
