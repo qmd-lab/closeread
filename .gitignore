@@ -13,6 +13,7 @@
 docs/_site
 # closeread extension in docs site (we get it from project root on render)
 /docs/_extensions/closeread
+/docs/site_libs
 
 .luarc.json
 
@@ -28,3 +29,8 @@ tests/*/_extensions
 
 # .css.map (can be generated manually from .scss file)
 _extensions/closeread/closeread.css.map
+
+# intermediary markdown (often kept on docs in /docs/tests, but we
+# don't need to version control them)
+*.html.md
+
