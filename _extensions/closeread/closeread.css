@@ -61,24 +61,32 @@
   font-family: var(--cr-poem-font-family);
   transition: transform 0.8s ease-in-out, font-size 0.8s ease-in-out;
 }
-.cr-section .sticky-col .sticky-col-stack .sticky:has(:is(.html-widget, .jupyter-widget)) figure {
+.cr-section .sticky-col .sticky-col-stack .sticky:has(:is(.html-widget)) {
   width: calc(100cqw - var(--cr-widget-padding-width));
   height: calc(100cqh - var(--cr-widget-padding-height));
+}
+.cr-section .sticky-col .sticky-col-stack .sticky:has(:is(.html-widget)) .cell,
+.cr-section .sticky-col .sticky-col-stack .sticky:has(:is(.html-widget)) .cell-output-display,
+.cr-section .sticky-col .sticky-col-stack .sticky:has(:is(.html-widget)) .quarto-figure,
+.cr-section .sticky-col .sticky-col-stack .sticky:has(:is(.html-widget)) figure {
+  height: 100%;
+  width: 100%;
+}
+.cr-section .sticky-col .sticky-col-stack .sticky:has(:is(.html-widget)) .cell-output-display {
   display: flex;
   flex-flow: column nowrap;
   margin: auto;
 }
-.cr-section .sticky-col .sticky-col-stack .sticky:has(:is(.html-widget, .jupyter-widget)) figure > [aria-describedby]:has(:is(.html-widget, .jupyter-widget)) {
+.cr-section .sticky-col .sticky-col-stack .sticky:has(:is(.html-widget)) .cell-output-display :nth-child(1 of :is(.html-widget)) {
   flex-grow: 1;
 }
-.cr-section .sticky-col .sticky-col-stack .sticky:has(:is(.html-widget, .jupyter-widget)) figure > [aria-describedby]:has(:is(.html-widget, .jupyter-widget)) .cell,
-.cr-section .sticky-col .sticky-col-stack .sticky:has(:is(.html-widget, .jupyter-widget)) figure > [aria-describedby]:has(:is(.html-widget, .jupyter-widget)) .cell-output-display {
-  height: 100%;
-  width: 100%;
+.cr-section .sticky-col .sticky-col-stack .sticky:has(:is(.html-widget)) figure {
+  display: flex;
+  flex-flow: column nowrap;
+  margin: auto;
 }
-.cr-section .sticky-col .sticky-col-stack .sticky:has(:is(.html-widget, .jupyter-widget)) figure > [aria-describedby]:has(:is(.html-widget, .jupyter-widget)) .html-widget, .cr-section .sticky-col .sticky-col-stack .sticky:has(:is(.html-widget, .jupyter-widget)) figure > [aria-describedby]:has(:is(.html-widget, .jupyter-widget)) .jupyter-widget {
-  height: 100% !important;
-  width: 100% !important;
+.cr-section .sticky-col .sticky-col-stack .sticky:has(:is(.html-widget)) figure [aria-describedby]:has(:is(.html-widget)) {
+  flex-grow: 1;
 }
 .cr-section .sticky-col .sticky-col-stack div.sourceCode {
   background-color: rgb(233, 236, 239);

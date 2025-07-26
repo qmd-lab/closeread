@@ -7,18 +7,17 @@ echo: false
 
 The `{htmlwidgets}` package should just work! These examples are taken from the [`htmlwidgets` documentation](https://www.htmlwidgets.org).
 
-::::{.cr-section}
+:::::{.cr-section}
 
 Here's one type of widget... @cr-widget-leaflet
 
-... that is a map! @cr-widget-leaflet
+... that is a map! Note it's a figure (it has a caption down below). @cr-widget-leaflet
 
-:::{#cr-widget-leaflet}
+::::{#cr-widget-leaflet}
 
 :::{#fig-leaflet}
 
 ```{r}
-#| fig-caption: This is a great map!
 library(leaflet)
 
 leaflet() |>
@@ -26,13 +25,17 @@ leaflet() |>
   setView(-93.65, 42.0285, zoom = 17) |>
   addPopups(-93.65, 42.0285, "Here is the <b>Department of Statistics</b>, ISU")
 ```
+
+This is a great map!
 :::
 
-:::
+::::
 
 And another. This one's a scene rendered with `{rgl}`. @cr-widget-rgl
 
-:::{#cr-widget-rgl}
+It makes two widgets: a viewer and some controls. @cr-widget-rgl
+
+::::{#cr-widget-rgl}
 ```{r}
 library(rgl)
 library(htmltools)
@@ -50,8 +53,8 @@ browsable(tagList(
       elementId = "player")
 ))
 ```
-:::
-
 ::::
+
+:::::
 
 Also check out the [Jupyter widgets example](/tests/widgets-in-python).

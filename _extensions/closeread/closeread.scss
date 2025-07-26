@@ -99,46 +99,48 @@
       }
 
       // widget sizing
-      .sticky:has(:is(.html-widget, .jupyter-widget)) {
-        
+      .sticky:has(:is(.html-widget)) {
+        width: calc(100cqw - var(--cr-widget-padding-width));
+        height: calc(100cqh - var(--cr-widget-padding-height));
 
-        // widgets wrapped in figures
+        .cell,
+        .cell-output-display,
+        .quarto-figure,
         figure {
-          width: calc(100cqw - var(--cr-widget-padding-width));
-          height: calc(100cqh - var(--cr-widget-padding-height));
+          height: 100%;
+          width: 100%;
+        }
+
+        // cells may output multiple widgets (eg. viewer and controls).
+        // by default, we assume the first is the main one that can grow
+        .cell-output-display {
           display: flex;
           flex-flow: column nowrap;
           margin: auto;
 
-          > [aria-describedby]:has(:is(.html-widget, .jupyter-widget)) {
+          // the first widget is considered the 'main' one and can grow
+          :nth-child(1 of :is(.html-widget)) {
             flex-grow: 1;
-
-            .cell,
-            .cell-output-display {
-              height: 100%;
-              width: 100%;
-            }
-
-            .html-widget, .jupyter-widget {
-              height: 100% !important;
-              width: 100% !important;
-            }
           }
+
+          // widgets take all space allocated by the flexboxes
+          // .html-widget,
+          // .jupyter-widget {
+          //   height: 100% !important;
+          //   width: 100% !important;
+          // }
         }
 
-        // widgets not wrapped in figures
-        .cell-output-display {
-          width: calc(100cqw - var(--cr-widget-padding-width));
-          height: calc(100cqh - var(--cr-widget-padding-height));
+        // also let the 'main' widget content grow when it's in a figure
+        figure {
+          display: flex;
+          flex-flow: column nowrap;
+          margin: auto;
 
-          .html-widget, .jupyter-widget {
-            width: 100%;
+          [aria-describedby]:has(:is(.html-widget)) {
             flex-grow: 1;
-            // TODO - this doesn't work for the {rgl} example as we put
-            // out multiple widgets
           }
         }
-
       }
 
       div.sourceCode {
