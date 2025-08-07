@@ -71,12 +71,38 @@ document.addEventListener("DOMContentLoaded", () => {
     trigger.setAttribute('data-highlight', hlzValue);
   });
 
-  // initialise scrolly videos
-  let scrollyVideo = new ScrollyVideo({
-    scrollyVideoContainer: "cr-rayshader",
-    src: "rayshader.mp4",
-    trackScroll: false
+  // initialise scrolly videos, replacing the original video with a
+  // scrollyvideo.js-initialised one  
+  const scrollyVideoTriggers =
+    Array.from(document.querySelectorAll("[data-scroll-video]"))
+  const videoScrollers = scrollyVideoTriggers.map((trigger, i) => {
+
+    // add id to trigger so we know which video to progress later
+    trigger.setAttribute("data-scroll-video-id", i.toString());
+
+    const videoElId = trigger.getAttribute("data-focus-on")
+    const videoEl = document.getElementById(videoElId)
+    const videos = Array.from(videoEl.getElementsByTagName("video"))
+    if (videos.length > 1) {
+      console.warn("Multiple videos found in sticky. Using the first")
+    }
+    const videoSrc = videos[0].src
+    videos.forEach(video => video.remove())
+    return {
+      triggerId: i.toString(),
+      videoId: videoElId,
+      isProgressBlock: trigger.classList.contains("progress-block"),
+      scroller: new ScrollyVideo({
+        scrollyVideoContainer: videoElId,
+        src: videoSrc,
+        trackScroll: false
+      })
+    }
+
   })
+  
+  // TODO - detect and warn users of low power mode on safari
+  // https://stackoverflow.com/a/58290112/3246758
     
   // collect all sticky elements
   const allStickies = Array.from(document.querySelectorAll(".sticky"));
@@ -110,13 +136,34 @@ document.addEventListener("DOMContentLoaded", () => {
   function crTriggerStepProgress(trigger) {
     ojsTriggerProgress?.define("crTriggerProgress", trigger.progress)
     ojsDirection?.define("crDirection", trigger.direction)
-    scrollyVideo.setVideoPercentage(trigger.progress, {
-      transitionSpeed: 12, easing: t => +t // linear easing
+
+    // update a scrolly video
+    videoScrollers
+      .filter(video =>
+        (!video.isProgressBlock) &&
+          video.triggerId ===
+            trigger.element.getAttribute("data-scroll-video-id"))
+      .forEach(video => {
+        video.scroller.setVideoPercentage(trigger.progress, {
+          transitionSpeed: 12, easing: t => +t // linear easing
+        })
     })
   }
   
-  function crProgressStepEnter(progressBlock) {
+  function crProgressStepProgress(progressBlock) {
     ojsProgressBlock?.define("crProgressBlock", progressBlock.progress)
+
+    // update a scrolly video
+    videoScrollers
+      .filter(video =>
+        video.isProgressBlock &&
+          (video.triggerId ===
+              progressBlock.element.getAttribute("data-scroll-video-id")))
+      .forEach(video => {
+        video.scroller.setVideoPercentage(progressBlock.progress, {
+          transitionSpeed: 12, easing: t => +t // linear easing
+        })
+    })
   }
   
   // set up scrollers on document load, and reset them when window zoom changes
@@ -133,7 +180,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const progressBlockScroller = scrollama()
   progressBlockScroller
     .setup(progressScrollerConfig)
-    .onStepProgress(crProgressStepEnter)
+    .onStepProgress(crProgressStepProgress)
 
   window.addEventListener("resize", (event) => {
     setTimeout(() => triggerScroller.resize(), 1000)
@@ -426,8 +473,6 @@ function scaleToFill(el, paddingX = 75, paddingY = 50) {
 //==============//
 // Execute different methods on video elements such as play() and pause().
 function controlVideo(focusedSticky, triggerEl) {
-
-  console.log("Controlling video ", focusedSticky, "from trigger", triggerEl)
 
   // get any video methods
   const videoAttributes = Array.from(triggerEl.attributes).filter(attr => 
