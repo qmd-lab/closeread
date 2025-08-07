@@ -176,6 +176,7 @@ end
 
 function make_narrative_blocks(cr_section_blocks)
 
+
   local narrative_blocks = {}
   -- iterate over top-level blocks
   for _,block in ipairs(cr_section_blocks) do
@@ -186,8 +187,10 @@ function make_narrative_blocks(cr_section_blocks)
           if block.classes:includes("progress-block") then
             -- re-run this function on child blocks
             nested_narr_blocks = make_narrative_blocks(block.content)
-            progress_blocks = pandoc.Div(nested_narr_blocks, 
-              pandoc.Attr("", {"progress-block"}, {}))
+            progress_blocks = pandoc.Div(nested_narr_blocks)
+            progress_blocks.identifier = block.identifier
+            progress_blocks.classes = block.classes
+            progress_blocks.attributes = block.attributes
             table.insert(narrative_blocks, progress_blocks) 
             goto endofloop
           end
@@ -541,6 +544,12 @@ quarto.doc.add_html_dependency({
   name = "closeread",
   version = "0.1.0",
   scripts = {"closeread.js"}
+})
+
+quarto.doc.add_html_dependency({
+  name = "scrollyvideo",
+  version = "0.0.23",
+  scripts = {"scrollyvideo.js"}
 })
 
 

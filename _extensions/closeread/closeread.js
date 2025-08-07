@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
   ojsProgressBlock?.define("crProgressBlock", 0);
 
   if (ojsModule === undefined) {
-    console.error("Warning: Quarto OJS module not found")
+    console.warn("Warning: Quarto OJS module not found")
   }
   
   // expand hlz option into highlight and zoom-to
@@ -70,6 +70,39 @@ document.addEventListener("DOMContentLoaded", () => {
     trigger.setAttribute('data-zoom-to', hlzValue);
     trigger.setAttribute('data-highlight', hlzValue);
   });
+
+  // initialise scrolly videos, replacing the original video with a
+  // scrollyvideo.js-initialised one  
+  const scrollyVideoTriggers =
+    Array.from(document.querySelectorAll("[data-scroll-video]"))
+  const videoScrollers = scrollyVideoTriggers.map((trigger, i) => {
+
+    // add id to trigger so we know which video to progress later
+    trigger.setAttribute("data-scroll-video-id", i.toString());
+
+    const videoElId = trigger.getAttribute("data-focus-on")
+    const videoEl = document.getElementById(videoElId)
+    const videos = Array.from(videoEl.getElementsByTagName("video"))
+    if (videos.length > 1) {
+      console.warn("Multiple videos found in sticky. Using the first")
+    }
+    const videoSrc = videos[0].src
+    videos.forEach(video => video.remove())
+    return {
+      triggerId: i.toString(),
+      videoId: videoElId,
+      isProgressBlock: trigger.classList.contains("progress-block"),
+      scroller: new ScrollyVideo({
+        scrollyVideoContainer: videoElId,
+        src: videoSrc,
+        trackScroll: false
+      })
+    }
+
+  })
+  
+  // TODO - detect and warn users of low power mode on safari
+  // https://stackoverflow.com/a/58290112/3246758
     
   // collect all sticky elements
   const allStickies = Array.from(document.querySelectorAll(".sticky"));
@@ -103,10 +136,34 @@ document.addEventListener("DOMContentLoaded", () => {
   function crTriggerStepProgress(trigger) {
     ojsTriggerProgress?.define("crTriggerProgress", trigger.progress)
     ojsDirection?.define("crDirection", trigger.direction)
+
+    // update a scrolly video
+    videoScrollers
+      .filter(video =>
+        (!video.isProgressBlock) &&
+          video.triggerId ===
+            trigger.element.getAttribute("data-scroll-video-id"))
+      .forEach(video => {
+        video.scroller.setVideoPercentage(trigger.progress, {
+          transitionSpeed: 12, easing: t => +t // linear easing
+        })
+    })
   }
   
-  function crProgressStepEnter(progressBlock) {
+  function crProgressStepProgress(progressBlock) {
     ojsProgressBlock?.define("crProgressBlock", progressBlock.progress)
+
+    // update a scrolly video
+    videoScrollers
+      .filter(video =>
+        video.isProgressBlock &&
+          (video.triggerId ===
+              progressBlock.element.getAttribute("data-scroll-video-id")))
+      .forEach(video => {
+        video.scroller.setVideoPercentage(progressBlock.progress, {
+          transitionSpeed: 12, easing: t => +t // linear easing
+        })
+    })
   }
   
   // set up scrollers on document load, and reset them when window zoom changes
@@ -123,7 +180,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const progressBlockScroller = scrollama()
   progressBlockScroller
     .setup(progressScrollerConfig)
-    .onStepProgress(crProgressStepEnter)
+    .onStepProgress(crProgressStepProgress)
 
   window.addEventListener("resize", (event) => {
     setTimeout(() => triggerScroller.resize(), 1000)
@@ -195,6 +252,7 @@ function updateStickies(allStickies, focusedStickyName, trigger) {
   // apply additional effects
   transformSticky(focusedSticky, trigger.element);
   highlightSpans(focusedSticky, trigger.element);
+  controlVideo(focusedSticky, trigger.element);
   
   if ( // scale-to-fill only takes effect if there are no other transforms
     focusedSticky.classList.contains("scale-to-fill") &&
@@ -409,6 +467,45 @@ function scaleToFill(el, paddingX = 75, paddingY = 50) {
   el.style.setProperty("transform",
     `matrix(${scale}, 0, 0, ${scale}, 0, ${centerDeltaY})`)
 }
+
+//==============//
+//    Videos    //
+//==============//
+// Execute different methods on video elements such as play() and pause().
+function controlVideo(focusedSticky, triggerEl) {
+
+  // get any video methods
+  const videoAttributes = Array.from(triggerEl.attributes).filter(attr => 
+    /^data-.*-video$/.test(attr.name));
+
+  // exit function if there's no video method
+  if (videoAttributes.length == 0) {
+    return;
+  }
+
+  if (videoAttributes.length > 1) {
+    console.warn(`Multiple video method are called by a single trigger. Applying only the first one, ${videoAttributes[0].name}`)
+  }
+
+  // get video element
+  const videoEl = focusedSticky.querySelector("video");
+
+  // execute method on video
+  if (videoAttributes[0].value !== "false") {
+    const attributeName = videoAttributes[0].name;
+
+    // extract method from attribute name
+    const methodName = attributeName.replace(/^data-/, "").replace(/-video$/, "");
+
+    // check if the method exists on videoEl, then call it
+    if (typeof videoEl[methodName] === "function") {
+      videoEl[methodName]();
+    } else {
+      console.log(`Method ${methodName} does not exist for a video element.`);
+    }
+  }
+}
+
 
 /* getBooleanConfig: checks for a <meta> with named attribute `cr-[metaFlag]`
    and returns true if its value is "true" or false otherwise */
