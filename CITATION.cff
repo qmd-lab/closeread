@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Bray"
+  given-names: "Andrew"
+  orcid: "https://orcid.org/0000-0002-4037-7414"
+- family-names: "Goldie"
+  given-names: "James"
+  orcid: "https://orcid.org/0000-0002-5024-6207"
+title: "Closeread"
+version: 1.0.1
+date-released: 2024-11-12
+url: "https://github.com/qmd-lab/closeread"
