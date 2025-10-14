@@ -53,6 +53,14 @@ You can highlight parts of the code and text of your sticky using the following 
 
 Line highlighting (1 and 2) works on code cells and line blocks while span highlighting (3 and 4) only works on line blocks.
 
+## Cropping 
+
+When you want to focus on a specific part of a figure, you can crop it to guide your audience's attention.
+
+1. `[@cr-myfigure]{data-crop="10%, 20%, 30%, 40%"}`: crops 10% from the top, 20% from the right, 30% from the bottom, and 40% from the left.
+2. `[@cr-myfigure]{data-crop="20%, 20%, 30%, 20%"}`: this will further crops 10% from the top and releases 20% on the left compared to the previous example.
+3. `@cr-myfigure` directly call the figure to remove all cropping effects. 
+
 ### Code cell examples
 
 This will highlight lines 1 and 2:

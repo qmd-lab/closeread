@@ -11,7 +11,8 @@ local debug_mode = false
 local trigger_selectors = {["focus-on"] = true}
 local cr_attributes = {["pan-to"] = true, 
                       ["scale-by"] = true, 
-                      ["highlight-spans"] = true}
+                      ["highlight-spans"] = true, 
+                      ["data-crop"] = true}
 local remove_header_space = false
 local global_layout = "sidebar-left"
 
