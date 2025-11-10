@@ -66,53 +66,41 @@ In this case, we've shifted the video and put a crossfade in the middle of it fo
 
 # Videos that progress on scroll
 
-Let's use the popular `{rayshader}` package to generate a video like that. First, we'll build the scene up:
+Let's use the popular `{gganimate}` and `{gapminder}` packages to generate a video (this demo comes from [the `{gganimate}` docs](https://gganimate.com)):
 
 ```{r}
-#| label: build-scene
+#| label: build-ggani
 #| echo: true
 #| code-fold: false
-library(tibble)
-library(dplyr)
-library(stringr)
-library(purrr)
-library(rayshader)
+library(ggplot2)
+library(gganimate)
+library(gapminder)
 
-mont_shadow <- ray_shade(montereybay, zscale = 50, lambert = FALSE)
-mont_amb <- ambient_shade(montereybay, zscale = 50)
-montereybay |>
-  sphere_shade(zscale = 10, texture = "imhof1") |>
-  add_shadow(mont_shadow, 0.5) |>
-  add_shadow(mont_amb, 0) ->
-mont_scene
+gap_plot <- ggplot(gapminder, aes(gdpPercap, lifeExp, size = pop, colour = country)) +
+  geom_point(alpha = 0.7, show.legend = FALSE) +
+  scale_colour_manual(values = country_colors) +
+  scale_size(range = c(2, 12)) +
+  scale_x_log10() +
+  facet_wrap(~continent) +
+  # Here comes the gganimate specific bits
+  labs(title = 'Year: {frame_time}', x = 'GDP per capita', y = 'life expectancy') +
+  transition_time(year) +
+  ease_aes('linear')
+
+anim_save("gapminder.mp4", gap_plot)
 ```
 
-Now we'll render the movie as `rayshader.mp4`:
-
-```{r}
-#| label: render-images
-#| echo: true
-#| code-fold: false
-plot_3d(
-  mont_scene, montereybay, zscale = 50, fov = 0, phi = 45,
-  windowsize = c(1000, 800), zoom = 0.75, water = TRUE, waterdepth = 0,
-  wateralpha = 0.5, watercolor = "lightblue", waterlinecolor = "white",
-  waterlinealpha = 0.5)
-
-render_movie("rayshader.mp4")
-```
-
-Let's incorporate `rayshader.mp4` into a scrolly section.
+Let's incorporate `gapminder.mp4` into a scrolly section.
 
 :::::{.cr-section}
 
-Here's our rayshader video! It scrolls! [@cr-rayshader]{scroll-video="true"}
+Here's our gapminder video! It scrolls! [@cr-gapminder]{.scroll-video}
 
-But wait, it seems to reset on our next trigger. @cr-rayshader
+But wait, it seems to reset on our next trigger. [@cr-gapminder]{.scroll-video}
 
-What's up with that? @cr-rayshader
+What's up with that? [@cr-gapminder]{.scroll-video}
 
-![](rayshader.mp4){#cr-rayshader alt="A rotating landscape made with Rayrender."}
+![](gapminder.mp4){#cr-gapminder alt="A chart of annual national statistics, animating over the 20th century."}
 :::::
 
 \
@@ -129,7 +117,7 @@ Most of the time, you're better off tying the scrolling video to a progress bloc
 
 :::::{.cr-section}
 
-::::{.progress-block focus-on="cr-rayshader-prog" scroll-video="true"}
+::::{.progress-block focus-on="cr-gapminder-prog" .scroll-video}
 
 Here's our rayshader video again!
 
@@ -139,7 +127,7 @@ Notice that the video scrolls across several triggers...
 
 ::::
 
-![](rayshader.mp4){#cr-rayshader-prog alt="A rotating landscape made with Rayrender."}
+![](gapminder.mp4){#cr-gapminder-prog alt="A rotating landscape made with Rayrender."}
 :::::
 
 :::{.counter style="position: fixed; top: 10px; right: 10px; background-color: skyblue; border-radius: 5px; padding: 18px 18px 0 18px; line-height: .8em; z-index: 1000"}
