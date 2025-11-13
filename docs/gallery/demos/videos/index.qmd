@@ -27,9 +27,9 @@ Maybe you've gone on a journey.
 
 ![](ship.mp4){#cr-ship .scale-to-cover alt="A ship sails in a polar region" loop="true"}
 
-You can trigger a video to play using `[@cr-ship]{play-video="true"}`. [@cr-ship]{play-video="true"}
+You can trigger a video to play using `[@cr-ship]{.play-video}`. [@cr-ship]{.play-video}
 
-You can also pause it using `[@cr-ship]{pause-video="true"}`. [@cr-ship]{pause-video="true"}
+You can also pause it using `[@cr-ship]{.pause-video}`. [@cr-ship]{.pause-video}
 
 Apply the `.scale-to-cover` class to videos to ensure that they fill up the whole Closeread sticky column (even if they need to be cropped to do it).
 
@@ -50,12 +50,15 @@ This works for sidebar layouts too:
 The video may even be there simply to establish a mood for your story.  
 [Credit: [Domka_1611/Pixabay](https://pixabay.com/videos/fire-evening-nature-forest-autumn-148594/)]{style="font-size: 65%;"} @cr-tea
 
-![](tea.mp4){#cr-tea .scale-to-cover alt="One person pours tea into another person's tea cup in front of an open fire." autoplay="true" loop="true"}
+![](tea.mp4){#cr-tea .scale-to-cover alt="One person pours tea into another person's tea cup in front of an open fire." autoplay="true" muted="true" loop="true"}
 
 :::{focus-on="cr-tea"}
 You may want to add `autoplay="true"` and `loop="true"` to your videos.
-\
-\
+
+:::{.callout-tip}
+Most browsers will prevent videos with sound from autoplaying. You can avoid this problem by also adding `muted="true"`.
+:::
+
 In this case, we've shifted the video and put a crossfade in the middle of it for a seamless loop.
 :::
 
@@ -66,41 +69,55 @@ In this case, we've shifted the video and put a crossfade in the middle of it fo
 
 # Videos that progress on scroll
 
-Let's use the popular `{gganimate}` and `{gapminder}` packages to generate a video (this demo comes from [the `{gganimate}` docs](https://gganimate.com)):
+Let's use the popular [`{rayshader}`](https://www.rayshader.com) package to generate a video. First we'll construct the scene:
 
 ```{r}
-#| label: build-ggani
+#| label: build-rayshader-scene
 #| echo: true
 #| code-fold: false
-library(ggplot2)
-library(gganimate)
-library(gapminder)
+library(tibble)
+library(dplyr)
+library(stringr)
+library(purrr)
+library(rayshader)
 
-gap_plot <- ggplot(gapminder, aes(gdpPercap, lifeExp, size = pop, colour = country)) +
-  geom_point(alpha = 0.7, show.legend = FALSE) +
-  scale_colour_manual(values = country_colors) +
-  scale_size(range = c(2, 12)) +
-  scale_x_log10() +
-  facet_wrap(~continent) +
-  # Here comes the gganimate specific bits
-  labs(title = 'Year: {frame_time}', x = 'GDP per capita', y = 'life expectancy') +
-  transition_time(year) +
-  ease_aes('linear')
-
-anim_save("gapminder.mp4", gap_plot)
+mont_shadow <- ray_shade(montereybay, zscale = 50, lambert = FALSE)
+mont_amb <- ambient_shade(montereybay, zscale = 50)
+montereybay |>
+  sphere_shade(zscale = 10, texture = "imhof1") |>
+  add_shadow(mont_shadow, 0.5) |>
+  add_shadow(mont_amb, 0) ->
+mont_scene
 ```
 
-Let's incorporate `gapminder.mp4` into a scrolly section.
+Then we'll render the movie as `rayshader.mp4`:
+
+```{r}
+#| label: render-rayshader-movie
+#| echo: true
+#| code-fold: false
+plot_3d(
+  mont_scene, montereybay, zscale = 50, fov = 0, phi = 45,
+  windowsize = c(1000, 800), zoom = 0.75, water = TRUE, waterdepth = 0,
+  wateralpha = 0.5, watercolor = "lightblue", waterlinecolor = "white",
+  waterlinealpha = 0.5)
+
+render_movie("rayshader.mp4",
+  # use software renderer on macos
+  software_render = Sys.info()['sysname'] == 'Darwin')
+```
+
+Let's incorporate `rayshader.mp4` into a scrolly section.
 
 :::::{.cr-section}
 
-Here's our gapminder video! It scrolls! [@cr-gapminder]{.scroll-video}
+Here's our rayshader video! It scrolls! [@cr-rayshader]{.scroll-video}
 
-But wait, it seems to reset on our next trigger. [@cr-gapminder]{.scroll-video}
+But wait, it seems to reset on our next trigger. [@cr-rayshader]{.scroll-video}
 
-What's up with that? [@cr-gapminder]{.scroll-video}
+What's up with that? [@cr-rayshader]{.scroll-video}
 
-![](gapminder.mp4){#cr-gapminder alt="A chart of annual national statistics, animating over the 20th century."}
+![](rayshader.mp4){#cr-rayshader alt="A chart of annual national statistics, animating over the 20th century."}
 :::::
 
 \
@@ -117,25 +134,28 @@ Most of the time, you're better off tying the scrolling video to a progress bloc
 
 :::::{.cr-section}
 
-::::{.progress-block focus-on="cr-gapminder-prog" .scroll-video}
+Here's our rayshader video again... @cr-rayshader-prog
 
-Here's our rayshader video again!
+::::{.progress-block focus-on="cr-rayshader-prog" .scroll-video}
 
-Notice that the video scrolls across several triggers...
 
-... rather than resetting as each one passes.
+But this time, the video scrolls across several triggers...
+
+... rather than resetting as each one passes!
+
+We can use this to walk through a video more substantively.
 
 ::::
 
-![](gapminder.mp4){#cr-gapminder-prog alt="A rotating landscape made with Rayrender."}
+![](rayshader.mp4){#cr-rayshader-prog alt="A rotating landscape made with Rayrender."}
 :::::
 
-:::{.counter style="position: fixed; top: 10px; right: 10px; background-color: skyblue; border-radius: 5px; padding: 18px 18px 0 18px; line-height: .8em; z-index: 1000"}
+:::{.counter style="position: fixed; bottom: 10px; right: 10px; background-color: skyblue; border-radius: 5px; padding: 18px 18px 0 18px; line-height: .8em; z-index: 1000"}
 ```{ojs}
 md`Active sticky: ${crActiveSticky}`
 md`Active trigger: ${crTriggerIndex}`
 md`Trigger progress: ${(crTriggerProgress * 100).toFixed(1)}%`
 md`Scroll direction: ${crDirection}`
-md`Progress Block progress: ${(crProgressBlock * 100).toFixed(1)}%`
+md`Progress block progress: ${(crProgressBlock * 100).toFixed(1)}%`
 ```
 :::

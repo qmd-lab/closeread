@@ -82,42 +82,51 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log(
     `Found ${scrollyVideoTriggers.length} triggers with .scroll-video `)
 
-  const videoScrollers = scrollyVideoTriggers.map((trigger, i) => {
+  // deduplicate by videoElId to avoid creating multiple scrollers for same video
+  const seenVideoIds = new Set();
+  const videoScrollers = scrollyVideoTriggers
+    .map((trigger, i) => {
+      const videoElId = trigger.getAttribute("data-focus-on");
+      
+      console.log(`>> Processing trigger ${i}: `, trigger)
+      trigger.setAttribute("data-scroll-video-id", i.toString());
 
-    console.log(`>> Processing trigger ${i}: `, trigger)
-
-    // add id to trigger so we know which video to progress later
-    trigger.setAttribute("data-scroll-video-id", i.toString());
-
-    const videoElId = trigger.getAttribute("data-focus-on");
-    const videoEl = document.getElementById(videoElId)
-    console.log(`>> data-focus-on from trigger, ${videoElId}, is: `, videoEl);
-    const videos = videoEl.getElementsByTagName("video")
-    if (!videos || videos.length == 0 ) {
-      console.warn(`>> No <video> elements found inside ${videoElId}.`);
-      return null; // TODO - how is this handled?
-    }
-    if (videos.length > 1) {
-      console.warn(
-        `Closeread: Multiple <video> elements found inside ${videoElId} using the first.`)
-    }
-    const video = videos[0]
-    console.log(`Removing original video`);
-    const videoSrc = video.src
-    video.remove();
-    console.log(`Initialising scrolly video`);
-    return {
-      triggerId: videoElId, // BUG - previously i.toString()
-      videoId: videoElId,
-      isProgressBlock: trigger.classList.contains("progress-block"),
-      scroller: new ScrollyVideo({
-        scrollyVideoContainer: videoElId,
-        src: videoSrc,
-        trackScroll: false
-      })
-    }
-
-  })
+      const videoEl = document.getElementById(videoElId)
+      
+      // skip if we've already processed this specific video element
+      if (videoEl.dataset.scrollyVideoInitialized) {
+        console.log(`>> Skipping already initialized video: ${videoElId}`);
+        return null;
+      }
+      videoEl.dataset.scrollyVideoInitialized = "true";
+      
+      console.log(`>> data-focus-on from trigger, ${videoElId}, is: `, videoEl);
+      const videos = videoEl.getElementsByTagName("video")
+      if (!videos || videos.length == 0 ) {
+        console.warn(`>> No <video> elements found inside ${videoElId}.`);
+        return null;
+      }
+      if (videos.length > 1) {
+        console.warn(
+          `Closeread: Multiple <video> elements found inside ${videoElId} using the first.`)
+      }
+      const video = videos[0]
+      console.log(`Removing original video`);
+      const videoSrc = video.src
+      video.remove();
+      console.log(`Initialising scrolly video`);
+      return {
+        triggerId: videoElId,
+        videoId: videoElId,
+        isProgressBlock: trigger.classList.contains("progress-block"),
+        scroller: new ScrollyVideo({
+          scrollyVideoContainer: videoElId,
+          src: videoSrc,
+          trackScroll: false
+        })
+      }
+    })
+    .filter(v => v !== null)
   
   // TODO - detect and warn users of low power mode on safari
   // https://stackoverflow.com/a/58290112/3246758
@@ -166,20 +175,38 @@ document.addEventListener("DOMContentLoaded", () => {
     
     triggerVideoScrollers.forEach(video => {
       video.scroller.setVideoPercentage(trigger.progress, {
+        // TODO - review transition speed and easing for triggers and progress
         transitionSpeed: 12, easing: t => +t // linear easing
       })
     })
   }
+
+  function crProgressStepEnter(progressBlock) {
+    
+    const focusedStickyName =
+      progressBlock.element.getAttribute("data-focus-on")
+    
+    // update ojs variables
+    ojsStickyName?.define("crActiveSticky", focusedStickyName)
+    
+    updateStickies(allStickies, focusedStickyName, progressBlock)
+
+  }
   
   function crProgressStepProgress(progressBlock) {
     ojsProgressBlock?.define("crProgressBlock", progressBlock.progress)
+    
+    console.log(`>> Progress block focus-on: ${progressBlock.element.getAttribute("data-focus-on")}`)
+    console.log(`>> Available video scrollers:`, videoScrollers.map(v => ({
+      videoId: v.videoId,
+      isProgressBlock: v.isProgressBlock
+    })))
 
     // update a scrolly video
     const progressVideoScrollers = videoScrollers
       .filter(video =>
         video.isProgressBlock &&
-          (video.triggerId ===
-              progressBlock.element.getAttribute("data-scroll-video-id")))
+        video.videoId === progressBlock.element.getAttribute("data-focus-on"))
     console.log(`Updating ${progressVideoScrollers.length} of ${videoScrollers.length} video scrollers (progress block)`)
     progressVideoScrollers.forEach(video => {
       video.scroller.setVideoPercentage(progressBlock.progress, {
@@ -202,6 +229,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const progressBlockScroller = scrollama()
   progressBlockScroller
     .setup(progressScrollerConfig)
+    .onStepEnter(crProgressStepEnter)
     .onStepProgress(crProgressStepProgress)
 
   window.addEventListener("resize", (event) => {
