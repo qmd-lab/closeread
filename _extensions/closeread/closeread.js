@@ -17,6 +17,8 @@ const progressBlockSelector = '.progress-block'
 // == Run upon the HTML file loaded === //
 document.addEventListener("DOMContentLoaded", () => {
 
+  console.log(`Loaded; setting up Closeread`);
+
   // attach meta classes to <body>
   document.body.classList.add("closeread")
   const debugMode         = getBooleanConfig("cr-debug-mode")
@@ -62,6 +64,8 @@ document.addEventListener("DOMContentLoaded", () => {
   if (ojsModule === undefined) {
     console.warn("Warning: Quarto OJS module not found")
   }
+
+  console.log(`OJS found`);
   
   // expand hlz option into highlight and zoom-to
   const allHlzTriggers = Array.from(document.querySelectorAll('[data-hlz]'));
@@ -74,22 +78,36 @@ document.addEventListener("DOMContentLoaded", () => {
   // initialise scrolly videos, replacing the original video with a
   // scrollyvideo.js-initialised one  
   const scrollyVideoTriggers =
-    Array.from(document.querySelectorAll("[data-scroll-video]"))
+    Array.from(document.querySelectorAll(".scroll-video"))
+  console.log(
+    `Found ${scrollyVideoTriggers.length} triggers with .scroll-video `)
+
   const videoScrollers = scrollyVideoTriggers.map((trigger, i) => {
+
+    console.log(`>> Processing trigger ${i}: `, trigger)
 
     // add id to trigger so we know which video to progress later
     trigger.setAttribute("data-scroll-video-id", i.toString());
 
-    const videoElId = trigger.getAttribute("data-focus-on")
+    const videoElId = trigger.getAttribute("data-focus-on");
     const videoEl = document.getElementById(videoElId)
-    const videos = Array.from(videoEl.getElementsByTagName("video"))
-    if (videos.length > 1) {
-      console.warn("Multiple videos found in sticky. Using the first")
+    console.log(`>> data-focus-on from trigger, ${videoElId}, is: `, videoEl);
+    const videos = videoEl.getElementsByTagName("video")
+    if (!videos || videos.length == 0 ) {
+      console.warn(`>> No <video> elements found inside ${videoElId}.`);
+      return null; // TODO - how is this handled?
     }
-    const videoSrc = videos[0].src
-    videos.forEach(video => video.remove())
+    if (videos.length > 1) {
+      console.warn(
+        `Closeread: Multiple <video> elements found inside ${videoElId} using the first.`)
+    }
+    const video = videos[0]
+    console.log(`Removing original video`);
+    const videoSrc = video.src
+    video.remove();
+    console.log(`Initialising scrolly video`);
     return {
-      triggerId: i.toString(),
+      triggerId: videoElId, // BUG - previously i.toString()
       videoId: videoElId,
       isProgressBlock: trigger.classList.contains("progress-block"),
       scroller: new ScrollyVideo({
@@ -137,16 +155,19 @@ document.addEventListener("DOMContentLoaded", () => {
     ojsTriggerProgress?.define("crTriggerProgress", trigger.progress)
     ojsDirection?.define("crDirection", trigger.direction)
 
-    // update a scrolly video
-    videoScrollers
-      .filter(video =>
-        (!video.isProgressBlock) &&
-          video.triggerId ===
-            trigger.element.getAttribute("data-scroll-video-id"))
-      .forEach(video => {
-        video.scroller.setVideoPercentage(trigger.progress, {
-          transitionSpeed: 12, easing: t => +t // linear easing
-        })
+    // update a scrolly video if it matches the current trigger and isn't a
+    // progress block one
+    const triggerVideoScrollers = videoScrollers
+    .filter(video => video)
+    .filter(video =>
+      (!video.isProgressBlock) &&
+      video.triggerId === trigger.element.getAttribute("data-focus-on"))
+    console.log(`Updating ${triggerVideoScrollers.length} of ${videoScrollers.length} video scrollers (trigger block)`)
+    
+    triggerVideoScrollers.forEach(video => {
+      video.scroller.setVideoPercentage(trigger.progress, {
+        transitionSpeed: 12, easing: t => +t // linear easing
+      })
     })
   }
   
@@ -154,15 +175,16 @@ document.addEventListener("DOMContentLoaded", () => {
     ojsProgressBlock?.define("crProgressBlock", progressBlock.progress)
 
     // update a scrolly video
-    videoScrollers
+    const progressVideoScrollers = videoScrollers
       .filter(video =>
         video.isProgressBlock &&
           (video.triggerId ===
               progressBlock.element.getAttribute("data-scroll-video-id")))
-      .forEach(video => {
-        video.scroller.setVideoPercentage(progressBlock.progress, {
-          transitionSpeed: 12, easing: t => +t // linear easing
-        })
+    console.log(`Updating ${progressVideoScrollers.length} of ${videoScrollers.length} video scrollers (progress block)`)
+    progressVideoScrollers.forEach(video => {
+      video.scroller.setVideoPercentage(progressBlock.progress, {
+        transitionSpeed: 12, easing: t => +t // linear easing
+      })
     })
   }
   
@@ -474,38 +496,41 @@ function scaleToFill(el, paddingX = 75, paddingY = 50) {
 // Execute different methods on video elements such as play() and pause().
 function controlVideo(focusedSticky, triggerEl) {
 
+  console.log(
+    `>> Controlling video with classes: ${Array.from(triggerEl.classList)}`);
+
   // get any video methods
-  const videoAttributes = Array.from(triggerEl.attributes).filter(attr => 
-    /^data-.*-video$/.test(attr.name));
+  const videoClasses = Array
+    .from(triggerEl.classList)
+    .filter(cls => /^(play|pause|load)*-video$/.test(cls));
 
   // exit function if there's no video method
-  if (videoAttributes.length == 0) {
+  if (videoClasses.length == 0) {
+    console.log(">> No valid video control classes found.")
     return;
   }
 
-  if (videoAttributes.length > 1) {
-    console.warn(`Multiple video method are called by a single trigger. Applying only the first one, ${videoAttributes[0].name}`)
+  if (videoClasses.length > 1) {
+    console.warn(`Closeread: Multiple video method are called by a single trigger. Applying only the first one, ${videoClasses[0].name}`)
   }
+
+  console.log(`>> Control class: ${videoClasses[0]}`)
 
   // get video element
   const videoEl = focusedSticky.querySelector("video");
 
-  // execute method on video
-  if (videoAttributes[0].value !== "false") {
-    const attributeName = videoAttributes[0].name;
+  // extract method from attribute name
+  const methodName = videoClasses[0].replace(/-video$/, "");
 
-    // extract method from attribute name
-    const methodName = attributeName.replace(/^data-/, "").replace(/-video$/, "");
-
-    // check if the method exists on videoEl, then call it
-    if (typeof videoEl[methodName] === "function") {
-      videoEl[methodName]();
-    } else {
-      console.log(`Method ${methodName} does not exist for a video element.`);
-    }
+  console.log(`>> Video control: ${methodName}`)
+  
+  // check if the method exists on videoEl, then call it
+  if (typeof videoEl[methodName] === "function") {
+    videoEl[methodName]();
+  } else {
+    console.log(`Method ${methodName} does not exist for a video element.`);
   }
 }
-
 
 /* getBooleanConfig: checks for a <meta> with named attribute `cr-[metaFlag]`
    and returns true if its value is "true" or false otherwise */

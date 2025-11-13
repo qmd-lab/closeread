@@ -248,18 +248,47 @@ function shift_id_to_block(block)
 end
 
 
--- wrap_block: wrap block in a div, adds the classList, and transfers the attributes
+-- wrap_block: wrap block in a div, adds the classList, and transfers the attributes and selected existing classes
 function wrap_block(block, classList)
+
+  -- classes that should be moved to the parent trigger
+  local classes_to_move = {
+    "scroll-video",
+    "play-video",
+    "pause-video",
+    "load-video"
+  }
   
   -- extract attributes
   local attributesToMove = {}
   if block.attr ~= nil then
     if block.attributes ~= nil then
       for attr, value in pairs(block.attr.attributes) do
-       -- if trigger_selectors[attr] or cr_attributes[attr] then
         attributesToMove[attr] = value
         block.attributes[attr] = nil
-        --end
+      end
+    end
+    -- extract specific classes that should move to parent
+    if block.classes ~= nil then
+      local remaining_classes = pandoc.List({})
+      local classes_to_add = {}
+      for _, class in ipairs(block.classes) do
+        local should_move = false
+        for _, move_class in ipairs(classes_to_move) do
+          if class == move_class then
+            table.insert(classes_to_add, class)
+            should_move = true
+            break
+          end
+        end
+        if not should_move then
+          table.insert(remaining_classes, class)
+        end
+      end
+      block.classes = remaining_classes
+      -- add all matched classes at once
+      for _, class in ipairs(classes_to_add) do
+        table.insert(classList, class)
       end
     end
   end
@@ -452,6 +481,7 @@ function process_trigger_shortcut(para)
   local new_inlines = pandoc.Inlines({})
   local sticky_id = nil
   local focus_attributes = {}
+  local focus_classes = nil
   local skip_next = false
   local prefix = "cr-"
   
@@ -488,10 +518,19 @@ function process_trigger_shortcut(para)
         local cite_id = elem.content[1].citations[1].id
         -- if it's a cr-cite, don't insert it
         if string.find(cite_id, "^" .. prefix) == 1 then
-          -- but do grab id and attributes for focus block
+          -- but do grab id and attributes for focus block...
           sticky_id = cite_id
           for k,v in pairs(elem.attr.attributes) do
             focus_attributes[k] = v
+          end
+          -- ... and also grab classes from the span
+          if elem.attr.classes ~= nil then
+            for _, class in ipairs(elem.attr.classes) do
+              if focus_classes == nil then
+                focus_classes = {}
+              end
+              table.insert(focus_classes, class)
+            end
           end
           -- and remove any space that precedes it
           if i > 1 and para.content[i-1].t == "Space" then
@@ -513,7 +552,10 @@ function process_trigger_shortcut(para)
   
   -- if a cr-cite was found, wrap in focus block
   if sticky_id ~= nil then
-    local attr = pandoc.Attr("", {}, {['focus-on'] = sticky_id})
+    local attr = pandoc.Attr(
+      "",
+      focus_classes or {},
+      {['focus-on'] = sticky_id})
     for k, v in pairs(focus_attributes) do
       attr.attributes[k] = v
     end
