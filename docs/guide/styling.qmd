@@ -63,3 +63,12 @@ You'll most likely want to target the following elements:
 - `.cr-section` if you want to add a background color to the entire section
 - `.narrative-col` if you want to add a background color to the column containing the triggers (especially in a sidebar layout), or change its width
 - `.narrative` to change the appearance of triggers, including their background color, border radius (for curved or not curved boxes), text color or font
+
+For example, if you want adjust the transition speed of `.cr-section` you can override the `transition` attributes. Increasing `opacity linear` will make the transitions go slower:
+
+```css
+# line 48-53 in closeread.css
+.cr-section .sticky {
+  transition: opacity linear 2s;
+}
+```

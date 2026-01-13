@@ -1,0 +1,9 @@
+- title: "EURO 2024 Final Scrollytelling Analysis"
+  author: "Óscar Bartolomé Pato"
+  path: "https://data-kicks.github.io/euro_final_scrollytelling_analysis/euro_final_scrollytelling_analysis.html"
+  image: prizes/eurofinal.png
+  subtitle: |
+    <br>
+    [Article](https://data-kicks.github.io/euro_final_scrollytelling_analysis/euro_final_scrollytelling_analysis.html) | [Repo](https://github.com/Data-Kicks/euro_final_scrollytelling_analysis) | [Submission](https://forum.posit.co/t/euro-2024-final-scrollytelling-analysis-closeread-prize/196421?_gl=1*5416pr*_ga*MTIyMTAyNTI2NC4xNzM5MTYzMTky*_ga_2C0WZ1JHG0*MTc0MDUyMzM4NS41LjEuMTc0MDUyMzYxNy4wLjAuMA..)
+
+    **James says:** "This story customises ggplot2 and ggiraph absolutely flawlessly. It shows just how far Quarto and R’s tools can be pushed with careful consideration of colour and plot elements."

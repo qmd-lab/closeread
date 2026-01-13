@@ -1,0 +1,67 @@
+- title: "Council Housing & Neighborhood Income Inequality in Vienna"
+  author: "Matthias Schnetzer"
+  path: "https://mschnetzer.github.io/scrollytell_gemeindebau/"
+  image: prizes/vienna.png
+  subtitle: |
+    **Best use of scrolly storytelling**
+    <br><br>
+    [Article](https://mschnetzer.github.io/scrollytell_gemeindebau/) | [Repo](https://github.com/mschnetzer/scrollytell_gemeindebau) | [Submission](https://forum.posit.co/t/council-housing-neighborhood-income-inequality-in-vienna-closeread-prize/196268?_gl=1*1d2iyu*_ga*MTIyMTAyNTI2NC4xNzM5MTYzMTky*_ga_2C0WZ1JHG0*MTc0MDUyMzM4NS41LjEuMTc0MDUyMzYxNy4wLjAuMA..)
+
+    **Andrew says:** "This entry perfectly demonstrates one of my favorite use-cases for Closeread: authoring an engaging story to highlight the key ideas of a technical manuscript. The evolving map of housing in Vienna over time is beautiful and effective. The graphics and tables are all very polished and the layout is as professional as any you find on the web."
+
+- title: "Which Way Do You Ski?"
+  author: "Trang Le, Joshua Himmelstein, and Daniel Himmelstein"
+  path: "https://openskistats.org/story/"
+  image: prizes/ski.png
+  subtitle: |
+    **Best technical accomplishment**
+    <br><br>
+    [Article](https://openskistats.org/story/) | [Repo](https://github.com/dhimmel/openskistats) | [Submission](https://forum.posit.co/t/which-way-do-you-ski-closeread-prize/196451?_gl=1*35nb9g*_ga*MTIyMTAyNTI2NC4xNzM5MTYzMTky*_ga_2C0WZ1JHG0*MTc0MDUyMzM4NS41LjEuMTc0MDUyMzYxNy4wLjAuMA..)
+
+    **James says:** "This story carefully designs successive plots to seamlessly summarise snowfields. Thoughtful visuals and language make this story the complete package!"
+    
+    **Andrew says:** "This is an excellent story on all counts but two things stood out to me. 1) the “ski-rose” is an example of a complex visualization that is so well-served by scrollytelling. 2) this scrolly at openskistats.org sits alongside a technical manuscript and beautiful interactive data table, showing how different formats can serve complementary roles in communicating insights about data."
+
+- title: "World Population Flags"
+  author: "Ansgar Wolsing"
+  path: "https://bydata.github.io/population-flags/"
+  image: prizes/flags.png
+  subtitle: |
+    **Best visual polish**
+    <br><br>
+    [Article](https://bydata.github.io/population-flags/) | [Repo](https://github.com/bydata/population-flags/tree/main/docs) | [Submission](https://forum.posit.co/t/world-population-flags-closeread-prize/195322?_gl=1*1togp6r*_ga*MTIyMTAyNTI2NC4xNzM5MTYzMTky*_ga_2C0WZ1JHG0*MTc0MDUyMzM4NS41LjEuMTc0MDUyMzYxNy4wLjAuMA..)
+
+    **James says:** "This story cleverly embeds Observable notebooks to fade out different flags of the world as it zooms around. The text has a strong visual hierarchy and structure, making it extremely readable."
+
+- title: "Pictures of Pensions"
+  author: "Declan Naughton"
+  path: "https://calcwithdec.dev/posts/pictures-pensions/"
+  image: prizes/pensions.png
+  subtitle: |
+    **Best Link Between Scroll and Dynamic Data Visualization**
+    <br><br>
+    [Article](https://calcwithdec.dev/posts/pictures-pensions/) | [Repo](https://gitlab.com/declann/calcwithdec.dev/blob/main/posts/pictures-pensions/index.qmd) | [Submission](https://forum.posit.co/t/pictures-of-pensions-closeread-prize/196217?_gl=1*17df8uu*_ga*MTIyMTAyNTI2NC4xNzM5MTYzMTky*_ga_2C0WZ1JHG0*MTc0MDUyMzM4NS41LjEuMTc0MDUyMzYxNy4wLjAuMA..)
+
+    **Curtis says:** "This piece is impressive, demonstrating how effectively scrollytelling can be used in data-driven articles.  It synchronizes OJS data visualizations with scroll progress, so as the reader moves down the page and the narrative unfolds, the visualizations change, smoothly transitioning in support of the narrative. I hope those exploring Closeread recognize the wide potential being showcased here!"
+
+- title: "Beyond the Modifiable Areal Unit Problem!"
+  author: "François Sémécurbe"
+  path: "https://fsemecurbe.github.io/fractal-for-geographers/"
+  image: prizes/fractals.png
+  subtitle: |
+    **Best Zoom**
+    <br><br>
+    [Article](https://fsemecurbe.github.io/fractal-for-geographers/) | [Repo](https://github.com/fsemecurbe/fractal-for_geographers) | [Submission](https://forum.posit.co/t/beyond-the-modifiable-areal-unit-problem-closeread-prize/196396?_gl=1*u8vh48*_ga*MTIyMTAyNTI2NC4xNzM5MTYzMTky*_ga_2C0WZ1JHG0*MTc0MDUyMzM4NS41LjEuMTc0MDUyMzYxNy4wLjAuMA..)
+
+    **Andrew says:** "There are few more natural fits for the scrollytelling zoom than the study of fractals.  This entry breaks down a complex topic in mathematics and geography using carefully crafted examples that are mathematical and diagrammatic. The final zoom into Paris, showing the changing variability of density, is glorious."
+
+- title: "A Gem of My Childhood"
+  author: "Anaël Delorme and François Semecurbe"
+  path: "https://anaeldelorme.github.io/closeRead_saint_jacut/index_en.html"
+  image: prizes/gem-childhood.png
+  subtitle: |
+    **Best Map Pan & Zoom**
+    <br><br>
+    [Article](https://anaeldelorme.github.io/closeRead_saint_jacut/index_en.html) | [Repo](https://github.com/anaelDelorme/closeRead_saint_jacut) | [Submission](https://forum.posit.co/t/a-gem-of-my-childhood-closeread-prize/195368?_gl=1*2k452q*_ga*MTIyMTAyNTI2NC4xNzM5MTYzMTky*_ga_2C0WZ1JHG0*MTc0MDUyMzM4NS41LjEuMTc0MDUyMzYxNy4wLjAuMA..)
+
+    **Curtis says:** "Scrollytelling, when done well, turns reading into an immersive experience. As you scroll, visual elements unfold dynamically, drawing you deeper into the story. When poorly executed, scrollytelling elements can feel gimmicky or distracting, a well-crafted piece enhances storytelling, sets the topic or location, or reinforces key points in an engaging way. A Gem of My Childhood is a lovely example of the promise of scrollytelling with Closeread—it opens with a wide map of France, then zooms into Brittany and the Saint-Jacut-de-la-Mer peninsula as the reader scrolls. Talk about setting the scene and pulling the reader into your story!"
