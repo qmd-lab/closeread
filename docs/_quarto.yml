@@ -5,12 +5,12 @@ project:
 
 website:
   title: "Closeread"
-  announcement: 
-    icon: award
-    dismissable: false
-    content: "[Enter the [**Student Data Scrollytelling Contest**](https://www.causeweb.org/cause/contests/data-scrollytelling){style=\"color: var(--bs-warning-text-emphasis)\"}. Prizes for the best scrollytelling! Entries close Dec 20.]{style=\"color: var(--bs-warning-text-emphasis)\"}"
-    type: warning
-    position: below-navbar
+#  announcement: 
+#    icon: award
+#    dismissable: false
+#    content: "[Enter the [**Student Data Scrollytelling Contest**](https://www.causeweb.org/cause/contests/data-scrollytelling){style=\"color: var(--bs-warning-text-emphasis)\"}. Prizes for the best scrollytelling! Entries close Dec 20.]{style=\"color: var(--bs-warning-text-emphasis)\"}"
+#    type: warning
+#    position: below-navbar
   page-navigation: true
   navbar:
     left:
