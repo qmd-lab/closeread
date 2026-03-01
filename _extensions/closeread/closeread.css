@@ -265,4 +265,10 @@ body.cr-removeheaderspace #quarto-content main#quarto-document-content .quarto-t
   --cr-section-background-color: lightgrey;
 }
 
+/* Propagate .page-columns.page-full to main */
+main .page-columns.page-full .cr-section {
+  width: 100%;
+  max-width: none;
+}
+
 /*# sourceMappingURL=closeread.css.map */
