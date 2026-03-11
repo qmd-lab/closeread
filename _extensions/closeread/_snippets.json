@@ -1,0 +1,44 @@
+{
+  "Closeread setup": {
+    "prefix": "setup",
+    "body": [
+      "format:",
+      "  closeread-html:",
+      "    remove-header-space: ${1:true}",
+      "    cr-section:",
+      "      layout: ${2:overlay-center}"
+    ],
+    "description": "Insert a basic closeread-html format setup."
+  },
+  "Closeread section": {
+    "prefix": "section",
+    "body": [
+      "::: {.cr-section layout=\"${1:overlay-center}\"}",
+      "${2:Trigger text with a sticky reference, for example [@cr-example].}",
+      "",
+      "::: {#cr-example}",
+      "${3:Sticky content.}",
+      ":::",
+      ":::"
+    ],
+    "description": "Insert a section with one trigger and one sticky."
+  },
+  "Sticky block": {
+    "prefix": "sticky",
+    "body": [
+      "::: {#cr-${1:sticky-id}}",
+      "${2:Sticky content.}",
+      ":::"
+    ],
+    "description": "Insert a sticky block using a cr- prefixed identifier."
+  },
+  "Trigger block": {
+    "prefix": "trigger",
+    "body": [
+      "::: {focus-on=\"cr-${1:sticky-id}\" ${2:highlight=\"1-3\"}}",
+      "${3:Narrative content for this trigger.}",
+      ":::"
+    ],
+    "description": "Insert a trigger block with focus-on and optional focus effect attributes."
+  }
+}
