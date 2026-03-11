@@ -1,0 +1,96 @@
+$schema: https://m.canouil.dev/quarto-wizard/assets/schema/v1/extension-schema.json
+
+formats:
+  closeread-html:
+    debug-mode:
+      type: boolean
+      description: Toggle Closeread debug mode.
+    remove-header-space:
+      type: boolean
+      description: Remove the default top space reserved for the document header.
+    cr-section:
+      type: object
+      description: Default settings applied to all Closeread sections in the document.
+      properties:
+        layout:
+          type: string
+          enum: [sidebar-left, sidebar-right, overlay-left, overlay-center, overlay-right]
+          description: Default layout for Closeread sections, unless overridden per section.
+    cr-style:
+      type: object
+      description: Style variables for Closeread narrative and section appearance.
+      properties:
+        narrative-background-color-overlay:
+          type: string
+          description: Background colour used for narrative text blocks in overlay layouts.
+        narrative-text-color-overlay:
+          type: string
+          description: Text colour used for narrative text in overlay layouts.
+        narrative-background-color-sidebar:
+          type: string
+          description: Background colour used for the narrative column in sidebar layouts.
+        narrative-text-color-sidebar:
+          type: string
+          description: Text colour used for narrative text in sidebar layouts.
+        narrative-border-radius:
+          type: string
+          description: Border radius of narrative text blocks in overlay layouts.
+        narrative-overlay-max-width:
+          type: string
+          description: Maximum width of narrative text blocks in overlay layouts.
+        narrative-overlay-min-width:
+          type: string
+          description: Minimum width of narrative text blocks in overlay layouts.
+        narrative-outer-margin:
+          type: string
+          description: Outer margin for narrative content in overlay layouts.
+        narrative-font-family:
+          type: string
+          description: Font family list used for narrative content.
+        narrative-font-size:
+          type: string
+          description: Font size used for narrative content.
+        poem-font-family:
+          type: string
+          description: Font family list used for line block poems.
+        section-background-color:
+          type: string
+          description: Background colour used for Closeread sections.
+        narrative-sidebar-width:
+          type: string
+          description: Width definition for the narrative sidebar column.
+
+attributes:
+  _any:
+    layout:
+      type: string
+      enum: [sidebar-left, sidebar-right, overlay-left, overlay-center, overlay-right]
+      description: Section layout override when used on a `.cr-section` div.
+    focus-on:
+      type: string
+      description: Sticky identifier to focus, usually in the form `cr-my-sticky`.
+    highlight:
+      type: string
+      description: Highlight lines or span ids, for example `1,3`, `2-5`, or `cr-span1`.
+    zoom-to:
+      type: string
+      description: Zoom target line or span id in a focused sticky.
+    pan-to:
+      type: string
+      description: Translation applied to the focused sticky, matching CSS translate values.
+    scale-by:
+      type: string
+      description: Scale factor applied to the focused sticky, matching CSS scale values.
+    hlz:
+      type: string
+      description: Convenience alias combining `highlight` and `zoom-to` for one target.
+
+classes:
+  cr-section:
+    description: Marks a fenced div as a Closeread section.
+  progress-block:
+    description: Groups trigger content so multiple blocks behave as one narrative step.
+  scale-to-fill:
+    description: Scales a sticky to fill the viewport without distortion.
+  cr-poem:
+    description: Applies poem-specific styling for line block stickies.
