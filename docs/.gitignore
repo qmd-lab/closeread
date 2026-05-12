@@ -8,8 +8,18 @@
 /.luarc.json
 
 # rendered documentation site
-/docs/_site/
-/docs/.quarto/
+_site/
+.quarto/
 
 # closeread extension in docs site (we get it from project root on render)
-/docs/_extensions/closeread
+_extensions/closeread
+_freeze
+
+.venv/
+
+**/*.quarto_ipynb
+
+docs/site_libs
+*.rmarkdown
+*.html.md
+

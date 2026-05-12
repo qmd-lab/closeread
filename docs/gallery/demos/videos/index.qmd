@@ -1,0 +1,139 @@
+---
+title: "Videos"
+subtitle: "Use videos that loop or progress on user scroll."
+format:
+  closeread-html:
+    resources: rayshader.mp4
+    cr-style:
+      narrative-border-radius: 0
+      narrative-background-color-overlay: "#d8e4f2aa"
+      narrative-text-color-overlay: black
+      narrative-background-color-sidebar: "#914e4e"
+      narrative-text-color-sidebar: white
+      section-background-color: "#213243"
+---
+
+Something something video
+
+Now here's an example of a video filling to fit the space:
+
+::::{.cr-section layout="overlay-left"}
+
+You can tell all sorts of stories with videos.
+
+Maybe you've gone on a journey.  
+[Credit: [Cristian-Manieri/Pixabay](https://pixabay.com/videos/drone-landscape-green-greenland-236893/)]{style="font-size: 65%;"} @cr-ship
+
+![](ship.mp4){#cr-ship .scale-to-cover alt="A ship sails in a polar region" loop="true"}
+
+You can trigger a video to play using `[@cr-ship]{.play-video}`. [@cr-ship]{.play-video}
+
+You can also pause it using `[@cr-ship]{.pause-video}`. [@cr-ship]{.pause-video}
+
+Apply the `.scale-to-cover` class to videos to ensure that they fill up the whole Closeread sticky column (even if they need to be cropped to do it).
+
+This is great for photojournalistic use cases like interviews where not every part of the frame needs to be visible.
+
+::::
+
+\
+\
+
+This works for sidebar layouts too:
+
+\
+\
+
+:::::{.cr-section layout="sidebar-right"}
+
+The video may even be there simply to establish a mood for your story.  
+[Credit: [Domka_1611/Pixabay](https://pixabay.com/videos/fire-evening-nature-forest-autumn-148594/)]{style="font-size: 65%;"} @cr-tea
+
+![](tea.mp4){#cr-tea .scale-to-cover alt="One person pours tea into another person's tea cup in front of an open fire." autoplay="true" muted="true" loop="true"}
+
+::::{focus-on="cr-tea"}
+You may want to add `autoplay="true"` and `loop="true"` to your videos.
+
+:::{.callout-tip}
+Most browsers will prevent videos with sound from autoplaying. You can avoid this problem by also adding `muted="true"`.
+:::
+
+In this case, we've shifted the video and put a crossfade in the middle of it for a seamless loop.
+::::
+
+:::::
+
+\
+\
+
+# Videos that progress on scroll
+
+Here's a video made with the [`{rayshader}`](https://www.rayshader.com) package, `rayshader.mp4`:
+
+Let's incorporate `rayshader.mp4` into a scrolly section: instead of `.play-video` and `.pause-video`, we'll use `.scroll-video`.
+
+\
+\
+
+:::::{.cr-section}
+
+::::{.progress-block focus-on="cr-rayshader" .scroll-video}
+
+Here's our rayshader video again...
+
+But this time, the video scrolls across several triggers...
+
+... rather than resetting as each one passes!
+
+::::
+
+![](rayshader.mp4){#cr-rayshader alt="A rotating landscape made with Rayrender."}
+
+:::::
+
+\
+\
+
+If you want to use several narrative blocks as the video scrolls, we recommend attaching `.scroll-video` to a [progress block](/guide/interactive-graphics.qmd#progress-blocks), rather than an individual narrative block.
+
+Progress blocks let you "stretch" the progress of a sticky across several narrative blocks. Wrap those blocks in a `.progress-block`, and instead of using the \@-style cross-reference to refer to the sticky, use `focus-on`:
+
+````html
+::::{.cr-section}
+
+:::{.progress-block focus-on="somemovie" .scroll-video}
+One comment
+
+And another comment
+
+And a third!
+:::
+
+![](mymovie.mp4){#somemovie alt="A movie"}
+
+::::
+
+````
+
+# To scroll, or not to scroll?
+
+Which kind of video should use? That depends on what you're trying to do.
+
+If your need to explain something to readers in steps in lockstep with the progression of a video, consider using `.scroll-video`. The video will only go as quickly as a user scrolls, allowing you to take the time to explain different elements. Just remember that sound won't work with scrolling videos.
+
+If your video is complementary to the text, or there's sound you want readers to hear, consider using `.play-video` and `.pause-video`. You can use looping to make sure readers catch everything, but keep in mind that their attention may be split between the video and the narrative. 
+
+:::{.callout-tip}
+Browsers often disable autoplay if a video has sound. If yours has sound, consider prompting readers to start the video themselves.
+:::
+
+
+:::{.counter style="position: fixed; bottom: 10px; right: 10px; background-color: skyblue; border-radius: 5px; padding: 18px 18px 0 18px; line-height: .8em; z-index: 1000"}
+```{ojs}
+md`Active sticky: ${crActiveSticky}`
+md`Active trigger: ${crTriggerIndex}`
+md`Trigger progress: ${(crTriggerProgress * 100).toFixed(1)}%`
+md`Scroll direction: ${crDirection}`
+md`Progress block progress: ${(crProgressBlock * 100).toFixed(1)}%`
+```
+:::

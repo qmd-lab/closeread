@@ -17,6 +17,8 @@ const progressBlockSelector = '.progress-block'
 // == Run upon the HTML file loaded === //
 document.addEventListener("DOMContentLoaded", () => {
 
+  console.log(`Loaded; setting up Closeread`);
+
   // attach meta classes to <body>
   document.body.classList.add("closeread")
   const debugMode         = getBooleanConfig("cr-debug-mode")
@@ -60,8 +62,10 @@ document.addEventListener("DOMContentLoaded", () => {
   ojsProgressBlock?.define("crProgressBlock", 0);
 
   if (ojsModule === undefined) {
-    console.error("Warning: Quarto OJS module not found")
+    console.warn("Warning: Quarto OJS module not found")
   }
+
+  console.log(`OJS found`);
   
   // expand hlz option into highlight and zoom-to
   const allHlzTriggers = Array.from(document.querySelectorAll('[data-hlz]'));
@@ -70,6 +74,62 @@ document.addEventListener("DOMContentLoaded", () => {
     trigger.setAttribute('data-zoom-to', hlzValue);
     trigger.setAttribute('data-highlight', hlzValue);
   });
+
+  // initialise scrolly videos, replacing the original video with a
+  // scrollyvideo.js-initialised one  
+  const scrollyVideoTriggers =
+    Array.from(document.querySelectorAll(".scroll-video"))
+  console.log(
+    `Found ${scrollyVideoTriggers.length} triggers with .scroll-video `)
+
+  // deduplicate by videoElId to avoid creating multiple scrollers for same video
+  const seenVideoIds = new Set();
+  const videoScrollers = scrollyVideoTriggers
+    .map((trigger, i) => {
+      const videoElId = trigger.getAttribute("data-focus-on");
+      
+      console.log(`>> Processing trigger ${i}: `, trigger)
+      trigger.setAttribute("data-scroll-video-id", i.toString());
+
+      const videoEl = document.getElementById(videoElId)
+      
+      // skip if we've already processed this specific video element
+      if (videoEl.dataset.scrollyVideoInitialized) {
+        console.log(`>> Skipping already initialized video: ${videoElId}`);
+        return null;
+      }
+      videoEl.dataset.scrollyVideoInitialized = "true";
+      
+      console.log(`>> data-focus-on from trigger, ${videoElId}, is: `, videoEl);
+      const videos = videoEl.getElementsByTagName("video")
+      if (!videos || videos.length == 0 ) {
+        console.warn(`>> No <video> elements found inside ${videoElId}.`);
+        return null;
+      }
+      if (videos.length > 1) {
+        console.warn(
+          `Closeread: Multiple <video> elements found inside ${videoElId} using the first.`)
+      }
+      const video = videos[0]
+      console.log(`Removing original video`);
+      const videoSrc = video.src
+      video.remove();
+      console.log(`Initialising scrolly video`);
+      return {
+        triggerId: videoElId,
+        videoId: videoElId,
+        isProgressBlock: trigger.classList.contains("progress-block"),
+        scroller: new ScrollyVideo({
+          scrollyVideoContainer: videoElId,
+          src: videoSrc,
+          trackScroll: false
+        })
+      }
+    })
+    .filter(v => v !== null)
+  
+  // TODO - detect and warn users of low power mode on safari
+  // https://stackoverflow.com/a/58290112/3246758
     
   // collect all sticky elements
   const allStickies = Array.from(document.querySelectorAll(".sticky"));
@@ -103,10 +163,56 @@ document.addEventListener("DOMContentLoaded", () => {
   function crTriggerStepProgress(trigger) {
     ojsTriggerProgress?.define("crTriggerProgress", trigger.progress)
     ojsDirection?.define("crDirection", trigger.direction)
+
+    // update a scrolly video if it matches the current trigger and isn't a
+    // progress block one
+    const triggerVideoScrollers = videoScrollers
+    .filter(video => video)
+    .filter(video =>
+      (!video.isProgressBlock) &&
+      video.triggerId === trigger.element.getAttribute("data-focus-on"))
+    console.log(`Updating ${triggerVideoScrollers.length} of ${videoScrollers.length} video scrollers (trigger block)`)
+    
+    triggerVideoScrollers.forEach(video => {
+      video.scroller.setVideoPercentage(trigger.progress, {
+        // TODO - review transition speed and easing for triggers and progress
+        transitionSpeed: 12, easing: t => +t // linear easing
+      })
+    })
+  }
+
+  function crProgressStepEnter(progressBlock) {
+    
+    const focusedStickyName =
+      progressBlock.element.getAttribute("data-focus-on")
+    
+    // update ojs variables
+    ojsStickyName?.define("crActiveSticky", focusedStickyName)
+    
+    updateStickies(allStickies, focusedStickyName, progressBlock)
+
   }
   
-  function crProgressStepEnter(progressBlock) {
+  function crProgressStepProgress(progressBlock) {
     ojsProgressBlock?.define("crProgressBlock", progressBlock.progress)
+    
+    console.log(`>> Progress block focus-on: ${progressBlock.element.getAttribute("data-focus-on")}`)
+    console.log(`>> Available video scrollers:`, videoScrollers.map(v => ({
+      videoId: v.videoId,
+      isProgressBlock: v.isProgressBlock
+    })))
+
+    // update a scrolly video
+    const progressVideoScrollers = videoScrollers
+      .filter(video =>
+        video.isProgressBlock &&
+        video.videoId === progressBlock.element.getAttribute("data-focus-on"))
+    console.log(`Updating ${progressVideoScrollers.length} of ${videoScrollers.length} video scrollers (progress block)`)
+    progressVideoScrollers.forEach(video => {
+      video.scroller.setVideoPercentage(progressBlock.progress, {
+        transitionSpeed: 12, easing: t => +t // linear easing
+      })
+    })
   }
   
   // set up scrollers on document load, and reset them when window zoom changes
@@ -123,7 +229,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const progressBlockScroller = scrollama()
   progressBlockScroller
     .setup(progressScrollerConfig)
-    .onStepProgress(crProgressStepEnter)
+    .onStepEnter(crProgressStepEnter)
+    .onStepProgress(crProgressStepProgress)
 
   window.addEventListener("resize", (event) => {
     setTimeout(() => triggerScroller.resize(), 1000)
@@ -195,6 +302,7 @@ function updateStickies(allStickies, focusedStickyName, trigger) {
   // apply additional effects
   transformSticky(focusedSticky, trigger.element);
   highlightSpans(focusedSticky, trigger.element);
+  controlVideo(focusedSticky, trigger.element);
   
   if ( // scale-to-fill only takes effect if there are no other transforms
     focusedSticky.classList.contains("scale-to-fill") &&
@@ -408,6 +516,48 @@ function scaleToFill(el, paddingX = 75, paddingY = 50) {
   // apply styles
   el.style.setProperty("transform",
     `matrix(${scale}, 0, 0, ${scale}, 0, ${centerDeltaY})`)
+}
+
+//==============//
+//    Videos    //
+//==============//
+// Execute different methods on video elements such as play() and pause().
+function controlVideo(focusedSticky, triggerEl) {
+
+  console.log(
+    `>> Controlling video with classes: ${Array.from(triggerEl.classList)}`);
+
+  // get any video methods
+  const videoClasses = Array
+    .from(triggerEl.classList)
+    .filter(cls => /^(play|pause|load)*-video$/.test(cls));
+
+  // exit function if there's no video method
+  if (videoClasses.length == 0) {
+    console.log(">> No valid video control classes found.")
+    return;
+  }
+
+  if (videoClasses.length > 1) {
+    console.warn(`Closeread: Multiple video method are called by a single trigger. Applying only the first one, ${videoClasses[0].name}`)
+  }
+
+  console.log(`>> Control class: ${videoClasses[0]}`)
+
+  // get video element
+  const videoEl = focusedSticky.querySelector("video");
+
+  // extract method from attribute name
+  const methodName = videoClasses[0].replace(/-video$/, "");
+
+  console.log(`>> Video control: ${methodName}`)
+  
+  // check if the method exists on videoEl, then call it
+  if (typeof videoEl[methodName] === "function") {
+    videoEl[methodName]();
+  } else {
+    console.log(`Method ${methodName} does not exist for a video element.`);
+  }
 }
 
 /* getBooleanConfig: checks for a <meta> with named attribute `cr-[metaFlag]`

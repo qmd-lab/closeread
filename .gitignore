@@ -28,3 +28,6 @@ tests/*/_extensions
 
 # .css.map (can be generated manually from .scss file)
 _extensions/closeread/closeread.css.map
+
+# images generated for video demo
+docs/gallery/demos/videos/image*.png
