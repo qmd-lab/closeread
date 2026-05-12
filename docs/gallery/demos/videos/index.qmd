@@ -68,59 +68,7 @@ In this case, we've shifted the video and put a crossfade in the middle of it fo
 
 # Videos that progress on scroll
 
-Let's use the popular [`{rayshader}`](https://www.rayshader.com) package to generate a video. First we'll construct the scene:
-
-:::{.column-margin}
-If you're reproducing this demo, note a [small issue](https://github.com/dmurdoch/rgl/issues/488#issuecomment-3508945610) with rayshader and rgl on macOS at the moment:
-
-```{r}
-#| label: macos-check
-#| echo: true
-is_macos <-
-  Sys.info()['sysname'] ==
-    'Darwin'
-
-options(
-  rgl.useNULL = is_macos)
-```
-
-:::
-
-```{r}
-#| label: build-rayshader-scene
-#| echo: true
-#| output: false
-#| code-fold: false
-library(tibble)
-library(dplyr)
-library(stringr)
-library(purrr)
-library(rayshader)
-
-mont_shadow <- ray_shade(montereybay, zscale = 50, lambert = FALSE)
-mont_amb <- ambient_shade(montereybay, zscale = 50)
-montereybay |>
-  sphere_shade(zscale = 10, texture = "imhof1") |>
-  add_shadow(mont_shadow, 0.5) |>
-  add_shadow(mont_amb, 0) ->
-mont_scene
-
-plot_3d(
-  mont_scene, montereybay, zscale = 50, fov = 0, phi = 45,
-  windowsize = c(600, 480), zoom = 0.75, water = TRUE, waterdepth = 0,
-  wateralpha = 0.5, watercolor = "lightblue", waterlinecolor = "white",
-  waterlinealpha = 0.5)
-```
-
-Then we'll render the movie as `rayshader.mp4`:
-
-```{r}
-#| label: render-rayshader-movie
-#| echo: true
-movie_path <- render_movie("rayshader.mp4",
-  frame = 30,
-  software_render = is_macos)
-```
+Here's a video made with the [`{rayshader}`](https://www.rayshader.com) package, `rayshader.mp4`:
 
 Let's incorporate `rayshader.mp4` into a scrolly section: instead of `.play-video` and `.pause-video`, we'll use `.scroll-video`.
 
