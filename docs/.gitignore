@@ -16,3 +16,10 @@ _extensions/closeread
 _freeze
 
 .venv/
+
+**/*.quarto_ipynb
+
+docs/site_libs
+*.rmarkdown
+*.html.md
+

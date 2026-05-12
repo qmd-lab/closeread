@@ -1,6 +1,5 @@
 ---
 title: "Videos"
-# image: "globe.png"
 subtitle: "Use videos that loop or progress on user scroll."
 format:
   closeread-html:
@@ -45,14 +44,14 @@ This works for sidebar layouts too:
 \
 \
 
-::::{.cr-section layout="sidebar-right"}
+:::::{.cr-section layout="sidebar-right"}
 
 The video may even be there simply to establish a mood for your story.  
 [Credit: [Domka_1611/Pixabay](https://pixabay.com/videos/fire-evening-nature-forest-autumn-148594/)]{style="font-size: 65%;"} @cr-tea
 
 ![](tea.mp4){#cr-tea .scale-to-cover alt="One person pours tea into another person's tea cup in front of an open fire." autoplay="true" muted="true" loop="true"}
 
-:::{focus-on="cr-tea"}
+::::{focus-on="cr-tea"}
 You may want to add `autoplay="true"` and `loop="true"` to your videos.
 
 :::{.callout-tip}
@@ -60,9 +59,9 @@ Most browsers will prevent videos with sound from autoplaying. You can avoid thi
 :::
 
 In this case, we've shifted the video and put a crossfade in the middle of it for a seamless loop.
-:::
-
 ::::
+
+:::::
 
 \
 \
@@ -71,9 +70,26 @@ In this case, we've shifted the video and put a crossfade in the middle of it fo
 
 Let's use the popular [`{rayshader}`](https://www.rayshader.com) package to generate a video. First we'll construct the scene:
 
+:::{.column-margin}
+If you're reproducing this demo, note a [small issue](https://github.com/dmurdoch/rgl/issues/488#issuecomment-3508945610) with rayshader and rgl on macOS at the moment:
+
+```{r}
+#| label: macos-check
+#| echo: true
+is_macos <-
+  Sys.info()['sysname'] ==
+    'Darwin'
+
+options(
+  rgl.useNULL = is_macos)
+```
+
+:::
+
 ```{r}
 #| label: build-rayshader-scene
 #| echo: true
+#| output: false
 #| code-fold: false
 library(tibble)
 library(dplyr)
@@ -88,6 +104,12 @@ montereybay |>
   add_shadow(mont_shadow, 0.5) |>
   add_shadow(mont_amb, 0) ->
 mont_scene
+
+plot_3d(
+  mont_scene, montereybay, zscale = 50, fov = 0, phi = 45,
+  windowsize = c(600, 480), zoom = 0.75, water = TRUE, waterdepth = 0,
+  wateralpha = 0.5, watercolor = "lightblue", waterlinecolor = "white",
+  waterlinealpha = 0.5)
 ```
 
 Then we'll render the movie as `rayshader.mp4`:
@@ -95,60 +117,68 @@ Then we'll render the movie as `rayshader.mp4`:
 ```{r}
 #| label: render-rayshader-movie
 #| echo: true
-#| code-fold: false
-plot_3d(
-  mont_scene, montereybay, zscale = 50, fov = 0, phi = 45,
-  windowsize = c(1000, 800), zoom = 0.75, water = TRUE, waterdepth = 0,
-  wateralpha = 0.5, watercolor = "lightblue", waterlinecolor = "white",
-  waterlinealpha = 0.5)
-
-render_movie("rayshader.mp4",
-  # use software renderer on macos
-  software_render = Sys.info()['sysname'] == 'Darwin')
+movie_path <- render_movie("rayshader.mp4",
+  frame = 30,
+  software_render = is_macos)
 ```
 
-Let's incorporate `rayshader.mp4` into a scrolly section.
+Let's incorporate `rayshader.mp4` into a scrolly section: instead of `.play-video` and `.pause-video`, we'll use `.scroll-video`.
 
-:::::{.cr-section}
-
-Here's our rayshader video! It scrolls! [@cr-rayshader]{.scroll-video}
-
-But wait, it seems to reset on our next trigger. [@cr-rayshader]{.scroll-video}
-
-What's up with that? [@cr-rayshader]{.scroll-video}
-
-![](rayshader.mp4){#cr-rayshader alt="A chart of annual national statistics, animating over the 20th century."}
-:::::
-
-\
-\
-\
-
-You might notice that the scrolly video resets with each trigger. That's not ideal!
-
-Most of the time, you're better off tying the scrolling video to a progress block:
-
-\
 \
 \
 
 :::::{.cr-section}
 
-Here's our rayshader video again... @cr-rayshader-prog
+::::{.progress-block focus-on="cr-rayshader" .scroll-video}
 
-::::{.progress-block focus-on="cr-rayshader-prog" .scroll-video}
-
+Here's our rayshader video again...
 
 But this time, the video scrolls across several triggers...
 
 ... rather than resetting as each one passes!
 
-We can use this to walk through a video more substantively.
+::::
+
+![](rayshader.mp4){#cr-rayshader alt="A rotating landscape made with Rayrender."}
+
+:::::
+
+\
+\
+
+If you want to use several narrative blocks as the video scrolls, we recommend attaching `.scroll-video` to a [progress block](/guide/interactive-graphics.qmd#progress-blocks), rather than an individual narrative block.
+
+Progress blocks let you "stretch" the progress of a sticky across several narrative blocks. Wrap those blocks in a `.progress-block`, and instead of using the \@-style cross-reference to refer to the sticky, use `focus-on`:
+
+````html
+::::{.cr-section}
+
+:::{.progress-block focus-on="somemovie" .scroll-video}
+One comment
+
+And another comment
+
+And a third!
+:::
+
+![](mymovie.mp4){#somemovie alt="A movie"}
 
 ::::
 
-![](rayshader.mp4){#cr-rayshader-prog alt="A rotating landscape made with Rayrender."}
-:::::
+````
+
+# To scroll, or not to scroll?
+
+Which kind of video should use? That depends on what you're trying to do.
+
+If your need to explain something to readers in steps in lockstep with the progression of a video, consider using `.scroll-video`. The video will only go as quickly as a user scrolls, allowing you to take the time to explain different elements. Just remember that sound won't work with scrolling videos.
+
+If your video is complementary to the text, or there's sound you want readers to hear, consider using `.play-video` and `.pause-video`. You can use looping to make sure readers catch everything, but keep in mind that their attention may be split between the video and the narrative. 
+
+:::{.callout-tip}
+Browsers often disable autoplay if a video has sound. If yours has sound, consider prompting readers to start the video themselves.
+:::
+
 
 :::{.counter style="position: fixed; bottom: 10px; right: 10px; background-color: skyblue; border-radius: 5px; padding: 18px 18px 0 18px; line-height: .8em; z-index: 1000"}
 ```{ojs}
